@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title> Chuango数据管理中心</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="创高安防">
+	<meta name="author" content="chuango_Karl">
+
+	<include file="public:css" />
+		
+</head>
+
+<body>
+	<include file="public:header" />
+		<div class="container-fluid">
+		<div class="row-fluid">
+			<include file="public:left" />
+			<!-- content start -->
+			<div id="content" class="span10">
+				<div>
+					<ul class="breadcrumb">
+						<li>
+							<a href="__GROUP__">首页</a> <span class="divider">/</span>
+						</li>
+						<li>
+							<a href="__URL__/emails">邮件联系人</a>
+						</li>
+					</ul>
+				</div>
+            <present name="msg">
+            <div class="row-fluid sortable">   
+                <div class="alert alert-{$msg[0]}">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>系统提示:&nbsp;&nbsp;</strong> {$msg[1]}
+                </div>
+            </div>
+            </present>
+			<div class="row-fluid sortable">
+            	<div class="box span10">
+					<!--<div class="row-fluid">	
+                        <form method="post" action="__URL__/emails">
+                        <div class="span4">
+                            <div class="dataTables_filter">
+                                <label>查找: <input type="text" name="words" class="_filter_txt" value="{$param.words}" /></label>
+                            </div>
+                        </div>
+                    	</form>
+                    </div>-->
+                    <div class="box-header well" data-original-title>
+						<h2>邮件联系人管理</h2>
+					</div>
+					<div class="box-content">
+						<form method="post"> 
+						<table class="table table-bordered">
+							  <thead>
+								  <tr>
+                                  	  <th>&nbsp;  </th>
+                                      <th>联系人</th>
+									  <th>邮箱</th>
+									  <th>类型</th> 
+									  <th>操作</th>                                      
+								  </tr>
+							  </thead>   
+							  <tbody>
+								<volist name="emails" id="item">
+								<tr>
+                                	<td><input type="checkbox" name="chkt[]" value="{$item.ea_id}" /></td>
+									<td class="center">{$item.ea_name}</td>
+									<td class="center">{$item.ea_adress}</td>
+									<td class="center">{$item.ea_group}</td>
+									<td>
+										<a class="btn btn-info _actions_" href="#" data-href="__URL__/email_edit/ea_id/{$item.ea_id}">
+											<i class="icon-edit icon-white"></i>  
+											修改                                            
+										</a>
+										<a class="btn btn-danger _delete_" href="#" data-href="__URL__/email_del/chkt/{$item.ea_id}">
+											<i class="icon-trash icon-white"></i> 
+											删除
+										</a>
+									</td>                                      
+								</tr>
+								</volist>                         
+							  </tbody>
+						 </table>
+						 <div class="row-fluid">
+						 	<button class="btn btn-small btn-danger _deletes_" type="button" data-href="__URL__/email_del"><i class="icon icon-trash icon-white"></i>删除选中</button>
+						 	<button class="btn btn-small btn-success _actions_" type="button" data-href="__URL__/email_add" ><i class="icon icon-attachment icon-white"></i>添加联系人</button>
+						 </div> 
+						 </form>    
+					</div>
+				</div><!--/span-->
+			</div><!--/row-->
+			<!-- content end -->
+			</div>
+		</div>
+		<hr>
+		<div class="modal hide fade" id="myModal">
+			
+		</div>
+		<include file="public:footer" />
+	</div>
+	<include file="public:js" />
+	<script type="text/javascript">
+	$(function(){
+		$("._actions_").click(function(){
+			var url = $(this).attr("data-href");
+			email_commit(url);
+		});
+		function email_commit(url){
+			$.get(url,null,function(msg){
+				$("#myModal").html(msg);
+				$("#myModal").modal({
+					keyboard: true,
+					backdrop: "static"
+				});
+				var reg = new RegExp(/.jpg$|.png$|.jepg$|.gif/i);
+				$("#email_commit").click(function(){
+					if($("#ea_name").val()==""){
+						$("#ea_name").parent().parent().addClass("error");
+						$("#ea_name").next().html("请输入联系人名称！");
+					}else if($("#ea_adress").val()==""){
+						$("#ea_adress").parent().parent().addClass("error");
+						$("#ea_adress").next().html("请输入联系邮箱！");
+					}else if($("#ea_group").val()==""){
+						$("#ea_group").parent().parent().addClass("error");
+						$("#ea_group").next().html("请输入联系人分类！");
+					}else{
+						var form = $(this).parents("form")	;
+						form.attr("action", $(this).attr("data-act")).submit();
+						$("#myModal").modal("hide");
+					}
+				});
+				$("#myModal input").focus(function(){
+					$(this).parent().parent().removeClass("error");
+					$(this).next().html("");
+				});
+			},"text");	
+		}
+	});
+	</script>
+</body>
+</html>

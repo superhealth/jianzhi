@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>welcome</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<include file="public:css" />	
+</head>
+
+<body>
+		<div class="container-fluid">
+		<div class="row-fluid">
+		
+			<div class="row-fluid">
+				<div class="span12 center login-header">
+					<h2>欢迎登录Chuango数据管理中心</h2>
+				</div><!--/span-->
+			</div><!--/row-->
+			
+			<div class="row-fluid">
+				<div class="well span5 center login-box">
+					<div class="alert alert-info">
+						请输入用户名和密码登录.
+					</div>
+					<form class="form-horizontal" action="#" method="post">
+						<fieldset>
+							<div class="input-prepend" title="用户名" data-rel="tooltip">
+								<span class="add-on"><i class="icon-user"></i></span><input autofocus class="input-large span10" name="user" id="user" type="text" value="" />
+							</div>
+							<div class="clearfix"></div>
+
+							<div class="input-prepend" title="登录密码" data-rel="tooltip">
+								<span class="add-on"><i class="icon-lock"></i></span><input class="input-large span10" name="pass" id="pass" type="password" value="" />
+							</div>
+							<div class="clearfix"></div>
+							
+							<div class="input-prepend" title="验证码" data-rel="tooltip">
+								<span class="add-on" id="code_refresh"><i class="icon-refresh"></i></span><input class="input-large span5" name="authcode" id="authcode" type="text" value="" />
+								<img title="验证码" alt="{$Think.session.verify}" id="verify" style="margin-left:5px;" src="__URL__/authcode" />
+							</div>
+							
+							<div class="clearfix"></div>
+							<!-- <div class="input-prepend">
+							<label class="remember" for="remember"><input type="checkbox" id="remember" />记住我</label>
+							</div>
+							<div class="clearfix"></div> -->
+
+							<p class="center span5">
+							<button id="commit" type="button" class="btn btn-primary">登录</button>
+							</p>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<include file="public:js" />
+	<script type="text/javascript">
+	$(function(){
+		$("#code_refresh").click(function(){
+			$("#verify").attr("src", $("#verify").attr("src")+"?"+new Date().getTime());
+		});
+		
+		$("#commit").click(function(){
+			var data = "user="+$("#user").val()+"&pass="+$("#pass").val()+"&authcode="+$("#authcode").val();
+			$.post("__URL__/checkLogin", data, function(response){
+				if(response.code==0){
+					location.href="__GROUP__";
+				}else{
+					bootbox.alert("<div class='alert alert-error fade in'><h4 class='alert-heading'>出错了</h4><p>"+response.msg+"</p></div>");
+				}
+			}, "json");
+		})
+	})
+	
+	</script>
+		
+</body>
+</html>

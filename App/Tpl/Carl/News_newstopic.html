@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title> Chuango数据管理中心</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="创高安防">
+	<meta name="author" content="chuango_Karl">
+
+	<include file="public:css" />
+		
+</head>
+
+<body>
+	<include file="public:header" />
+		<div class="container-fluid">
+		<div class="row-fluid">
+			<include file="public:left" />
+			<!-- content start -->
+			<div id="content" class="span10">
+				<div>
+					<ul class="breadcrumb">
+						<li>
+							<a href="__GROUP__">Home</a> <span class="divider">/</span>
+						</li>
+						<li>
+							<a href="__URL__/index">新闻首页</a> <span class="divider">/</span>
+						</li>
+                        <li>
+							<a href="__URL__/newstopic">焦点新闻设置</a>
+						</li>
+					</ul>
+				</div>
+			<present name="msg">
+            <div class="row-fluid">	
+                <div class="alert alert-{$msg[0]}">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>系统提示:&nbsp;&nbsp;</strong> {$msg[1]}
+                </div>
+            </div>	
+            </present>
+            <div class="row-fluid sortable">
+				<div class="box span12">
+					<div class="box-header well" data-original-title>
+						<h2>新闻管理中心</h2>
+					</div>
+                    <div class="box-content span10">
+						<fieldset>
+						<legend>首页推荐新闻</legend>
+						<form method="post">
+						<table class="table table-bordered">
+							  <thead>
+								  <tr>
+									  <th>排序</th>
+                                      <th>语种</th>
+									  <th>新闻</th> 
+									  <th>图示</th>
+                                      <th>描述</th>
+                                      <th>操作</th>                                   
+								  </tr>
+							  </thead>   
+							  <tbody>
+								<volist name="index" id="item">
+								<tr>
+                                	<td>{$item.nt_order}</td>
+									<td>{$item.nt_lang}</td>
+									<td>{$item.ne_title}</td>
+									<td><a class="thumb" href="__ROOT__/uploads/{$item.nt_img}"><img src="__ROOT__/uploads/{$item.nt_img}" style="height:40px;" /></a></td>
+                                    <td>{$item.nt_desc}</td>
+									<td>
+                                        <a class="btn btn-info _actions_" href="#" data-href="__URL__/topic_view/nt_id/{$item.nt_id}">
+											<i class="icon-edit icon-white"></i>  
+											编辑                                           
+										</a>
+									</td>                                               
+								</tr>
+								</volist>                         
+							  </tbody>
+						 </table>
+                         </form>
+						</fieldset>
+					</div>				
+                    <div class="box-content span10">
+						<fieldset>
+						<legend>新闻页</legend>
+						<form method="post">
+						<table class="table table-bordered">
+							  <thead>
+								  <tr>
+									  <th>排序</th>
+                                      <th>语种</th>
+									  <th>新闻</th> 
+									  <th>图示</th>
+                                      <th>描述</th>
+                                      <th>操作</th>                                   
+								  </tr>
+							  </thead>   
+							  <tbody>
+								<volist name="news" id="item">
+								<tr>
+                                	<td>{$item.nt_order}</td>
+									<td>{$item.nt_lang}</td>
+									<td>{$item.ne_title}</td>
+									<td><a class="thumb" href="__ROOT__/uploads/{$item.nt_img}"><img src="__ROOT__/uploads/{$item.nt_img}" style="height:40px;" /></a></td>
+                                    <td>{$item.nt_desc}</td>
+									<td>
+                                        <a class="btn btn-info _actions_" href="#" data-href="__URL__/topic_view/nt_id/{$item.nt_id}">
+											<i class="icon-edit icon-white"></i>  
+											编辑                                           
+										</a>
+									</td>                                               
+								</tr>
+								</volist>                         
+							  </tbody>
+						 </table>
+                         </form>
+						</fieldset>
+					</div>
+                </div>
+			</div>
+			<!-- content end -->
+		</div>
+		</div>
+		<hr>
+		<div class="modal hide fade" id="myModal">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>Settings</h3>
+			</div>
+			<div class="modal-body">
+				<p>Here settings can be configured...</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Close</a>
+				<a href="#" class="btn btn-primary">Save changes</a>
+			</div>
+		</div>
+		<include file="public:footer" />
+	</div>
+	<include file="public:js" />
+    <script type="text/javascript">
+	$(function(){
+		$("._actions_").click(function(){
+			var url = $(this).attr("data-href");
+			topic_commit(url);
+		});
+		function topic_commit(url){
+			$.get(url,null,function(msg){
+				$("#myModal").html(msg);
+				$("#myModal").modal({
+					keyboard: true,
+					backdrop: "static"
+				});
+				$("#topic_commit").click(function(){
+					var form = $(this).parents("form")	;
+					form.attr("action", $(this).attr("data-act")).submit();
+					$("#myModal").modal("hide");
+				});
+			},"text");
+			$("#nt_news").typeahead();
+		}
+	});	
+    </script>
+</body>
+</html>
