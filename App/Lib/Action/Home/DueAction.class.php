@@ -16,12 +16,19 @@ class DueAction extends CommonAction{
 	 * 生成订单
 	 * 
 	 */
-	public function createOrder($year, $price){
+	public function createDueOrder($year, $price){
 		
 	}
 	
 	/**
-	 * 发起交易
+	 * 待支付
+	 */
+	public function dueOrders(){
+		
+	}
+	
+	/**
+	 * 发起支付
 	 */
 	public function alipaySubmit(){
 		

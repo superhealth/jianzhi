@@ -16,10 +16,11 @@ $(document).ready(function(){
 	});
 	*/
 	
+	/*  */
 	$("._validate").focus(function(){
-					$(this).parent().parent().removeClass("error");
-					$(this).siblings("span.help-inline").html("");
-				});
+		$(this).parent().parent().removeClass("error");
+		$(this).siblings("span.help-inline").html("");
+	});
 	/**
 	 * 表单提交
 	 */

@@ -62,8 +62,8 @@
 				</div>
 				<div class="box-content">
 					<h1>{$Think.session.user}<small> 欢迎登陆!</small></h1>
-					<p>上次登录时间：</p>
-					<p>上次登录地址：</p>
+					<p>上次登录时间：{$loginInfo['log_time']|timeFormat}</p>
+					<p>上次登录地址：{$loginInfo['log_ip']}</p>
 					
 					<p class="center">
 						<a href="http://usman.it/free-responsive-admin-template" class="btn btn-large btn-primary"><i class="icon-chevron-left icon-white"></i> Back to article</a> 
