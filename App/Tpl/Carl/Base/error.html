@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>数据管理中心</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="__PUBLIC__/Admin/ue/editor_config.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Admin/ue/editor_all_min.js" type="text/javascript"></script>
+<include file="public:css" />
+</head>
+<body>
+	<include file="public:header" />
+	<div class="container-fluid">
+		<div class="row-fluid">
+		<include file="public:left" />
+		<!-- content start -->
+			<div id="content" class="span6 push-2">
+				<div class="row-fluid sortable">
+					<div class="box-content">
+						<div class="tooltip-demo well">
+						  	<div class="alert alert-error">
+								<button type="button" class="close" data-dismiss="alert">×</button>
+								<div class="system-message">
+								<h1>:(</h1>
+								<p style="font-size:16px;">{$error}</p>
+								<p class="yellow">
+								页面自动 <a id="href" href="<?php echo($jumpUrl); ?>">跳转</a> 等待时间： <b id="wait"><?php echo($waitSecond); ?></b>
+								</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- content end -->
+		</div>
+	</div>
+<include file="public:footer" />
+<include file="public:js" />
+<script type="text/javascript">
+(function(){
+var wait = document.getElementById('wait'),href = document.getElementById('href').href;
+var interval = setInterval(function(){
+	var time = --wait.innerHTML;
+	if(time == 0) {
+		location.href = href;
+		clearInterval(interval);
+	};
+}, 1000);
+})();
+</script>
+</body>
+</html>

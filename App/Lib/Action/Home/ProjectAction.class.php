@@ -1,4 +1,9 @@
 <?php
+/**
+ * 项目模块
+ * @author Carl
+ *
+ */
 class ProjectAction extends CommonAction{
 	/**
 	 * 项目浏览 搜索
@@ -52,5 +57,7 @@ class ProjectAction extends CommonAction{
 	/**
 	 * 草稿箱
 	 */
-	public function 
+	public function drafts(){
+		
+	}
 }

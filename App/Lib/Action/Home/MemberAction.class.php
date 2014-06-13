@@ -82,13 +82,20 @@ class MemberAction extends CommonAction{
 	/**
 	 * 修改密码
 	 */
-	public function memberSafe(){
+	public function safty(){
 		
 	}
 	/**
 	 * 修改资料
 	 */
-	public function memberInfo(){
+	public function myInfo(){
+		
+	}
+	
+	/**
+	 * 查看会员资料
+	 */
+	public function memberInfo($id=""){
 		
 	}
 	

@@ -356,3 +356,106 @@ function randomStr($leng="8", $mode=0){
 	return $randomStr;
 }
 
+function getFileSize($size){
+	if($size<1024){
+		return (string)$size."bytes";
+	}else if($size/1024<1024){
+		$size = round($size*100/1024)/100;
+		return (string)$size."Kb";
+	}else if($size/(1024*1024)<1024){
+		$size = round($size*100/(1024*1024))/100;
+		return (string)$size."Mb";
+	}else{
+		$size = round($size*100/(1024*1024*1024))/100;
+		return (string)$size."Gb";
+	}
+}
+
+
+/**
+ * 图片上传
+ * @return string
+ */
+
+function upload($imgOnly=true, $saveRule="", $type=""){
+	import('ORG.Net.UploadFile');
+	$upload = new UploadFile();
+	$upload->thumb = false;							//是否生成缩略图
+	//$upload->thumbMaxWidth = '180';			//缩略图最大宽度
+	//$upload->thumbMaxHeight = '40';			//缩略图最大高度
+	//$upload->thumbPrefix = 'mi_';					//缩略图前缀
+	//$upload->thumbRemoveOrigin = false;			//
+	$upload->uploadReplace = true;
+	$upload->maxSize  = 3145728*1024 ;				// 设置附件上传大小
+	if(!empty($saveRule)){
+		$upload->saveRule = $saveRule;
+	}
+	if($imgOnly){
+		$upload->allowExts = array('jpg', 'gif', 'png', 'jpeg');
+	}else{
+		$upload->allowExts  = array('jpg', 'gif', 'png', 'jpeg', 'zip', 'rar', 'pdf', 'txt');		// 设置附件上传类型
+	}
+	$upload->savePath = './uploads/';	// 设置附件上传目录
+	if(!$upload->upload()) {
+		$info[] = false;
+		$info[] = $upload->getErrorMsg();	// 上传错误提示错误信息
+	}else{
+		$info[] = true;
+		$info[] = $upload->getUploadFileInfo();	// 上传成功 获取上传文件信息
+	}
+	return $info;
+}
+
+/**
+ *
+ * 删除附件
+ */
+function attDelete($id){
+	if(!is_array($id)){
+		$id = array($id);
+	}
+	$attInfo = M("attachement")->field("att_id, att_name")->where(array("att_id" => array("in",$id)))->select();
+	$errors = array();
+	foreach ($attInfo as $v){
+		if(fileDelete($v['att_name'])){
+			M("attachement")->where("att_id = {$v['att_id']}")->delete();
+		}else{
+			$errors[] = $v['att_id'];
+		}
+	}
+	if(count($errors)>0){
+		return $errors;
+	}else{
+		return true;
+	}
+}
+/**
+ * 删除文件
+ */
+function fileDelete($file, $dir=""){
+	$dir = preg_replace("/[\\\/]$/", "", $dir);
+	$path = empty($dir) ? $_SERVER['DOCUMENT_ROOT'].__ROOT__."/uploads/{$file}" : $dir."/".$file;
+	//file_exists() 检测中文文件名需要转码
+	$path=iconv('UTF-8','GB2312',$path);
+	if(file_exists($path)){
+		return unlink($path);
+	}
+	return false;
+}
+
+/**
+ * 文件下载类
+ * @param 文件名 $file
+ * @return boolean
+ */
+function attDownload($file, $dir=""){
+	import("ORG.Net.Http");
+	$down = new Http();
+	$dir = preg_replace("/[\\\/]$/", "", $dir);
+	$filename = empty($dir) ? $_SERVER['DOCUMENT_ROOT'].__ROOT__."/uploads/".$file : $dir."/".$file;
+	if(!$down->download($filename)) {
+		return $down->geterrormsg();
+	}
+	return true;
+}
+
