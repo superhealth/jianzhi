@@ -64,9 +64,55 @@ class SortAction extends BaseAction{
 	 */
 	public function sort_edit($action=""){
 		if($action=="edit"){
-			
+			if(!per_check("sort_edit")){
+				$this->error("无此权限！");
+			}else{
+				$data = M("sort")->create();
+				if(M("sort")->add()){
+					$this->watchdog("编辑", "修改主类别 <strong>{$data['sort_name']}</strong>");
+					$this->success("修改成功！", __URL__."/index");
+				}else{
+					$this->error("修改失败！");
+				}
+			}
 		}else{
-			
+			if(!per_check("sort_edit")){
+				response_msg("无此权限！", "error", true);
+				exit;
+			}
+			$responseHtml = '<form method="post" class="form-horizontal" enctype="multipart/form-data" ><fieldset>
+				<input type="hidden" name="action" value="edit" />
+				<input type="hidden" name="sort_id" value="%id%" />	
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					<h3>修改主类别</h3>
+				</div>
+				<div class="modal-body">
+					<div class="control-group">
+						<label class="control-label" for="sort_name">类别名称</label>
+						<div class="controls">
+							 <input type="text" id="sort_name" name="sort_name" value="%name%" />
+							 <span class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="sort_order">显示次序</label>
+						<div class="controls">
+						  	<input type="text" id="sort_order" name="sort_order" value="%order%" />
+						  	<span class="help-inline"></span>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="btn" data-dismiss="modal">关闭</a>
+					<a href="#" class="btn btn-primary" id="commit" data-act="%url%">保存</a>
+				</div></fieldset></form>';
+			$info = M("sort")->where("sort_id={$id}")->find();
+			if($info){
+				echo str_replace(array("%id%", "%name%", "%order%", "%url%"), __ACTION__, $responseHtml);
+			}else{
+				echo response_msg("参数错误！", "error", true);
+			}
 		}
 	}
 	
@@ -75,14 +121,34 @@ class SortAction extends BaseAction{
 	 * @param string $chkt 选中的ID
 	 */
 	public function sort_delete($chkt=""){
-		
+		$map = array(
+			"sort_id"	=> array("in",$chkt)
+		);
+		$sorts = M("sort")->where($map)->getField("sort_name", "</strong>,<strong>");
+		dump($sorts);exit;
+		if(M("sort")->where($map)->delete()){
+			$this->watchdog("删除", "删除主分类<strong>$sorts</strong>");
+			$this->success("删除成功！");
+		}else{
+			$this->error("删除失败！");
+		}
 	}
 	/**
 	 * 主类详细信息
 	 * @param string $id 主类ID
 	 */
 	public function sort_info($id=""){
-	
+		$sortInfo = M("sort")->where("sort_id={$id}")->find();
+		$enums = M("enumsort")->where("es_sort_id={$id}")->select();
+		$sortInfo['enum'] = count($enums);
+		$enumNew = array();
+		foreach($enums as $v){
+			$enumNew[$v['es_base']][] = $v;
+		}
+		$sortInfo['base'] = count($enumNew);
+		$this->assign("sortInfo", $sortInfo);
+		$this->assign("enumNew", $enumNew);
+		$this->display();
 	}
 	/**
 	 * 添加类型
@@ -90,9 +156,66 @@ class SortAction extends BaseAction{
 	 */
 	public function enum_add($action=""){
 		if($action=="add"){
-			
+			if(!per_check("enum_edit")){
+				$this->error("无此权限！");
+			}
+			$data = M("enumsort")->create();
+			if(M("enumsort")->add($data)){
+				$sort_name = M("sort")->where("sort_id={$data['es_sort_id']}")->getfield("sort_name");
+				$this->watchdog("新增", "添加新子类<strong>{$data['es_name']}</strong>,属于 <i>{$sort_name}</i> 下的 [{$data['es_base']}]");
+				$this->success("添加成功！");
+			}else{
+				$this->error("添加失败！");
+			}
 		}else{
+			if(!per_check("enum_edit")){
+				echo response_msg("无此权限！", "error", true);exit;
+			}
+			$base = isset($_REQUEST['base']) ? $_REQUEST['base'] : "";
+			$responseHtml = '<form method="post" class="form-horizontal" enctype="multipart/form-data" ><fieldset>
+				<input type="hidden" name="action" value="add" />
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					<h3>添加次级类别</h3>
+				</div>
+				<div class="modal-body">
+					<div class="control-group">
+						<label class="control-label" for="sort">从属分类</label>
+						<div class="controls">
+							 <input type="text" id="sort"  disabled="disabled" value="%sort%" />
+							 <input type="hidden" name="es_sort_id" value="%id%" />
+							 <span class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="es_name">分类名称</label>
+						<div class="controls">
+						  	<input type="text" id="es_name" name="es_name" />
+						  	<span class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="es_order">分类排序</label>
+						<div class="controls">
+						  	<input type="text" id="es_order" name="es_order" />
+						  	<span class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="es_base">分类依据</label>
+						<div class="controls">
+						  	<input type="text" id="es_base" name="es_base" value="%base%" />
+						  	<span class="help-inline"></span>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="btn" data-dismiss="modal">关闭</a>
+					<a href="#" class="btn btn-primary" id="commit" data-act="%url%">保存</a>
+				</div></fieldset></form>';
 			
+			$sort_name = M("sort")->where("sort_id={$_REQUEST['id']}")->getfield("sort_name");
+			echo str_replace(array("%sort%", "%id%", "%base%", "%url%"),array($sort_name, $_REQUEST['id'], $base, __ACTION__), $responseHtml);
 		}
 	}
 	/**
@@ -101,17 +224,84 @@ class SortAction extends BaseAction{
 	 */
 	public function enum_edit($action=""){
 		if($action=="edit"){
-			
+			if(!per_check("enum_edit")){
+				$this->error("无此权限！");
+			}else{
+				$data = M("enumsort")->create();
+				if(M("enumsort")->save($data)){
+					$this->watchdog("编辑", "修改 [{$data['es_base']}]子类的<strong>{$data['es_name']}</strong>");
+					$this->success("修改成功!");
+				}else{
+					$this->error("修改失败！");
+				}
+			}
 		}else{
-			
+			if(!per_check("enum_edit")){
+				echo response_msg("无此权限！", "error", true);exit;
+			}
+			$responseHtml = '<form method="post" class="form-horizontal" enctype="multipart/form-data" ><fieldset>
+				<input type="hidden" name="action" value="edit" />
+				<input type="hidden" name="es_id" value="%id%" />
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					<h3>添加次级类别</h3>
+				</div>
+				<div class="modal-body">
+					<div class="control-group">
+						<label class="control-label" for="sort">从属分类</label>
+						<div class="controls">
+							 <input type="text" id="sort"  disabled="disabled" value="%sort%" />
+							 <span class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="es_name">分类名称</label>
+						<div class="controls">
+						  	<input type="text" id="es_name" name="es_name" value="%name%" />
+						  	<span class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="es_order">分类排序</label>
+						<div class="controls">
+						  	<input type="text" id="es_order" name="es_order" value="%order%" />
+						  	<span class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="es_base">分类依据</label>
+						<div class="controls">
+						  	<input type="text" id="es_base" name="es_base" value="%base%" />
+						  	<span class="help-inline"></span>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="btn" data-dismiss="modal">关闭</a>
+					<a href="#" class="btn btn-primary" id="commit" data-act="%url%">保存</a>
+				</div></fieldset></form>';
+			$info = M("enumsort")->field("es_id, es_name, es_order, es_base, sort_name")->join("zt_sort ON es_sort_id=sort_id")->where("es_id={$_REQUEST['id']}")->find();
+			if($info){
+				echo str_replace(array("%id%", "%sort%", "%name%", "%order%", "%base%", "%url%"),array($info['es_id'], $info['sort_name'], $info['es_name'], $info['es_order'], $info['es_base'], __ACTION__), $responseHtml);
+			}else{
+				echo response_msg("参数错误！", "error", true);exit;
+			}
 		}
 	}
 	/**
 	 * 删除类型
 	 * @param string $chkt
 	 */
-	public function enum_delete($chkt=""){
-		
+	public function enum_delete($id=""){
+		if($id){
+			$info = M("enumsort")->field("es_name, es_order, es_base, sort_name")->join("sort ON es_sort_id=sort_id")->where("es_id={$id}")->find("sort_name");
+			if(M("enumsort")->where("es_id={$id}")->delete()){
+				$this->watchdog("删除", "删除子类<strong>{$info['es_name']}</strong>,属于 <i>{$info['sort_name']}</i> 下的 [{$data['es_base']}]");
+				$this->success("删除成功！");
+			}else{
+				$this->error("删除失败!");
+			}
+		}
 	}
 	
 	
