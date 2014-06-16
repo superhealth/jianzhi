@@ -49,7 +49,7 @@ class IndexAction extends BaseAction{
 		if(!empty($param['words'])){
 			foreach($links as &$v){
 				foreach($v as &$val){
-					$val = preg_replace("/(".$param['words'].")/i", "<span class='red'>\\1</span>", $val);
+					$val = preg_replace("/(".$param['words'].")/ig", "<span class='red'>\\1</span>", $val);
 				}
 			}
 		}

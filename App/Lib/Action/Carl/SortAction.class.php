@@ -4,8 +4,29 @@ class SortAction extends BaseAction{
 	 * 所有分类
 	 */
 	public function index(){
-		
-		$sorts = M("sort")->select();
+		$sort = M("sort");
+		$map = array();
+		$param = array();
+		if(isset($_REQUEST['words'])){
+			$words = addslashes($_REQUEST['words']);
+			if(strlen($words)>=3){
+				$map['sort_name'] = array("like", "%".$_REQUEST['words']."%");
+				$param['words'] = $_REQUEST['words'];
+			}
+		}
+		$this->assign("param", $param);
+		$total = $sort->where($map)->count();
+		import("Org.Util.Page");
+		$page = new Page($total, 10, $param);
+		// 分页查询
+		$limit = $page->firstRow.",".$page->listRows;
+		$pager = $page->shown();
+		$this->assign("pager", $pager);
+		$order = "sort_order";
+		$field = "sort_id, sort_name, sort_order, IFNULL(enums,0) enums, IFNULL(base,0) base";
+		//连接查询子类表，获取子分类数 base, 总子类数 enums
+		$join = "LEFT JOIN (SELECT es_sort_id,count(*) enums from zt_enumsort GROUP BY es_sort_id) b ON sort_id=b.es_sort_id LEFT JOIN (SELECT es_sort_id,count(*) base from (SELECT es_sort_id, count(*) bases from zt_enumsort GROUP BY es_base) a group by a.es_sort_id) c ON sort_id = c.es_sort_id";
+		$sorts = $sort->field($field)->join($join)->where($map)->order($order)->select();
 		$this->assign("sorts", $sorts);
 		$this->display();
 	}
@@ -124,10 +145,9 @@ class SortAction extends BaseAction{
 		$map = array(
 			"sort_id"	=> array("in",$chkt)
 		);
-		$sorts = M("sort")->where($map)->getField("sort_name", "</strong>,<strong>");
-		dump($sorts);exit;
+		$sorts = M("sort")->where($map)->getField("sort_name", true);
 		if(M("sort")->where($map)->delete()){
-			$this->watchdog("删除", "删除主分类<strong>$sorts</strong>");
+			$this->watchdog("删除", "删除主分类<strong>".implode("</strong>, <strong>", $sorts)."</strong>");
 			$this->success("删除成功！");
 		}else{
 			$this->error("删除失败！");
