@@ -5,7 +5,7 @@ if(!defined("SYSCONF")){
 }
 // 缓存配置目录
 if(!defined("SYSCONF_DIR")){
-	define("SYSCONF_DIR", $_SERVER['DOCUMENT_ROOT'].__ROOT__."/cache");
+	define("SYSCONF_DIR", $_SEVER['DOCUMENT_ROOT'].__ROOT__."/cache");
 }
 
 /**
