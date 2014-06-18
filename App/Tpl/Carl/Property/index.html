@@ -18,14 +18,14 @@
 							<a href="__GROUP__">首页</a> <span class="divider">/</span>
 						</li>
 						<li>
-							<a href="__URL__/advs">广告设置</a>
+							<a href="__URL__/index">生产属性设置</a>
 						</li>
 					</ul>
 				</div>
 			<div class="row-fluid sortable">
             	<div class="box span10">
 					<div class="box-header well" data-original-title>
-						<h2>广告设置</h2>
+						<h2>生产属性设置</h2>
 					</div>
 					<div class="box-content">
 						<div class="row-fluid">
@@ -41,30 +41,24 @@
 						<table class="table table-bordered">
 							  <thead>
 								  <tr>
-                                  	  <th width="6%"><input type="checkbox" /> ID</th>
-									  <th width="10%">广告区域</th>
-                                      <th width="48%">广告代码</th>
-									  <th width="16%">广告说明</th>
-									  <th width="20%">操作</th>                                       
+                                  	  <th><input type="checkbox" /> ID</th>
+									  <th>生产属性</th>
+                                      <th>排序</th>
+									  <th>操作</th>                                       
 								  </tr>
 							  </thead>   
 							  <tbody>
-								<volist name="advs" id="item">
+								<volist name="props" id="item">
 								<tr>
-                                	<td><input type="checkbox" name="chkt[]" value="{$item.adv_id}" /></td>
-                                    <td><a class="_actions_" href="#" data-href="__URL__/advs_edit/id/{$item.adv_id}">{$item.adv_area}</a></td>
-									<td><code>{$item.adv_code}</code></td>
-									<td class="center">{$item.adv_desc}</td>
+                                	<td><input type="checkbox" name="id[]" value="{$item.pp_id}" />{$item.pp_id}</td>
+                                    <td><a class="_actions_" href="#" data-href="__URL__/edit/id/{$item.pp_id}">{$item.pp_name}</a></td>
+									<td>{$item.pp_order}</td>
 									<td>
-										<a class="btn btn-primary" target="_blank" href="__URL__/advs_view/id/{$item.adv_id}">
-											<i class="icon-search icon-white"></i>  
-											预览                                            
-										</a>
-										<a class="btn btn-info _actions_" href="#" data-href="__URL__/advs_edit/id/{$item.adv_id}">
+										<a class="btn btn-info _actions_" href="#" data-href="__URL__/edit/id/{$item.pp_id}">
 											<i class="icon-edit icon-white"></i>  
 											编辑                                            
 										</a>
-										<a class="btn btn-danger _delete_" href="#" data-href="__URL__/advs_delete/chkt/{$item.adv_id}">
+										<a class="btn btn-danger _delete_" href="#" data-href="__URL__/delete/id/{$item.pp_id}">
 											<i class="icon-trash icon-white"></i> 
 											删除
 										</a>
@@ -74,16 +68,8 @@
 							  </tbody>
 						 </table>
 						 <div class="row-fluid">
-						  	<div class="span3">
-						  	  <div class="dataTables_info">{$pager.header}</div>
-						  	</div>
-						  	<div class="span9">
-						  	  <div class="pagination pagination-centered">{$pager.show}</div>
-						  	</div>
-						 </div>
-						 <div class="row-fluid">
-						 	<button class="btn btn-small btn-danger _deletes_" type="button" data-href="__URL__/advs_delete"><i class="icon-trash icon-white"></i> 删除选中</button>
-						 	<button class="btn btn-small btn-success _actions_" type="button" data-href="__URL__/advs_add" ><i class="icon icon-attachment icon-white"></i> 添加广告</button>
+						 	<button class="btn btn-small btn-danger _deletes_" type="button" data-href="__URL__/delete"><i class="icon-trash icon-white"></i> 删除选中</button>
+						 	<button class="btn btn-small btn-success _actions_" type="button" data-href="__URL__/add" ><i class="icon icon-attachment icon-white"></i> 添加</button>
 						 </div> 
 						 </form>    
 					</div>
@@ -113,9 +99,9 @@
 					backdrop: "static"
 				});
 				$("#commit").click(function(){
-					if($("#adv_area").val()==""){
-						$("#adv_area").parent().parent().addClass("error");
-						$("#adv_area").next().html("广告区域不能为空！");
+					if($("#pp_name").val()==""){
+						$("#pp_name").parent().parent().addClass("error");
+						$("#pp_name").next().html("生产属性名不能为空！");
 					}else{
 						var form = $(this).parents("form")	;
 						form.attr("action", $(this).attr("data-act")).submit();

@@ -243,13 +243,13 @@ class IndexAction extends BaseAction{
 		$pager = $page->shown();
 		$this->assign("pager", $pager);
 		//$order = "link_order";
-		$advs = $adv->limit($limit)->select();
+		$advs = $adv->where($map)->limit($limit)->select();
 		//换色
 		foreach($advs as &$v){
 			$v['adv_code'] = htmlspecialchars($v['adv_code']);
 			if(!empty($param['words'])){
 				foreach($v as &$val){
-					$val = preg_replace("/(".$param['words'].")/i", "<span class='red'>\\1</span>", $val);
+					$val = preg_replace("/(".$param['words'].")/ig", "<span class='red'>\\1</span>", $val);
 				}
 			}
 		}

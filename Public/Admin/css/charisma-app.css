@@ -528,4 +528,5 @@ color:#333;
 .sort-enum:hover{border-color:rgba(0,0,0,.8);}
 .sort-enum:hover a{opacity:1;}
 
-
+select._filter{width:120px;}
+.ajax-load{display:block; width:100%;height:100%; position:relative; left:0; top:0; z-index:9999; margin-top:; margin-left:;}

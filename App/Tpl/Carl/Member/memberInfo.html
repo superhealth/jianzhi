@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title> 后台数据管理中心</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="创高安防">
+	<meta name="author" content="chuango_Karl">
+	<script src="__PUBLIC__/Admin/ue/editor_config.js" type="text/javascript"></script>
+	<script src="__PUBLIC__/Admin/ue/editor_all_min.js" type="text/javascript"></script>
+	<include file="public:css" />
+		
+</head>
+
+<body>
+	<include file="public:header" />
+		<div class="container-fluid">
+		<div class="row-fluid">
+			<include file="public:left" />
+			<!-- content start -->
+			<div id="content" class="span10">
+				<div>
+					<ul class="breadcrumb">
+						<li>
+							<a href="__GROUP__/Index">首页</a> <span class="divider">/</span>
+						</li>
+						<li>
+							<a href="__URL__/index">会员中心</a><span class="divider">/</span>
+						</li>
+                        <li>
+							<a href="#">会员基本资料</a>
+						</li>
+					</ul>
+				</div>
+            <div class="row-fluid sortable">
+				<div class="box span12">
+					<div class="box-header well" data-original-title>
+						<h2><i class="icon-edit"></i>会员基本资料</h2>
+					</div>
+					<div class="box-content">
+						<if condition="$type eq 1">
+						<form class="form-horizontal" action="__URL__/addCompany" method="post" enctype="multipart/form-data" >
+                          <input type="hidden" name="mc_id" value="{$info.mc_id}" />
+						  <fieldset>
+							<legend> [{$info.mc_name}] 公司的资料</legend>
+							<div class="control-group">
+							  <label class="control-label" for="ne_title">姓名</label>
+							  <div class="controls">
+								<input type="text" class="span1" style="display:inline-block;" id="cu_firstname" name="cu_firstname" value="{$cu_data.cu_firstname}" /> -- 
+                                <input type="text" class="span1" style="display:inline-block;" id="cu_lastname" name="cu_lastname" value="{$cu_data.cu_lastname}" />
+                                <input type="radio" class="span1" style="display:inline-block;" name="cu_sex" vlaue="1" <if condition="$cu_data['cu_sex'] eq 1">checked='checked'</if> />man
+                                <input type="radio" class="span1" style="display:inline-block;" name="cu_sex" value="0" <if condition="$cu_data['cu_sex'] eq 0">checked='checked'</if> />female
+							  </div>
+							</div>
+                            <div class="control-group">
+							  <label class="control-label" for="cu_email">Email</label>
+							  <div class="controls">
+								<input type="text" class="input-xlarge" id="cu_email" value="{$cu_data.cu_email}" name="cu_email" />
+							  </div>
+							</div>
+							<div class="control-group">
+							  <label class="control-label" for="cu_birth">Birth</label>
+							  <div class="controls">
+								<input type="text" class="input-xlarge datepicker" id="cu_birth" value="{$cu_data.cu_birth|timeFormat='m/d/Y'}" name="cu_birth" />
+							  </div>
+							</div>
+							<div class="control-group">
+							  <label class="control-label" for="cu_tel">Tel</label>
+							  <div class="controls">
+								<input type="text" class="input-xlarge" id="cu_tel" value="{$cu_data.cu_tel}" name="cu_tel" />
+							  </div>
+							</div>
+                            <div class="control-group">
+							  <label class="control-label" for="cu_company">Company</label>
+							  <div class="controls">
+								<input type="text" class="input-xlarge" id="cu_company" value="{$cu_data.cu_company}" name="cu_company" />
+							  </div>
+							</div>
+                            <div class="control-group">
+							  <label class="control-label" for="cu_im">IM</label>
+							  <div class="controls">
+								<input type="text" class="input-xlarge" id="cu_im" value="{$cu_data.cu_im}" name="cu_im" />
+							  </div>
+							</div>
+                            <div class="control-group">
+							  <label class="control-label" for="cu_addr">Addr</label>
+							  <div class="controls">
+								<input type="text" class="input-xlarge" id="cu_addr" value="{$cu_data.cu_addr}" name="cu_addr" />
+							  </div>
+							</div>
+                            <div class="control-group">
+							  <label class="control-label" for="cu_state">状态</label>
+							  <div class="controls">
+								<input data-no-uniform="true" checked="checked" type="checkbox" class="iphone-toggle" id="cu_state" name="cu_state" />
+							  </div>
+							</div>  
+                            <div class="control-group">
+							  <label class="control-label" for="cu_question">密码找回问题</label>
+							  <div class="controls">
+								<input type="text" class="input-xlarge span6" id="cu_question" value="{$cu_data.cu_question}" name="cu_question" />
+							  </div>
+							</div>
+                            <div class="control-group">
+							  <label class="control-label" for="cu_answer">答案</label>
+							  <div class="controls">
+								<input type="text" class="input-xlarge span6" id="cu_answer" value="{$cu_data.cu_answer}" name="cu_answer" />
+							  </div>
+							</div>
+							<div class="form-actions">
+							  <button type="submit" class="btn btn-primary">保存</button>
+							  <button type="reset" class="btn">返回</button>
+							</div>
+						  </fieldset>
+						</form>   
+						<else />
+						
+						</if>
+					</div>
+				</div>
+			
+			</div>
+			<!-- content end -->
+		</div>
+		</div>
+		<hr>
+		<div class="modal hide fade" id="myModal">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>Settings</h3>
+			</div>
+			<div class="modal-body">
+				<p>Here settings can be configured...</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Close</a>
+				<a href="#" class="btn btn-primary">Save changes</a>
+			</div>
+		</div>
+		<include file="public:footer" />
+	</div>
+	<include file="public:js" />
+    <script type="text/javascript">
+	
+	</script>
+</body>
+</html>
