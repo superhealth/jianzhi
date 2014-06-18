@@ -5,7 +5,7 @@ if(!defined("SYSCONF")){
 }
 // 缓存配置目录
 if(!defined("SYSCONF_DIR")){
-	define("SYSCONF_DIR", $_SEVER['DOCUMENT_ROOT'].__ROOT__."/cache");
+	define("SYSCONF_DIR", $_SERVER['DOCUMENT_ROOT'].__ROOT__."/cache");
 }
 
 /**
@@ -269,61 +269,6 @@ function think_send_mail($to, $name, $subject = '', $body = '', $attachment = nu
 	return $mail->Send() ? true : false;
 }
 
-/**
- * 页面相关产品
- */
-function getRelatePro($page, $lang="en"){
-	$pro = M("pro_relation")->where("re_page='{$page}' AND re_lang='{$lang}'")->getField("re_relatepro");
-	$proArr = explode(",", $pro);
-	if(count($proArr)<3){
-		$default = M("pro_relation")->where("re_page='default' AND re_lang='{$lang}'")->getField("re_relatepro");
-		$proArr = array_merge($proArr, explode(",", $default));
-	}
-	$pros = M("pro")->where(array("pro_id"=>array("in", $proArr)))->select();
-	return $pros;
-}
-
-/**
- * 新闻相关产品
- */
-function getNewsRelatePro($news, $lang="en"){
-	$pro = M("news")->where("ne_id={news}")->getField("ne_relatepro");
-	$proArr = explode(",", $pro);
-	if(count($proArr)<3){
-		$default = M("pro_relation")->where("re_page='default'  AND re_lang='{$lang}'")->getField("re_relatepro");
-		$proArr = array_merge($proArr, explode(",", $default));
-	}
-	$pros = M("pro")->where(array("pro_id"=>array("in", $proArr)))->select();
-	return $pros;
-}
-
-/**
- * 产品相关产品
- */
-function getProRelatePro($pro, $lang="en"){
-	$pro = M("pro")->where("pro_id={$pro}")->getField("pro_relatepro");
-	$proArr = explode(",", $pro);
-	if(count($proArr)<3){
-		$default = M("pro_relation")->where("re_page='default' AND re_lang='{$lang}'")->getField("re_relatepro");
-		$proArr = array_merge($proArr, explode(",", $default));
-	}
-	$pros = M("pro")->where(array("pro_id"=>array("in", $proArr)))->select();
-	return $pros;
-}
-
-/**
- * 产品相关产品
- */
-function getCaRelatePro($ca, $lang="en"){
-	$pro = M("pro_category")->where("ca_id={$ca}")->getField("ca_relatepro");
-	$proArr = explode(",", $pro);
-	if(count($proArr)<3){
-		$default = M("pro_relation")->where("re_page='default' AND re_lang='{$lang}'")->getField("re_relatepro");
-		$proArr = array_merge($proArr, explode(",", $default));
-	}
-	$pros = M("pro")->where(array("pro_id"=>array("in", $proArr)))->select();
-	return $pros;
-}
 
 /**
  * random access code

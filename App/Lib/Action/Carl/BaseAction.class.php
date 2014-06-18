@@ -14,7 +14,9 @@ class BaseAction extends Action{
 		''
 	);
 	protected function _initialize(){
-		$_SESSION['user'] = "carl";
+		if(!isset($_SESSION['user'])){
+			$_SESSION['user'] = "carl";
+		}
 		if(is_null($_SESSION['user'])){
 			send_http_status("404");
 			redirect(__APP__."/Empty/404.html");

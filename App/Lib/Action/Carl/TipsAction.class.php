@@ -69,7 +69,7 @@ class TipsAction extends BaseAction{
 					<div class="control-group">
 						<label class="control-label" for="tips_content">友情提示内容</label>
 						<div class="controls">
-						  	<testarea id="tips_content" name="tips_content"></textarea>
+						  	<textarea id="tips_content" name="tips_content"></textarea>
 						  	<br /><span class="help-inline"></span>
 						</div>
 					</div>
@@ -129,7 +129,7 @@ class TipsAction extends BaseAction{
 					<div class="control-group">
 						<label class="control-label" for="tips_content">友情提示内容</label>
 						<div class="controls">
-						  	<testarea id="tips_content" name="tips_content">%content%</textarea>
+						  	<textarea id="tips_content" name="tips_content">%content%</textarea>
 						  	<br /><span class="help-inline"></span>
 						</div>
 					</div>
@@ -138,7 +138,7 @@ class TipsAction extends BaseAction{
 					<a href="#" class="btn" data-dismiss="modal">关闭</a>
 					<a href="#" class="btn btn-primary" id="commit" data-act="%url%">添加</a>
 				</div></fieldset></form>';
-		$info = M("tips")->where("tops_id={$id}")->find();
+		$info = M("tips")->where("tips_id={$id}")->find();
 		if($info){
 			echo str_replace(array("%id%", "%key%", "%name%", "%content%", "%url%"),array($info['tips_id'], $info['tips_key'], $info['tips_name'], $info['tips_content'], __URL__."/save"), $responseHTML );
 		}else{
@@ -170,11 +170,14 @@ class TipsAction extends BaseAction{
 		if(!per_check("tips_edit")){
 			$this->error("无此权限！");
 		}
-		$tips = M("tips")->where("tips_id={$id}")->select();
-		if(M("tips")->where("tips_id={$id}")->delete()){
-			$detail = "";
+		$tips = M("tips")->where(array("tips_id", array("in", $id)))->getField("tips_name", true);
+		if(M("tips")->where(array("tips_id", array("in", $id)))->delete()){
+			$detail = "删除友情提示 <span class='red'>".implode("</span>,<span class='red'>", $tips)."</span>";
+			$this->watchdog("删除",$detail);
+			$this->success("删除成功！");
+		}else{
+			$this->error("删除失败！");
 		}
-		
 	}
 	
 	/**
