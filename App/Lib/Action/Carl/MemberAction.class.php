@@ -64,12 +64,21 @@ class MemberAction extends BaseAction{
 	 * 添加会员
 	 */
 	public function add($step=""){
+		if(!per_check("mem_edit")){
+			$this->error("无此权限！");
+		}
 		$step = (int)$step;
 		switch($step){
 			case 2:
 				$data = M("member")->create();
 				dump($data);exit;
 				if(M("member")->add($data)){
+					if($data['mem_type']==1){
+						M("membercompany")->add(array("mc_mid"=>$data['mem_id']));
+					}else{
+						M("memberperson")->add(array("mp_mid"=>$data['mem_id']));
+					}
+					$this->watchdog("新增", "添加会员[{$data['mem_id']}]");
 					$this->success("添加成功", __ACTION__."/step/3/m/{$data['mem_id']}");
 				}else{
 					$this->error("添加失败！");
@@ -77,10 +86,23 @@ class MemberAction extends BaseAction{
 				break;
 			case 3:
 				if(isset($_REQUEST['m'])){
-					$info = M("member")->where("mem_id={$_REQUEST['m']}")->find();
+					$info = M("member")->where("mem_id='{$_REQUEST['m']}'")->find();
 					if($info){
-						$template = $info['mem_type']==0 ? "addPerson" : "addCompany";
+						if($info['mem_type']==1){
+							$template = "addCompany";
+							$id = M("membercompany")->where("mc_mid='{$_REQUEST['m']}'")->getField("mc_id");
+							if(!$id){
+								$id = M("membercompany")->add(array("mc_mid"=>$data['mem_id']));
+							}
+						}else{
+							$template = "addPerson";
+							$id = M("memberperson")->where("mp_mid='{$_REQUEST['m']}'")->getField("mp_id");
+							if(!$id){
+								$id = M("memberperson")->add(array("mp_mid"=>$data['mem_id']));
+							}
+						}
 						$this->assign("info", $info);
+						$this->assign("id", $id);
 						$this->display($template);
 					}else{
 						$this->error("参数错误! ", __URL__."/index");
@@ -98,14 +120,32 @@ class MemberAction extends BaseAction{
 	 * 保存个人会员资料
 	 */
 	public function savePerson(){
-		
+		if(!per_check("mem_edit")){
+			$this->error("无此权限！");
+		}
+		$data = M("memberperson")->create();
+		if(M("memberperson")->save($data)){
+			$this->watchdog("编辑", "编辑个人会员[{$data['mp_mid']}] 的信息。");
+			$this->success("保存成功！", __URL__."/memberInfo/id/{$data['mp_mid']}");
+		}else{
+			$this->error("保存失败！");
+		}
 	}
 	
 	/**
 	 * 保存企业会员资料
 	 */
 	public function saveCompany(){
-		
+		if(!per_check("mem_edit")){
+			$this->error("无此权限！");
+		}
+		$data = M("membercompany")->create();
+		if(M("membercompany")->save($data)){
+			$this->watchdog("编辑", "编辑企业会员[{$data['mc_mid']}] 的信息。");
+			$this->success("保存成功！", __URL__."/memberInfo/id/{$data['mc_mid']}");
+		}else{
+			$this->error("保存失败！");
+		}
 	}
 	
 	/**
@@ -116,7 +156,7 @@ class MemberAction extends BaseAction{
 		if($type==1){
 			$info = M("member")->join(" zt_membercompany ON mem_id=mc_mid")->where("mc_mid='{$id}'")->find();
 		}else{
-			$info = M("memberperson")->join(" zt_memberperson ON mem_id=mp_mid")->where("mp_mid='{$id}'")->find();
+			$info = M("member")->join(" zt_memberperson ON mem_id=mp_mid")->where("mp_mid='{$id}'")->find();
 		}
 		if(!empty($info)){
 			$this->assign("info", $info);
@@ -130,28 +170,22 @@ class MemberAction extends BaseAction{
 	 * 修改会员信息
 	 */
 	public function saveInfo(){
-		
+		if(!per_check("mem_edit")){
+			$this->error("无此权限！");
+		}
+		$data = M("member")->create();
+		if(M("member")->save($data)){
+			$this->watchdog("编辑", "编辑会员[{$data['mem_id']}]的基本信息");
+			$this->success("保存成功！");
+		}else{
+			$this->error("保存失败！");
+		}
 	}
-	
-	/**
-	 * 保存个人用户资料
-	 */
-	public function personInfo(){
-		
-	}
-	
-	/**
-	 * 保存企业用户资料
-	 */
-	public function companyInfo(){
-		
-	}
-	
 	
 	/**
 	 * 删除用户
 	 */
-	public function delMember(){
+	public function delMember($id=""){
 		
 	}
 	
@@ -167,7 +201,7 @@ class MemberAction extends BaseAction{
 	 */
 	public function notice($to=""){
 		if(is_array($to)){
-			$to = "'".implode("'; '", $pieces)."'";
+			$to = "'".implode("'; '", $to)."'";
 		}else if($to == "group"){
 			
 		}else{

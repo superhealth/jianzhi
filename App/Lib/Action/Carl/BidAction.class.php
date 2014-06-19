@@ -95,7 +95,7 @@ class BidAction extends BaseAction{
 	 * 保存修改
 	 */
 	public function saveBid(){
-		$data = M("bidder")->
+		$data = M("bidder")->create();
 	}
 	
 	/**
