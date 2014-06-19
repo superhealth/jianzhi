@@ -5,9 +5,10 @@
  *
  */
 class MemberAction extends BaseAction{
-	private $types = array("个人", "企业");
-	private $actives = array("到期", "可用");
-	private $states = array("未激活", "已激活", "锁定");
+	private $types = array("个人", "企业");		//用户类型
+	private $actives = array("到期", "可用");	//用户续费
+	private $states = array("未激活", "已激活", "锁定");	//用户状态
+	private $status = array("未审核","审核中", "通过","未通过");	//公司审核状态
 	/**
 	 * 所有用户
 	 */
