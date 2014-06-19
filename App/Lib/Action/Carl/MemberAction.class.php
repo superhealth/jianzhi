@@ -5,10 +5,14 @@
  *
  */
 class MemberAction extends BaseAction{
+	private $types = array("个人", "企业");
+	private $actives = array("到期", "可用");
+	private $states = array("未激活", "已激活", "锁定");
 	/**
 	 * 所有用户
 	 */
 	public function index(){
+		$this->memberCheckActive();
 		$m = M("member");
 		//筛选条件
 		$map = array();
@@ -34,12 +38,9 @@ class MemberAction extends BaseAction{
 			}
 		}
 		
-		$types = array("个人", "企业");
-		$this->assign("types", $types);
-		$actives = array("到期", "可用");
-		$this->assign("actives", $actives);
-		$states = array("未激活", "已激活", "锁定");
-		$this->assign("states", $states);
+		$this->assign("types", $this->types);
+		$this->assign("actives", $this->actives);
+		$this->assign("states", $this->states);
 		//排序条件
 		$order = "";
 		if(isset($_REQUEST['order'])){
@@ -159,6 +160,7 @@ class MemberAction extends BaseAction{
 			$info = M("member")->join(" zt_memberperson ON mem_id=mp_mid")->where("mp_mid='{$id}'")->find();
 		}
 		if(!empty($info)){
+			$this->assign("states", $this->states);
 			$this->assign("info", $info);
 			$this->assign("type", $type);
 			$this->display();
@@ -237,9 +239,19 @@ class MemberAction extends BaseAction{
 	}
 	
 	/**
-	 * 
+	 * 检查过期会员
 	 */
-	
+	private function memberCheckActive(){
+		$now = time();
+		//上次检查时间
+		if(!isset($_SESSION['member_check'])){
+			$_SESSION['member_check'] = 0;
+		}
+		if($_SESSION['member_check']<$now-1800){
+			M("member")->where("mem_state=1 AND mem_expiretime<={$now}")->setField("mem_state", 0);
+			$_SESSION['member_check'] = $now;
+		}
+	}
 	
 }
 

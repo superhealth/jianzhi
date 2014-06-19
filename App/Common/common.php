@@ -29,7 +29,8 @@ function json_encode_nonull($jsondata){
 
 //time format
 function timeFormat($time="", $format="Y/m/d H:i:s"){
-	if(!$time&&$time!=="0"){
+	$time = (int)$time;
+	if(!$time&&$time!==0){
 		$time = time();
 	}
 	return date($format, $time);
@@ -79,9 +80,23 @@ function switch_role($role=""){
 }
 
 /**
- * 匹配客户状态
+ * 匹配用户类型
  */
-function switch_cu($state){
+function switch_type($state){
+	switch($state){
+		case 0:
+			return "-success"	;
+		case 1:
+			return "-warning";
+		default:
+			return "";
+	}
+}
+
+/**
+ * 匹配用户状态
+ */
+function switch_status($state){
 	switch($state){
 		case 2:
 			return "-important"	;
@@ -93,46 +108,19 @@ function switch_cu($state){
 }
 
 /**
- * 匹配新闻状态
+ * 匹配用户续费状态
  */
-function switch_ne($state){
+function switch_active($state){
 	switch($state){
-		case "off":
+		case "0":
 			return "-important"	;
-		case "on":
+		case "1":
 			return "-success";
 		default:
 			return "";
 	}
 }
 
-/**
- * 匹配订阅状态
- */
-function switch_sub($state){
-	switch($state){
-		case "0":
-			return "label-inverse"	;
-		case "1":
-			return "label-success";
-		default:
-			return "";
-	}
-}
-
-/**
- * 匹配发布状态
- */
-function switchpublic($state){
-	switch($state){
-		case "0":
-			return '<span class="label label-important" >关闭</span>';
-		case "1":
-			return '<span class="label label-success" >发布</span>';
-		default:
-			return '<span class="label" >出错了</span>';	
-	}	
-}
 
 /**
  * check permission
@@ -192,6 +180,11 @@ function get_news_title_summary($title, $leng=64, $flag=false){
 	return $title;
 }
 
+/**
+ * 生成下拉选项
+ * @param array $options 选项数组
+ * @param string $id 选中id
+ */
 function getOptions($options, $id=null){
 	$option = "";
 	foreach($options as $k=>$v){
@@ -199,6 +192,20 @@ function getOptions($options, $id=null){
 		$option .= "<option value='{$k}' {$select}>{$v}</option>";
 	}
 	echo $option;
+}
+/**
+ * 生成单选框
+ * @param array $options 选项数组 
+ * @param string $name 表单name
+ * @param string $id 选中id
+ */
+function getRadio($options, $name, $id=""){
+	$radios = "";
+	foreach($options as $k=>$v){
+		$checked = $k==$id&&$id!=="" ? "checked" : "";
+		$radios .="<label class='radio inline'><input type='radio' name='{$name}' value='{$k}' {$checked} />{$v}</label>";
+	}
+	echo $radios;
 }
 
 function pro_options($pros, $selected="", $except=""){

@@ -65,10 +65,10 @@
 								<tr>
 									<td><input type="checkbox" name="id[]" value="{$item.mem_id}" /></td>
                                 	<td>{$item.mem_id}</td>
-									<td><span class="label label{$item.mem_type|switch_cu}" type="button">{$types[$item['mem_type']]}</td>
+									<td><span class="label label{$item.mem_type|switch_type}" type="button">{$types[$item['mem_type']]}</td>
 									<td>{$item.regtime|timeFormat="Y-m-d"}</td>
-									<td><span class="label label{$item.mem_state|switch_cu}" type="button">{$states[$item['mem_type']]}</span></td>
-									<td><span class="label label{$item.mem_active|switch_cu}" type="button">{$actives[$item['mem_active']]}</span></td>
+									<td><span class="label label{$item.mem_state|switch_status}" type="button">{$states[$item['mem_state']]}</span></td>
+									<td><span class="label label{$item.mem_active|switch_active}" type="button">{$actives[$item['mem_active']]}</span></td>
 									<td><span class="center">{$item.mem_logincount}</span></td>
 									<td><span class="center">{$item.mem_rank}</span></td>
 									<td>

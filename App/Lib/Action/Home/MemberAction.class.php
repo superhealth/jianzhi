@@ -46,10 +46,21 @@ class MemberAction extends CommonAction{
 	/**
 	 * 发送验证邮件
 	 */
-	public function sendVerifyMail($member, $mail, $verifyCode){
-		$subject = "";
-		$body = "";
-		return think_send_mail($mail, $member, $subject, $body);
+	public function sendVerifyMail($member){
+		$email = M("member")->where("mem_id='{$member}'")->getField("mem_email");
+		if(empty($email)){
+			$this->error("不存在的用户或未绑定邮箱！");
+		}
+		$verify = array("code"=>randomStr(8, 4), "expire"=>time());
+		$verify = json_encode_nonull($verify);
+		M("member")->where("mem_id='{$member}'")->setField("mem_verifycode", $verify);
+		$subject = "[招投网]验证您的电子邮箱地址";
+		$body = ":)";
+		if(think_send_mail($email, $member, $subject, $body)){
+			$this->success("邮件发送成功！");
+		}else{
+			$this->error("邮件发送失败！");
+		}
 	}
 	
 	/**
