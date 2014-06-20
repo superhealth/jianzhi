@@ -528,5 +528,11 @@ color:#333;
 .sort-enum:hover{border-color:rgba(0,0,0,.8);}
 .sort-enum:hover a{opacity:1;}
 
+.member-select{ width:140px;padding:5px; float:left; margin:5px; border:1px solid rgba(0,0,0,.8); transition: all ease-in .3s; -webkit-transition: all ease-in .3s; -o-transition: all ease-in .3s; -moz-transition: all ease-in .3s; -ms-transition: all ease-in .3s; background:#fff; text-align:center; border-radius: 10px; -moz-border-radius: 10px; -o-border-radius: 10px; -webkit-border-radius: 10px; color:#000}
+.member-select i{opacity:0;}
+.member-select:hover{border-color:#73a839; background:#ccc; border-radius: 0px; -moz-border-radius: 0px; -o-border-radius: 0px; -webkit-border-radius: 0px;}
+.member-select:hover i{opacity:1;}
+
 select._filter{width:120px;}
-.ajax-load{display:block; width:100%;height:100%; position:relative; left:0; top:0; z-index:9999; margin-top:; margin-left:;}
+.my-ajax-btn{position:relative;}
+.my-ajax-btn .ajax-load{display:block; width:100%;height:100%; min-width:16px; min-height:11px; background:url(../img/ajax-loaders/ajax-loader-1.gif) center center no-repeat; position:absolute; left:0; top:0; z-index:9999;}

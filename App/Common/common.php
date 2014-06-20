@@ -7,6 +7,34 @@ if(!defined("SYSCONF")){
 if(!defined("SYSCONF_DIR")){
 	define("SYSCONF_DIR", $_SERVER['DOCUMENT_ROOT'].__ROOT__."/cache");
 }
+//加载系统配置参数
+global $sys_cfg;
+if(!file_exists(SYSCONF)){
+	$sysconfig = M("sysconf")->select();
+	$str = "<?php \nreturn array( \n";
+	foreach($sysconfig as $v){
+		switch($v['type']){
+			case "string":
+				$val = "\"{$v['value']}\"";
+				break;
+			case "int":
+				$val = $v['value'];
+				break;
+			case "boolen":
+				$val = $v['value'] == "Y" ? "true" : "false";
+				break;
+			default:
+				$val = "\"{$v['value']}\"";
+		}
+		$str .= "\"{$v['key']}\" => {$val}, // {$v['desc']} \n";
+	}
+	$str .= "); \n?>";
+	@chmod(SYSCONF_DIR, 0777);
+	$f = fopen(SYSCONF, "w") or die("<script>alert('写入配置失败，请检查./cache目录是否可写入！');</script>");
+	fwrite($f,$str);
+	fclose($f);
+}
+$sys_cfg = require(SYSCONF);
 
 /**
  * 错误回馈消息
@@ -202,7 +230,7 @@ function getOptions($options, $id=null){
 function getRadio($options, $name, $id=""){
 	$radios = "";
 	foreach($options as $k=>$v){
-		$checked = $k==$id&&$id!=="" ? "checked" : "";
+		$checked = ($k==$id&&$id!=="") ? "checked" : "";
 		$radios .="<label class='radio inline'><input type='radio' name='{$name}' value='{$k}' {$checked} />{$v}</label>";
 	}
 	echo $radios;
@@ -339,9 +367,7 @@ function upload($imgOnly=true, $saveRule="", $type=""){
 	//$upload->thumbRemoveOrigin = false;			//
 	$upload->uploadReplace = true;
 	$upload->maxSize  = 3145728*1024 ;				// 设置附件上传大小
-	if(!empty($saveRule)){
-		$upload->saveRule = $saveRule;
-	}
+	$upload->saveRule = $saveRule;
 	if($imgOnly){
 		$upload->allowExts = array('jpg', 'gif', 'png', 'jpeg');
 	}else{

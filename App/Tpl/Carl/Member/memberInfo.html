@@ -43,18 +43,18 @@
 					</ul>
 					<div id="myTabContent" class="tab-content">
 						<div class="box-content tab-pane active" id="info">
-							<form class="form-horizontal" action="__URL__/saveInfo" method="post" enctype="multipart/form-data" >
+							<form class="form-horizontal" action="__URL__/saveInfo" method="post" enctype="multipart/form-data" onSubmit="return memberCheck();" >
 							  <input type="hidden" name="mem_id" value="{$info.mem_id}" />
 							  <fieldset>
 							  <div class="row-fluid">
 								<div class="control-group span5">
-								  <label class="control-label" for="ne_title">会员名：</label>
+								  <label class="control-label" for="mem_id">会员名：</label>
 								  <div class="controls">
 									{$info.mem_id} <a href="__URL__/notice/to/{$info.mem_id}" class="label label-inverse" data-rel="tooltip" data-original-title="发送系统消息"><i class="icon icon-white icon-sent"></i>消息</a>
 								  </div>
 								</div>
 								<div class="control-group span5">
-								  <label class="control-label" for="cu_tel">注册时间：</label>
+								  <label class="control-label" for="regtime">注册时间：</label>
 								  <div class="controls">
 									<span class="green">{$info.mem_regtime|timeFormat="Y年m月d日 H:i"}</span>
 								  </div>
@@ -133,7 +133,7 @@
 						</div>
 						<div class="box-content tab-pane" id="custom">
 						<if condition="$type eq 1">
-						<form class="form-horizontal" action="__URL__/saveCompany" method="post" enctype="multipart/form-data" >
+						<form class="form-horizontal" action="__URL__/saveCompany" method="post" enctype="multipart/form-data" onSubmit="return companyCheck();" >
                           <input type="hidden" name="mc_id" value="{$info.mc_id}" />
                           <input type="hidden" name="mc_mid" value="{$info.mc_mid}" />
 						  <fieldset>
@@ -159,7 +159,7 @@
 							  <label class="control-label" for="mc_licencescan">营业执照扫描：</label>
 							  <div class="controls">
 								<if condition="$info['licencescan'] neq ''"><a class="thumb" href="__ROOT__/uploads/{$info.licencescan}"><img src="__ROOT__/uploads/{$info.licencescan}" style="height:40px;" /></a></if>
-								<input type="file" name="mc_licencescan" id="mc_licencescan" />
+								<input type="file" name="mc_licencescan" id="mc_licencescan" /><span class="help-inline"></span>
 							  </div>
 							</div>
                             <div class="control-group">
@@ -178,13 +178,13 @@
 							  <label class="control-label" for="mc_legalscan">身份证扫描：</label>
 							  <div class="controls">
                               	<if condition="$info['legalscan'] neq ''"><a class="thumb" href="__ROOT__/uploads/{$info.legalscan}"><img  src="__ROOT__/uploads/{$info.legalscan}" style="height:40px;" /></a></if>
-								<input type="file" id="mc_legalscan" name="mc_legalscan" />
+								<input type="file" id="mc_legalscan" name="mc_legalscan" /><span class="help-inline"></span>
 							  </div>
 							</div>
                             <div class="control-group">
 							  <label class="control-label" for="mc_status">状态</label>
 							  <div class="controls">
-								{$status|getRadio=$info.mc_status}
+								{$status|getRadio="mc_status",$info.mc_status}
 							  </div>
 							</div>
 							<div class="form-actions">
@@ -194,70 +194,48 @@
 						  </fieldset>
 						</form>   
 						<else />
-						<form class="form-horizontal" action="__URL__/savePerson" method="post" enctype="multipart/form-data" >
-                          <input type="hidden" name="mc_id" value="{$info.mp_id}" />
-                          <input type="hidden" name="mc_mid" value="{$info.mp_mid}" />
+						<form class="form-horizontal" action="__URL__/savePerson" method="post" enctype="multipart/form-data" onSubmit="return personCheck()" >
+                          <input type="hidden" name="mp_id" value="{$info.mp_id}" />
+                          <input type="hidden" name="mp_mid" value="{$info.mp_mid}" />
 						  <fieldset>
 							<div class="control-group">
-							  <label class="control-label" for="mc_name">姓名</label>
+							  <label class="control-label" for="mp_name">姓名：</label>
 							  <div class="controls">
-								<input type="text" style="display:inline-block;" id="cu_firstname" name="cu_firstname" value="{$cu_data.cu_firstname}" />
+								<input type="text" id="mp_name" name="mp_name" value="{$info.mp_name}" />
 							  </div>
 							</div>
                             <div class="control-group">
-							  <label class="control-label" for="cu_email">住址</label>
+							  <label class="control-label" for="mp_sex">性别：</label>
 							  <div class="controls">
-								<input type="text" class="span8" id="cu_email" value="{$cu_data.cu_email}" name="cu_email" />
+								{$sexes|getRadio="mp_sex", $info['mp_sex']}
 							  </div>
 							</div>
 							<div class="control-group">
-							  <label class="control-label" for="cu_birth">Birth</label>
+							  <label class="control-label" for="mp_identily">身份证号：</label>
 							  <div class="controls">
-								<input type="text" class="input-xlarge datepicker" id="cu_birth" value="{$cu_data.cu_birth|timeFormat='m/d/Y'}" name="cu_birth" />
+								<input type="text" id="mp_identily" name="mp_identily" value="{$info.mp_identily}" />
 							  </div>
 							</div>
 							<div class="control-group">
-							  <label class="control-label" for="cu_tel">Tel</label>
+							  <label class="control-label" for="mp_idsacn">身份证扫描件：</label>
 							  <div class="controls">
-								<input type="text" class="input-xlarge" id="cu_tel" value="{$cu_data.cu_tel}" name="cu_tel" />
+							  	<if condition="$info['idscan'] neq ''"><a class="thumb" href="__ROOT__/uploads/{$info.idscan}"><img  src="__ROOT__/uploads/{$info.idscan}" style="height:40px;" /></a></if>
+								<input type="file" id="mp_idscan" name="mp_idscan" />
+								<span class="help-inline"></span>
 							  </div>
 							</div>
                             <div class="control-group">
-							  <label class="control-label" for="cu_company">Company</label>
+							  <label class="control-label" for="mp_addr">通讯地址：</label>
 							  <div class="controls">
-								<input type="text" class="input-xlarge" id="cu_company" value="{$cu_data.cu_company}" name="cu_company" />
+								<input type="text" class="span8" id="mp_addr" name="mp_addr" value="{$info.mp_addr}" />
 							  </div>
 							</div>
-                            <div class="control-group">
-							  <label class="control-label" for="cu_im">IM</label>
-							  <div class="controls">
-								<input type="text" class="input-xlarge" id="cu_im" value="{$cu_data.cu_im}" name="cu_im" />
-							  </div>
-							</div>
-                            <div class="control-group">
-							  <label class="control-label" for="cu_addr">Addr</label>
-							  <div class="controls">
-								<input type="text" class="input-xlarge" id="cu_addr" value="{$cu_data.cu_addr}" name="cu_addr" />
-							  </div>
-							</div>
-                            <div class="control-group">
+                            <!--div class="control-group">
 							  <label class="control-label" for="cu_state">状态</label>
 							  <div class="controls">
 								<input data-no-uniform="true" checked="checked" type="checkbox" class="iphone-toggle" id="cu_state" name="cu_state" />
 							  </div>
-							</div>  
-                            <div class="control-group">
-							  <label class="control-label" for="cu_question">密码找回问题</label>
-							  <div class="controls">
-								<input type="text" class="input-xlarge span6" id="cu_question" value="{$cu_data.cu_question}" name="cu_question" />
-							  </div>
-							</div>
-                            <div class="control-group">
-							  <label class="control-label" for="cu_answer">答案</label>
-							  <div class="controls">
-								<input type="text" class="input-xlarge span6" id="cu_answer" value="{$cu_data.cu_answer}" name="cu_answer" />
-							  </div>
-							</div>
+							</div-->
 							<div class="form-actions">
 							  <button type="submit" class="btn btn-primary">保存</button>
 							  <button type="reset" class="btn">返回</button>
@@ -291,7 +269,34 @@
 	</div>
 	<include file="public:js" />
     <script type="text/javascript">
-	
+		var imgExp = new RegExp("(.jpg|.jpeg|.gif|.png)$");
+		function memberCheck(){
+			return true;
+		}
+		function personCheck(){
+			var idscan = $("#mp_idscan").val();
+			if(idscan != "" && !imgExp.test(idscan)){
+				$("#mp_idscan").parents(".control-group").addClass("error");
+				$("#mp_idscan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
+				return false;
+			}
+			return true;
+		}
+		function companyCheck(){
+			var legalscan = $("#mc_legalscan").val();
+			var licencescan = $("#mc_licencescan").val();
+			if(legalscan != "" && !imgExp.test(idscan)){
+				$("#mc_legalscan").parents(".control-group").addClass("error");
+				$("#mc_legalscan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
+				return false;
+			}
+			if(licencescan != "" && !imgExp.test(idscan)){
+				$("#mc_licencescan").parents(".control-group").addClass("error");
+				$("#mc_licencescan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
+				return false;
+			}
+			return true;
+		}	
 	</script>
 </body>
 </html>

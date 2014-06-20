@@ -7,7 +7,7 @@ class OrderAction extends BaseAction{
 	 * 年费续费单
 	 */
 	public function index(){
-		$
+		
 	}
 	
 	/**

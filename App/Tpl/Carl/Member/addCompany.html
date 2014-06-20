@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title> 后台数据管理中心</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="创高安防">
+	<meta name="author" content="chuango_Karl">
+	<script src="__PUBLIC__/Admin/ue/editor_config.js" type="text/javascript"></script>
+	<script src="__PUBLIC__/Admin/ue/editor_all_min.js" type="text/javascript"></script>
+	<include file="public:css" />
+</head>
+<body>
+	<include file="public:header" />
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<include file="public:left" />
+			<div id="content" class="span10">
+				<div>
+					<ul class="breadcrumb">
+						<li><a href="__GROUP__/Index">首页</a> <span class="divider">/</span></li>
+						<li><a href="__URL__/index">会员中心</a><span class="divider">/</span></li>
+                        <li><a href="#">会员资料</a></li>
+					</ul>
+				</div>
+				<div class="row-fluid sortable">
+					<div class="box span12">
+						<div class="box-header well" data-original-title>
+							<h2><i class="icon-edit"></i>会员[{$info.mem_id}]资料</h2>
+						</div>
+						<div class="box-content tab-pane active">
+							<form class="form-horizontal" action="__URL__/saveCompany" method="post" enctype="multipart/form-data" onSubmit="return companyCheck();" >
+							 <input type="hidden" name="mc_id" value="{$id}" />
+							 <input type="hidden" name="mc_mid" value="{$info.mem_id}" />
+							 <fieldset>
+								<div class="control-group">
+								  <label class="control-label" for="mc_company">公司名称：</label>
+								  <div class="controls">
+									<input type="text" id="mc_company" name="mc_company" value="{$info.mc_company}" />
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="mc_adress">公司地址：</label>
+								  <div class="controls">
+									<input type="text" class="span8" id="mc_adress" name="mc_adress" value="{$info.mc_adress}" />
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="mc_licence">营业执照：</label>
+								  <div class="controls">
+									<input type="text" id="mc_licence" name="mc_licence" value="{$info.mc_licence}" />
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="mc_licencescan">营业执照扫描：</label>
+								  <div class="controls">
+									<if condition="$info['licencescan'] neq ''"><a class="thumb" href="__ROOT__/uploads/{$info.licencescan}"><img src="__ROOT__/uploads/{$info.licencescan}" style="height:40px;" /></a></if>
+									<input type="file" name="mc_licencescan" id="mc_licencescan" /><span class="help-inline"></span>
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="mc_legal">公司法人：</label>
+								  <div class="controls">
+									<input type="text" id="mc_legal" name="mc_legal" value="{$info.mc_legal}"/>
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="mc_legalid">身份证：</label>
+								  <div class="controls">
+									<input type="text" id="mc_legalid" name="mc_legalid" value="{$info.mc_legalid}" />
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="mc_legalscan">身份证扫描：</label>
+								  <div class="controls">
+									<if condition="$info['legalscan'] neq ''"><a class="thumb" href="__ROOT__/uploads/{$info.legalscan}"><img  src="__ROOT__/uploads/{$info.legalscan}" style="height:40px;" /></a></if>
+									<input type="file" id="mc_legalscan" name="mc_legalscan" /><span class="help-inline"></span>
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="mc_status">状态</label>
+								  <div class="controls">
+									{$status|getRadio="mc_status",$info.mc_status}
+								  </div>
+								</div>
+								<div class="form-actions">
+								  <button type="submit" class="btn btn-primary">保存</button>
+								  <button type="reset" class="btn">返回</button>
+								</div>
+							 </fieldset>
+						</form>  
+						</div> 
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="modal hide fade" id="myModal">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>Settings</h3>
+			</div>
+			<div class="modal-body">
+				<p>Here settings can be configured...</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Close</a>
+				<a href="#" class="btn btn-primary">Save changes</a>
+			</div>
+		</div>
+		<include file="public:footer" />
+	</div>
+	<include file="public:js" />
+    <script type="text/javascript">
+		var imgExp = new RegExp("(.jpg|.jpeg|.gif|.png)$");
+		function companyCheck(){
+			var legalscan = $("#mc_legalscan").val();
+			var licencescan = $("#mc_licencescan").val();
+			if(legalscan != "" && !imgExp.test(idscan)){
+				$("#mc_legalscan").parents(".control-group").addClass("error");
+				$("#mc_legalscan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
+				return false;
+			}
+			if(licencescan != "" && !imgExp.test(idscan)){
+				$("#mc_licencescan").parents(".control-group").addClass("error");
+				$("#mc_licencescan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
+				return false;
+			}
+			return true;
+		}	
+	</script>
+</body>
+</html>

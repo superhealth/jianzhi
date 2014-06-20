@@ -108,7 +108,7 @@
 					if($("#key").val()==""){
 						$("#key").parent().parent().addClass("error");
 						$("#key").next().html("参数名不能为空！");
-					}else if(!/^string|boolen|int&/.test($("#type").val())){
+					}else if(!/^(string|boolen|int)$/.test($("#type").val())){
 						$("#type").parent().parent().addClass("error");
 						$("#type").next().html("参数类型只能为string、int、boolen之一！");
 					}else if($("#desc").val()==""){
