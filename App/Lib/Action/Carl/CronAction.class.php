@@ -21,7 +21,7 @@ class CronAction extends Action{
 			$_SESSION['member_check'] = 0;
 		}
 		if($_SESSION['member_check']<$now-$this->t){
-			M("member")->where("mem_state=1 AND mem_expiretime<={$now}")->setField("mem_state", 0);
+			M("member")->where("mem_active=1 AND mem_expiretime<={$now}")->setField("mem_active", 0);
 			$_SESSION['member_check'] = $now;
 		}
 	}

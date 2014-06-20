@@ -133,20 +133,20 @@
 						</div>
 						<div class="box-content tab-pane" id="custom">
 						<if condition="$type eq 1">
-						<form class="form-horizontal" action="__URL__/addCompany" method="post" enctype="multipart/form-data" >
+						<form class="form-horizontal" action="__URL__/saveCompany" method="post" enctype="multipart/form-data" >
                           <input type="hidden" name="mc_id" value="{$info.mc_id}" />
+                          <input type="hidden" name="mc_mid" value="{$info.mc_mid}" />
 						  <fieldset>
-							<legend> [{$info.mc_name}] 公司的详细资料</legend>
-							<div class="control-group span5">
-							  <label class="control-label" for="mc_name">公司名称：</label>
-							  <div class="controls span5">
-								<input type="text" id="mc_name" name="mc_name" value="{$info.mc_name}" />
+							<div class="control-group">
+							  <label class="control-label" for="mc_company">公司名称：</label>
+							  <div class="controls">
+								<input type="text" id="mc_company" name="mc_company" value="{$info.mc_company}" />
 							  </div>
 							</div>
-                            <div class="control-group span5">
+                            <div class="control-group">
 							  <label class="control-label" for="mc_adress">公司地址：</label>
 							  <div class="controls">
-								<input type="text" id="mc_adress" name="mc_adress" value="{$info.mc_adress}" />
+								<input type="text" class="span8" id="mc_adress" name="mc_adress" value="{$info.mc_adress}" />
 							  </div>
 							</div>
 							<div class="control-group">
@@ -158,8 +158,8 @@
 							<div class="control-group">
 							  <label class="control-label" for="mc_licencescan">营业执照扫描：</label>
 							  <div class="controls">
-								<a class="thumb" href=""><img src="__ROOT__/uploads/{$info.att_name}" /></a>
-								<input type="file" class="" name="mc_licencescan" id="mc_licencescan" />
+								<if condition="$info['licencescan'] neq ''"><a class="thumb" href="__ROOT__/uploads/{$info.licencescan}"><img src="__ROOT__/uploads/{$info.licencescan}" style="height:40px;" /></a></if>
+								<input type="file" name="mc_licencescan" id="mc_licencescan" />
 							  </div>
 							</div>
                             <div class="control-group">
@@ -169,19 +169,20 @@
 							  </div>
 							</div>
                             <div class="control-group">
-							  <label class="control-label" for="mc_">身份证：</label>
+							  <label class="control-label" for="mc_legalid">身份证：</label>
 							  <div class="controls">
-								<input type="text" class="input-xlarge" id="cu_im" value="{$cu_data.cu_im}" name="cu_im" />
+								<input type="text" id="mc_legalid" name="mc_legalid" value="{$info.mc_legalid}" />
 							  </div>
 							</div>
                             <div class="control-group">
-							  <label class="control-label" for="cu_addr">身份证扫描：</label>
+							  <label class="control-label" for="mc_legalscan">身份证扫描：</label>
 							  <div class="controls">
-								<input type="text" class="input-xlarge" id="cu_addr" value="{$cu_data.cu_addr}" name="cu_addr" />
+                              	<if condition="$info['legalscan'] neq ''"><a class="thumb" href="__ROOT__/uploads/{$info.legalscan}"><img  src="__ROOT__/uploads/{$info.legalscan}" style="height:40px;" /></a></if>
+								<input type="file" id="mc_legalscan" name="mc_legalscan" />
 							  </div>
 							</div>
                             <div class="control-group">
-							  <label class="control-label" for="cu_state">状态</label>
+							  <label class="control-label" for="mc_status">状态</label>
 							  <div class="controls">
 								{$status|getRadio=$info.mc_status}
 							  </div>
@@ -193,8 +194,9 @@
 						  </fieldset>
 						</form>   
 						<else />
-						<form class="form-horizontal" action="__URL__/addCompany" method="post" enctype="multipart/form-data" >
-                          <input type="hidden" name="mc_id" value="{$info.mc_id}" />
+						<form class="form-horizontal" action="__URL__/savePerson" method="post" enctype="multipart/form-data" >
+                          <input type="hidden" name="mc_id" value="{$info.mp_id}" />
+                          <input type="hidden" name="mc_mid" value="{$info.mp_mid}" />
 						  <fieldset>
 							<div class="control-group">
 							  <label class="control-label" for="mc_name">姓名</label>
@@ -203,9 +205,9 @@
 							  </div>
 							</div>
                             <div class="control-group">
-							  <label class="control-label" for="cu_email">Email</label>
+							  <label class="control-label" for="cu_email">住址</label>
 							  <div class="controls">
-								<input type="text" class="input-xlarge" id="cu_email" value="{$cu_data.cu_email}" name="cu_email" />
+								<input type="text" class="span8" id="cu_email" value="{$cu_data.cu_email}" name="cu_email" />
 							  </div>
 							</div>
 							<div class="control-group">
