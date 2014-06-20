@@ -142,28 +142,6 @@ class MemberAction extends BaseAction{
 			$this->error("无此权限！");
 		}
 		$data = M("membercompany")->create();
-		$flag = false;
-		foreach($_FILES as $k=>$v){
-			if($v['name']){
-				$flag = true;break;
-			}
-		}
-		if($flag){
-			$uploadInfo = upload(true,"");
-			if($uploadInfo[0]){
-				foreach($uploadInfo[1] as $v){
-					$att_data = array(
-							'att_name'	=> $v['savename'],
-							'att_type'	=> $v['extension'],
-							'att_size'	=> getFileSize($v['size']),
-							'att_mid'		=> $_SESSION['user'],
-							'att_time'	=> time()
-					);
-					$data[$v['key']] = M("attachement")->add($att_data);
-				}
-			}
-		}
-		
 		if(M("membercompany")->save($data)){
 			$this->watchdog("编辑", "编辑企业会员[{$data['mc_mid']}] 的信息。");
 			$this->success("保存成功！", __URL__."/memberInfo/id/{$data['mc_mid']}");
@@ -179,8 +157,6 @@ class MemberAction extends BaseAction{
 		$type = M("member")->where("mem_id='{$id}'")->getField("mem_type");
 		if($type==1){
 			$info = M("member")->join(" zt_membercompany ON mem_id=mc_mid")->where("mc_mid='{$id}'")->find();
-			$info['legalscan'] = M("attachement")->where("att_id={$info['mc_legalscan']}")->getField("att_name");
-			$info['licencescan'] = M("attachement")->where("att_id={$info['mc_licencescan']}")->getField("att_name");
 		}else{
 			$info = M("member")->join(" zt_memberperson ON mem_id=mp_mid")->where("mp_mid='{$id}'")->find();
 		}
@@ -201,10 +177,6 @@ class MemberAction extends BaseAction{
 			$this->error("无此权限！");
 		}
 		$data = M("member")->create();
-		$data['mem_expiretime'] = strtotime($data['mem_expiretime']);
-		if($data['mem_expiretime']>time()){
-			$data['mem_active'] = 1;
-		}
 		if(M("member")->save($data)){
 			$this->watchdog("编辑", "编辑会员[{$data['mem_id']}]的基本信息");
 			$this->success("保存成功！");
@@ -276,8 +248,8 @@ class MemberAction extends BaseAction{
 		if(!isset($_SESSION['member_check'])){
 			$_SESSION['member_check'] = 0;
 		}
-		if($_SESSION['member_check']<$now-18){
-			M("member")->where("mem_active=1 AND mem_expiretime<={$now}")->setField("mem_active", 0);
+		if($_SESSION['member_check']<$now-1800){
+			M("member")->where("mem_state=1 AND mem_expiretime<={$now}")->setField("mem_state", 0);
 			$_SESSION['member_check'] = $now;
 		}
 	}
