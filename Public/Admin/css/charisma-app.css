@@ -535,4 +535,9 @@ color:#333;
 
 select._filter{width:120px;}
 .my-ajax-btn{position:relative;}
-.my-ajax-btn .ajax-load{display:block; width:100%;height:100%; min-width:16px; min-height:11px; background:url(../img/ajax-loaders/ajax-loader-1.gif) center center no-repeat; position:absolute; left:0; top:0; z-index:9999;}
+.ajax-load{display:block; width:100%;height:100%; min-width:16px; min-height:11px; background:url(../img/ajax-loaders/ajax-loader-1.gif) center center no-repeat; position:absolute; left:0; top:0; z-index:9999;}
+
+.area_order{position:relative;width:30px;text-align:center;}
+.area_name{position:relative;}
+.ul-subarea{list-style-type:decimal; margin-top:5px;margin-bottom:5px;display:none;}
+.ul-subarea li{margin-top:5px;}

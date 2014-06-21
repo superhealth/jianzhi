@@ -160,12 +160,19 @@ class MemberAction extends BaseAction{
 							'att_mid'		=> $_SESSION['user'],
 							'att_time'	=> time()
 					);
+					//保存附件ID
 					$data[$v['key']] = M("attachement")->add($att_data);
+					//获取原附件ID
+					$oldAtt[] = M("membercompany")->where("mc_id={$data['mc_id']}")->getField($v['key']);
 				}
 			}
 		}
 		// 保存个人信息
 		if(M("memberperson")->save($data)){
+			//删除原附件
+			if(!empty($oldAtt)){
+				attDelete($oldAtt);
+			}
 			$this->watchdog("编辑", "编辑个人会员[{$data['mp_mid']}] 的信息。");
 			$this->success("保存成功！", __URL__."/memberInfo/id/{$data['mp_mid']}");
 		}else{
@@ -200,11 +207,16 @@ class MemberAction extends BaseAction{
 							'att_time'	=> time()
 					);
 					$data[$v['key']] = M("attachement")->add($att_data);
+					$oldAtt[] = M("membercompany")->where("mc_id={$data['mc_id']}")->getField($v['key']);
 				}
 			}
 		}
 		//保存资料
 		if(M("membercompany")->save($data)){
+			//删除旧附件
+			if(!empty($oldAtt)){
+				attDelete($oldAtt);
+			}
 			$this->watchdog("编辑", "编辑企业会员[{$data['mc_mid']}] 的信息。");
 			$this->success("保存成功！", __URL__."/memberInfo/id/{$data['mc_mid']}");
 		}else{

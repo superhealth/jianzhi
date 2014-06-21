@@ -163,7 +163,18 @@ $(document).ready(function(){
 		$('.login-box').find('.input-large').removeClass('span10');
 		
 	}
+	//地区设置
+	$(".subarea-dropdown").toggle(
+		function(){
+			$(this).next().slideDown("fast");
+			$(this).children("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
+		},function(){
+			$(this).next().slideUp("fast");
+			$(this).children("i").removeClass("icon-chevron-up").addClass("icon-chevron-down");
+		}
+	);
 	
+	//左侧菜单
 	$("._dropdown_").toggle(function(){
 			$(this).next().slideDown("fast");	
 		},function(){

@@ -89,7 +89,7 @@ class SortAction extends BaseAction{
 				$this->error("无此权限！");
 			}else{
 				$data = M("sort")->create();
-				if(M("sort")->add()){
+				if(M("sort")->save($data)){
 					$this->watchdog("编辑", "修改主类别 <strong>{$data['sort_name']}</strong>");
 					$this->success("修改成功！", __URL__."/index");
 				}else{
