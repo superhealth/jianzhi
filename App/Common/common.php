@@ -80,11 +80,11 @@ function switch_action($action=""){
 	switch($action){
 		case "登录":
 			return "label-inverse";
-		case "新增":
+		case "新增": case "解锁":
 			return "label-success"	;
-		case "删除":
+		case "删除": case "锁定":
 			return "label-important";
-		case "编辑":
+		case "编辑": case "续费":
 			return "label-warning";
 		default:
 			return "";

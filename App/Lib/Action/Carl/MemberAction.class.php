@@ -278,9 +278,30 @@ class MemberAction extends BaseAction{
 	 * 锁定用户
 	 */
 	public function block($id=""){
-		
+		$map = array("mem_id"=> array("in", $id));
+		if(M("member")->where($map)->setField("mem_state", 2)){
+			$ids = is_array($id)?implode(",", $id):$id;
+			$this->watchdog("锁定", "锁定用户：{$ids}");
+			$this->success("锁定成功！");
+		}else{
+			$this->error("锁定失败！");
+		}
 	}
-
+	
+	/**
+	 * 解锁用户
+	 */
+	public function unBlock($id=""){
+		$map = array("mem_id"=> array("in", $id));
+		if(M("member")->where($map)->setField("mem_state", 1)){
+			$ids = is_array($id)?implode(",", $id):$id;
+			$this->watchdog("解锁", "解锁用户：{$ids}");
+			$this->success("解锁成功！");
+		}else{
+			$this->error("解锁失败！");
+		}
+	}
+	
 	/**
 	 * 新建系统通知
 	 */

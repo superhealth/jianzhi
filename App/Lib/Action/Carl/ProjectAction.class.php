@@ -4,7 +4,7 @@ class ProjectAction extends BaseAction{
 	 * 所有项目
 	 */
 	public function index(){
-		$deposit = M("deposit");
+		$project = M("project");
 		$map = array();
 		$param = array();
 		if(isset($_REQUEST['status']) && $_REQUEST['status']!="all"){
@@ -19,9 +19,9 @@ class ProjectAction extends BaseAction{
 			}
 		}
 		$this->assign("param", $param);
-		$total = $prop->where($map)->count();
+		$total = $project->where($map)->count();
 		import("Org.Util.Page");
-		$page = new Page($total, 10, $param);
+		$page = new Page($total, 12, $param);
 		// 分页查询
 		$limit = $page->firstRow.",".$page->listRows;
 		$pager = $page->shown();
@@ -29,8 +29,8 @@ class ProjectAction extends BaseAction{
 		$join = "";
 		$field = "";
 		$order = "";
-		$deposits = $deposit->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
-		$this->assign("deposit", $deposit);
+		$projects = $project->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
+		$this->assign("projects", $projects);
 		$this->display();
 	}
 	

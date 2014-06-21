@@ -128,7 +128,7 @@ class SortAction extends BaseAction{
 					<a href="#" class="btn" data-dismiss="modal">关闭</a>
 					<a href="#" class="btn btn-primary" id="commit" data-act="%url%">保存</a>
 				</div></fieldset></form>';
-			$info = M("sort")->where("sort_id={$id}")->find();
+			$info = M("sort")->where("sort_id={$_REQUEST['id']}")->find();
 			if($info){
 				echo str_replace(array("%id%", "%name%", "%order%", "%url%"), __ACTION__, $responseHtml);
 			}else{
@@ -316,7 +316,7 @@ class SortAction extends BaseAction{
 		if($id){
 			$info = M("enumsort")->field("es_name, es_order, es_base, sort_name")->join("sort ON es_sort_id=sort_id")->where("es_id={$id}")->find("sort_name");
 			if(M("enumsort")->where("es_id={$id}")->delete()){
-				$this->watchdog("删除", "删除子类<strong>{$info['es_name']}</strong>,属于 <i>{$info['sort_name']}</i> 下的 [{$data['es_base']}]");
+				$this->watchdog("删除", "删除子类<strong>{$info['es_name']}</strong>,属于 <i>{$info['sort_name']}</i> 下的 [{$info['es_base']}]");
 				$this->success("删除成功！");
 			}else{
 				$this->error("删除失败!");

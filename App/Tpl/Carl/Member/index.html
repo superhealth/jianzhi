@@ -41,6 +41,7 @@
 									 查找: <input type="text" name="words"  class="_filter_txt" value="{$param.words}" /></div>
 								</form>
 							</div>
+                            <form method="post">
 							<table class="table table-bordered">
 								 <thead>
 									  <tr>
@@ -60,7 +61,7 @@
 									<tr>
 										<td><input type="checkbox" name="id[]" value="{$item.mem_id}" /></td>
 										<td>{$item.mem_id}</td>
-										<td><span class="label label{$item.mem_type|switch_type}" type="button">{$types[$item['mem_type']]}</td>
+										<td><span class="label label{$item.mem_type|switch_type}" type="button">{$types[$item['mem_type']]}</span></td>
 										<td>{$item.regtime|timeFormat="Y-m-d"}</td>
 										<td><span class="label label{$item.mem_state|switch_status}" type="button">{$states[$item['mem_state']]}</span></td>
 										<td><span class="label label{$item.mem_active|switch_active}" type="button">{$actives[$item['mem_active']]}</span></td>
@@ -68,7 +69,7 @@
 										<td><span class="center">{$item.mem_rank}</span></td>
 										<td>
 											<if condition="$item['mem_state'] eq 2">
-											<a class="btn btn-success" href="__URL__/block/id/{$item.mem_id}">
+											<a class="btn btn-success" href="__URL__/unBlock/id/{$item.mem_id}">
 												<i class="icon icon-unlocked icon-white"></i>  
 												激活                                            
 											</a>
@@ -102,7 +103,8 @@
 							<div class="row-fluid">
 								<button class="btn btn-small btn-danger _deletes_" type="button" data-href="__URL__/block"><i class="icon icon-trash icon-white"></i>锁定选中</button>
 								<a class="btn btn-small btn-success" type="button" href="__URL__/add" ><i class="icon icon-attachment icon-white"></i>添加会员</a>
-							</div>  
+							</div> 
+                            </form>
 						</div>
 					</div>
 				</div>

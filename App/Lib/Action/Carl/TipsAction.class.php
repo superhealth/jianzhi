@@ -30,7 +30,7 @@ class TipsAction extends BaseAction{
 		$pager = $page->shown();
 		$this->assign("pager", $pager);
 		$tips = M("tips")->where($map)->limit($limit)->select();
-		foreach($sysconf as &$v){
+		foreach($tips as &$v){
 			foreach($v as &$val){
 				$val = preg_replace("/(".$param['words'].")/ig", "<span class='red'>\\1</span>", $val);
 			}
