@@ -30,6 +30,19 @@ class MemberAction extends CommonAction{
 	}
 	
 	/**
+	 * 初始化会员信息
+	 */
+	function memberInit(){
+		global $member;
+		if(isset($_SESSION['member'])){
+			//系统消息
+			$member['notice'] = M("notice")->where("no_mid='{$_SESSION['member']}' AND no_read=0")->count();
+			$memberInfo = M("member")->where("mem_id='{$_SESSION['member']}'");
+			$this->assign("memberInfo", $memberInfo);
+		}
+	}
+	
+	/**
 	 * 注册页
 	 */
 	public function register(){

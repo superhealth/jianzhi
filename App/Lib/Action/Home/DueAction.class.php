@@ -9,7 +9,7 @@ class DueAction extends CommonAction{
 	 * 充值中心
 	 */
 	public function index(){
-		
+		$this->display();
 	}
 	
 	/**
@@ -24,7 +24,7 @@ class DueAction extends CommonAction{
 	 * 待支付
 	 */
 	public function dueOrders(){
-		
+		$orders = M("duefee")->where("du_mid='{$_SESSION['']}'")
 	}
 	
 	/**

@@ -1,6 +1,6 @@
 <?php
 /**
- * 投标单管理
+ * 投标管理模块
  * @author Carl
  *
  */
@@ -82,7 +82,7 @@ class BidAction extends BaseAction{
 				"zt_member"	=> "ON bid_mid = mem_id"
 		);
 		$field = "bid.*, pro_name, pro_id ,mem_id";
-		$bidInfo = M("bidder")->where("bid_id={$id}")->find();
+		$bidInfo = M("bidder")->field($field)->join($join)->where("bid_id={$id}")->find();
 		if($bidInfo){
 			$this->assign("info", $bidInfo);
 			$this->display();

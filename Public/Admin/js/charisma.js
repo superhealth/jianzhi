@@ -300,7 +300,7 @@ function docReady(){
 	$('.cleditor').cleditor();
 	
 	//datepicker
-	$('.datepicker').datepicker({ currentText: 'Now' });
+	$('.datepicker').datepicker({ currentText: 'Now' ,dateFormat: "yy-mm-dd"});
 	
 	//notifications
 	$('.noty').click(function(e){
@@ -308,8 +308,6 @@ function docReady(){
 		var options = $.parseJSON($(this).attr('data-noty-options'));
 		noty(options);
 	});
-
-
 	//uniform - styler for checkbox, radio and file input
 	$("input:checkbox, input:radio, input:file").not('[data-no-uniform="true"],#uniform-is-ajax').uniform();
 
