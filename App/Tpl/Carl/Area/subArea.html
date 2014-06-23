@@ -15,40 +15,36 @@
 				<div>
 					<ul class="breadcrumb">
 						<li><a href="__GROUP__">首页</a> <span class="divider">/</span></li>
-						<li><a href="__URL__/index">地区管理</a></li>
+						<li><a href="__URL__/index">地区管理</a> <span class="divider">/</span></li>
+                        <li><a href="#">下级地区管理</a>
 					</ul>
 				</div>
             	<div class="row-fluid sortable">
 				<div class="box span12">
 					<div class="box-header well" data-original-title>
-						<h2> 主要区域 </h2>
+						<h2> 子区域(省、市)</h2>
 					</div>
 					<div class="box-content">
-                    	<form method="post">
-						<div class="row-fluid form-horizontal">
+						<!--<div class="row-fluid form-horizontal">
 							<div class="control-group">
 								<label class="control-label"><h3>区域序号</h3></label>
-								<div class="controls"><h3 style="padding-top:5px;"> 区域名称 	</h3>
+								<div class="controls"><h3 style="padding-top:5px;">区域名称 	<a class="btn btn-mini btn-success _actions_" href="#" data-href="__URL__/add/" ><i class="icon icon-plus icon-white"></i> 增加区域</a></h3>
 </div>
 							</div>
 							<volist name="areas" id="item">
 							<div class="control-group">
-								<div class="control-label">
-                                	<a class="btn btn-mini btn-danger _delete_" data-href="__URL__/del/id/{$key}"><i class="icon icon-white icon-trash"></i></a>
-                                    <input type="checkbox" name="id[]" value="{$key}" />
-                                    <input class="area_order" data-id="{$key}" type="text" data-name="area_order" data-val="{$item.order}" value="{$item.order}" /></div>
+								<label class="control-label"><input class="area_order" data-id="{$key}" type="text" name="" id="" value="{$item.order}" /></label>
 								<div class="controls">
-									<input type="text" class="area_name margin-top-5" data-id="{$key}" data-name="area_name" data-val="{$item.name}" value="{$item.name}" /> 
+									<input type="text" class="area_name"  style="margin-top:5px;width:180px;" data-id="{$key}" name="" data-id="" value="{$item.name}" /> 
 									<a class="btn btn-mini btn-success _actions_" href="#" data-href="__URL__/add/id/{$key}" >增加<i class="icon icon-white icon-plus"></i></a>
 									<a class="btn btn-mini btn-primary subarea-dropdown" href="#">{$item.count}<i class="icon-chevron-down"></i></a>
-									<ul class="ul-subarea hide">
+									<ul class="ul-subarea">
 										<volist name="item['subs']" id="subitem">
 										<if condition="$subitem['sid'] neq ''">
 										<li>
-                                        	<a class="btn btn-mini btn-danger _delete_" data-href="__URL__/del/id/{$subitem.sid}"><i class="icon icon-white icon-trash"></i></a>
-											<input type="checkbox" name="id[]" value="{$subitem.sid}" />
-											<input type="text" class="area_order" data-name="area_order" data-id="{$subitem.sid}" data-val="{$subitem.sorder}" value="{$subitem.sorder}" />
-											<input type="text" class="area_name" data-name="area_name" data-id="{$subitem.sid}" data-val="{$subitem.sname}" value="{$subitem.sname}" /> 
+											<input type="checkbox" name="" value="{$subitem.sid}" />
+											<input type="text" class="area_order" data-id="{$subitem.sid}" value="{$subitem.sorder}" />
+											<input type="text" class="area_name" data-id="{$subitem.sid}" value="{$subitem.sname}" /> 
 											<a class="btn btn-mini btn-primary" href="__URL__/subArea/id/{$subitem.sid}">{$subitem.subcount}<i class="icon icon-white icon-carat-1-e"></i></a>
 										</li>
 										</if>
@@ -57,12 +53,48 @@
 								</div>
 							</div>
 							</volist>
-                            <div class="row-fluid">
-						 		<button class="btn btn-mini btn-danger _deletes_" type="button" data-href="__URL__/del"><i class="icon icon-trash icon-white"></i> 删除选中 </button>
-						 		<a class="btn btn-mini btn-success _actions_" href="#" data-href="__URL__/add/" ><i class="icon icon-plus icon-white"></i> 增加区域</a>
-					  		</div> 
+						</div>-->
+                        <div class="row-fluid form-horizontal">
+							<div class="control-group">
+								<label class="control-label" for="sort">地区名称</label>
+								<div class="controls">
+									<input type="text" class="area_name" data-id="{$info.area_id}" data-name="area_name" value="{$info.area_name}" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">主类别次序</label>
+								<div class="controls">
+									<input type="text" class="area_order" data-id="{$info.area_id}" data-name="area_order" value="{$info.area_order}" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">次级地区数</label>
+								<div class="controls">
+									<h4>{$areas|count}</h4>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">操作</label>
+								<div class="controls">
+									<a class="btn btn-mini btn-primary _actions_" href="#" data-href="__URL__/add/id/{$info.area_id}" ><i class="icon icon-pin icon-white"></i> 添加</a>
+								</div>
+							</div>
 						</div>
-                        </form>
+						<div class="row-fluid form-horizontal">
+							<fieldset>
+						 		<legend>下级地区（县、市）</legend>
+								<ul class="ul-subarea">
+                                    <volist name="areas" id="subitem">
+                                    <li>
+                                        <a class="btn btn-mini btn-danger _delete_" data-href="__URL__/del/id/{$subitem.area_id}">{$subitem.subcount}<i class="icon icon-white icon-trash"></i>删除</a>
+                                        <input type="checkbox" name="id[]" value="{$subitem.area_id}" />
+                                        <input type="text" class="area_order" data-name="area_order" data-id="{$subitem.area_id}" data-val="{$subitem.area_order}" value="{$subitem.area_order}" />
+                                        <input type="text" class="area_name" data-name="area_name" data-id="{$subitem.area_id}" data-val="{$subitem.area_name}" value="{$subitem.area_name}" /> 
+                                    </li>
+                                    </volist>
+                                </ul>
+							</fieldset>
+						</div>
 					</div>
 				</div>
 			</div>

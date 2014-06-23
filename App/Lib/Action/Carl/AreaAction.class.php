@@ -88,7 +88,7 @@ class AreaAction extends BaseAction{
 			$data = M("area")->create();
 			if(M("area")->add($data)){
 				$this->watchdog("新增", "增加区域 <strong>{$data['area_name']}</strong>");
-				$this->success("保存成功！", __URL__."/index");
+				$this->success("保存成功！");
 			}else{
 				$this->error("保存失败！");
 			}
@@ -99,6 +99,9 @@ class AreaAction extends BaseAction{
 	 * ajax 编辑地区信息
 	 */
 	public function modify(){
+		if(!per_check("area_edit")){
+			exit("无此权限！");
+		}
 		$data = M("area")->create();
 		if(M("area")->save($data)){
 			$this->watchdog("编辑", "修改【{$data['area_name']}】地区属性。");
@@ -107,6 +110,55 @@ class AreaAction extends BaseAction{
 			echo "error";
 		}
 	}
+	
+	/**
+	 * 子地区
+	 */
+	public function subArea($id=""){
+		$info = M("area")->where("area_id={$id}")->find();
+		if(!empty($info)){
+			$areas = M("area")->where("area_reid={$id}")->select();
+			$this->assign("areas", $areas);
+			$this->assign("info",$info);
+			$this->display();
+		}else{
+			$this->error("参数错误！");
+		}
+	}
+	
+	/** 
+	 * 删除区域
+	 */
+	public function del($id=""){
+		if(!per_check("area_edit")){
+			$this->error("无此权限！");
+		}
+		$id = $this->getSubArea($id);
+		if(empty($id)){
+			$this->error("未选择删除的区域！");
+		}else{
+			$map = array("area_id"=> array("in", $id));
+			if(M("area")->where($map)->delete()){
+				$this->watchdog("删除","删除地区");
+				$this->success("删除成功！");
+			}else{
+				$this->error("删除失败！");
+			}
+		}		
+	}
+	
+	/**
+	 * 递归查找子区域
+	 */
+	public function getSubArea($id){
+		$subAreas = M("area")->where(array("area_reid"=>array("in", $id)))->getField("area_id", true);
+		if(empty($subAreas)){
+			return $id;
+		}else{
+			return array_merge($subAreas,$id, $this->getSubArea($subAreas));
+		}	
+	}
+	
 }
 
 ?>

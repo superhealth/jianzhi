@@ -1,4 +1,9 @@
 <?php
+/**
+ * 生产属性模块
+ * @author Carl
+ *
+ */
 class PropertyAction extends BaseAction{
 	/**
 	 * 所有生产属性
