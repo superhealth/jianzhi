@@ -6,13 +6,14 @@
  */
 class CronAction extends Action{
 	private $t = 1800;	//检查周期 半小时
-	public static function checkCron(){
+	public function checkCron(){
 		
-		$now = time();
 		//检查会员续费是否到期
-		$this->checkMemberActive($now);
+		$this->checkMemberActive();
 		//检查保证金是否退回
-		$this->checkDepositBack($now);
+		$this->checkDepositBack();
+		//检查项目开标
+		$this->chekcProjectOpen();
 	}
 	
 	private function checkMemberActive($now){

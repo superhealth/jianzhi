@@ -1,6 +1,7 @@
 <?php
 class MemberModel extends Model{
 	private $yearstamp = 31536000;
+	//用户续费
 	public function renewal($id, $year=0){
 		$info = $this->where("mem_id='{$id}'")->find();
 		if(empty($info)){
@@ -18,4 +19,6 @@ class MemberModel extends Model{
 		}
 		return $this->save($data);
 	}
+	
+	
 }

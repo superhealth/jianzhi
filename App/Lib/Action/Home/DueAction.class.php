@@ -24,7 +24,7 @@ class DueAction extends CommonAction{
 	 * 待支付
 	 */
 	public function dueOrders(){
-		$orders = M("duefee")->where("du_mid='{$_SESSION['']}'")
+		$orders = D("duefee")->getDuefees($_SESSION['member'], 0);	//
 	}
 	
 	/**

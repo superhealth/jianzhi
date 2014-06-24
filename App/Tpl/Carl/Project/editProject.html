@@ -1,10 +1,173 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
+	<meta charset="utf-8">
+	<title> 后台数据管理中心</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="创高安防">
+	<meta name="author" content="chuango_Karl">
+	<script src="__PUBLIC__/Admin/ue/editor_config.js" type="text/javascript"></script>
+	<script src="__PUBLIC__/Admin/ue/editor_all_min.js" type="text/javascript"></script>
+	<include file="public:css" />
+		
 </head>
 
 <body>
+	<include file="public:header" />
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<include file="public:left" />
+			<div id="content" class="span10">
+				<div>
+					<ul class="breadcrumb">
+						<li><a href="__GROUP__/Index">首页</a> <span class="divider">/</span></li>
+						<li><a href="__URL__/index">会员中心</a><span class="divider">/</span></li>
+                        <li><a href="#">会员资料</a></li>
+					</ul>
+				</div>
+            	<div class="row-fluid sortable">
+					<div class="box">
+						<div class="box-header well" data-original-title>
+							<h2><i class="icon-edit"></i>项目详情</h2>
+						</div>
+						<div class="box-content tab-pane">
+							<form class="form-horizontal" action="__ACTION__" method="post" enctype="multipart/form-data" onSubmit="return projectCheck();" >
+							  <input type="hidden" name="pro_id" value="{$info.pro_id}" />
+							  <input type="hidden" name="action" value="save" />
+							  <fieldset>
+								<div class="control-group">
+								  <label class="control-label" for="mem_id">发起人：</label>
+								  <div class="controls">
+									<a href="__GROUP__/Member/memberInfo/id/{$info.pro_mid}" data-rel="tooltip" data-original-title="查看用户资料">{$info.pro_mid}</a>
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="pro_sn">项目编号：</label>
+								  <div class="controls">
+									<h4>{$info.pro_sn}</span>
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="pro_createtime">创建时间：</label>
+								  <div class="controls">
+									<input type="text" class="datepicker" id="pro_createtime" name="pro_createtime" value="{$info.pro_createtime|timeFormat='Y-m-d'}" />
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="pro_subject">项目主题：</label>
+								  <div class="controls">
+									<input type="text" class="span8" id="pro_subject" name="pro_subject" value="{$info.pro_subject}" />
+									<span class="help-inline"></span>
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="pro_prop">项目属性：</label>
+								  <div class="controls">
+									<select name="pro_prop" id="pro_prop" rel="chosen" >
+										{$props|getOptions=$info['pro_prop']}
+									</select>
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="pro_sort">项目类别：</label>
+								  <div class="controls">
+									<select name="pro_sort" id="pro_sort" rel="chosen" >
+										{$sorts|getOptions=$info['pro_sort']}
+									</select>
+									<div id="enums"></div>
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="mem_logincount">：</label>
+								  <div class="controls">
+									<span class="green">{$info.mem_logincount}</span>
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="mem_state">会员状态：</label>
+								  <div class="controls">
+									{$states|getRadio="mem_state",$info['mem_state']}
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="mem_rank">会员积分：</label>
+								  <div class="controls">
+									<input type="text" name="mem_rank" id="mem_rank" value="{$info.mem_rank}" />
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="mem_active">续费状态：</label>
+								  <div class="controls">
+									<if condition="$info['mem_active'] eq 1">
+									<span class="label label-success">可用</span>
+									<else />
+									<span class="label label-danger">到期</span>
+									</if>
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="mem_expiretime">过期日期：</label>
+								  <div class="controls">
+									<input type="text" class="input-xlarge datepicker" id="mem_expiretime" name="mem_expiretime" value="{$info.mem_expiretime|timeFormat='Y-m-d'}"  />
+								  </div>
+								</div>
+								<div class="form-actions">
+								  <button type="submit" class="btn btn-primary">保存</button>
+								  <button type="reset" class="btn">重置</button>
+								</div>
+							  </fieldset>
+							</form>  
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="modal hide fade" id="myModal">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>Settings</h3>
+			</div>
+			<div class="modal-body">
+				<p>Here settings can be configured...</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Close</a>
+				<a href="#" class="btn btn-primary">Save changes</a>
+			</div>
+		</div>
+		<include file="public:footer" />
+	</div>
+	<include file="public:js" />
+    <script type="text/javascript">
+		var imgExp = new RegExp("(.jpg|.jpeg|.gif|.png)$");
+		function memberCheck(){
+			return true;
+		}
+		function personCheck(){
+			var idscan = $("#mp_idscan").val();
+			if(idscan != "" && !imgExp.test(idscan)){
+				$("#mp_idscan").parents(".control-group").addClass("error");
+				$("#mp_idscan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
+				return false;
+			}
+			return true;
+		}
+		function companyCheck(){
+			var legalscan = $("#mc_legalscan").val();
+			var licencescan = $("#mc_licencescan").val();
+			if(legalscan != "" && !imgExp.test(idscan)){
+				$("#mc_legalscan").parents(".control-group").addClass("error");
+				$("#mc_legalscan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
+				return false;
+			}
+			if(licencescan != "" && !imgExp.test(idscan)){
+				$("#mc_licencescan").parents(".control-group").addClass("error");
+				$("#mc_licencescan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
+				return false;
+			}
+			return true;
+		}	
+	</script>
 </body>
 </html>

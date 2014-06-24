@@ -1,12 +1,15 @@
 <?php
 /**
  * 招投项目模块
- * @author Carl
+ * @author dapianzi
  *
  */
 class ProjectAction extends BaseAction{
+	
+	private $status = array("0"=> "未发布", "1"=> "招标中", "2"=> "已开标", "关闭"); 	//项目状态
+	
 	/**
-	 * 所有项目
+	 * 所有已发布项目
 	 */
 	public function index(){
 		$project = M("project");
@@ -15,13 +18,24 @@ class ProjectAction extends BaseAction{
 		);
 		$param = array();
 		if(isset($_REQUEST['status']) && $_REQUEST['status']!="all"){
-			$map['de_paystatus']  = $_REQUEST['status'];
+			$map['pro_status']  = $_REQUEST['status'];
 			$param['status'] = $_REQUEST['status'];
+		}
+		if(isset($_REQUEST['prop']) && $_REQUEST['prop']!="all"){
+			$map['pro_prop']  = $_REQUEST['prop'];
+			$param['prop'] = $_REQUEST['prop'];
+		}
+		if(isset($_REQUEST['sort']) && $_REQUEST['sort']!="all"){
+			$map['pro_sort']  = $_REQUEST['sort'];
+			$param['sort'] = $_REQUEST['sort'];
 		}
 		if(isset($_REQUEST['words'])){
 			$words = addslashes($_REQUEST['words']);
 			if(strlen($words)>=3){
-				$map['pp_name']  = array('like', "%{$words}%");
+				$where['pro_subject']  = array('like', "%{$words}%");
+				$where['pro_mid'] = array('like', "%{$words}%");
+				$where['_logic'] = "or";
+				$map['_complex'] = $where;
 				$param['words'] = $_REQUEST['words'];
 			}
 		}
@@ -34,17 +48,24 @@ class ProjectAction extends BaseAction{
 		$pager = $page->shown();
 		$this->assign("pager", $pager);
 		$join = array(
-				"zt_bidder ON pro_id=bid_proid",
-				"zt_member ON pro_mid=mem_id",
+				"(SELECT bid_proid,count(*) bidders FROM zt_bidder GROUP BY bid_proid) b ON pro_id=b.bid_proid",
 				"zt_sort ON pro_sort=sort_id",
 				"zt_property ON pro_prop=pp_id"
 		);
-		$field = "";
-		$order = "";
+		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, sort_name, pp_name, pro_publishtime, pro_status, bidders";
+		$order = "pro_publishtime DESC";
 		$projects = $project->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		//dump($project->getLastSql());
 		//dump($projects);exit;
+		array_shift($this->status);
+		$this->assign("status", $this->status);
 		$this->assign("projects", $projects);
+		//所有分类
+		$sorts = M("sort")->getField("sort_name", true);
+		$this->assign("sorts", $sorts);
+		//所有属性
+		$props = M("property")->getField("pp_name", true);
+		$this->assign("props", $props);
 		$this->display();
 	}
 	
@@ -77,16 +98,14 @@ class ProjectAction extends BaseAction{
 		$pager = $page->shown();
 		$this->assign("pager", $pager);
 		$join = array(
-				"zt_bidder ON pro_id=bid_proid",
-				"zt_member ON pro_mid=mem_id",
 				"zt_sort ON pro_sort=sort_id",
 				"zt_property ON pro_prop=pp_id"
 		);
 		$field = "";
-		$order = "";
+		$order = "pro_publishtime DESC";
 		$projects = $project->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		//dump($project->getLastSql());
-		//dump($projects);exit;
+		dump($projects);exit;
 		$this->assign("projects", $projects);
 		$this->display();
 	}
@@ -101,7 +120,21 @@ class ProjectAction extends BaseAction{
 		if($action=="save"){
 			
 		}else{
-			
+			if(isset($_REQUEST['id'])){
+				$info = M("project")->where("pro_id={$_REQUEST['id']}")->find();
+				$this->assign("info", $info);
+				$this->assign("status", $this->status);
+				//所有分类
+				$sorts = M("sort")->getField("sort_name", true);
+				$this->assign("sorts", $sorts);
+				//所有属性
+				$props = M("property")->getField("pp_name", true);
+				$this->assign("props", $props);
+				$areas = D("Area")->Areas();
+				$this->display();
+			}else{
+				$this->error("参数错误！");
+			}
 		}
 	}
 	

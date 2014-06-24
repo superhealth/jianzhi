@@ -13,6 +13,15 @@ class CommonAction extends EmptyAction{
 	}
 	
 	/**
+	 * 检测用户登录状态
+	 */
+	protected function checkMember(){
+		if(empty($_SESSION['member'])){
+			$this->error("请先登录！", __GROUP__."/Member/login");exit;
+		}
+	}
+	
+	/**
 	 * 验证码
 	 */
 	public function getAuthcode(){

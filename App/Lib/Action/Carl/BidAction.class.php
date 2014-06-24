@@ -5,6 +5,8 @@
  *
  */
 class BidAction extends BaseAction{
+	
+	
 	/**
 	 * 所有投标单，筛选
 	 */
@@ -95,7 +97,22 @@ class BidAction extends BaseAction{
 	 * 保存修改
 	 */
 	public function saveBid(){
-		$data = M("bidder")->create();
+		for($i=0;$i<6;$i++){
+			$data = array(
+				"pro_sn" => randomStr(8),
+				"pro_mid"	=> "安防",
+				"pro_prop"	=> rand(1,5),
+				"pro_sort"	=> rand(1,4),
+				"pro_createtime"	=> time()-rand(0, 10000),
+				"pro_subject"	=> randomStr(16),
+				"pro_description"	=> randomStr(72),
+				"pro_deposit"	=> rand(0,1000),
+				"pro_publishtime"	=> time()+7*24*3600-rand(0,10000),
+				"pro_status"	=> rand(0,3),
+				"pro_view"	=> rand(0,1000)
+			);
+			M("project")->add($data);
+		}
 	}
 	
 	/**
