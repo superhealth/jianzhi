@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Shojumaru);
+/*@import url(https://fonts.googleapis.com/css?family=Shojumaru);*/
 
 select{
 background-color:#fff;
@@ -542,3 +542,5 @@ select._filter{width:120px;}
 .margin-top-5{margin-top:5px;}
 .ul-subarea{list-style-type:decimal; margin-top:5px;margin-bottom:5px;}
 .ul-subarea li{margin-top:5px;}
+.area, .enum{width:auto; margin-right:20px; -webkit-border-radius:5px; border-radius:5px; -moz-border-radius:5px;}
+

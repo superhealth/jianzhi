@@ -324,7 +324,14 @@ class SortAction extends BaseAction{
 		}
 	}
 	
-	
+	/**
+	 * 更新分类信息缓存
+	 */
+	public function update(){
+		D("Sort")->updateCache();
+		D("Enumsort")->updateCache();
+		$this->success("更新完毕！");
+	}
 	
 }
 

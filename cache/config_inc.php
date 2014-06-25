@@ -7,8 +7,8 @@ return array(
 "cfg_authcode" => true, // 是否开启验证码 
 "cfg_powerby" => "dapianzi.", // 版权信息 
 "cfg_beian" => "ICP 12345678", // 网站备案号 
-"cfg_replacestr" => "他妈|你妈|共产党|", // 屏蔽敏感词 
-"cfg_attach_size" => "1M", // 附件大小限制 
+"cfg_replacestr" => "呵呵|哈哈|哦|人艰不拆", // 屏蔽敏感词 
+"cfg_attach_size" => 1024, // 附件大小限制(Kb) 
 "cfg_SMTP_HOST" => "smtp.qq.com", // smtp邮件服务器 
 "cfg_SMTP_PORT" => "25", // smtp邮件服务器端口 
 "cfg_SMTP_USER" => "609164964@qq.com", // smtp登录名 
@@ -17,7 +17,7 @@ return array(
 "cfg_FROM_NAME" => "Carl", // 发件人 
 "cfg_REPLY_EMAIL" => " ", // 回复EMAIL 
 "cfg_REPLY_NAME" => " ", // 回复名称 
-"cfg_duefee" => "100", // 年费 
+"cfg_duefee" => 100, // 年费(￥) 
 "cfg_duenotice" => 30, // 年费续费提醒(天) 
 "cfg_crontime" => 30, // 系统刷新时间间隔（分钟） 
 "cfg_alipayid" => "", // alipay合作者身份(pid) 

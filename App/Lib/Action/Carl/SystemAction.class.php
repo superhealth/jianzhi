@@ -103,38 +103,14 @@ class SystemAction extends BaseAction{
 	
 	function sysconf_update(){
 		if(!per_check("cfg_edit")){
-			$msg = response_msg("ACCESS_DENIED");
+			$this->error("无此权限！");
 		}else{
-			@chmod(SYSCONF_DIR, 0777);
-			$f = fopen(SYSCONF, "w") or die("<script>alert('写入配置失败，请检查./cache目录是否可写入！');</script>");
-			$sysconfig = M("sysconf")->select();
-			$str = "<?php \nreturn array( \n";
-			foreach($sysconfig as $v){
-				switch($v['type']){
-					case "string":
-						$val = "\"{$v['value']}\"";
-						break;
-					case "int":
-						$val = $v['value'];
-						break;
-					case "boolen":
-						$val = $v['value'] == "Y" ? "true" : "false";
-						break;
-					default:
-						$val = "\"{$v['value']}\"";
-				}
-				$str .= "\"{$v['key']}\" => {$val}, // {$v['desc']} \n";
-			}
-			$str .= "); \n?>";
-			$result = fwrite($f,$str);
-			fclose($f);
-			if($result){
-				$msg = response_msg("OPERATION_SUCCESS", "success");
+			if(D("Sysconf")->updateCache()){
+				$this->success("更新成功！");
 			}else{
-				$msg = response_msg("OPERATION_FAILED");
+				$this->encodeData("更新失败！");
 			}
 		}
-		redirect(__URL__."/index/msg/{$msg}");
 	}
 	/* 用户 */
 	public function users(){

@@ -343,6 +343,8 @@ class MemberAction extends BaseAction{
 	 */
 	public function renewal($id=""){
 		$this->assign("id", $id);
+		$duefee = D("Sysconf")->getConf("cfg_duefee");
+		$this->assign("duefee", $duefee);
 		$this->display();
 	}
 	

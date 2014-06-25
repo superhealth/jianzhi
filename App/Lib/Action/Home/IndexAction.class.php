@@ -1,13 +1,13 @@
 <?php
 /**
  * 网站主题模块
- * @author Carl
+ * @author dapianzi
  *
  */
 class IndexAction extends CommonAction{
 	public function index(){
-		$this->show("<h1>Welcome!</h1>");
-		global $sys_cfg;
+		//$this->show("<h1>Welcome!</h1>");
+		$sys_cfg = D("Sysconf")->sysConfs();
 		dump($sys_cfg);
 	}
 	

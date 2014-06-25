@@ -7,34 +7,6 @@ if(!defined("SYSCONF")){
 if(!defined("SYSCONF_DIR")){
 	define("SYSCONF_DIR", $_SERVER['DOCUMENT_ROOT'].__ROOT__."/cache");
 }
-//加载系统配置参数
-global $sys_cfg;
-if(!file_exists(SYSCONF)){
-	$sysconfig = M("sysconf")->select();
-	$str = "<?php \nreturn array( \n";
-	foreach($sysconfig as $v){
-		switch($v['type']){
-			case "string":
-				$val = "\"{$v['value']}\"";
-				break;
-			case "int":
-				$val = $v['value'];
-				break;
-			case "boolen":
-				$val = $v['value'] == "Y" ? "true" : "false";
-				break;
-			default:
-				$val = "\"{$v['value']}\"";
-		}
-		$str .= "\"{$v['key']}\" => {$val}, // {$v['desc']} \n";
-	}
-	$str .= "); \n?>";
-	@chmod(SYSCONF_DIR, 0777);
-	$f = fopen(SYSCONF, "w") or die("<script>alert('写入配置失败，请检查./cache目录是否可写入！');</script>");
-	fwrite($f,$str);
-	fclose($f);
-}
-$sys_cfg = require(SYSCONF);
 
 /**
  * 错误回馈消息
@@ -239,6 +211,21 @@ function getOptions($options, $id=null){
 	}
 	echo $option;
 }
+
+/**
+ * 生成无默认值的下拉选项
+ * @param array $options 选项数组
+ * @param string $opt 选中项
+ */
+function getOptionsNoValue($options, $opt=""){
+	$option = "";
+	foreach($options as $v){
+		$select = $v==$opt&&$name!=="" ? "selected='selected'" : "";
+		$option .= "<option {$select}>{$v}</option>";
+	}
+	echo $option;
+}
+
 /**
  * 生成单选框
  * @param array $options 选项数组 
@@ -254,30 +241,6 @@ function getRadio($options, $name, $id=""){
 	echo $radios;
 }
 
-function pro_options($pros, $selected="", $except=""){
-	$option = "";
-	if(!is_array($selected)){
-		$selected = explode(",", $selected);
-	}
-	$pro_grp = array();
-	foreach($pros as $k=>$v){
-		if($except == $v['pro_id']){
-			continue;
-		}
-		$pro_grp[$v['ca_name']][] = $v;
-	}
-	foreach($pro_grp as $key=>$val){
-		$option .= "<optgroup label='{$key}'>";
-		foreach($val as $pro){
-			$select = "";
-			if(in_array($pro['pro_id'], $selected)){
-				$select = "selected='selected'";
-			}
-			$option .= "<option value='{$pro['pro_id']}' {$select}>{$pro['pro_code']}</option>";
-		}
-	}
-	echo $option;
-}
 
 /**
  * 系统邮件发送函数
@@ -454,4 +417,91 @@ function attDownload($file, $dir=""){
 	}
 	return true;
 }
+
+/**
+ * 将地区数组转为字符串
+ * @param array $areaArr 表示地区的数组
+ * @return string 表示地区的字符串
+ */
+function areaEncode($areaArr){
+	$areaArr = array_map("addslashes", $areaArr);
+	return implode("|", $areaArr);
+}
+/**
+ * 将地区字符串转为数组
+ * @param string $areaStr 表示地区的字符串
+ * @return array 表示地区的数组
+ */
+function areaDecode($areaStr){
+	return explode("|", trim($areaStr));
+}
+/**
+ * 将地区数组输出为下拉选项
+ * @param array $areaArr 表示地区的数组
+ * @param number $n
+ * @param string $areas
+ * @return string
+ */
+function areaToSelect($areaArr, $n=1, $areas=""){
+	$select = "<select id='area{$n}' name='area[]' class='area' >";
+	if(empty($areas)){
+		$areas = D("Area")->Areas();
+	}
+	$subArea = false;
+	foreach($areas as $v){
+		if(isset($areaArr[0]) && $v['name']==$areaArr[0]){
+			$select .= "<option value='{$v['name']}' checked >{$v['name']}</option>";
+			$subArea = $v['subArea'];
+		}else{
+			$select .= "<option value='{$v['name']}' >{$v['name']}</option>";
+		}
+	}
+	$select .= "</select>";
+	if(!empty($subArea)){
+		$areaArr = array_shift($areaArr);
+		$select .= areaToSelect($areaArr, $n++, $subArea);
+	}elseif(isset($areas[0]['subArea'])){
+		$select .= areaToSelect(array(), $n++, $areas[0]['subArea']);
+	}
+	unset($areas);
+	return $select;
+}
+
+/**
+ * 详细分类组合字符串解析
+ * @param string $enumStr 详细分类组合字符串
+ * @return array 分割后的数组
+ */
+function enumsDecode($enumStr){
+	return explode("|", trim($areaStr));
+}
+/**
+ * 详细分类组合数组转为数组
+ * @param array $enumArr 详细分类组合数组
+ * @return string 详细分类组合字符串
+ */
+function enumsEncode($enumArr){
+	$enumArr = array_map("addslashes", $enumArr);
+	return implode("|", $areaArr);
+}
+
+function enumsToSelect($sortId, $enum=""){
+	$enums = D("Enumsort")->getEnums($sortId);
+	$select = "";
+	$flag = is_array($enum) ? true : false;
+	foreach($enums as $k=>$v){
+		$select .= "<select id='{$k}' name='enums[]' class='enum'><option value='no'>不限</option>";
+		foreach($v as $val){
+			if($flag && in_array($val, $enum)){
+				$select .= "<option value='{$val}' checked >{$val}</option>";
+			}else{
+				$select .= "<option value='{$val}' >{$val}</option>";
+			}
+		}
+		$select .= "</select>";
+	}
+	unset($enums);
+	return $select;
+}
+
 

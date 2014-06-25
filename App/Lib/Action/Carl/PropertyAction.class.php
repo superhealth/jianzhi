@@ -166,4 +166,19 @@ class PropertyAction extends BaseAction{
 			}
 		}
 	}
+	
+	/**
+	 * 更新缓存
+	 */
+	public function update(){
+		if(!per_check("prop_edit")){
+			$this->error("无此权限！");
+		}
+		if(D("Property")->updateCache()){
+			$this->success("更新成功！");
+		}else{
+			$this->error("更新失败！");
+		}
+	}
+	
 }

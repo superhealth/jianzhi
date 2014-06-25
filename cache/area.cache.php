@@ -1,1575 +1,2065 @@
 <?php 
 return array( 
-"5000" => array( 
+array( 
+"id" => "5000",
 "name" => "中国",
 "subArea" => array( 
-"1" => array( 
+array( 
+"id" => "1",
 "name" => "北京市",
 "subArea" => array( 
-"102" => array( 
+array( 
+"id" => "102",
 "name" => "西城区",
 
-),"104" => array( 
+),array( 
+"id" => "104",
 "name" => "宣武区",
 
-),"105" => array( 
+),array( 
+"id" => "105",
 "name" => "朝阳区",
 
-),"106" => array( 
+),array( 
+"id" => "106",
 "name" => "海淀区",
 
-),"107" => array( 
+),array( 
+"id" => "107",
 "name" => "丰台区",
 
-),"108" => array( 
+),array( 
+"id" => "108",
 "name" => "石景山区",
 
-),"109" => array( 
+),array( 
+"id" => "109",
 "name" => "门头沟区",
 
-),"110" => array( 
+),array( 
+"id" => "110",
 "name" => "房山区",
 
-),"111" => array( 
+),array( 
+"id" => "111",
 "name" => "通州区",
 
-),"112" => array( 
+),array( 
+"id" => "112",
 "name" => "顺义区",
 
-),"113" => array( 
+),array( 
+"id" => "113",
 "name" => "昌平区",
 
-),"114" => array( 
+),array( 
+"id" => "114",
 "name" => "大兴区",
 
-),"115" => array( 
+),array( 
+"id" => "115",
 "name" => "平谷县",
 
-),"116" => array( 
+),array( 
+"id" => "116",
 "name" => "怀柔县",
 
-),"117" => array( 
+),array( 
+"id" => "117",
 "name" => "密云县",
 
-),"118" => array( 
+),array( 
+"id" => "118",
 "name" => "延庆县",
 
-),"126" => array( 
+),array( 
+"id" => "126",
 "name" => "崇文区",
 
-),"3117" => array( 
+),array( 
+"id" => "3117",
 "name" => "东城区",
 
 ),
  ),
 
-),"2" => array( 
+),array( 
+"id" => "2",
 "name" => "上海市",
 "subArea" => array( 
-"201" => array( 
+array( 
+"id" => "201",
 "name" => "黄浦区",
 
-),"202" => array( 
+),array( 
+"id" => "202",
 "name" => "卢湾区",
 
-),"203" => array( 
+),array( 
+"id" => "203",
 "name" => "徐汇区",
 
-),"204" => array( 
+),array( 
+"id" => "204",
 "name" => "长宁区",
 
-),"205" => array( 
+),array( 
+"id" => "205",
 "name" => "静安区",
 
-),"206" => array( 
+),array( 
+"id" => "206",
 "name" => "普陀区",
 
-),"207" => array( 
+),array( 
+"id" => "207",
 "name" => "闸北区",
 
-),"208" => array( 
+),array( 
+"id" => "208",
 "name" => "虹口区",
 
-),"209" => array( 
+),array( 
+"id" => "209",
 "name" => "杨浦区",
 
-),"210" => array( 
+),array( 
+"id" => "210",
 "name" => "宝山区",
 
-),"211" => array( 
+),array( 
+"id" => "211",
 "name" => "闵行区",
 
-),"212" => array( 
+),array( 
+"id" => "212",
 "name" => "嘉定区",
 
-),"213" => array( 
+),array( 
+"id" => "213",
 "name" => "浦东新区",
 
-),"214" => array( 
+),array( 
+"id" => "214",
 "name" => "松江区",
 
-),"215" => array( 
+),array( 
+"id" => "215",
 "name" => "金山区",
 
-),"216" => array( 
+),array( 
+"id" => "216",
 "name" => "青浦区",
 
-),"217" => array( 
+),array( 
+"id" => "217",
 "name" => "南汇区",
 
-),"218" => array( 
+),array( 
+"id" => "218",
 "name" => "奉贤区",
 
-),"219" => array( 
+),array( 
+"id" => "219",
 "name" => "崇明县",
 
 ),
  ),
 
-),"3" => array( 
+),array( 
+"id" => "3",
 "name" => "天津市",
 "subArea" => array( 
-"301" => array( 
+array( 
+"id" => "301",
 "name" => "和平区",
 
-),"302" => array( 
+),array( 
+"id" => "302",
 "name" => "河东区",
 
-),"303" => array( 
+),array( 
+"id" => "303",
 "name" => "河西区",
 
-),"304" => array( 
+),array( 
+"id" => "304",
 "name" => "南开区",
 
-),"305" => array( 
+),array( 
+"id" => "305",
 "name" => "河北区",
 
-),"306" => array( 
+),array( 
+"id" => "306",
 "name" => "红桥区",
 
-),"307" => array( 
+),array( 
+"id" => "307",
 "name" => "塘沽区",
 
-),"308" => array( 
+),array( 
+"id" => "308",
 "name" => "汉沽区",
 
-),"309" => array( 
+),array( 
+"id" => "309",
 "name" => "大港区",
 
-),"310" => array( 
+),array( 
+"id" => "310",
 "name" => "东丽区",
 
-),"311" => array( 
+),array( 
+"id" => "311",
 "name" => "西青区",
 
-),"312" => array( 
+),array( 
+"id" => "312",
 "name" => "北辰区",
 
-),"313" => array( 
+),array( 
+"id" => "313",
 "name" => "津南区",
 
-),"314" => array( 
+),array( 
+"id" => "314",
 "name" => "武清区",
 
-),"315" => array( 
+),array( 
+"id" => "315",
 "name" => "宝坻区",
 
-),"316" => array( 
+),array( 
+"id" => "316",
 "name" => "静海县",
 
-),"317" => array( 
+),array( 
+"id" => "317",
 "name" => "宁河县",
 
-),"318" => array( 
+),array( 
+"id" => "318",
 "name" => "蓟县",
 
 ),
  ),
 
-),"4" => array( 
+),array( 
+"id" => "4",
 "name" => "重庆市",
 "subArea" => array( 
-"401" => array( 
+array( 
+"id" => "401",
 "name" => "渝中区",
 
-),"402" => array( 
+),array( 
+"id" => "402",
 "name" => "大渡口区",
 
-),"403" => array( 
+),array( 
+"id" => "403",
 "name" => "江北区",
 
-),"404" => array( 
+),array( 
+"id" => "404",
 "name" => "沙坪坝区",
 
-),"405" => array( 
+),array( 
+"id" => "405",
 "name" => "九龙坡区",
 
-),"406" => array( 
+),array( 
+"id" => "406",
 "name" => "南岸区",
 
-),"407" => array( 
+),array( 
+"id" => "407",
 "name" => "北碚区",
 
-),"408" => array( 
+),array( 
+"id" => "408",
 "name" => "万盛区",
 
-),"409" => array( 
+),array( 
+"id" => "409",
 "name" => "双桥区",
 
-),"410" => array( 
+),array( 
+"id" => "410",
 "name" => "渝北区",
 
-),"411" => array( 
+),array( 
+"id" => "411",
 "name" => "巴南区",
 
-),"412" => array( 
+),array( 
+"id" => "412",
 "name" => "万州区",
 
-),"413" => array( 
+),array( 
+"id" => "413",
 "name" => "涪陵区",
 
-),"414" => array( 
+),array( 
+"id" => "414",
 "name" => "黔江区",
 
-),"415" => array( 
+),array( 
+"id" => "415",
 "name" => "永川市",
 
-),"416" => array( 
+),array( 
+"id" => "416",
 "name" => "合川市",
 
-),"417" => array( 
+),array( 
+"id" => "417",
 "name" => "江津市",
 
-),"418" => array( 
+),array( 
+"id" => "418",
 "name" => "南川市",
 
-),"419" => array( 
+),array( 
+"id" => "419",
 "name" => "长寿县",
 
-),"420" => array( 
+),array( 
+"id" => "420",
 "name" => "綦江县",
 
-),"421" => array( 
+),array( 
+"id" => "421",
 "name" => "潼南县",
 
-),"422" => array( 
+),array( 
+"id" => "422",
 "name" => "荣昌县",
 
-),"423" => array( 
+),array( 
+"id" => "423",
 "name" => "璧山县",
 
-),"424" => array( 
+),array( 
+"id" => "424",
 "name" => "大足县",
 
-),"425" => array( 
+),array( 
+"id" => "425",
 "name" => "铜梁县",
 
-),"426" => array( 
+),array( 
+"id" => "426",
 "name" => "梁平县",
 
-),"427" => array( 
+),array( 
+"id" => "427",
 "name" => "城口县",
 
-),"428" => array( 
+),array( 
+"id" => "428",
 "name" => "垫江县",
 
-),"429" => array( 
+),array( 
+"id" => "429",
 "name" => "武隆县",
 
-),"430" => array( 
+),array( 
+"id" => "430",
 "name" => "丰都县",
 
-),"431" => array( 
+),array( 
+"id" => "431",
 "name" => "奉节县",
 
-),"432" => array( 
+),array( 
+"id" => "432",
 "name" => "开县",
 
-),"433" => array( 
+),array( 
+"id" => "433",
 "name" => "云阳县",
 
-),"434" => array( 
+),array( 
+"id" => "434",
 "name" => "忠县",
 
-),"435" => array( 
+),array( 
+"id" => "435",
 "name" => "巫溪县",
 
-),"436" => array( 
+),array( 
+"id" => "436",
 "name" => "巫山县",
 
-),"437" => array( 
+),array( 
+"id" => "437",
 "name" => "石柱县",
 
-),"438" => array( 
+),array( 
+"id" => "438",
 "name" => "秀山县",
 
-),"439" => array( 
+),array( 
+"id" => "439",
 "name" => "酉阳县",
 
-),"440" => array( 
+),array( 
+"id" => "440",
 "name" => "彭水县",
 
 ),
  ),
 
-),"5" => array( 
+),array( 
+"id" => "5",
 "name" => "广东省",
 "subArea" => array( 
-"501" => array( 
+array( 
+"id" => "501",
 "name" => "广州市",
 
-),"502" => array( 
+),array( 
+"id" => "502",
 "name" => "深圳市",
 
-),"503" => array( 
+),array( 
+"id" => "503",
 "name" => "珠海市",
 
-),"504" => array( 
+),array( 
+"id" => "504",
 "name" => "汕头市",
 
-),"505" => array( 
+),array( 
+"id" => "505",
 "name" => "韶关市",
 
-),"506" => array( 
+),array( 
+"id" => "506",
 "name" => "河源市",
 
-),"507" => array( 
+),array( 
+"id" => "507",
 "name" => "梅州市",
 
-),"508" => array( 
+),array( 
+"id" => "508",
 "name" => "惠州市",
 
-),"509" => array( 
+),array( 
+"id" => "509",
 "name" => "汕尾市",
 
-),"510" => array( 
+),array( 
+"id" => "510",
 "name" => "东莞市",
 
-),"511" => array( 
+),array( 
+"id" => "511",
 "name" => "中山市",
 
-),"512" => array( 
+),array( 
+"id" => "512",
 "name" => "江门市",
 
-),"513" => array( 
+),array( 
+"id" => "513",
 "name" => "佛山市",
 
-),"514" => array( 
+),array( 
+"id" => "514",
 "name" => "阳江市",
 
-),"515" => array( 
+),array( 
+"id" => "515",
 "name" => "湛江市",
 
-),"516" => array( 
+),array( 
+"id" => "516",
 "name" => "茂名市",
 
-),"517" => array( 
+),array( 
+"id" => "517",
 "name" => "肇庆市",
 
-),"518" => array( 
+),array( 
+"id" => "518",
 "name" => "清远市",
 
-),"519" => array( 
+),array( 
+"id" => "519",
 "name" => "潮州市",
 
-),"520" => array( 
+),array( 
+"id" => "520",
 "name" => "揭阳市",
 
-),"521" => array( 
+),array( 
+"id" => "521",
 "name" => "云浮市",
 
 ),
  ),
 
-),"6" => array( 
+),array( 
+"id" => "6",
 "name" => "福建省",
 "subArea" => array( 
-"601" => array( 
+array( 
+"id" => "601",
 "name" => "福州市",
 
-),"602" => array( 
+),array( 
+"id" => "602",
 "name" => "厦门市",
 
-),"603" => array( 
+),array( 
+"id" => "603",
 "name" => "三明市",
 
-),"604" => array( 
+),array( 
+"id" => "604",
 "name" => "莆田市",
 
-),"605" => array( 
+),array( 
+"id" => "605",
 "name" => "泉州市",
 
-),"606" => array( 
+),array( 
+"id" => "606",
 "name" => "漳州市",
 
-),"607" => array( 
+),array( 
+"id" => "607",
 "name" => "南平市",
 
-),"608" => array( 
+),array( 
+"id" => "608",
 "name" => "龙岩市",
 
-),"609" => array( 
+),array( 
+"id" => "609",
 "name" => "宁德市",
 
 ),
  ),
 
-),"7" => array( 
+),array( 
+"id" => "7",
 "name" => "浙江省",
 "subArea" => array( 
-"701" => array( 
+array( 
+"id" => "701",
 "name" => "杭州市",
 
-),"702" => array( 
+),array( 
+"id" => "702",
 "name" => "宁波市",
 
-),"703" => array( 
+),array( 
+"id" => "703",
 "name" => "温州市",
 
-),"704" => array( 
+),array( 
+"id" => "704",
 "name" => "嘉兴市",
 
-),"705" => array( 
+),array( 
+"id" => "705",
 "name" => "湖州市",
 
-),"706" => array( 
+),array( 
+"id" => "706",
 "name" => "绍兴市",
 
-),"707" => array( 
+),array( 
+"id" => "707",
 "name" => "金华市",
 
-),"708" => array( 
+),array( 
+"id" => "708",
 "name" => "衢州市",
 
-),"709" => array( 
+),array( 
+"id" => "709",
 "name" => "舟山市",
 
-),"710" => array( 
+),array( 
+"id" => "710",
 "name" => "台州市",
 
-),"711" => array( 
+),array( 
+"id" => "711",
 "name" => "丽水市",
 
 ),
  ),
 
-),"8" => array( 
+),array( 
+"id" => "8",
 "name" => "江苏省",
 "subArea" => array( 
-"801" => array( 
+array( 
+"id" => "801",
 "name" => "南京市",
 
-),"802" => array( 
+),array( 
+"id" => "802",
 "name" => "徐州市",
 
-),"803" => array( 
+),array( 
+"id" => "803",
 "name" => "连云港市",
 
-),"804" => array( 
+),array( 
+"id" => "804",
 "name" => "淮安市",
 
-),"805" => array( 
+),array( 
+"id" => "805",
 "name" => "宿迁市",
 
-),"806" => array( 
+),array( 
+"id" => "806",
 "name" => "盐城市",
 
-),"807" => array( 
+),array( 
+"id" => "807",
 "name" => "扬州市",
 
-),"808" => array( 
+),array( 
+"id" => "808",
 "name" => "泰州市",
 
-),"809" => array( 
+),array( 
+"id" => "809",
 "name" => "南通市",
 
-),"810" => array( 
+),array( 
+"id" => "810",
 "name" => "镇江市",
 
-),"811" => array( 
+),array( 
+"id" => "811",
 "name" => "常州市",
 
-),"812" => array( 
+),array( 
+"id" => "812",
 "name" => "无锡市",
 
-),"813" => array( 
+),array( 
+"id" => "813",
 "name" => "苏州市",
 
 ),
  ),
 
-),"9" => array( 
+),array( 
+"id" => "9",
 "name" => "山东省",
 "subArea" => array( 
-"901" => array( 
+array( 
+"id" => "901",
 "name" => "济南市",
 
-),"902" => array( 
+),array( 
+"id" => "902",
 "name" => "青岛市",
 
-),"903" => array( 
+),array( 
+"id" => "903",
 "name" => "淄博市",
 
-),"904" => array( 
+),array( 
+"id" => "904",
 "name" => "枣庄市",
 
-),"905" => array( 
+),array( 
+"id" => "905",
 "name" => "东营市",
 
-),"906" => array( 
+),array( 
+"id" => "906",
 "name" => "潍坊市",
 
-),"907" => array( 
+),array( 
+"id" => "907",
 "name" => "烟台市",
 
-),"908" => array( 
+),array( 
+"id" => "908",
 "name" => "威海市",
 
-),"909" => array( 
+),array( 
+"id" => "909",
 "name" => "济宁市",
 
-),"910" => array( 
+),array( 
+"id" => "910",
 "name" => "泰安市",
 
-),"911" => array( 
+),array( 
+"id" => "911",
 "name" => "日照市",
 
-),"912" => array( 
+),array( 
+"id" => "912",
 "name" => "莱芜市",
 
-),"913" => array( 
+),array( 
+"id" => "913",
 "name" => "德州市",
 
-),"914" => array( 
+),array( 
+"id" => "914",
 "name" => "临沂市",
 
-),"915" => array( 
+),array( 
+"id" => "915",
 "name" => "聊城市",
 
-),"916" => array( 
+),array( 
+"id" => "916",
 "name" => "滨州市",
 
-),"917" => array( 
+),array( 
+"id" => "917",
 "name" => "菏泽市",
 
 ),
  ),
 
-),"10" => array( 
+),array( 
+"id" => "10",
 "name" => "辽宁省",
 "subArea" => array( 
-"1001" => array( 
+array( 
+"id" => "1001",
 "name" => "沈阳市",
 
-),"1002" => array( 
+),array( 
+"id" => "1002",
 "name" => "大连市",
 
-),"1003" => array( 
+),array( 
+"id" => "1003",
 "name" => "鞍山市",
 
-),"1004" => array( 
+),array( 
+"id" => "1004",
 "name" => "抚顺市",
 
-),"1005" => array( 
+),array( 
+"id" => "1005",
 "name" => "本溪市",
 
-),"1006" => array( 
+),array( 
+"id" => "1006",
 "name" => "丹东市",
 
-),"1007" => array( 
+),array( 
+"id" => "1007",
 "name" => "锦州市",
 
-),"1008" => array( 
+),array( 
+"id" => "1008",
 "name" => "葫芦岛市",
 
-),"1009" => array( 
+),array( 
+"id" => "1009",
 "name" => "营口市",
 
-),"1010" => array( 
+),array( 
+"id" => "1010",
 "name" => "盘锦市",
 
-),"1011" => array( 
+),array( 
+"id" => "1011",
 "name" => "阜新市",
 
-),"1012" => array( 
+),array( 
+"id" => "1012",
 "name" => "辽阳市",
 
-),"1013" => array( 
+),array( 
+"id" => "1013",
 "name" => "铁岭市",
 
-),"1014" => array( 
+),array( 
+"id" => "1014",
 "name" => "朝阳市",
 
 ),
  ),
 
-),"11" => array( 
+),array( 
+"id" => "11",
 "name" => "江西省",
 "subArea" => array( 
-"1101" => array( 
+array( 
+"id" => "1101",
 "name" => "南昌市",
 
-),"1102" => array( 
+),array( 
+"id" => "1102",
 "name" => "景德镇市",
 
-),"1103" => array( 
+),array( 
+"id" => "1103",
 "name" => "萍乡市",
 
-),"1104" => array( 
+),array( 
+"id" => "1104",
 "name" => "新余市",
 
-),"1105" => array( 
+),array( 
+"id" => "1105",
 "name" => "九江市",
 
-),"1106" => array( 
+),array( 
+"id" => "1106",
 "name" => "鹰潭市",
 
-),"1107" => array( 
+),array( 
+"id" => "1107",
 "name" => "赣州市",
 
-),"1108" => array( 
+),array( 
+"id" => "1108",
 "name" => "吉安市",
 
-),"1109" => array( 
+),array( 
+"id" => "1109",
 "name" => "宜春市",
 
-),"1110" => array( 
+),array( 
+"id" => "1110",
 "name" => "抚州市",
 
-),"1111" => array( 
+),array( 
+"id" => "1111",
 "name" => "上饶市",
 
 ),
  ),
 
-),"12" => array( 
+),array( 
+"id" => "12",
 "name" => "四川省",
 "subArea" => array( 
-"1201" => array( 
+array( 
+"id" => "1201",
 "name" => "成都市",
 
-),"1202" => array( 
+),array( 
+"id" => "1202",
 "name" => "自贡市",
 
-),"1203" => array( 
+),array( 
+"id" => "1203",
 "name" => "攀枝花市",
 
-),"1204" => array( 
+),array( 
+"id" => "1204",
 "name" => "泸州市",
 
-),"1205" => array( 
+),array( 
+"id" => "1205",
 "name" => "德阳市",
 
-),"1206" => array( 
+),array( 
+"id" => "1206",
 "name" => "绵阳市",
 
-),"1207" => array( 
+),array( 
+"id" => "1207",
 "name" => "广元市",
 
-),"1208" => array( 
+),array( 
+"id" => "1208",
 "name" => "遂宁市",
 
-),"1209" => array( 
+),array( 
+"id" => "1209",
 "name" => "内江市",
 
-),"1210" => array( 
+),array( 
+"id" => "1210",
 "name" => "乐山市",
 
-),"1211" => array( 
+),array( 
+"id" => "1211",
 "name" => "南充市",
 
-),"1212" => array( 
+),array( 
+"id" => "1212",
 "name" => "宜宾市",
 
-),"1213" => array( 
+),array( 
+"id" => "1213",
 "name" => "广安市",
 
-),"1214" => array( 
+),array( 
+"id" => "1214",
 "name" => "达州市",
 
-),"1215" => array( 
+),array( 
+"id" => "1215",
 "name" => "巴中市",
 
-),"1216" => array( 
+),array( 
+"id" => "1216",
 "name" => "雅安市",
 
-),"1217" => array( 
+),array( 
+"id" => "1217",
 "name" => "眉山市",
 
-),"1218" => array( 
+),array( 
+"id" => "1218",
 "name" => "资阳市",
 
-),"1219" => array( 
+),array( 
+"id" => "1219",
 "name" => "阿坝州",
 
-),"1220" => array( 
+),array( 
+"id" => "1220",
 "name" => "甘孜州",
 
-),"1221" => array( 
+),array( 
+"id" => "1221",
 "name" => "凉山州",
 
 ),
  ),
 
-),"13" => array( 
+),array( 
+"id" => "13",
 "name" => "陕西省",
 "subArea" => array( 
-"1302" => array( 
+array( 
+"id" => "1302",
 "name" => "铜川市",
 
-),"1303" => array( 
+),array( 
+"id" => "1303",
 "name" => "宝鸡市",
 
-),"1304" => array( 
+),array( 
+"id" => "1304",
 "name" => "咸阳市",
 
-),"1305" => array( 
+),array( 
+"id" => "1305",
 "name" => "渭南市",
 
-),"1306" => array( 
+),array( 
+"id" => "1306",
 "name" => "延安市",
 
-),"1307" => array( 
+),array( 
+"id" => "1307",
 "name" => "汉中市",
 
-),"1308" => array( 
+),array( 
+"id" => "1308",
 "name" => "榆林市",
 
-),"1309" => array( 
+),array( 
+"id" => "1309",
 "name" => "安康市",
 
-),"1310" => array( 
+),array( 
+"id" => "1310",
 "name" => "商洛地区",
 
-),"3114" => array( 
+),array( 
+"id" => "3114",
 "name" => "西安市",
 
 ),
  ),
 
-),"14" => array( 
+),array( 
+"id" => "14",
 "name" => "湖北省",
 "subArea" => array( 
-"1401" => array( 
+array( 
+"id" => "1401",
 "name" => "武汉市",
 
-),"1402" => array( 
+),array( 
+"id" => "1402",
 "name" => "黄石市",
 
-),"1403" => array( 
+),array( 
+"id" => "1403",
 "name" => "襄樊市",
 
-),"1404" => array( 
+),array( 
+"id" => "1404",
 "name" => "十堰市",
 
-),"1405" => array( 
+),array( 
+"id" => "1405",
 "name" => "荆州市",
 
-),"1406" => array( 
+),array( 
+"id" => "1406",
 "name" => "宜昌市",
 
-),"1407" => array( 
+),array( 
+"id" => "1407",
 "name" => "荆门市",
 
-),"1408" => array( 
+),array( 
+"id" => "1408",
 "name" => "鄂州市",
 
-),"1409" => array( 
+),array( 
+"id" => "1409",
 "name" => "孝感市",
 
-),"1410" => array( 
+),array( 
+"id" => "1410",
 "name" => "黄冈市",
 
-),"1411" => array( 
+),array( 
+"id" => "1411",
 "name" => "咸宁市",
 
-),"1412" => array( 
+),array( 
+"id" => "1412",
 "name" => "随州市",
 
-),"1413" => array( 
+),array( 
+"id" => "1413",
 "name" => "仙桃市",
 
-),"1414" => array( 
+),array( 
+"id" => "1414",
 "name" => "天门市",
 
-),"1415" => array( 
+),array( 
+"id" => "1415",
 "name" => "潜江市",
 
-),"1416" => array( 
+),array( 
+"id" => "1416",
 "name" => "神农架",
 
-),"1417" => array( 
+),array( 
+"id" => "1417",
 "name" => "恩施州",
 
 ),
  ),
 
-),"15" => array( 
+),array( 
+"id" => "15",
 "name" => "河南省",
 "subArea" => array( 
-"1501" => array( 
+array( 
+"id" => "1501",
 "name" => "郑州市",
 
-),"1502" => array( 
+),array( 
+"id" => "1502",
 "name" => "开封市",
 
-),"1503" => array( 
+),array( 
+"id" => "1503",
 "name" => "洛阳市",
 
-),"1504" => array( 
+),array( 
+"id" => "1504",
 "name" => "平顶山市",
 
-),"1505" => array( 
+),array( 
+"id" => "1505",
 "name" => "焦作市",
 
-),"1506" => array( 
+),array( 
+"id" => "1506",
 "name" => "鹤壁市",
 
-),"1507" => array( 
+),array( 
+"id" => "1507",
 "name" => "新乡市",
 
-),"1508" => array( 
+),array( 
+"id" => "1508",
 "name" => "安阳市",
 
-),"1509" => array( 
+),array( 
+"id" => "1509",
 "name" => "濮阳市",
 
-),"1510" => array( 
+),array( 
+"id" => "1510",
 "name" => "许昌市",
 
-),"1511" => array( 
+),array( 
+"id" => "1511",
 "name" => "漯河市",
 
-),"1512" => array( 
+),array( 
+"id" => "1512",
 "name" => "三门峡市",
 
-),"1513" => array( 
+),array( 
+"id" => "1513",
 "name" => "南阳市",
 
-),"1514" => array( 
+),array( 
+"id" => "1514",
 "name" => "商丘市",
 
-),"1515" => array( 
+),array( 
+"id" => "1515",
 "name" => "信阳市",
 
-),"1516" => array( 
+),array( 
+"id" => "1516",
 "name" => "周口市",
 
-),"1517" => array( 
+),array( 
+"id" => "1517",
 "name" => "驻马店市",
 
-),"1518" => array( 
+),array( 
+"id" => "1518",
 "name" => "济源市",
 
 ),
  ),
 
-),"16" => array( 
+),array( 
+"id" => "16",
 "name" => "河北省",
 "subArea" => array( 
-"1601" => array( 
+array( 
+"id" => "1601",
 "name" => "石家庄市",
 
-),"1602" => array( 
+),array( 
+"id" => "1602",
 "name" => "唐山市",
 
-),"1603" => array( 
+),array( 
+"id" => "1603",
 "name" => "秦皇岛市",
 
-),"1604" => array( 
+),array( 
+"id" => "1604",
 "name" => "邯郸市",
 
-),"1605" => array( 
+),array( 
+"id" => "1605",
 "name" => "邢台市",
 
-),"1606" => array( 
+),array( 
+"id" => "1606",
 "name" => "保定市",
 
-),"1607" => array( 
+),array( 
+"id" => "1607",
 "name" => "张家口市",
 
-),"1608" => array( 
+),array( 
+"id" => "1608",
 "name" => "承德市",
 
-),"1609" => array( 
+),array( 
+"id" => "1609",
 "name" => "沧州市",
 
-),"1610" => array( 
+),array( 
+"id" => "1610",
 "name" => "廊坊市",
 
-),"1611" => array( 
+),array( 
+"id" => "1611",
 "name" => "衡水市",
 
 ),
  ),
 
-),"17" => array( 
+),array( 
+"id" => "17",
 "name" => "山西省",
 "subArea" => array( 
-"1701" => array( 
+array( 
+"id" => "1701",
 "name" => "太原市",
 
-),"1702" => array( 
+),array( 
+"id" => "1702",
 "name" => "大同市",
 
-),"1703" => array( 
+),array( 
+"id" => "1703",
 "name" => "阳泉市",
 
-),"1704" => array( 
+),array( 
+"id" => "1704",
 "name" => "长治市",
 
-),"1705" => array( 
+),array( 
+"id" => "1705",
 "name" => "晋城市",
 
-),"1706" => array( 
+),array( 
+"id" => "1706",
 "name" => "朔州市",
 
-),"1707" => array( 
+),array( 
+"id" => "1707",
 "name" => "晋中市",
 
-),"1708" => array( 
+),array( 
+"id" => "1708",
 "name" => "忻州市",
 
-),"1709" => array( 
+),array( 
+"id" => "1709",
 "name" => "临汾市",
 
-),"1710" => array( 
+),array( 
+"id" => "1710",
 "name" => "运城市",
 
-),"1711" => array( 
+),array( 
+"id" => "1711",
 "name" => "吕梁地区",
 
 ),
  ),
 
-),"18" => array( 
+),array( 
+"id" => "18",
 "name" => "内蒙古",
 "subArea" => array( 
-"1801" => array( 
+array( 
+"id" => "1801",
 "name" => "呼和浩特",
 
-),"1802" => array( 
+),array( 
+"id" => "1802",
 "name" => "包头市",
 
-),"1803" => array( 
+),array( 
+"id" => "1803",
 "name" => "乌海市",
 
-),"1804" => array( 
+),array( 
+"id" => "1804",
 "name" => "赤峰市",
 
-),"1805" => array( 
+),array( 
+"id" => "1805",
 "name" => "通辽市",
 
-),"1806" => array( 
+),array( 
+"id" => "1806",
 "name" => "鄂尔多斯",
 
-),"1807" => array( 
+),array( 
+"id" => "1807",
 "name" => "乌兰察布",
 
-),"1808" => array( 
+),array( 
+"id" => "1808",
 "name" => "锡林郭勒",
 
-),"1809" => array( 
+),array( 
+"id" => "1809",
 "name" => "呼伦贝尔",
 
-),"1810" => array( 
+),array( 
+"id" => "1810",
 "name" => "巴彦淖尔",
 
-),"1811" => array( 
+),array( 
+"id" => "1811",
 "name" => "阿拉善盟",
 
-),"1812" => array( 
+),array( 
+"id" => "1812",
 "name" => "兴安盟",
 
 ),
  ),
 
-),"19" => array( 
+),array( 
+"id" => "19",
 "name" => "吉林省",
 "subArea" => array( 
-"1901" => array( 
+array( 
+"id" => "1901",
 "name" => "长春市",
 
-),"1902" => array( 
+),array( 
+"id" => "1902",
 "name" => "吉林市",
 
-),"1903" => array( 
+),array( 
+"id" => "1903",
 "name" => "四平市",
 
-),"1904" => array( 
+),array( 
+"id" => "1904",
 "name" => "辽源市",
 
-),"1905" => array( 
+),array( 
+"id" => "1905",
 "name" => "通化市",
 
-),"1906" => array( 
+),array( 
+"id" => "1906",
 "name" => "白山市",
 
-),"1907" => array( 
+),array( 
+"id" => "1907",
 "name" => "松原市",
 
-),"1908" => array( 
+),array( 
+"id" => "1908",
 "name" => "白城市",
 
-),"1909" => array( 
+),array( 
+"id" => "1909",
 "name" => "延边州",
 
 ),
  ),
 
-),"20" => array( 
+),array( 
+"id" => "20",
 "name" => "黑龙江",
 "subArea" => array( 
-"2001" => array( 
+array( 
+"id" => "2001",
 "name" => "哈尔滨市",
 
-),"2002" => array( 
+),array( 
+"id" => "2002",
 "name" => "齐齐哈尔",
 
-),"2003" => array( 
+),array( 
+"id" => "2003",
 "name" => "鹤岗市",
 
-),"2004" => array( 
+),array( 
+"id" => "2004",
 "name" => "双鸭山市",
 
-),"2005" => array( 
+),array( 
+"id" => "2005",
 "name" => "鸡西市",
 
-),"2006" => array( 
+),array( 
+"id" => "2006",
 "name" => "大庆市",
 
-),"2007" => array( 
+),array( 
+"id" => "2007",
 "name" => "伊春市",
 
-),"2008" => array( 
+),array( 
+"id" => "2008",
 "name" => "牡丹江市",
 
-),"2009" => array( 
+),array( 
+"id" => "2009",
 "name" => "佳木斯市",
 
-),"2010" => array( 
+),array( 
+"id" => "2010",
 "name" => "七台河市",
 
-),"2011" => array( 
+),array( 
+"id" => "2011",
 "name" => "黑河市",
 
-),"2012" => array( 
+),array( 
+"id" => "2012",
 "name" => "绥化市",
 
-),"2013" => array( 
+),array( 
+"id" => "2013",
 "name" => "大兴安岭",
 
 ),
  ),
 
-),"21" => array( 
+),array( 
+"id" => "21",
 "name" => "安徽省",
 "subArea" => array( 
-"2101" => array( 
+array( 
+"id" => "2101",
 "name" => "合肥市",
 
-),"2102" => array( 
+),array( 
+"id" => "2102",
 "name" => "芜湖市",
 
-),"2103" => array( 
+),array( 
+"id" => "2103",
 "name" => "蚌埠市",
 
-),"2104" => array( 
+),array( 
+"id" => "2104",
 "name" => "淮南市",
 
-),"2105" => array( 
+),array( 
+"id" => "2105",
 "name" => "马鞍山市",
 
-),"2106" => array( 
+),array( 
+"id" => "2106",
 "name" => "淮北市",
 
-),"2107" => array( 
+),array( 
+"id" => "2107",
 "name" => "铜陵市",
 
-),"2108" => array( 
+),array( 
+"id" => "2108",
 "name" => "安庆市",
 
-),"2109" => array( 
+),array( 
+"id" => "2109",
 "name" => "黄山市",
 
-),"2110" => array( 
+),array( 
+"id" => "2110",
 "name" => "滁州市",
 
-),"2111" => array( 
+),array( 
+"id" => "2111",
 "name" => "阜阳市",
 
-),"2112" => array( 
+),array( 
+"id" => "2112",
 "name" => "宿州市",
 
-),"2113" => array( 
+),array( 
+"id" => "2113",
 "name" => "巢湖市",
 
-),"2114" => array( 
+),array( 
+"id" => "2114",
 "name" => "六安市",
 
-),"2115" => array( 
+),array( 
+"id" => "2115",
 "name" => "亳州市",
 
-),"2116" => array( 
+),array( 
+"id" => "2116",
 "name" => "宣城市",
 
-),"2117" => array( 
+),array( 
+"id" => "2117",
 "name" => "池州市",
 
 ),
  ),
 
-),"22" => array( 
+),array( 
+"id" => "22",
 "name" => "湖南省",
 "subArea" => array( 
-"2201" => array( 
+array( 
+"id" => "2201",
 "name" => "长沙市",
 
-),"2202" => array( 
+),array( 
+"id" => "2202",
 "name" => "株州市",
 
-),"2203" => array( 
+),array( 
+"id" => "2203",
 "name" => "湘潭市",
 
-),"2204" => array( 
+),array( 
+"id" => "2204",
 "name" => "衡阳市",
 
-),"2205" => array( 
+),array( 
+"id" => "2205",
 "name" => "邵阳市",
 
-),"2206" => array( 
+),array( 
+"id" => "2206",
 "name" => "岳阳市",
 
-),"2207" => array( 
+),array( 
+"id" => "2207",
 "name" => "常德市",
 
-),"2208" => array( 
+),array( 
+"id" => "2208",
 "name" => "张家界市",
 
-),"2209" => array( 
+),array( 
+"id" => "2209",
 "name" => "益阳市",
 
-),"2210" => array( 
+),array( 
+"id" => "2210",
 "name" => "郴州市",
 
-),"2211" => array( 
+),array( 
+"id" => "2211",
 "name" => "永州市",
 
-),"2212" => array( 
+),array( 
+"id" => "2212",
 "name" => "怀化市",
 
-),"2213" => array( 
+),array( 
+"id" => "2213",
 "name" => "娄底市",
 
-),"2214" => array( 
+),array( 
+"id" => "2214",
 "name" => "湘西州",
 
 ),
  ),
 
-),"23" => array( 
+),array( 
+"id" => "23",
 "name" => "广西区",
 "subArea" => array( 
-"2301" => array( 
+array( 
+"id" => "2301",
 "name" => "南宁市",
 
-),"2302" => array( 
+),array( 
+"id" => "2302",
 "name" => "柳州市",
 
-),"2303" => array( 
+),array( 
+"id" => "2303",
 "name" => "桂林市",
 
-),"2304" => array( 
+),array( 
+"id" => "2304",
 "name" => "梧州市",
 
-),"2305" => array( 
+),array( 
+"id" => "2305",
 "name" => "北海市",
 
-),"2306" => array( 
+),array( 
+"id" => "2306",
 "name" => "防城港市",
 
-),"2307" => array( 
+),array( 
+"id" => "2307",
 "name" => "钦州市",
 
-),"2308" => array( 
+),array( 
+"id" => "2308",
 "name" => "贵港市",
 
-),"2309" => array( 
+),array( 
+"id" => "2309",
 "name" => "玉林市",
 
-),"2310" => array( 
+),array( 
+"id" => "2310",
 "name" => "南宁地区",
 
-),"2311" => array( 
+),array( 
+"id" => "2311",
 "name" => "柳州地区",
 
-),"2312" => array( 
+),array( 
+"id" => "2312",
 "name" => "贺州地区",
 
-),"2313" => array( 
+),array( 
+"id" => "2313",
 "name" => "百色地区",
 
-),"2314" => array( 
+),array( 
+"id" => "2314",
 "name" => "河池地区",
 
 ),
  ),
 
-),"24" => array( 
+),array( 
+"id" => "24",
 "name" => "海南省",
 "subArea" => array( 
-"2401" => array( 
+array( 
+"id" => "2401",
 "name" => "海口市",
 
-),"2402" => array( 
+),array( 
+"id" => "2402",
 "name" => "三亚市",
 
-),"2403" => array( 
+),array( 
+"id" => "2403",
 "name" => "五指山市",
 
-),"2404" => array( 
+),array( 
+"id" => "2404",
 "name" => "琼海市",
 
-),"2405" => array( 
+),array( 
+"id" => "2405",
 "name" => "儋州市",
 
-),"2406" => array( 
+),array( 
+"id" => "2406",
 "name" => "琼山市",
 
-),"2407" => array( 
+),array( 
+"id" => "2407",
 "name" => "文昌市",
 
-),"2408" => array( 
+),array( 
+"id" => "2408",
 "name" => "万宁市",
 
-),"2409" => array( 
+),array( 
+"id" => "2409",
 "name" => "东方市",
 
-),"2410" => array( 
+),array( 
+"id" => "2410",
 "name" => "澄迈县",
 
-),"2411" => array( 
+),array( 
+"id" => "2411",
 "name" => "定安县",
 
-),"2412" => array( 
+),array( 
+"id" => "2412",
 "name" => "屯昌县",
 
-),"2413" => array( 
+),array( 
+"id" => "2413",
 "name" => "临高县",
 
-),"2414" => array( 
+),array( 
+"id" => "2414",
 "name" => "白沙县",
 
-),"2415" => array( 
+),array( 
+"id" => "2415",
 "name" => "昌江县",
 
-),"2416" => array( 
+),array( 
+"id" => "2416",
 "name" => "乐东县",
 
-),"2417" => array( 
+),array( 
+"id" => "2417",
 "name" => "陵水县",
 
-),"2418" => array( 
+),array( 
+"id" => "2418",
 "name" => "保亭县",
 
-),"2419" => array( 
+),array( 
+"id" => "2419",
 "name" => "琼中县",
 
 ),
  ),
 
-),"25" => array( 
+),array( 
+"id" => "25",
 "name" => "云南省",
 "subArea" => array( 
-"2501" => array( 
+array( 
+"id" => "2501",
 "name" => "昆明市",
 
-),"2502" => array( 
+),array( 
+"id" => "2502",
 "name" => "曲靖市",
 
-),"2503" => array( 
+),array( 
+"id" => "2503",
 "name" => "玉溪市",
 
-),"2504" => array( 
+),array( 
+"id" => "2504",
 "name" => "保山市",
 
-),"2505" => array( 
+),array( 
+"id" => "2505",
 "name" => "昭通市",
 
-),"2506" => array( 
+),array( 
+"id" => "2506",
 "name" => "思茅地区",
 
-),"2507" => array( 
+),array( 
+"id" => "2507",
 "name" => "临沧地区",
 
-),"2508" => array( 
+),array( 
+"id" => "2508",
 "name" => "丽江地区",
 
-),"2509" => array( 
+),array( 
+"id" => "2509",
 "name" => "文山州",
 
-),"2510" => array( 
+),array( 
+"id" => "2510",
 "name" => "红河州",
 
-),"2511" => array( 
+),array( 
+"id" => "2511",
 "name" => "西双版纳",
 
-),"2512" => array( 
+),array( 
+"id" => "2512",
 "name" => "楚雄州",
 
-),"2513" => array( 
+),array( 
+"id" => "2513",
 "name" => "大理州",
 
-),"2514" => array( 
+),array( 
+"id" => "2514",
 "name" => "德宏州",
 
-),"2515" => array( 
+),array( 
+"id" => "2515",
 "name" => "怒江州",
 
-),"2516" => array( 
+),array( 
+"id" => "2516",
 "name" => "迪庆州",
 
 ),
  ),
 
-),"26" => array( 
+),array( 
+"id" => "26",
 "name" => "贵州省",
 "subArea" => array( 
-"2601" => array( 
+array( 
+"id" => "2601",
 "name" => "贵阳市",
 
-),"2602" => array( 
+),array( 
+"id" => "2602",
 "name" => "六盘水市",
 
-),"2603" => array( 
+),array( 
+"id" => "2603",
 "name" => "遵义市",
 
-),"2604" => array( 
+),array( 
+"id" => "2604",
 "name" => "安顺市",
 
-),"2605" => array( 
+),array( 
+"id" => "2605",
 "name" => "铜仁地区",
 
-),"2606" => array( 
+),array( 
+"id" => "2606",
 "name" => "毕节地区",
 
-),"2607" => array( 
+),array( 
+"id" => "2607",
 "name" => "黔西南州",
 
-),"2608" => array( 
+),array( 
+"id" => "2608",
 "name" => "黔东南州",
 
-),"2609" => array( 
+),array( 
+"id" => "2609",
 "name" => "黔南州",
 
 ),
  ),
 
-),"27" => array( 
+),array( 
+"id" => "27",
 "name" => "西藏区",
 "subArea" => array( 
-"2701" => array( 
+array( 
+"id" => "2701",
 "name" => "拉萨市",
 
-),"2702" => array( 
+),array( 
+"id" => "2702",
 "name" => "那曲地区",
 
-),"2703" => array( 
+),array( 
+"id" => "2703",
 "name" => "昌都地区",
 
-),"2704" => array( 
+),array( 
+"id" => "2704",
 "name" => "山南地区",
 
-),"2705" => array( 
+),array( 
+"id" => "2705",
 "name" => "日喀则",
 
-),"2706" => array( 
+),array( 
+"id" => "2706",
 "name" => "阿里地区",
 
-),"2707" => array( 
+),array( 
+"id" => "2707",
 "name" => "林芝地区",
 
 ),
  ),
 
-),"28" => array( 
+),array( 
+"id" => "28",
 "name" => "甘肃省",
 "subArea" => array( 
-"2801" => array( 
+array( 
+"id" => "2801",
 "name" => "兰州市",
 
-),"2802" => array( 
+),array( 
+"id" => "2802",
 "name" => "金昌市",
 
-),"2803" => array( 
+),array( 
+"id" => "2803",
 "name" => "白银市",
 
-),"2804" => array( 
+),array( 
+"id" => "2804",
 "name" => "天水市",
 
-),"2805" => array( 
+),array( 
+"id" => "2805",
 "name" => "嘉峪关市",
 
-),"2806" => array( 
+),array( 
+"id" => "2806",
 "name" => "武威市",
 
-),"2807" => array( 
+),array( 
+"id" => "2807",
 "name" => "定西地区",
 
-),"2808" => array( 
+),array( 
+"id" => "2808",
 "name" => "平凉地区",
 
-),"2809" => array( 
+),array( 
+"id" => "2809",
 "name" => "庆阳地区",
 
-),"2810" => array( 
+),array( 
+"id" => "2810",
 "name" => "陇南地区",
 
-),"2811" => array( 
+),array( 
+"id" => "2811",
 "name" => "张掖地区",
 
-),"2812" => array( 
+),array( 
+"id" => "2812",
 "name" => "酒泉地区",
 
-),"2813" => array( 
+),array( 
+"id" => "2813",
 "name" => "甘南州",
 
-),"2814" => array( 
+),array( 
+"id" => "2814",
 "name" => "临夏州",
 
 ),
  ),
 
-),"29" => array( 
+),array( 
+"id" => "29",
 "name" => "宁夏区",
 "subArea" => array( 
-"2901" => array( 
+array( 
+"id" => "2901",
 "name" => "银川市",
 
-),"2902" => array( 
+),array( 
+"id" => "2902",
 "name" => "石嘴山市",
 
-),"2903" => array( 
+),array( 
+"id" => "2903",
 "name" => "吴忠市",
 
-),"2904" => array( 
+),array( 
+"id" => "2904",
 "name" => "固原市",
 
 ),
  ),
 
-),"30" => array( 
+),array( 
+"id" => "30",
 "name" => "青海省",
 "subArea" => array( 
-"3001" => array( 
+array( 
+"id" => "3001",
 "name" => "西宁市",
 
-),"3002" => array( 
+),array( 
+"id" => "3002",
 "name" => "海东地区",
 
-),"3003" => array( 
+),array( 
+"id" => "3003",
 "name" => "海北州",
 
-),"3004" => array( 
+),array( 
+"id" => "3004",
 "name" => "黄南州",
 
-),"3005" => array( 
+),array( 
+"id" => "3005",
 "name" => "海南州",
 
-),"3006" => array( 
+),array( 
+"id" => "3006",
 "name" => "果洛州",
 
-),"3007" => array( 
+),array( 
+"id" => "3007",
 "name" => "玉树州",
 
-),"3008" => array( 
+),array( 
+"id" => "3008",
 "name" => "海西州",
 
 ),
  ),
 
-),"31" => array( 
+),array( 
+"id" => "31",
 "name" => "新疆区",
 "subArea" => array( 
-"3101" => array( 
+array( 
+"id" => "3101",
 "name" => "乌鲁木齐",
 
-),"3102" => array( 
+),array( 
+"id" => "3102",
 "name" => "克拉玛依",
 
-),"3103" => array( 
+),array( 
+"id" => "3103",
 "name" => "石河子市",
 
-),"3104" => array( 
+),array( 
+"id" => "3104",
 "name" => "吐鲁番",
 
-),"3105" => array( 
+),array( 
+"id" => "3105",
 "name" => "哈密地区",
 
-),"3106" => array( 
+),array( 
+"id" => "3106",
 "name" => "和田地区",
 
-),"3107" => array( 
+),array( 
+"id" => "3107",
 "name" => "阿克苏",
 
-),"3108" => array( 
+),array( 
+"id" => "3108",
 "name" => "喀什地区",
 
-),"3109" => array( 
+),array( 
+"id" => "3109",
 "name" => "克孜勒苏",
 
-),"3110" => array( 
+),array( 
+"id" => "3110",
 "name" => "巴音郭楞",
 
-),"3111" => array( 
+),array( 
+"id" => "3111",
 "name" => "昌吉州",
 
-),"3112" => array( 
+),array( 
+"id" => "3112",
 "name" => "博尔塔拉",
 
-),"3113" => array( 
+),array( 
+"id" => "3113",
 "name" => "伊犁州",
 
 ),
  ),
 
-),"32" => array( 
+),array( 
+"id" => "32",
 "name" => "香港区",
 
-),"33" => array( 
+),array( 
+"id" => "33",
 "name" => "澳门区",
 
-),"35" => array( 
+),array( 
+"id" => "35",
 "name" => "台湾省",
 
 ),
  ),
 
-),"5001" => array( 
+),array( 
+"id" => "5001",
 "name" => "越南",
 "subArea" => array( 
-"5002" => array( 
+array( 
+"id" => "5002",
 "name" => "胡志明市",
 
 ),
  ),
 
-),"5003" => array( 
+),array( 
+"id" => "5003",
 "name" => "新加坡",
 
-),"5004" => array( 
+),array( 
+"id" => "5004",
 "name" => "日本",
 "subArea" => array( 
-"5007" => array( 
+array( 
+"id" => "5007",
 "name" => "东京",
 
 ),
  ),
 
-),"5005" => array( 
+),array( 
+"id" => "5005",
 "name" => "韩国",
 
-),"5006" => array( 
+),array( 
+"id" => "5006",
 "name" => "菲律宾",
 
 ),

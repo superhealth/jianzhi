@@ -158,7 +158,20 @@ class AreaAction extends BaseAction{
 			return array_merge($subAreas,$id, $this->getSubArea($subAreas));
 		}	
 	}
-	
+
+	/**
+	 * 更新缓存
+	 */
+	public function update(){
+		if(!per_check("area_edit")){
+			$this->error("无此权限！");
+		}
+		if(D("Area")->updateCache()){
+			$this->success("更新成功！");
+		}else{
+			$this->error("更新失败！");
+		}
+	}
 }
 
 ?>

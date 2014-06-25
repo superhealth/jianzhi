@@ -74,7 +74,12 @@
 									<select name="pro_sort" id="pro_sort" rel="chosen" >
 										{$sorts|getOptions=$info['pro_sort']}
 									</select>
-									<div id="enums"></div>
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="pro_sort">项目详细分类：</label>
+								  <div class="controls">
+									<div id="enums">{$info.enums}</div>
 								  </div>
 								</div>
 								<div class="control-group">
@@ -88,7 +93,7 @@
 								<div class="control-group">
 								  <label class="control-label" for="pro_place">项目地点：</label>
 								  <div class="controls">
-									<div class="" id="pro_place">{$info.pro_place}</div>
+									<div class="" id="pro_place">{$info.place}</div>
 								  </div>
 								</div>
 								<div class="control-group">
@@ -113,13 +118,13 @@
                                 <div class="control-group">
 								  <label class="control-label" for="pro_limit">投标限制：</label>
 								  <div class="controls">
-									{$limits|getRadio="pro_limit",$info.pro_limit}
+									{$limits|getRadio="pro_limit",$info['pro_limit']}
 								  </div>
 								</div>
                                 <div class="control-group">
 								  <label class="control-label" for="pro_status">项目状态：</label>
 								  <div class="controls">
-									{$status|getRadio="pro_status",$info.pro_status}
+									{$status|getRadio="pro_status",$info['pro_status']}
 								  </div>
 								</div>
                                 <div class="control-group">
@@ -180,20 +185,9 @@
 	<include file="public:js" />
     <script type="text/javascript">
 		textareaInit("pro_description", '{$info.pro_description}');
+		
 		var imgExp = new RegExp("(.jpg|.jpeg|.gif|.png)$");
-		function memberCheck(){
-			return true;
-		}
-		function personCheck(){
-			var idscan = $("#mp_idscan").val();
-			if(idscan != "" && !imgExp.test(idscan)){
-				$("#mp_idscan").parents(".control-group").addClass("error");
-				$("#mp_idscan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
-				return false;
-			}
-			return true;
-		}
-		function companyCheck(){
+		function projectCheck(){
 			var legalscan = $("#mc_legalscan").val();
 			var licencescan = $("#mc_licencescan").val();
 			if(legalscan != "" && !imgExp.test(idscan)){
@@ -208,6 +202,14 @@
 			}
 			return true;
 		}	
+		$(function(){
+			$("#pro_createtime").datepicker("option", {maxDate: new Date()});
+		});
+		$(".area").change(function(){
+			var n = $(this).attr("id").substr(4,1);
+			var name = $(this).val();
+			findSubArea(name, parseInt(n)+1);
+		});
 	</script>
 </body>
 </html>

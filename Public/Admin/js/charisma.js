@@ -288,6 +288,24 @@ function chpw_commit(url){
 	},"text");	
 }
 
+//查询子区域
+function findSubArea(name, n){
+	var url = "/Area/getSubArea";
+	var data = {"name":name};
+	$.post(url, data, function(msg){
+		var f = parseInt(n)-1;
+		console.log(n,f);
+		$("#area"+f+"~.area").remove();
+		if(msg!=""){
+			$("<select name='area[]' id='area"+n+"' class='area'></select>").insertAfter($("#area"+f));
+			$("#area"+n).append(msg);
+			$("#area"+n).change(function(){
+				var name = $(this).val();
+				findSubArea(name, parseInt(n)+1);
+			});
+		}
+	},"text");
+}
 		
 		
 function docReady(){
