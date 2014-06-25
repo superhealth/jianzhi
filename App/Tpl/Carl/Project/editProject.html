@@ -78,37 +78,76 @@
 								  </div>
 								</div>
 								<div class="control-group">
-								  <label class="control-label" for="mem_logincount">：</label>
+								  <label class="control-label" for="pro_deposit">保证金金额：</label>
 								  <div class="controls">
-									<span class="green">{$info.mem_logincount}</span>
+									<div class="input-prepend">
+										<span class="add-on green">￥</span><input id="pro_deposit" type="text" name="pro_deposit" value="{$info.pro_deposit}" style="width:50px;text-align:right;" />
+								  	</div>
 								  </div>
 								</div>
 								<div class="control-group">
-								  <label class="control-label" for="mem_state">会员状态：</label>
+								  <label class="control-label" for="pro_place">项目地点：</label>
 								  <div class="controls">
-									{$states|getRadio="mem_state",$info['mem_state']}
+									<div class="" id="pro_place">{$info.pro_place}</div>
 								  </div>
 								</div>
 								<div class="control-group">
-								  <label class="control-label" for="mem_rank">会员积分：</label>
+								  <label class="control-label" for="pro_startstop">项目起止时间：</label>
 								  <div class="controls">
-									<input type="text" name="mem_rank" id="mem_rank" value="{$info.mem_rank}" />
+									<div class="" id="pro_startstop">{$info.pro_startstop}</div>
 								  </div>
 								</div>
 								<div class="control-group">
-								  <label class="control-label" for="mem_active">续费状态：</label>
+								  <label class="control-label" for="pro_opentime">开标日期：</label>
 								  <div class="controls">
-									<if condition="$info['mem_active'] eq 1">
-									<span class="label label-success">可用</span>
-									<else />
-									<span class="label label-danger">到期</span>
-									</if>
+									<input type="text" class="datepicker" id="pro_opentime" name="pro_opentime" value="{$info.pro_opentime}" />
 								  </div>
 								</div>
 								<div class="control-group">
-								  <label class="control-label" for="mem_expiretime">过期日期：</label>
+								  <label class="control-label" for="pro_cover">项目封面：</label>
 								  <div class="controls">
-									<input type="text" class="input-xlarge datepicker" id="mem_expiretime" name="mem_expiretime" value="{$info.mem_expiretime|timeFormat='Y-m-d'}"  />
+									<if condition="$info['cover'] neq ''"><a class="thumb" href="__ROOT__/uploads/{$info.cover}"><img src="__ROOT__/uploads/{$info.cover}" style="height:40px;" /></a></if>
+								<input type="file" name="pro_cover" id="pro_cover" /><span class="help-inline"></span>
+								  </div>
+								</div>
+                                <div class="control-group">
+								  <label class="control-label" for="pro_limit">投标限制：</label>
+								  <div class="controls">
+									{$limits|getRadio="pro_limit",$info.pro_limit}
+								  </div>
+								</div>
+                                <div class="control-group">
+								  <label class="control-label" for="pro_status">项目状态：</label>
+								  <div class="controls">
+									{$status|getRadio="pro_status",$info.pro_status}
+								  </div>
+								</div>
+                                <div class="control-group">
+								  <label class="control-label" for="pro_view">浏览量：</label>
+								  <div class="controls">
+									<input type="text" name="pro_view" id="pro_view" style="width:50px;" value="{$info.pro_view}" />
+								  </div>
+								</div>
+                                <div class="control-group">
+								  <label class="control-label" for="pro_attach">项目附件：</label>
+								  <div class="controls">
+                                  	<div class="well">
+                                    	<ul>
+                                        	<li></li>
+                                        </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="control-group">
+								  <label class="control-label" for="pro_description">项目说明：</label>
+								  <div class="controls">
+									<script type="text/plain" name="pro_description" id="pro_description"></script>
+								  </div>
+								</div>
+                                <div class="control-group">
+								  <label class="control-label" for="pro_addition">项目补充：</label>
+								  <div class="controls">
+									<textarea class="autogrow" name="pro_addition" id="pro_addition" >{$info.pro_addition}</textarea>
 								  </div>
 								</div>
 								<div class="form-actions">
@@ -140,6 +179,7 @@
 	</div>
 	<include file="public:js" />
     <script type="text/javascript">
+		textareaInit("pro_description", '{$info.pro_description}');
 		var imgExp = new RegExp("(.jpg|.jpeg|.gif|.png)$");
 		function memberCheck(){
 			return true;

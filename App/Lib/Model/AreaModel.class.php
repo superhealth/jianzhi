@@ -11,7 +11,7 @@ class AreaModel extends Model{
 		$flag = $flag==false ? false : (time()-filectime($cacheFile)>864000);
 		if(!file_exists($cacheFile) || $flag){
 			$str = "<?php \nreturn array( \n";
-			$areas = M("area")->where("area_reid=0")->select();
+			$areas = $this->where("area_reid=0")->select();
 			$str .= $this->getAreas($areas);
 			$str .= "\n); \n?>";
 			@chmod(SYSCONF_DIR, 0777);

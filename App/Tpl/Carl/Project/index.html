@@ -63,8 +63,8 @@
 										<td><a href="__URL__/editProject/id/{$item.pro_id}" title="{$item.pro_subject}">{$item.subject} ..</a></td>
 										<td><a href="__GROUP__/Member/memberInfo/id/{$item.pro_mid}" >{$item.pro_mid}</a></td>
 										<td>{$item.publishtime|timeFormat="Y-m-d"}</td>
-										<td>{$item.pp_name}</td>
-										<td>{$item.sort_name}</td>
+										<td>{$props[$item['pro_prop']]}</td>
+										<td>{$sorts[$item['pro_sort']]}</td>
 										<td><span class="label label{$item.pro_status|switchProStatus}">{$status[$item['pro_status']]}</span></td>
 										<td>{$item.bidders}</td>
 										<td>
