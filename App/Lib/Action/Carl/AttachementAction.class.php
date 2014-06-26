@@ -49,10 +49,11 @@ class AttachementAction extends BaseAction{
 			}
 			$name = empty($_POST['att_name']) ? "" : $_POST['att_name'];
 			//上传文件
-			$uploadInfo = upload(false, $name);
+			$uploadInfo = upload($_SESSION['user'],false, $name);
 			if($uploadInfo[0]){
 				$att_data = array(
 						'att_name'	=> $uploadInfo[1][0]['savename'],
+						'att_path'	=> trim($uploadInfo[1][0]['savepath'],".").$uploadInfo[1][0]['savename'],
 						'att_type'	=> $uploadInfo[1][0]['extension'],
 						'att_size'	=> getFileSize($uploadInfo[1][0]['size']),
 						'att_mid'		=> $_SESSION['user'],
@@ -81,7 +82,7 @@ class AttachementAction extends BaseAction{
 			</div>
 			<div class="modal-body">
 				<div class="control-group">
-					<label class="control-label" for="attache">职位名称</label>
+					<label class="control-label" for="attache">选择附件</label>
 					<div class="controls">
 						 <input type="file" id="attache" name="attache" />
 						 <span class="help-inline"></span>
@@ -131,7 +132,7 @@ class AttachementAction extends BaseAction{
 	public function download($id=""){
 		$attach = M("attachement")->where("att_id={$id}")->find();
 		if($attach){
-			$download = attDownload($attach['att_name']);
+			$download = attDownload($attach['att_path'], $attach['att_name']);
 			if($download!==true){
 				$this->closeWin = true;
 				$this->error("下载失败：{$download}");

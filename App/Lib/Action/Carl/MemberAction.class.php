@@ -150,21 +150,16 @@ class MemberAction extends BaseAction{
 			}
 		}
 		if($flag){
-			$uploadInfo = upload(true,"");
+			$uploadInfo = upload($data['mp_mid'],true);
 			if($uploadInfo[0]){
-				foreach($uploadInfo[1] as $v){
-					$att_data = array(
-							'att_name'	=> $v['savename'],
-							'att_type'	=> $v['extension'],
-							'att_size'	=> getFileSize($v['size']),
-							'att_mid'		=> $_SESSION['user'],
-							'att_time'	=> time()
-					);
-					//保存附件ID
-					$data[$v['key']] = M("attachement")->add($att_data);
+				$att_data = D("Attachement")->addAtt($uploadInfo[1], $data['mp_id']);
+				foreach($att_data as $key=>$val){
+					$data[$key] = $val;
 					//获取原附件ID
-					$oldAtt[] = M("membercompany")->where("mc_id={$data['mc_id']}")->getField($v['key']);
+					$oldAtt[] = M("memberperson")->where("mp_id={$data['mp_id']}")->getField($key);
 				}
+			}else{
+				$this->error($uploadInfo[1]);
 			}
 		}
 		// 保存个人信息
@@ -196,18 +191,13 @@ class MemberAction extends BaseAction{
 			}
 		}
 		if($flag){
-			$uploadInfo = upload(true,"");
+			$uploadInfo = upload($data['mc_mid'],true);
 			if($uploadInfo[0]){
-				foreach($uploadInfo[1] as $v){
-					$att_data = array(
-							'att_name'	=> $v['savename'],
-							'att_type'	=> $v['extension'],
-							'att_size'	=> getFileSize($v['size']),
-							'att_mid'		=> $_SESSION['user'],
-							'att_time'	=> time()
-					);
-					$data[$v['key']] = M("attachement")->add($att_data);
-					$oldAtt[] = M("membercompany")->where("mc_id={$data['mc_id']}")->getField($v['key']);
+				$att_data = D("Attachement")->addAtt($uploadInfo[1], $data['mc_id']);
+				foreach($att_data as $key=>$val){
+					$data[$key] = $val;
+					//获取原附件ID
+					$oldAtt[] = M("memberperson")->where("mc_id={$data['mc_id']}")->getField($key);
 				}
 			}
 		}
@@ -237,8 +227,8 @@ class MemberAction extends BaseAction{
 				$this->error("参数错误！");
 			}
 			// 企业相关证件扫描附件
-			$info['legalscan'] = M("attachement")->where("att_id={$info['mc_legalscan']}")->getField("att_name");
-			$info['licencescan'] = M("attachement")->where("att_id={$info['mc_licencescan']}")->getField("att_name");
+			$info['legalscan'] = M("attachement")->where("att_id={$info['mc_legalscan']}")->getField("att_path");
+			$info['licencescan'] = M("attachement")->where("att_id={$info['mc_licencescan']}")->getField("att_path");
 			// 企业审核状态
 			$this->assign("status", $this->status);
 		}else{
@@ -248,7 +238,7 @@ class MemberAction extends BaseAction{
 				$this->error("参数错误！");
 			}
 			// 个人证件扫描附件
-			$info['idscan'] = M("attachement")->where("att_id={$info['mp_idscan']}")->getField("att_name");
+			$info['idscan'] = M("attachement")->where("att_id={$info['mp_idscan']}")->getField("att_path");
 			// 性别枚举
 			$this->assign("sexes", $this->sexes);
 		}

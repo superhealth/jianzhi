@@ -220,8 +220,7 @@ $(document).ready(function(){
 /**
    *初始化文本编辑器
  **/
-function textareaInit(id,defaultText,height){
-	if(!defaultText)defaultText="";
+function textareaInit(id,height){
 	if(!height){height = 180;}
 	UE.getEditor(id,{
 		//这里可以选择自己需要的工具按钮名称
@@ -231,7 +230,7 @@ function textareaInit(id,defaultText,height){
 		//focus时自动清空初始化时的内容
 		autoClearinitialContent:false,
 		//初始化的内容
-		initialContent:defaultText,
+		initialContent:'',
 		//初始化宽高
 		initialFrameWidth:640,
 		initialFrameHeight:height,
@@ -294,7 +293,6 @@ function findSubArea(name, n){
 	var data = {"name":name};
 	$.post(url, data, function(msg){
 		var f = parseInt(n)-1;
-		console.log(n,f);
 		$("#area"+f+"~.area").remove();
 		if(msg!=""){
 			$("<select name='area[]' id='area"+n+"' class='area'></select>").insertAfter($("#area"+f));

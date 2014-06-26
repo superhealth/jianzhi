@@ -154,12 +154,19 @@ class Http {
         }elseif($content != '') {
             $length = strlen($content);
         }else {
-            throw_exception($filename.L('下载文件不存在！'));
+        	$filename = iconv('UTF-8','GB2312',$filename);
+        	if(is_file($filename)){
+        		$length = filesize($filename);
+        	}else{
+	            //throw_exception($filename.L('下载文件不存在！'));
+	            return $filename.L('下载文件不存在！');
+        	}
         }
         if(empty($showname)) {
             $showname = $filename;
         }
-        $showname = basename($showname);
+        $showname = preg_replace('/^.+[\\\\\\/]/', '', $showname);
+        //$showname = basename($showname);
 		if(!empty($filename)) {
 	        $type = mime_content_type($filename);
 		}else{
@@ -309,6 +316,7 @@ if( !function_exists ('mime_content_type')) {
 			'dll'		=> 'application/octet-stream',
 			'dms'		=> 'application/octet-stream',
 			'doc'		=> 'application/msword',
+       		'docx'		=> 'application/msword',
 			'dot'		=> 'application/msword',//added by skwashd
 			'dvi'		=> 'application/x-dvi',
 			'dxr'		=> 'application/x-director',
@@ -463,6 +471,7 @@ if( !function_exists ('mime_content_type')) {
 			'xht'		=> 'application/xhtml+xml',
 			'xhtml'		=> 'application/xhtml+xml',
 			'xls'		=> 'application/vnd.ms-excel',
+       		'xlsx'		=> 'application/vnd.ms-excel',
 			'xlt'		=> 'application/vnd.ms-excel',
 			'xml'		=> 'application/xml',
 			'xpm'		=> 'image/x-xpixmap',

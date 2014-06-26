@@ -24,7 +24,7 @@ function response_msg($msg, $flag="error", $ajax=false){
 
 //json encode without null
 function json_encode_nonull($jsondata){
-	return $json_nonull = str_replace("null", "''", json_encode($jsondata));
+	return str_replace("null", '""', json_encode($jsondata));
 }
 
 //time format
@@ -338,7 +338,7 @@ function getFileSize($size){
  * @return string
  */
 
-function upload($imgOnly=true, $saveRule="", $type=""){
+function upload($author, $imgOnly=true, $saveRule=""){
 	import('ORG.Net.UploadFile');
 	$upload = new UploadFile();
 	$upload->thumb = false;							//是否生成缩略图
@@ -352,9 +352,15 @@ function upload($imgOnly=true, $saveRule="", $type=""){
 	if($imgOnly){
 		$upload->allowExts = array('jpg', 'gif', 'png', 'jpeg');
 	}else{
-		$upload->allowExts  = array('jpg', 'gif', 'png', 'jpeg', 'zip', 'rar', 'pdf', 'txt');		// 设置附件上传类型
+		$upload->allowExts  = array('jpg', 'gif', 'png', 'jpeg', 'zip', 'rar', 'pdf', 'txt','doc','docx','xls','xlsx');		// 设置附件上传类型
 	}
-	$upload->savePath = './uploads/';	// 设置附件上传目录
+	$savePath = './uploads/'.date("Ymd")."/";
+	if(!is_dir($savePath)){
+		mkdir($savePath);
+	}elseif(!is_dir($savePath.$author."/")){
+		mkdir($savePath.$author."/");
+	}
+	$upload->savePath = $savePath.$author."/";	// 设置附件上传目录
 	if(!$upload->upload()) {
 		$info[] = false;
 		$info[] = $upload->getErrorMsg();	// 上传错误提示错误信息
@@ -373,10 +379,10 @@ function attDelete($id){
 	if(!is_array($id)){
 		$id = array($id);
 	}
-	$attInfo = M("attachement")->field("att_id, att_name")->where(array("att_id" => array("in",$id)))->select();
+	$attInfo = M("attachement")->field("att_id, att_path")->where(array("att_id" => array("in",$id)))->select();
 	$errors = array();
 	foreach ($attInfo as $v){
-		if(fileDelete($v['att_name'])){
+		if(fileDelete($v['att_path'])){
 			M("attachement")->where("att_id = {$v['att_id']}")->delete();
 		}else{
 			$errors[] = $v['att_id'];
@@ -393,7 +399,7 @@ function attDelete($id){
  */
 function fileDelete($file, $dir=""){
 	$dir = preg_replace("/[\\\/]$/", "", $dir);
-	$path = empty($dir) ? $_SERVER['DOCUMENT_ROOT'].__ROOT__."/uploads/{$file}" : $dir."/".$file;
+	$path = empty($dir) ? $_SERVER['DOCUMENT_ROOT'].__ROOT__."/{$file}" : $dir."/".$file;
 	//file_exists() 检测中文文件名需要转码
 	$path=iconv('UTF-8','GB2312',$path);
 	if(file_exists($path)){
@@ -407,13 +413,15 @@ function fileDelete($file, $dir=""){
  * @param 文件名 $file
  * @return boolean
  */
-function attDownload($file, $dir=""){
+function attDownload($file, $showname){
 	import("ORG.Net.Http");
 	$down = new Http();
 	$dir = preg_replace("/[\\\/]$/", "", $dir);
-	$filename = empty($dir) ? $_SERVER['DOCUMENT_ROOT'].__ROOT__."/uploads/".$file : $dir."/".$file;
-	if(!$down->download($filename)) {
-		return $down->geterrormsg();
+	$filename = empty($dir) ? $_SERVER['DOCUMENT_ROOT'].__ROOT__.$file : $dir."/".$file;
+	
+	$res = $down->download($filename,$showname);
+	if(true!==$res) {
+		return $res;
 	}
 	return true;
 }
@@ -459,9 +467,9 @@ function areaToSelect($areaArr, $n=1, $areas=""){
 	$select .= "</select>";
 	if(!empty($subArea)){
 		$areaArr = array_shift($areaArr);
-		$select .= areaToSelect($areaArr, $n++, $subArea);
+		$select .= areaToSelect($areaArr, ++$n, $subArea);
 	}elseif(isset($areas[0]['subArea'])){
-		$select .= areaToSelect(array(), $n++, $areas[0]['subArea']);
+		$select .= areaToSelect(array(), ++$n, $areas[0]['subArea']);
 	}
 	unset($areas);
 	return $select;
@@ -508,12 +516,6 @@ function enumsToSelect($sortId, $enum=""){
 	unset($enums);
 	return $select;
 }
-
-/**
- * 
- * 
- */
-
 
 
 

@@ -155,6 +155,8 @@ class ProjectAction extends BaseAction{
 				$info = M("project")->where("pro_id={$_REQUEST['id']}")->find();
 				$info['place'] = areaToSelect(areaDecode($info['pro_place']));
 				$info['enums'] = enumsToSelect($info['pro_sort'], enumsDecode($info['pro_enums']));
+				$atts = D("Attachement")->getAtt($info['pro_attachement']);
+				$this->assign("atts", $atts);
 				$this->assign("info", $info);
 				//项目状态
 				$this->assign("status", $this->status);

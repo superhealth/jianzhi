@@ -34,4 +34,24 @@ class BidderModel extends Model{
 		}
 		return $this->where($where)->count();
 	}
+	
+
+	public function addAtts($id, $att){
+		
+		//$id = addslashes($id);
+		//$old = $this->where("bid_id={$id}")->getField("pro_attachement", true);
+		//$new = implode(",", array_merge(explode(",",$old), $att));
+		//dump($new);exit;
+		//return $this->where("pro_id={$id}")->setField("pro_attachement", $new);
+	}
+	
+	public function delAtts($id, $att){
+		//$id = addslashes($id);
+		//$old = $this->where("pro_id={$id}")->getField("pro_attachement", true);
+		//$new = implode(",",array_diff(explode(",", $old), $att));
+		//dump($new);exit;
+		//return $this->where("pro_id={$id}")->setField("pro_attachement", $new);
+	}
+	
+	
 }

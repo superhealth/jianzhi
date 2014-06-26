@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>上传附件</title>
+<link id="bs-css" href="__PUBLIC__/Admin/css/bootstrap-cerulean.css" rel="stylesheet">
+</head>
+<body>
+	<form method="post" class="form-horizontal" enctype="multipart/form-data" >
+		<fieldset>
+		<div class="control-group">
+			<label class="control-label" for="attache">选择附件</label>
+			<div class="controls">
+				 <input type="file" id="attache" name="attache" />
+				 <span class="help-inline"></span>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="att_name">附件名称</label>
+			<div class="controls">
+				<input type="text" name="att_name" id="att_name" />
+				<br /><span>留空保留原文件名</span><br />
+				<span class="help-inline"></span>
+			</div>
+		</div>
+		<div>
+			<a href="#" class="btn" data-dismiss="modal">关闭</a>
+			<a href="#" class="btn btn-primary" id="commit" data-act="__APP__/Attache/add">上传</a>
+		</div>
+		</fieldset>
+	</form>
+	<script type="text/javascript">
+	
+	</script>
+</body>
+</html>

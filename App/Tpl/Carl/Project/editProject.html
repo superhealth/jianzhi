@@ -32,7 +32,7 @@
 						</div>
 						<div class="box-content tab-pane">
 							<form class="form-horizontal" action="__ACTION__" method="post" enctype="multipart/form-data" onSubmit="return projectCheck();" >
-							  <input type="hidden" name="pro_id" value="{$info.pro_id}" />
+							  <input type="hidden" id="pro_id" name="pro_id" value="{$info.pro_id}" />
 							  <input type="hidden" name="action" value="save" />
 							  <fieldset>
 								<div class="control-group">
@@ -56,7 +56,7 @@
 								<div class="control-group">
 								  <label class="control-label" for="pro_subject">项目主题：</label>
 								  <div class="controls">
-									<input type="text" class="span8" id="pro_subject" name="pro_subject" value="{$info.pro_subject}" />
+									<input type="text" style="width:640px;" id="pro_subject" name="pro_subject" value="{$info.pro_subject}" />
 									<span class="help-inline"></span>
 								  </div>
 								</div>
@@ -93,13 +93,13 @@
 								<div class="control-group">
 								  <label class="control-label" for="pro_place">项目地点：</label>
 								  <div class="controls">
-									<div class="" id="pro_place">{$info.place}</div>
+									<div id="pro_place">{$info.place}</div>
 								  </div>
 								</div>
 								<div class="control-group">
 								  <label class="control-label" for="pro_startstop">项目起止时间：</label>
 								  <div class="controls">
-									<div id="pro_startstop">{$info.pro_startstop}</div>
+									<input type="text" name="pro_startstop" id="pro_startstop" value="{$info.pro_startstop}" placeholder="Y年m月d日-Y年m月d日、不限" />
 								  </div>
 								</div>
 								<div class="control-group">
@@ -136,23 +136,41 @@
                                 <div class="control-group">
 								  <label class="control-label" for="pro_attach">项目附件：</label>
 								  <div class="controls">
-                                  	<div class="well">
-                                    	<ul>
-                                        	<li></li>
-                                        </ul>
+                                  	<div class="well" style="width:640px;">
+                                    	<table class="table table-bordered" id="att-table">
+										  <thead>
+										    <tr>
+											  <th>附件名</th>
+											  <th>大小</th>
+											  <th>操作</th> 
+										  	</tr>
+										  </thead>   
+										  <tbody>
+										  	<volist name="atts" id="item">
+										    <tr>
+											  <td><input type="hidden" name="pro_attachement[]" value="'+data.data[i].att_id+'" />{$item.att_name}</td>
+											  <td>{$item.att_size}</td>
+											  <td><button type="button" class="btn btn-mini btn-danger" onclick="delAtt(this,'{$item.att_id}');"><i class="icon icon-white icon-trash"></i>删除</button></td>
+											</tr>
+											</volist>
+										  </tbody>
+										</table>
+										<input data-no-uniform="true" type="file" name="pro_attach" id="attach_add"  multiple="true" />
+										<div id="upfileLists"></div>
+										<button type="button" class="btn btn-mini btn-primary" onclick="$('#attach_add').uploadify('upload','*');">上传</button> <button type="button" class="btn btn-mini btn-warning" onclick="$('#attach_add').uploadify('cancel');">取消</button>
                                     </div>
                                   </div>
                                 </div>
                                 <div class="control-group">
 								  <label class="control-label" for="pro_description">项目说明：</label>
 								  <div class="controls">
-									<script type="text/plain" name="pro_description" id="pro_description"></script>
+									<script type="text/plain" name="pro_description" id="pro_description">{$info.pro_description|htmlentities}</script>
 								  </div>
 								</div>
                                 <div class="control-group">
 								  <label class="control-label" for="pro_addition">项目补充：</label>
 								  <div class="controls">
-									<textarea class="autogrow" name="pro_addition" id="pro_addition" >{$info.pro_addition}</textarea>
+									<textarea class="autogrow" style="width:630px;" name="pro_addition" id="pro_addition" >{$info.pro_addition}</textarea>
 								  </div>
 								</div>
 								<div class="form-actions">
@@ -170,22 +188,15 @@
 		<div class="modal hide fade" id="myModal">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Settings</h3>
+				<h3>上传附件</h3>
 			</div>
 			<div class="modal-body">
-				<p>Here settings can be configured...</p>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="btn" data-dismiss="modal">Close</a>
-				<a href="#" class="btn btn-primary">Save changes</a>
 			</div>
 		</div>
 		<include file="public:footer" />
 	</div>
 	<include file="public:js" />
     <script type="text/javascript">
-		textareaInit("pro_description", '{$info.pro_description}');
-		
 		var imgExp = new RegExp("(.jpg|.jpeg|.gif|.png)$");
 		function projectCheck(){
 			var legalscan = $("#mc_legalscan").val();
@@ -204,19 +215,81 @@
 		}	
 		$(function(){
 			$("#pro_createtime").datepicker("option", {maxDate: new Date()});
-		});
-		$(".area").change(function(){
-			var n = $(this).attr("id").substr(4,1);
-			var name = $(this).val();
-			findSubArea(name, parseInt(n)+1);
-		});
 		
-		$("#pro_sort").change(function(){
-			var sortid = $(this).val();
-			$.post("/Sort/getEnums", "sortid="+sortid, function(res){
-				$('#enums').html(res);	
-			}, "text");
+			$(".area").change(function(){
+				var n = $(this).attr("id").substr(4,1);
+				var name = $(this).val();
+				findSubArea(name, parseInt(n)+1);
+			});
+			
+			$("#pro_sort").change(function(){
+				var sortid = $(this).val();
+				$.post("/Sort/getEnums", "sortid="+sortid, function(res){
+					$('#enums').html(res);	
+				}, "text");
+			});
+			
+			$("#attach_add").uploadify({
+			'auto':false,
+			'queueID':'upfileLists',
+			'fileObjName':'upload',
+			'multi':true,
+			'uploader':'__APP__/Attach/upload',
+			'formData': {"belong":"project", "id":$("#pro_id").val()},
+			'fileTypeDesc':'支持的格式：',
+			'fileTypeExts':'*.jpg;*.jpge;*.gif;*.png;*.rar;*.zip;*.pdf;*.doc;*.docx;*.xls;*.xlsx',
+			'fileSizeLimit':'1MB',
+			'queueSizeLimit' : 5,
+			'onSelectError':function(file, errorCode, errorMsg){
+				switch(errorCode) {
+					case -100:
+						bootbox.alert("上传的文件数量已经超出系统限制的5个总数量！");
+						break;
+					case -110:
+						bootbox.alert("文件 ["+file.name+"] 大小超出系统限制的1M大小！");
+						break;
+					case -120:
+						bootbox.alert("文件 ["+file.name+"] 大小异常！");
+						break;
+					case -130:
+						bootbox.alert("文件 ["+file.name+"] 类型不正确！");
+						break;
+					default:
+						bootbox.alert(errorMsg);
+				}
+			},
+			'onFallback':function(){
+				bootbox.alert("您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
+			},
+			'onUploadSuccess':function(file, data, response){
+				if(!response){
+					bootbox.alert("连接服务器失败！请检查网络！");
+				}else{
+					var data = eval("("+data+")");
+					if(data.code==1){
+						for(var i=0; i<data.data.length;i++){
+							$("#att-table tbody").append('<tr><td><input type="hidden" name="pro_attachement[]" value="'+data.data[i].att_id+'" />'+data.data[i].att_name+'</td><td>'+data.data[i].att_size+'</td><td><button type="button" class="btn btn-mini btn-danger" onclick="delAtt(this,'+data.data[i].att_id+');"><i class="icon icon-white icon-trash"></i>删除</button></td></tr>');
+						}
+					}else{
+						bootbox.alert(data.data);
+					}
+				}
+			}
 		});
+	});	
+	function delAtt(obj,id){
+		try{$.get("/Attach/del", {"belong":"project", "id":$("#pro_id").val(), "attId":id}, function(res){
+			if(res=="success"){
+				$(obj).parent().parent().remove();
+			}else{
+				bootbox.alert(res);
+			}
+		}, "text");
+		}catch(e){
+			bootbox.alert("网络连接失败！");
+		}
+	}
+	textareaInit("pro_description");
 	</script>
 </body>
 </html>
