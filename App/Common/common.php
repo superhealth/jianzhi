@@ -473,7 +473,7 @@ function areaToSelect($areaArr, $n=1, $areas=""){
  * @return array 分割后的数组
  */
 function enumsDecode($enumStr){
-	return explode("|", trim($areaStr));
+	return explode("|", trim($enumStr));
 }
 /**
  * 详细分类组合数组转为数组
@@ -482,15 +482,20 @@ function enumsDecode($enumStr){
  */
 function enumsEncode($enumArr){
 	$enumArr = array_map("addslashes", $enumArr);
-	return implode("|", $areaArr);
+	return implode("|", $enumArr);
 }
-
+/**
+ * 
+ * @param int $sortId 主分类id
+ * @param array $enum 选中的分类
+ * @return string 下拉框
+ */
 function enumsToSelect($sortId, $enum=""){
 	$enums = D("Enumsort")->getEnums($sortId);
 	$select = "";
 	$flag = is_array($enum) ? true : false;
 	foreach($enums as $k=>$v){
-		$select .= "<select id='{$k}' name='enums[]' class='enum'><option value='no'>不限</option>";
+		$select .= "<span class='label label-success'>{$k}</span>:<select id='{$k}' name='enums[]' class='enum'><option value='no'>不限</option>";
 		foreach($v as $val){
 			if($flag && in_array($val, $enum)){
 				$select .= "<option value='{$val}' checked >{$val}</option>";
@@ -503,5 +508,23 @@ function enumsToSelect($sortId, $enum=""){
 	unset($enums);
 	return $select;
 }
+
+/**
+ * 
+ * 
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -127,7 +127,7 @@ class ProjectAction extends BaseAction{
 		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_createtime";
 		// 排序
 		$order = "pro_publishtime DESC";
-		$projects = $project->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
+		$projects = $project->field($field)->where($map)->order($order)->limit($limit)->select();
 		/* // 项目状态
 		$this->assign("status", array( "1"=> "招标中", "2"=> "已开标", "3"=>"关闭"));
 		$this->assign("projects", $projects); */
@@ -196,7 +196,7 @@ class ProjectAction extends BaseAction{
 			}
 		}
 		$this->assign("param", $param);
-		$total = $project->where($map)->count();
+		$total = $history->where($map)->count();
 		import("Org.Util.Page");
 		$page = new Page($total, 12, $param);
 		// 分页查询
@@ -205,9 +205,6 @@ class ProjectAction extends BaseAction{
 		$this->assign("pager", $pager);
 		$join = array(
 				"zt_bidder ON pro_id=bid_proid",
-				"zt_member ON pro_mid=mem_id",
-				"zt_sort ON pro_sort=sort_id",
-				"zt_property ON pro_prop=pp_id"
 		);
 		$field = "";
 		$order = "";
@@ -240,11 +237,11 @@ class ProjectAction extends BaseAction{
 		$map = array("pro_id"=>array("in", $id));
 		$names = M("project")->where($map)->getField("pro_subject", true);
 		$atts = M("project")->where($map)->getField("pro_attachment", true);
-		$deposit = M("bidder")->join("zt_deposit ON de_sn=bid_sn")->where(array("bid_proid"=>array("in", $id)))->getField("de_id");
+		$deposit = M("bidder")->join("zt_deposit ON de_sn=bid_sn")->where(array("bid_proid"=>array("in", $id)))->getField("de_id", true);
 		if(M("project")->where($map)->delete()){
 			//删除成功，删除附件，退款
 			attDelete($atts);
-			Alipay::backDeposit($deposit);
+			D("Deposit")->backDeposit($deposit);
 			$this->watchdog("删除", "删除项目《".implode("》，《", $names)."》");
 			$this->success("删除成功！");
 			
