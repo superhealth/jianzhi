@@ -289,10 +289,10 @@ class ProjectAction extends BaseAction{
 		
 		$this->display();
 	}
-	
-	
+		
 	/**
 	 * 删除项目
+	 * @param string $id 项目id
 	 */
 	public function delProject($id=""){
 		if(!per_check("project_edit")){
@@ -309,6 +309,29 @@ class ProjectAction extends BaseAction{
 			$this->watchdog("删除", "删除项目《".implode("》，《", $names)."》");
 			$this->success("删除成功！");
 			
+		}else{
+			$this->error("删除失败！");
+		}
+	}
+	
+	/**
+	 * 删除档案
+	 * @param string $id 档案id
+	 */
+	public function delHistory($id=""){
+		if(!per_check("project_edit")){
+			$this->error("无此权限！");
+		}
+		$map = array("re_id"=>array("in", $id));
+		$names = M("pro_record")->where($map)->getField("pro_subject", true);
+		$atts = M("pro_record")->where($map)->getField("pro_attachment", true);
+		//$deposit = M("bidder")->join("zt_deposit ON de_trade_no=bid_sn")->where(array("bid_proid"=>array("in", $id)))->getField("de_id", true);
+		if(M("pro_record")->where($map)->delete()){
+			//删除成功，删除附件，
+			attDelete($atts);
+			$this->watchdog("删除", "删除项目历史档案《".implode("》，《", $names)."》");
+			$this->success("删除成功！");
+				
 		}else{
 			$this->error("删除失败！");
 		}

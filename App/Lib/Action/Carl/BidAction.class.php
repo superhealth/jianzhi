@@ -1,7 +1,7 @@
 <?php
 /**
  * 投标管理模块
- * @author Carl
+ * @author dapianzi
  *
  */
 class BidAction extends BaseAction{
