@@ -220,7 +220,7 @@ function getOptions($options, $id=null){
 function getOptionsNoValue($options, $opt=""){
 	$option = "";
 	foreach($options as $v){
-		$select = $v==$opt&&$name!=="" ? "selected='selected'" : "";
+		$select = $v==$opt&&$opt!=="" ? "selected='selected'" : "";
 		$option .= "<option {$select}>{$v}</option>";
 	}
 	echo $option;
@@ -451,14 +451,14 @@ function areaDecode($areaStr){
  * @return string
  */
 function areaToSelect($areaArr, $n=1, $areas=""){
-	$select = "<select id='area{$n}' name='area[]' class='area' >";
+	$select = "<select id='area{$n}' name='area[]' class='area' ><option value='no'>不限</option>";
 	if(empty($areas)){
 		$areas = D("Area")->Areas();
 	}
 	$subArea = false;
 	foreach($areas as $v){
-		if(isset($areaArr[0]) && $v['name']==$areaArr[0]){
-			$select .= "<option value='{$v['name']}' checked >{$v['name']}</option>";
+		if(is_array($areaArr) && in_array($v['name'],$areaArr)){
+			$select .= "<option value='{$v['name']}' selected >{$v['name']}</option>";
 			$subArea = $v['subArea'];
 		}else{
 			$select .= "<option value='{$v['name']}' >{$v['name']}</option>";
@@ -466,7 +466,6 @@ function areaToSelect($areaArr, $n=1, $areas=""){
 	}
 	$select .= "</select>";
 	if(!empty($subArea)){
-		$areaArr = array_shift($areaArr);
 		$select .= areaToSelect($areaArr, ++$n, $subArea);
 	}elseif(isset($areas[0]['subArea'])){
 		$select .= areaToSelect(array(), ++$n, $areas[0]['subArea']);
@@ -506,7 +505,7 @@ function enumsToSelect($sortId, $enum=""){
 		$select .= "<span class='label label-success'>{$k}</span>:<select id='{$k}' name='enums[]' class='enum'><option value='no'>不限</option>";
 		foreach($v as $val){
 			if($flag && in_array($val, $enum)){
-				$select .= "<option value='{$val}' checked >{$val}</option>";
+				$select .= "<option value='{$val}' selected >{$val}</option>";
 			}else{
 				$select .= "<option value='{$val}' >{$val}</option>";
 			}

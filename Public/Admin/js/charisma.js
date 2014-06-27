@@ -24,7 +24,8 @@ $(document).ready(function(){
 	/**
 	 * 表单提交
 	 */
-	$("._delete_").click(function(){
+	$("._delete_").click(function(e){
+		e.preventDefault();
 		_href = $(this).attr("data-href");
 		bootbox.confirm("确定删除吗?",function(res){
 			if(res){

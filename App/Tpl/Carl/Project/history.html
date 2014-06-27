@@ -1,10 +1,114 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
+	<meta charset="utf-8">
+	<title> 后台数据管理中心</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<include file="public:css" />
 </head>
-
 <body>
+	<include file="public:header" />
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<include file="public:left" />
+			<div id="content" class="span10">
+				<div>
+					<ul class="breadcrumb">
+						<li><a href="__GROUP__">首页</a> <span class="divider">/</span></li>
+						<li><a href="__URL__/index">招投项目管理</a> <span class="divider">/</span></li>
+                        <li><a href="#">招投项目档案</a></li>
+					</ul>
+				</div>
+				<div class="row-fluid sortable">
+					<div class="box">
+						<div class="box-header well" data-original-title>
+							<h2>项目列表</h2>
+						</div>
+						<div class="box-content">
+							<div class="row-fluid">
+								<form method="get" action="__URL__/index">
+									<div class="span10">项目属性：<select name="prop" class=" _filter" data-rel="chosen">
+										<option value="all">全部</option>
+										{$props|getOptions=$param['prop']}
+									</select>&nbsp;&nbsp;
+									项目类别：<select name="sort" class=" _filter" data-rel="chosen">
+										<option value="all">全部</option>
+										{$sorts|getOptions=$param['sort']}
+									</select>&nbsp;&nbsp;
+									项目状态：<select name="status" class=" _filter" data-rel="chosen">
+										<option value="all">全部</option>
+										{$status|getOptions=$param['status']}
+									</select>&nbsp;&nbsp;
+									 按标题或用户查找: <input type="text" name="words"  class="_filter_txt" value="{$param.words}" /></div>
+								</form>
+							</div>
+                            <form method="post">
+							<table class="table table-bordered">
+								 <thead>
+									  <tr>
+										  <th><input type="checkbox" />项目序列号</th>
+										  <th>项目主题</th>
+										  <th>作者</th>
+										  <th>发布时间</th>
+										  <th>生产属性</th>
+										  <th>类别</th>
+										  <th>项目状态</th>
+										  <th>投标数量</th>
+										  <th>操作</th> 
+									  </tr>
+								  </thead>   
+								  <tbody>
+									<volist name="historys" id="item">
+									<tr>
+										<td><input type="checkbox" name="id[]" value="{$item.re_id}" />{$item.pro_sn}</td>
+										<td>{$item.subject} ..</td>
+										<td><a href="__GROUP__/Member/memberInfo/id/{$item.pro_mid}" >{$item.pro_mid}</a></td>
+										<td>{$item.publishtime|timeFormat="Y-m-d"}</td>
+										<td>{$props[$item['pro_prop']]}</td>
+										<td>{$sorts[$item['pro_sort']]}</td>
+										<td><span class="label label{$item.pro_status|switchProStatus}">{$status[$item['pro_status']]}</span></td>
+										<td>{$item.bidders}</td>
+										<td>
+											<a class="btn btn-info btn-mini" href="__URL__/viewHistory/id/{$item.pro_id}"><i class="icon-edit icon-white"></i> 详细</a>
+											<a class="btn btn-warning btn-mini" href="__URL__/toHistory/id/{$item.pro_id}"><i class="icon-bookmark icon-white"></i> 历史</a>
+										</td>                                   
+									</tr>
+									</volist>                         
+								</tbody>
+							</table>
+							<div class="row-fluid">
+								<div class="span3">
+								  <div class="dataTables_info">{$pager.header}</div>
+								</div>
+								<div class="span9">
+								  <div class="pagination pagination-centered">{$pager.show}</div>
+								</div>
+							</div> 
+                            </form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="modal hide fade" id="myModal">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>Settings</h3>
+			</div>
+			<div class="modal-body">
+				<p>Here settings can be configured...</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Close</a>
+				<a href="#" class="btn btn-primary">Save changes</a>
+			</div>
+		</div>
+		<include file="public:footer" />
+	</div>
+	<include file="public:js" />
+	<script type="text/javascript">
+		
+	</script>
 </body>
 </html>
