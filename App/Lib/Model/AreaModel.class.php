@@ -61,7 +61,7 @@ class AreaModel extends Model{
 	}
 	
 	/**
-	 * 
+	 * 更新缓存
 	 */
 	public function updateCache(){
 		$cacheFile = SYSCONF_DIR.$this->cacheFile;

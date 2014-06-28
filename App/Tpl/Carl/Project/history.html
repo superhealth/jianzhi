@@ -16,7 +16,7 @@
 					<ul class="breadcrumb">
 						<li><a href="__GROUP__">首页</a> <span class="divider">/</span></li>
 						<li><a href="__URL__/index">招投项目管理</a> <span class="divider">/</span></li>
-                        <li><a href="#">招投项目档案</a></li>
+                        <li><a href="#">项目历史档案</a></li>
 					</ul>
 				</div>
 				<div class="row-fluid sortable">
@@ -63,7 +63,7 @@
 										<td><input type="checkbox" name="id[]" value="{$item.re_id}" />{$item.pro_sn}</td>
 										<td>{$item.subject} ..</td>
 										<td><a href="__GROUP__/Member/memberInfo/id/{$item.pro_mid}" >{$item.pro_mid}</a></td>
-										<td>{$item.publishtime|timeFormat="Y-m-d"}</td>
+										<td>{$item.pro_publishtime|timeFormat="Y-m-d"}</td>
 										<td>{$props[$item['pro_prop']]}</td>
 										<td>{$sorts[$item['pro_sort']]}</td>
 										<td><span class="label label{$item.pro_status|switchProStatus}">{$status[$item['pro_status']]}</span></td>

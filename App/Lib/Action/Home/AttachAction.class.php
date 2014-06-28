@@ -22,6 +22,12 @@ class AttachAction extends EmptyAction{
 					case "bid":
 						D("Bidder")->addAtts($id, $att_data);
 						break;
+					case "company":
+						D("Membercompany")->addAtts($id, $att_data);
+						break;
+					case "person":
+						D("Memberperson")->addAtts($id, $att_data);
+						break;
 				}
 				$res_json['data'] = D("Attachement")->getAtt($att_data);
 				$res_json['code'] = 1;
@@ -35,6 +41,12 @@ class AttachAction extends EmptyAction{
 		exit;
 	}
 	
+	/**
+	 * 
+	 * @param string $belong 附件所属主体
+	 * @param unknown $id
+	 * @param unknown $attId
+	 */
 	public function del($belong, $id, $attId){
 		if(true!==D("Attachement")->delAtt($attId)){
 			echo "删除失败！";
@@ -42,14 +54,37 @@ class AttachAction extends EmptyAction{
 			//区分上传附件所属主体
 			switch($belong){
 				case "project":
-					D("Project")->delAtts($id, $att_data);
+					D("Project")->delAtts($id, $attId);
 					break;
 				case "bid":
-					D("Bidder")->delAtts($id, $att_data);
+					D("Bidder")->delAtts($id, $attId);
+					break;
+				case "company":
+					D("Membercompany")->delAtts($id, $attId);
+					break;
+				case "person":
+					D("Memberperson")->delAtts($id, $attId);
 					break;
 			}
 			echo "success";
 		}
 		exit;	
+	}
+	
+	/**
+	 * 下载附件
+	 * @param string $id
+	 */
+	public function download($id=""){
+		$attach = M("attachement")->where("att_id={$id}")->find();
+		if($attach){
+			$download = attDownload($attach['att_path'], $attach['att_name']);
+			if($download!==true){
+				$this->closeWin = true;
+				$this->error("下载失败：{$download}");
+			}
+		}else{
+			$this->error("附件不存在！");
+		}
 	}
 }

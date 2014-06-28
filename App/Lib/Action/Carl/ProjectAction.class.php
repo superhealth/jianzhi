@@ -13,9 +13,7 @@ class ProjectAction extends BaseAction{
 	 */
 	public function index(){
 		$project = M("project");
-		$map = array(
-				"pro_status" => array("gt", 0)
-		);
+		$map = array();
 		//筛选条件
 		$param = array();
 		//项目状态
@@ -63,7 +61,7 @@ class ProjectAction extends BaseAction{
 		$order = "pro_publishtime DESC";
 		$projects = $project->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		// 项目状态
-		$this->assign("status", array( "1"=> "招标中", "2"=> "已开标", "3"=>"关闭"));
+		$this->assign("status", $this->status);
 		$this->assign("projects", $projects);
 		//所有分类
 		$sorts = D("Sort")->getSorts();
@@ -122,7 +120,7 @@ class ProjectAction extends BaseAction{
 		// 查询字段
 		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_createtime";
 		// 排序
-		$order = "pro_publishtime DESC";
+		$order = "pro_createtime DESC";
 		$projects = $project->field($field)->where($map)->order($order)->limit($limit)->select();
 		$this->assign("projects", $projects);
 		//所有分类
@@ -155,8 +153,7 @@ class ProjectAction extends BaseAction{
 		}else{
 			//显示项目详情
 			if(isset($_REQUEST['id'])){
-				$info = M("project")->where("pro_id='{$_REQUEST['id']}'")->find();
-				//dump(areaToSelect(areaDecode($info['pro_place'])));
+				$info = M("project")->join("zt_contact ON pro_contact=con_id")->where("pro_id='{$_REQUEST['id']}'")->find();
 				$info['place'] = areaToSelect(areaDecode($info['pro_place']));
 				$info['enums'] = enumsToSelect($info['pro_sort'], enumsDecode($info['pro_enums']));
 				$atts = D("Attachement")->getAtt($info['pro_attachement']);
@@ -172,12 +169,26 @@ class ProjectAction extends BaseAction{
 				//所有属性
 				$props = D("Property")->getProps();
 				$this->assign("props", $props);
-				// 详细分类
-				
+				// 应标单
+				$bidders = D("Bidder")->getProBids($info['pro_id']);
+				$this->assign("bidders", $bidders);
 				$this->display();
 			}else{
 				$this->error("参数错误！");
 			}
+		}
+	}
+	
+	public function saveContact($id=""){
+		$count = M("project")->where("pro_id='{$id}'")->count();
+		if($count!=1){
+			$this->error("参数错误！");
+		}
+		if($cid = D("Contact")->saveContact()){
+			M("project")->where("pro_id='{$id}'")->setField("pro_contact", $cid);
+			$this->success("保存成功！");
+		}else{
+			$this->error("保存失败！");
 		}
 	}
 	

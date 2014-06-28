@@ -10,16 +10,39 @@ class BidderModel extends Model{
 	 * @param string $mid 用户名
 	 * @param boolen $all 是否包含未发布
 	 */
-	public function getBids($mid="", $row="", $all=FALSE){
-		$join = "";
-		$field = "";
-		$order = "";
-		$where = array("bid_mid"=>$mid);
+	public function getMemBids($mid="", $all=true, $row=""){
+		$join = array(
+				"zt_project ON bid_proid=pro_id",
+				"zt_deposit ON bid_sn=de_id"
+		);
+		$field = "zt_bidder.*, pro_subject, de_deposit, de_paystatus";
+		$order = "bid_createtime DESC";
+		$where = array("bid_mid"=>addslashes($mid));
 		if(!$all){
 			$where['bid_state'] = array("gt", 0);
 		}
 		$limit = empty($row)?"":$row;
-		return $this->field()->join()->where($where)->order()->limit()->select();
+		return $this->field($field)->join($join)->where($where)->order($order)->limit($limit)->select();
+	}
+	
+	/**
+	 * 获取项目$pid的投标单
+	 * @param string $pid 用户名
+	 * @param boolen $all 是否包含未发布
+	 */
+	public function getProBids($pid="", $all=true, $row=""){
+		$join = array(
+				"zt_project ON bid_proid=pro_id",
+				"zt_deposit ON bid_sn=de_id"
+		);
+		$field = "zt_bidder.*, pro_subject, de_deposit, de_paystatus";
+		$order = "bid_publishtime DESC";
+		$where = array("bid_proid"=>addslashes($pid));
+		if(!$all){
+			$where['bid_state'] = array("gt", 0);
+		}
+		$limit = empty($row)?"":$row;
+		return $this->field($field)->join($join)->where($where)->order($order)->limit($limit)->select();
 	}
 	
 	/**
@@ -35,23 +58,34 @@ class BidderModel extends Model{
 		return $this->where($where)->count();
 	}
 	
-
-	public function addAtts($id, $att){
-		
-		//$id = addslashes($id);
-		//$old = $this->where("bid_id={$id}")->getField("pro_attachement", true);
-		//$new = implode(",", array_merge(explode(",",$old), $att));
-		//dump($new);exit;
-		//return $this->where("pro_id={$id}")->setField("pro_attachement", $new);
+	/**
+	 * 更新投标单附件
+	 * @param int $id 更新的投标单id
+	 * @param array $att 字段对应附件id的索引数组
+	 * @return Ambigous <boolean, false, number>|boolean
+	 */
+	public function updateAtts($id, $att){
+		$id = addslashes($id);
+		if(is_array($att)){
+			//字段名
+			$field = implode(",",array_keys($att));
+			$old = $this->field($field)->where("bid_id={$id}")->find();
+			$data['bid_id'] = $id;
+			foreach($att as $k=>$v){
+				$data[$k]	= $v;
+			}
+			return $this->save($data);
+		}else{
+			$this->error = "尝试修改的附件字段为空！";
+			return false;
+		}
 	}
 	
 	public function delAtts($id, $att){
-		//$id = addslashes($id);
-		//$old = $this->where("pro_id={$id}")->getField("pro_attachement", true);
-		//$new = implode(",",array_diff(explode(",", $old), $att));
-		//dump($new);exit;
-		//return $this->where("pro_id={$id}")->setField("pro_attachement", $new);
+		
 	}
 	
-	
+	public function addAtts($id, $att){
+		
+	}
 }

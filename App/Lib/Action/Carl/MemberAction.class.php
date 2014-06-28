@@ -245,6 +245,9 @@ class MemberAction extends BaseAction{
 		$this->assign("states", $this->states);
 		$this->assign("info", $info);
 		$this->assign("type", $type);
+		//会员收藏项目
+		$colls = D("Collection")->getCollections($id);
+		$this->assign("colls", $colls);
 		$this->display();
 	}
 	/**

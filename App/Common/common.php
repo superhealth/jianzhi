@@ -30,8 +30,12 @@ function json_encode_nonull($jsondata){
 //time format
 function timeFormat($time="", $format="Y/m/d H:i:s"){
 	$time = (int)$time;
-	if(!$time&&$time!==0){
-		$time = time();
+	if(!$time){
+		if($time===""){
+			$time = time();
+		}else{
+			return "";
+		}
 	}
 	return date($format, $time);
 }
@@ -123,8 +127,9 @@ function switch_active($state){
 
 /**
  * 项目状态
+ * @param string $status 
  */
-function switchProStatus($status){
+function switchProStatus($status=""){
 	switch($status){
 		case 0:
 			return "-info"	;
@@ -139,9 +144,47 @@ function switchProStatus($status){
 	}
 }
 
+/**
+ * 应标状态
+ * @param $status
+ */
+function switchBidState($state=""){
+	switch($status){
+		case 0:
+			return "-info"	;
+		case 1:
+			return "-warning";
+		case 2:
+			return "-inverse";
+		case 3:
+			return "-success";
+		default:
+			return "-danger";
+	}
+}
+/**
+ * 项目状态
+ */
+function switchDeStatus($status=""){
+	switch($status){
+		case 0:
+			return "-info"	;
+		case 1:
+			return "-success";
+		case 2:
+			return "-inverse";
+		case 3:
+			return "-danger";
+		default:
+			return "-warning";
+	}
+}
 
 /**
  * check permission
+ * @param string $per 权限名
+ * @param string $user 用户
+ * @return boolen
  */
 function per_check( $per, $user=""){
 	if(empty($user)){
@@ -409,7 +452,7 @@ function fileDelete($file, $dir=""){
 }
 
 /**
- * 文件下载类
+ * 文件下载
  * @param 文件名 $file
  * @return boolean
  */

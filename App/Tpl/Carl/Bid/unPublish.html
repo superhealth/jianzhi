@@ -15,8 +15,8 @@
 				<div>
 					<ul class="breadcrumb">
 						<li><a href="__GROUP__">首页</a> <span class="divider">/</span></li>
-						<li><a href="__URL__/index">项目管理</a> <span class="divider">/</span></li>
-						<li><a href="__URL__/unPublish">未发布项目</a></li>
+						<li><a href="__URL__/index">应标管理</a> <span class="divider">/</span></li>
+						<li><a href="__URL__/unPublish">未发布应标单</a></li>
 					</ul>
 				</div>
 				<div class="row-fluid sortable">
@@ -27,14 +27,7 @@
 						<div class="box-content">
 							<div class="row-fluid">
 								<form method="get" action="__URL__/index">
-									<div class="span10">项目属性：<select name="prop" class=" _filter" data-rel="chosen">
-										<option value="all">全部</option>
-										{$props|getOptions=$param['prop']}
-									</select>&nbsp;&nbsp;
-									项目类别：<select name="sort" class=" _filter" data-rel="chosen">
-										<option value="all">全部</option>
-										{$sorts|getOptions=$param['sort']}
-									</select>&nbsp;&nbsp;
+									<div class="span10">
 									 按标题或用户查找: <input type="text" name="words"  class="_filter_txt" value="{$param.words}" /></div>
 								</form>
 							</div>
@@ -42,26 +35,25 @@
 							<table class="table table-bordered">
 								 <thead>
 									  <tr>
-										  <th><input type="checkbox" />项目序列号</th>
-										  <th>项目主题</th>
+										  <th><input type="checkbox" />应标序列号</th>
+										  <th>应标主题</th>
 										  <th>作者</th>
-										  <th>发布时间</th>
-										  <th>生产属性</th>
-										  <th>类别</th>
+										  <th>创建时间</th>
+										  <th>所属项目</th>
 										  <th>操作</th> 
 									  </tr>
 								  </thead>   
 								  <tbody>
 									<volist name="projects" id="item">
 									<tr>
-										<td><input type="checkbox" name="id[]" value="{$item.pro_id}" />{$item.pro_sn}</td>
-										<td><a href="__URL__/editProject/id/{$item.pro_id}" title="{$item.pro_subject}">{$item.subject} ..</a></td>
-										<td><a href="__GROUP__/Member/memberInfo/id/{$item.pro_mid}" >{$item.pro_mid}</a></td>
-										<td>{$item.pro_createtime|timeFormat="Y-m-d"}</td>
+										<td><input type="checkbox" name="id[]" value="{$item.bid_id}" />{$item.bid_sn}</td>
+										<td><a href="__URL__/editBidder/id/{$item.bid_id}" title="{$item.bid_subject}">{$item.subject} ..</a></td>
+										<td><a href="__GROUP__/Member/memberInfo/id/{$item.bid_mid}" >{$item.bid_mid}</a></td>
+										<td>{$item.bid_createtime|timeFormat="Y-m-d"}</td>
 										<td>{$props[$item['pro_prop']]}</td>
 										<td>{$sorts[$item['pro_sort']]}</td>
 										<td>
-											<a class="btn btn-info btn-mini" href="__URL__/editProject/id/{$item.pro_id}"><i class="icon-edit icon-white"></i> 详细</a>
+											<a class="btn btn-info btn-mini" href="__URL__/editBidder/id/{$item.bid_id}"><i class="icon-edit icon-white"></i> 详细</a>
 											<a class="btn btn-danger btn-mini _delete_" href="#" data-href="__URL__/delProject/id/{$item.pro_id}"><i class="icon-trash icon-white"></i> 删除</a>
 										</td>                                   
 									</tr>
