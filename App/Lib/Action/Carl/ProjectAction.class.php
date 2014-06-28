@@ -229,12 +229,13 @@ class ProjectAction extends BaseAction{
 				"(SELECT bid_proid,count(*) bidders FROM zt_bidder GROUP BY bid_proid) b ON pro_id=b.bid_proid",
 		);
 		// 查询字段
-		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_publishtime, pro_status, IFNULL(bidders, 0) bidders";
+		$field = "re_id,pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_publishtime, pro_status, IFNULL(bidders, 0) bidders";
 		// 排序
 		$order = "pro_publishtime DESC";
-		$historys = $history->field($field)->where($map)->order($order)->limit($limit)->select();
+		$historys = $history->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		// 项目状态
 		$this->assign("status", $this->status);
+		//dump($history->getLastSql());
 		$this->assign("historys", $historys);
 		//所有分类
 		$sorts = D("Sort")->getSorts();
