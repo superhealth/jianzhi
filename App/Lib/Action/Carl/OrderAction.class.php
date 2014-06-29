@@ -113,11 +113,11 @@ class OrderAction extends BaseAction{
 		$limit = $page->firstRow.",".$page->listRows;
 		$pager = $page->shown();
 		$this->assign("pager", $pager);
-		$join = "";
-		$field = "";
-		$order = "";
+		$join = "zt_bidder ON de_id=bid_sn";
+		$field = "zt_deposit.*, bid_id, bid_subject, bid_state";
+		$order = "de_createtime DESC";
 		$deposits = $deposit->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
-		$this->assign("deposit", $deposit);
+		$this->assign("deposits", $deposits);
 		$this->display();
 	}
 	
@@ -133,7 +133,7 @@ class OrderAction extends BaseAction{
 			$order = array(
 				
 			);
-			$return = Alipay::backDeposit($order);
+			//$return = Alipay::backDeposit($order);
 		}
 	}
 }

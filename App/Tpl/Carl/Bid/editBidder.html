@@ -70,39 +70,31 @@
 								  </div>
 								</div>
 								<div class="control-group">
-								  <label class="control-label" for="bid_subject">报价书：</label>
-								  <div class="controls">
-									{$info.quoted} <a class="btn btn-mini btn-primary" href="__GROUP__/Attachement/download/id/{$info.bid_quoted}" data-rel="tooltip" data-original-title="下载"><i class="icon icon-white icon-arrow-down"></i> 下载</a><br />
-									<input type="file" name="bid_quoted" id="bid_quoted" />
-									<span class="help-inline"></span>
-								  </div>
-								</div>
-								<div class="control-group">
-								  <label class="control-label" for="bid_subject">报价书：</label>
+								  <label class="control-label" for="bid_quoted">报价书：</label>
 								  <div class="controls">
 								  	<if condition="$quoted neq ''">
 									{$quoted} <a class="btn btn-mini btn-primary" href="__GROUP__/Attachement/download/id/{$info.bid_quoted}" data-rel="tooltip" data-original-title="下载"><i class="icon icon-white icon-arrow-down"></i> 下载</a><br /></if>
 									<input type="file" name="bid_quoted" id="bid_quoted" />
-									<span class="help-inline"></span>
-									<h4>报价书是否公开：</h4>
+									<span class="help-inline"></span><br />
+									是否公开：
 									{$flags|getRadio="bid_quoted_flag",$info['bid_quoted_flag']}
 								  </div>
 								</div>
                                 <div class="control-group">
-								  <label class="control-label" for="pro_status">投标书：</label>
+								  <label class="control-label" for="bid_tenders">投标书：</label>
 								  <div class="controls">
 								  	<if condition="$tenders neq ''">
 									{$tenders} <a class="btn btn-mini btn-primary" href="__GROUP__/Attachement/download/id/{$info.bid_tenders}" data-rel="tooltip" data-original-title="下载"><i class="icon icon-white icon-arrow-down"></i> 下载</a><br /></if>
 									<input type="file" name="bid_tenders" id="bid_tenders" />
-									<span class="help-inline"></span>
-									<h4>报价书是否公开：</h4>
+									<span class="help-inline"></span><br />
+									是否公开：
 									{$flags|getRadio="bid_tenders_flag",$info['bid_tenders_flag']}
 								  </div>
 								</div>
 								<div class="control-group">
 								  <label class="control-label" for="deposit">保证金：</label>
 								  <div class="controls">
-								    <span class="yellow"></span><span class="label label{$status|switchDeStatus=$info['de_paystatus']}"></span>
+								    <span class="yellow">￥{$info.de_deposit}</span> &nbsp; <span class="label label{$status|switchDeStatus=$info['de_paystatus']}">{$status[$info['de_paystatus']]}</span>
 								  </div>
 								</div>
 								<div class="control-group">

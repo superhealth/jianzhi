@@ -143,6 +143,7 @@ class ProjectAction extends BaseAction{
 			$data = M("project")->create();
 			$data['pro_createtime'] = strtotime($data['pro_createtime']);
 			$data['pro_opentime'] = strtotime($data['pro_opentime']);
+			$data['pro_publishtime'] = strtotime($data['pro_publishtime']);
 			$data['pro_enums'] = enumsEncode($_POST['enums']);
 			$data['pro_place'] = areaEncode($_POST['area']);
 			if(M("project")->save($data)){
@@ -179,6 +180,10 @@ class ProjectAction extends BaseAction{
 		}
 	}
 	
+	/**
+	 * 保存项目联系人
+	 * @param string $id 联系人所在项目id
+	 */
 	public function saveContact($id=""){
 		$count = M("project")->where("pro_id='{$id}'")->count();
 		if($count!=1){

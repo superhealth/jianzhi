@@ -39,14 +39,14 @@ class BidAction extends BaseAction{
 		$this->assign("param", $param);
 		$total = $bidder->where($map)->count();
 		import("Org.Util.Page");
-		$page = new Page($total, 12, $param);
+		$page = new Page($total, 10, $param);
 		// 分页查询
 		$limit = $page->firstRow.",".$page->listRows;
 		$pager = $page->shown();
 		$this->assign("pager", $pager);
 		$join = "zt_deposit ON bid_sn=de_id";
 		$field = "zt_bidder.*, LEFT(bid_subject, 20) subject, zt_deposit.de_deposit, zt_deposit.de_paystatus";
-		$order = "bid_publishtime DESC";
+		$order = "bid_createtime DESC, bid_publishtime DESC";
 		$bidders = $bidder->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		//dump($bidders);
 		//dump($bidder->getLastSql());
@@ -54,7 +54,7 @@ class BidAction extends BaseAction{
 		//应标状态
 		$this->assign("state", $this->state);
 		//支付状态
-		$this->assign("paystatus", $this->status);
+		$this->assign("status", $this->status);
 		$this->display();
 	}
 	
@@ -81,10 +81,11 @@ class BidAction extends BaseAction{
 		$limit = $page->firstRow.",".$page->listRows;
 		$pager = $page->shown();
 		$this->assign("pager", $pager);
-		
-		$order = "";
-		$deposits = $bidder->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
-		$this->assign("deposit", $deposit);
+		$join = "zt_deposit ON bid_sn=de_id";
+		$field = "zt_bidder.*, LEFT(bid_subject, 20) subject, zt_deposit.de_deposit, zt_deposit.de_paystatus ";
+		$order = "bid_createtime DESC";
+		$bodders = $bidder->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
+		$this->assign("bodders", $bodders);
 		$this->display();
 	}
 	
@@ -92,8 +93,11 @@ class BidAction extends BaseAction{
 	 * 查看编辑投标单
 	 */
 	public function editBidder($id=""){
-		$join = "zt_project ON pro_id = bid_proid";
-		$field = "zt_bidder.*, pro_subject, pro_id";
+		$join = array(
+				"zt_project ON bid_proid = pro_id",
+				"zt_deposit ON bid_sn = de_id"
+		);
+		$field = "zt_bidder.*, pro_subject, pro_id, de_deposit, de_id, de_paystatus";
 		$bidInfo = M("bidder")->field($field)->join($join)->where("bid_id={$id}")->find();
 		$quoted = M("attachement")->where("att_id='{$bidInfo['bid_quoted']}'")->find();
 		$tenders = M("attachement")->where("att_id='{$bidInfo['bid_tenders']}'")->find();
@@ -112,10 +116,50 @@ class BidAction extends BaseAction{
 	 * 保存修改
 	 */
 	public function saveBid(){
-		
+		if(!per_check("bidder_edit")){
+			$this->error("无此权限！");
+		}
+		$bidder = M("bidder");
+		$data = $bidder->create();
+		$data['bid_createtime'] = strtotime($data['bid_createtime']);
+		$data['bid_publishtime'] = strtotime($data['bid_publishtime']);
+		$upFlag = false;
+		foreach ($_FILES as $f){
+			if(!empty($f['name'])){
+				$upFlag = true;break;
+			}
+		}
+		if($upFlag){
+			$uploadInfo = upload($_SESSION['user'], false);
+			if($uploadInfo[0]){
+				//添加到附件表
+				$att_data = D("Attachement")->addAtt($uploadInfo[1], $_SESSION['user']);
+				if(!empty($att_data)){
+					foreach($att_data as $c=>$v){
+						$data[$c] = $v;
+						$oldAtt[] = $bidder->where ("bid_id={$data['bid_id']}")->getField($c);
+					}
+				}
+			}else{
+				$this->error("文件上传失败！".$uploadInfo[1]);
+			}
+		}
+		if($bidder->save($data)){
+			$this->watchdog("编辑", "编辑应标单【{$data['bid_subject']}】");
+			$this->success("保存成功！");
+		}else{
+			$this->error("保存失败！");
+		}
 	}
 	
+	/**
+	 * 保存联系人
+	 * @param string $id 联系人所在投标单id
+	 */
 	public function saveContace($id=""){
+		if(!per_check("bidder_edit")){
+			$this->error("无此权限！");
+		}
 		$count = M("bidder")->where("bid_id='{$id}'")->count();
 		if($count!=1){
 			$this->error("参数错误！");
@@ -159,14 +203,14 @@ class BidAction extends BaseAction{
 		$this->assign("param", $param);
 		$total = $bidder->where($map)->count();
 		import("Org.Util.Page");
-		$page = new Page($total, 12, $param);
+		$page = new Page($total, 10, $param);
 		// 分页查询
 		$limit = $page->firstRow.",".$page->listRows;
 		$pager = $page->shown();
 		$this->assign("pager", $pager);
 		$join = "zt_deposit ON bid_sn=de_id";
 		$field = "zt_bidder.*, LEFT(bid_subject, 20) subject, zt_deposit.de_deposit, zt_deposit.de_paystatus";
-		$order = "bid_publishtime DESC";
+		$order = "bid_createtime DESC, bid_publishtime DESC";
 		$bidders = $bidder->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		//dump($bidders);
 		//dump($bidder->getLastSql());
@@ -174,7 +218,7 @@ class BidAction extends BaseAction{
 		//应标状态
 		$this->assign("state", $this->state);
 		//支付状态
-		$this->assign("paystatus", $this->status);
+		$this->assign("status", $this->status);
 		$this->display();
 	}
 	
@@ -182,12 +226,12 @@ class BidAction extends BaseAction{
 	 * 移入历史档案
 	 */
 	public function toHistory($id=""){
-		if(!per_check("project_edit")){
+		if(!per_check("bidder_edit")){
 			$this->error("无此权限！");
 		}
-		$data = M("project")->where("bid_id='{$id}'")->find();
-		if(M("project")->where("bid_id={$id}")->delete()){
-			if(M("pro_record")->add($data)){
+		$data = M("bidder")->where("bid_id='{$id}'")->find();
+		if(M("bidder")->where("bid_id={$id}")->delete()){
+			if(M("bid_record")->add($data)){
 				$this->watchdog("转移", "将应标单《{$data['bid_subject']}》移入历史档案区");
 				$this->success("移入成功！");
 			}else{

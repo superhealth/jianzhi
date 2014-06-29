@@ -29,8 +29,7 @@ function json_encode_nonull($jsondata){
 
 //time format
 function timeFormat($time="", $format="Y/m/d H:i:s"){
-	$time = (int)$time;
-	if(!$time){
+	if(empty($time)){
 		if($time===""){
 			$time = time();
 		}else{
