@@ -408,7 +408,7 @@ class IndexAction extends BaseAction{
 	
 	
 	/**
-	 * 删除友情链接
+	 * 删除广告
 	 * @param string $chkt
 	 */
 	public function advs_delete($chkt=""){
@@ -430,6 +430,94 @@ class IndexAction extends BaseAction{
 		}
 	}
 	
+
+	/**
+	 * 首页区块
+	 */
+	public function blocks($group=""){
+		$block = M("block");
+		$map = empty($group) ? array() : array("bl_group"=>$group);
+		$total = $block->where($map)->count();
+		import("Org.Util.Page");
+		$page = new Page($total, 10, $param);
+		// 分页查询
+		$limit = $page->firstRow.",".$page->listRows;
+		$pager = $page->shown();
+		$this->assign("pager", $pager);
+		$order = "bl_order";
+		$blocks = $block->where($map)->limit($limit)->select();
+		$this->assign("blocks", blocks);
+		$this->display();
+	}
+	/**
+	 * 添加区块
+	 */
+	public function blockAdd($action=""){
+		if($action=="add"){
+			if(!per_check("block_edit")){
+				$this->error("无此权限！");
+			}
+			$data = M("block")->create();
+			if(M("block")->add($data)){
+				$this->watchdog("新增", "添加区块".$data['bl_group']."的".$data['block_title']."元素。");
+				$this->success("添加成功！", __URL__."/blocks/group/{$data['bl_group']}");
+			}else{
+				$this->error("添加失败！");
+			}
+		}else{
+			$this->assign("group", $_REQUEST['group']);
+			$this->display();
+		}
+	}
 	
+	/**
+	 * 修改友情链接
+	 * @param string $man_id
+	 */
+	public function blockEdit($action = ""){
+		if(!per_check("block_edit")){
+			$this->error("无此权限！");
+		}
+		if($action=="edit"){
+			$data = M("block")->create();
+			if(M("block")->save($data)){
+				$this->watchdog("编辑", "修改区块".$data['bl_group']."的".$data['block_title']."元素。");
+				$this->success("保存成功！");
+			}else{
+				$this->error("保存失败！");
+			}
+		}else{
+			$info = M("block")->where("bl_id='{$_REQUEST['id']}'")->find();
+			if(empty($info)){
+				$this->error("参数错误!");
+			}else{
+				$this->assign("info", $info);
+				$this->display();
+			}
+			
+		}
+	}	
+	
+	/**
+	 * 删除区块
+	 * @param string $chkt
+	 */
+	public function blockDel($id=""){
+		if(!per_check("block_edit")){
+			$this->error("无此权限！");
+		}else{
+			$map = array("bl_id"=>array("in", $chkt));
+			$blocks = M("block")->where($map)->select();
+			foreach ($advs as $v){
+				$detail .= "<br />删除区块".$v['bl_group']."的".$v['block_title']."元素。";
+			}
+			if(M("block")->where($map)->delete()){
+				$this->watchdog("删除", $detail);
+				$this->success("删除成功！");
+			}else{
+				$this->error("删除失败！");
+			}
+		}
+	}
 	
 }

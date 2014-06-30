@@ -26,7 +26,7 @@
 						</div>
 						<div class="box-content">
 							<div class="row-fluid">
-								<form method="get" action="__URL__/index">
+								<form method="get" action="__ACTION__">
 									<div class="span10">
 									 按标题或用户查找: <input type="text" name="words"  class="_filter_txt" value="{$param.words}" /></div>
 								</form>
@@ -39,23 +39,24 @@
 										  <th>应标主题</th>
 										  <th>作者</th>
 										  <th>创建时间</th>
-										  <th>所属项目</th>
+										  <th>保证金</th>
+										  <th>支付状态</th>
 										  <th>操作</th> 
 									  </tr>
 								  </thead>   
 								  <tbody>
-									<volist name="projects" id="item">
+									<volist name="bidders" id="item">
 									<tr>
 										<td><input type="checkbox" name="id[]" value="{$item.bid_id}" />{$item.bid_sn}</td>
 										<td><a href="__URL__/editBidder/id/{$item.bid_id}" title="{$item.bid_subject}">{$item.subject} ..</a></td>
 										<td><a href="__GROUP__/Member/memberInfo/id/{$item.bid_mid}" >{$item.bid_mid}</a></td>
 										<td>{$item.bid_createtime|timeFormat="Y-m-d"}</td>
-										<td>{$props[$item['pro_prop']]}</td>
-										<td>{$sorts[$item['pro_sort']]}</td>
+										<td>￥{$item.de_deposit}</span></td>
+										<td><span class="label label{$item.de_paystatus|switchDeStatus}">{$status[$item['de_paystatus']]}</td>
 										<td>
 											<a class="btn btn-info btn-mini" href="__URL__/editBidder/id/{$item.bid_id}"><i class="icon-edit icon-white"></i> 详细</a>
-											<a class="btn btn-danger btn-mini _delete_" href="#" data-href="__URL__/delProject/id/{$item.pro_id}"><i class="icon-trash icon-white"></i> 删除</a>
-										</td>                                   
+											<a class="btn btn-danger btn-mini _delete_" href="javascript:void(0);" data-href="__URL__/delBidder/id/{$item.bid_id}"><i class="icon-trash icon-white"></i> 删除</a>
+										</td>                                                         
 									</tr>
 									</volist>                         
 								</tbody>

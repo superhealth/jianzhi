@@ -5,14 +5,14 @@
  *
  */
 class BidAction extends BaseAction{
-	private $status = array("未支付", "已支付", "已退款","退款失败");		//保证金支付状态
-	private $state = array("未发布","应标中","备选","中标");		//应标单状态
-	private $flags = array(0=>"不公开", 1=>"公开" );
+	private $status = array('未支付', '已支付', '已退款','退款失败');		//保证金支付状态
+	private $state = array('未发布','应标中','备选','中标');		//应标单状态
+	private $flags = array(0=>'不公开', 1=>'公开' );
 	/**
 	 * 所有投标单，筛选
 	 */
 	public function index(){
-		$bidder = M("bidder");
+		$bidder = M('bidder');
 		$map = array();
 		$param = array();
 		//筛选支付状态
@@ -36,7 +36,7 @@ class BidAction extends BaseAction{
 				$param['words'] = $_REQUEST['words'];
 			}
 		}
-		$this->assign("param", $param);
+		$this->assign('param', $param);
 		$total = $bidder->where($map)->count();
 		import("Org.Util.Page");
 		$page = new Page($total, 10, $param);
@@ -44,17 +44,17 @@ class BidAction extends BaseAction{
 		$limit = $page->firstRow.",".$page->listRows;
 		$pager = $page->shown();
 		$this->assign("pager", $pager);
-		$join = "zt_deposit ON bid_sn=de_id";
-		$field = "zt_bidder.*, LEFT(bid_subject, 20) subject, zt_deposit.de_deposit, zt_deposit.de_paystatus";
-		$order = "bid_createtime DESC, bid_publishtime DESC";
+		$join = 'zt_deposit ON bid_sn=de_id';
+		$field = 'zt_bidder.*, LEFT(bid_subject, 20) subject, zt_deposit.de_deposit, zt_deposit.de_paystatus';
+		$order = 'bid_createtime DESC, bid_publishtime DESC';
 		$bidders = $bidder->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		//dump($bidders);
 		//dump($bidder->getLastSql());
-		$this->assign("bidders", $bidders);
+		$this->assign('bidders', $bidders);
 		//应标状态
-		$this->assign("state", $this->state);
+		$this->assign('state', $this->state);
 		//支付状态
-		$this->assign("status", $this->status);
+		$this->assign('status', $this->status);
 		$this->display();
 	}
 	
@@ -62,30 +62,31 @@ class BidAction extends BaseAction{
 	 * 未完成标单
 	 */
 	public function unPublish(){
-		$bidder = M("bidder");
-		$map = array("bid_state" => 0);
+		$bidder = M('bidder');
+		$map = array('bid_state'=> 0);
 		$param = array();
 
 		if(isset($_REQUEST['words'])){
 			$words = addslashes($_REQUEST['words']);
 			if(strlen($words)>=3){
-				$map['pp_name']  = array('like', "%{$words}%");
+				$map['pp_name']  = array('like', '%'.$words.'%');
 				$param['words'] = $_REQUEST['words'];
 			}
 		}
-		$this->assign("param", $param);
+		$this->assign('param', $param);
 		$total = $bidder->where($map)->count();
-		import("Org.Util.Page");
+		import('Org.Util.Page');
 		$page = new Page($total, 10, $param);
 		// 分页查询
-		$limit = $page->firstRow.",".$page->listRows;
+		$limit = $page->firstRow.','.$page->listRows;
 		$pager = $page->shown();
-		$this->assign("pager", $pager);
-		$join = "zt_deposit ON bid_sn=de_id";
-		$field = "zt_bidder.*, LEFT(bid_subject, 20) subject, zt_deposit.de_deposit, zt_deposit.de_paystatus ";
-		$order = "bid_createtime DESC";
-		$bodders = $bidder->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
-		$this->assign("bodders", $bodders);
+		$this->assign('pager', $pager);
+		$join = 'zt_deposit ON bid_sn=de_id';
+		$field = 'zt_bidder.*, LEFT(bid_subject, 20) subject, zt_deposit.de_deposit, zt_deposit.de_paystatus ';
+		$order = 'bid_createtime DESC';
+		$bidders = $bidder->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
+		$this->assign('bidders', $bidders);
+		$this->assign('status',$this->status);
 		$this->display();
 	}
 	
@@ -94,21 +95,50 @@ class BidAction extends BaseAction{
 	 */
 	public function editBidder($id=""){
 		$join = array(
-				"zt_project ON bid_proid = pro_id",
-				"zt_deposit ON bid_sn = de_id"
+				'zt_project ON bid_proid = pro_id',
+				'zt_deposit ON bid_sn = de_id',
+				'zt_contact ON bid_contact=con_id'
 		);
-		$field = "zt_bidder.*, pro_subject, pro_id, de_deposit, de_id, de_paystatus";
-		$bidInfo = M("bidder")->field($field)->join($join)->where("bid_id={$id}")->find();
-		$quoted = M("attachement")->where("att_id='{$bidInfo['bid_quoted']}'")->find();
-		$tenders = M("attachement")->where("att_id='{$bidInfo['bid_tenders']}'")->find();
+		$field = 'zt_bidder.*, pro_subject, pro_id, de_deposit, de_id, de_paystatus, zt_contact.*';
+		$bidInfo = M('bidder')->field($field)->join($join)->where("bid_id={$id}")->find();
+		$quoted = M('attachement')->where('att_id="'.$bidInfo['bid_quoted'].'"')->find();
+		$this->assign('quoted', $quoted);
+		$tenders = M('attachement')->where('att_id="'.$bidInfo['bid_tenders'].'"')->find();
+		$this->assign('tenders', $tenders);
 		if($bidInfo){
+			$this->assign('info', $bidInfo);
+			$this->assign('state', $this->state);
+			$this->assign('status', $this->status);
+			$this->assign('flags', $this->flags);
+			$this->display();
+		}else{
+			$this->error("参数错误！");
+		}
+	}
+
+	/**
+	 * 查看编辑投标单历史档案
+	 */
+	public function viewHistory($id=''){
+		$join = array(
+				'zt_project ON bid_proid = pro_id',
+				'zt_deposit ON bid_sn = de_id',
+				'zt_contact ON bid_contact=con_id'
+		);
+		$field = 'zt_bid_record.*, pro_subject, pro_id, de_deposit, de_id, de_paystatus, zt_contact.*';
+		$bidInfo = M("bid_record")->field($field)->join($join)->where("re_id={$id}")->find();
+		if($bidInfo){
+			$quoted = M("attachement")->where("att_id='{$bidInfo['bid_quoted']}'")->find();
+			$this->assign("quoted", $quoted);
+			$tenders = M("attachement")->where("att_id='{$bidInfo['bid_tenders']}'")->find();
+			$this->assign("tenders", $tenders);
 			$this->assign("info", $bidInfo);
 			$this->assign("state", $this->state);
 			$this->assign("status", $this->status);
 			$this->assign("flags", $this->flags);
 			$this->display();
 		}else{
-			$this->error("参数错误！");
+			$this->error('参数错误！');
 		}
 	}
 	
@@ -156,7 +186,7 @@ class BidAction extends BaseAction{
 	 * 保存联系人
 	 * @param string $id 联系人所在投标单id
 	 */
-	public function saveContace($id=""){
+	public function saveContact($id=""){
 		if(!per_check("bidder_edit")){
 			$this->error("无此权限！");
 		}
@@ -209,7 +239,7 @@ class BidAction extends BaseAction{
 		$pager = $page->shown();
 		$this->assign("pager", $pager);
 		$join = "zt_deposit ON bid_sn=de_id";
-		$field = "zt_bidder.*, LEFT(bid_subject, 20) subject, zt_deposit.de_deposit, zt_deposit.de_paystatus";
+		$field = "zt_bid_record.*, LEFT(bid_subject, 20) subject, zt_deposit.de_deposit, zt_deposit.de_paystatus";
 		$order = "bid_createtime DESC, bid_publishtime DESC";
 		$bidders = $bidder->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		//dump($bidders);
@@ -247,7 +277,7 @@ class BidAction extends BaseAction{
 	/**
 	 * 删除投标单
 	 */
-	public function delBid($id=""){
+	public function delBidder($id=""){
 		if(!per_check("bidder_edit")){
 			$this->error("无此权限！");
 		}
@@ -265,7 +295,7 @@ class BidAction extends BaseAction{
 				attDelete($atts);
 			}
 			if(!empty($deposit)){
-				D("Deposit")->depositBack($deposit);
+				D("Deposit")->backDeposit($deposit);
 			}
 			$this->watchdog("删除", "删除应标单《".implode("》，《", $names)."》");
 			$this->success("删除成功！");

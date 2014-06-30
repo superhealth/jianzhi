@@ -11,9 +11,16 @@
 								<li><a href="__GROUP__/System/index">网站参数设置</a></li>
 							</ul>
 						</li>
-						<li><a href="#" class="_dropdown_"><i class="icon-lock"></i><span class="hidden-tablet"> 站点设置</span></a>
+						<li><a href="#" class="_dropdown_"><i class="icon-edit"></i><span class="hidden-tablet"> 网站首页</span></a>
 							<ul>
 								<li><a href="__GROUP__/Index/webIndex">首页管理</a></li>
+								<volist name="blocks" id="b">
+									<li><a href="__GROUP__/Index/blocks/group/{$b.bl_group}">[{$b.bl_group}]设置</a></li>
+								</volist>
+							</ul>
+						</li>
+						<li><a href="#" class="_dropdown_"><i class="icon-lock"></i><span class="hidden-tablet"> 站点设置</span></a>
+							<ul>
 								<li><a href="__GROUP__/Index/advs">广告设置</a></li>
 								<li><a href="__GROUP__/Index/links">友情链接设置</a></li>
 								<li><a href="__GROUP__/Tips/index">友情提示设置</a></li>
@@ -43,8 +50,7 @@
 								<li><a href="__GROUP__/Bid/index">应标单管理</a></li>
 								<li><a href="__GROUP__/Bid/unPublish">未发布应标</a></li>
                                 <li><a href="__GROUP__/Bid/history">历史档案</a></li>
-                                <li><a href="__GROUP__/Bid/deposit">保证金管理</a></li>
-                                <li><a href="__GROUP__/Bid/depositRecords">纪录</a></li>
+                                <li><a href="__GROUP__/Order/deposit">保证金管理</a></li>
 							</ul>
 						</li>
                         <li><a href="#" class="_dropdown_"><i class="icon-edit"></i><span class="hidden-tablet"> 报表统计</span></a>
@@ -62,10 +68,6 @@
 								<li><a href="__GROUP__/System/users">系统管理员</a></li>
 								<li><a href="__GROUP__/System/permissions">权限管理</a></li>
 								<li><a href="__GROUP__/Attachement/index"> 附件管理</a></li>
-							</ul>
-						</li>
-						<li><a href="#" class="_dropdown_"><i class="icon-edit"></i><span class="hidden-tablet"> 日志和备份</span></a>
-							<ul>
 								<li><a href="__GROUP__/System/logs">系统日志</a></li>
                                 <li><a href="__GROUP__/System/sql_data">数据备份</a></li>
 							</ul>

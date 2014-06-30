@@ -73,7 +73,7 @@ class OrderAction extends BaseAction{
 	/**
 	 * 删除续费单
 	 */
-	public function delDue($id=""){
+/* 	public function delDue($id=""){
 		if(!empty($id)){
 			$map = array("du_id"=>array("in", $id));
 			if(M("duefee")->where($map)->delete()){
@@ -85,7 +85,7 @@ class OrderAction extends BaseAction{
 		}else{
 			$this->error("没有可删除的选项！");
 		}
-	}
+	} */
 	
 	/**
 	 * 所有保证金
@@ -101,7 +101,10 @@ class OrderAction extends BaseAction{
 		if(isset($_REQUEST['words'])){
 			$words = addslashes($_REQUEST['words']);
 			if(strlen($words)>=3){
-				$map['pp_name']  = array('like', "%{$words}%");
+				$where['bid_subject']  = array('like', "%{$words}%");
+				$where['de_mid'] = array('like', "%{$words}%");
+				$where['_logic']	= "or";
+				$map['_complex'] = $where;
 				$param['words'] = $_REQUEST['words'];
 			}
 		}
@@ -125,15 +128,15 @@ class OrderAction extends BaseAction{
 	 * 退款操作
 	 * @param array $chkt 选中id
 	 */
-	public function deposit_back($id=""){
-		if(!is_array($id)){
-			$id = array($id);
-		}
-		foreach($id as $v){
-			$order = array(
-				
-			);
-			//$return = Alipay::backDeposit($order);
-		}
+	public function depositBack($id=""){
+		D("Deposit")->back($id);
 	}
+	
+	public function viewDeposit($id){
+		$info = M("deposit")->join("zt_bidder ON bid_sn=de_id")->where('de_id="'.$id.'"')->find();
+		dump($info);
+		$this->assign("info", $info);
+		$this->assign("status", array('未支付', '已支付','已退款','退款失败'));
+	}
+	
 }

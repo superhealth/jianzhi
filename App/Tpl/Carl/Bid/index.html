@@ -59,9 +59,9 @@
 										<td><a href="__URL__/editBidder/id/{$item.bid_id}" title="{$item.bid_subject}">{$item.subject} ..</a></td>
 										<td><a href="__GROUP__/Member/memberInfo/id/{$item.bid_mid}" >{$item.bid_mid}</a></td>
 										<td>{$item.bid_createtime|timeFormat="Y-m-d"}</td>
-										<td><span class="label label{$item.bid_state|switchBidState}">{$state[$item['bid_state']]}</td>
+										<td><span class="label label{$item['bid_state']|switchBidState}">{$state[$item['bid_state']]}</td>
 										<td>￥{$item.de_deposit}</span></td>
-										<td><span class="label label{$item.de_paystatus|switchDeStatus}">{$status[$item['de_paystatus']]}</td>
+										<td><span class="label label{$item['de_paystatus']|switchDeStatus}">{$status[$item['de_paystatus']]}</td>
 										<td>
 											<a class="btn btn-info btn-mini" href="__URL__/editBidder/id/{$item.bid_id}"><i class="icon-edit icon-white"></i> 详细</a>
 											<a class="btn btn-warning btn-mini" href="__URL__/toHistory/id/{$item.bid_id}"><i class="icon-bookmark icon-white"></i> 历史</a>

@@ -545,25 +545,24 @@ class SystemAction extends BaseAction{
 	 */
 	public function sql_data_delete($chkt=""){
 		if(!per_check("sql_delete")){
-			$msg = response_msg("ACCESS_DENIED");
+			$this->error('无此权限！');
 		}else{
 			if(!is_array($chkt)){
 				$chkt = array($chkt);
 			}
 			$result = 0;
 			foreach($chkt as $f){
-				$file = $_SERVER['DOCUMENT_ROOT'].__ROOT__."/data/".$f.".sql";
+				$file = $_SERVER['DOCUMENT_ROOT'].__ROOT__.'/data/'.(strpos($f, "sql") ? $f : $f.'.sql');
 				if(!unlink($file)){
-					$result++;
+					++$result;
 				}
 			}
 			if($result>0){
-				$msg = response_msg("OPERATION_FAILED");
+				$this->error('删除失败！');
 			}else{
-				$msg = response_msg("OPERATION_SUCCESS", "success");
+				$this->success('删除成功！');
 			}
 		}
-		redirect(__URL__."/sql_data/msg/{$msg}");
 	}
 	/**
 	 * 数据库备份

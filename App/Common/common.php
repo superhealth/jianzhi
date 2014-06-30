@@ -148,15 +148,19 @@ function switchProStatus($status=""){
  * @param $status
  */
 function switchBidState($state=""){
-	switch($status){
+	switch($state){
 		case 0:
 			return "-info"	;
+			break;
 		case 1:
 			return "-warning";
+			break;
 		case 2:
 			return "-inverse";
+			break;
 		case 3:
 			return "-success";
+			break;
 		default:
 			return "-danger";
 	}
@@ -168,12 +172,16 @@ function switchDeStatus($status=""){
 	switch($status){
 		case 0:
 			return "-info"	;
+			break;
 		case 1:
 			return "-success";
+			break;
 		case 2:
 			return "-inverse";
+			break;
 		case 3:
 			return "-danger";
+			break;
 		default:
 			return "-warning";
 	}

@@ -28,6 +28,11 @@ class BaseAction extends Action{
 		}
 	}
 	
+	public function _empty(){
+		send_http_status("404");
+		$this->display("Empty:404");
+	}
+	
 	/* 写入日志 */
 	public function watchdog($action="", $info=""){
 		$log = array(
@@ -68,7 +73,7 @@ class BaseAction extends Action{
 		if(!isset($this->jumpUrl)) $this->assign('jumpUrl',"javascript:history.back(-1);");
 		$this->display("Base:error");
 		exit ;
-	}	
+	}
 }
 
 

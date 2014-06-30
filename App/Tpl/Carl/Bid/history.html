@@ -26,7 +26,7 @@
 						</div>
 						<div class="box-content">
 							<div class="row-fluid">
-								<form method="get" action="__URL__/index">
+								<form method="get" action="__ACTION__">
 									<div class="span10">
 									应标状态：<select name="status" class=" _filter" data-rel="chosen">
 										<option value="all">全部</option>
@@ -53,14 +53,14 @@
 									<volist name="historys" id="item">
 									<tr>
 										<td><input type="checkbox" name="id[]" value="{$item.re_id}" />{$item.bid_sn}</td>
-										<td><a href="__URL__/editBidder/id/{$item.bid_id}" title="{$item.bid_subject}">{$item.subject} ..</a></td>
+										<td><a href="__URL__/viewHistory/id/{$item.re_id}" title="{$item.bid_subject}">{$item.subject} ..</a></td>
 										<td><a href="__GROUP__/Member/memberInfo/id/{$item.bid_mid}" >{$item.bid_mid}</a></td>
 										<td>{$item.bid_publishtime|timeFormat="Y-m-d"}</td>
 										<td><span class="label label{$item.bid_state|switchBidState}">{$state[$item['bid_state']]}</td>
 										<td>￥{$item.de_deposit}</span></td>
 										<td><span class="label label{$item.de_paystatus|switchDeStatus}">{$status[$item['de_paystatus']]}</td>
 										<td>
-											<a class="btn btn-info btn-mini" href="__URL__/editBidder/id/{$item.bid_id}"><i class="icon-edit icon-white"></i> 详细</a>
+											<a class="btn btn-info btn-mini" href="__URL__/viewHistory/id/{$item.re_id}"><i class="icon-edit icon-white"></i> 详细</a>
 											<a class="btn btn-danger btn-mini" href="__URL__/toHistory/id/{$item.re_id}"><i class="icon-trash icon-white"></i> 删除</a>
 										</td>                                  
 									</tr>

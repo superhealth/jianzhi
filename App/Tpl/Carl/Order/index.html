@@ -68,10 +68,6 @@
 										<td><span class="label label{$item.mem_active|switch_active}" type="button">{$status[$item['du_paystatus']]}</span></td>
 										<td><span class="center">{$item.du_paytime|timeFormat="Y-m-d"}</span></td>
 										<td>
-											<a class="btn btn-danger" href="__URL__/delDue/id/{$item.du_id}">
-												<i class="icon icon-locked icon-white"></i>  
-												删除                                            
-											</a>
 											<a class="btn btn-info" href="__URL__/viewDue/id/{$item.du_id}">
 												<i class="icon-edit icon-white"></i>  
 												查看                                           
