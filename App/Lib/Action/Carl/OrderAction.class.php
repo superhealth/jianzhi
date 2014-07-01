@@ -121,6 +121,7 @@ class OrderAction extends BaseAction{
 		$order = "de_createtime DESC";
 		$deposits = $deposit->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		$this->assign("deposits", $deposits);
+		$this->assign("status", array('未支付', '已支付','已退款','退款失败'));
 		$this->display();
 	}
 	
@@ -133,10 +134,74 @@ class OrderAction extends BaseAction{
 	}
 	
 	public function viewDeposit($id){
+		$status = array('未支付', '已支付','已退款','退款失败');
 		$info = M("deposit")->join("zt_bidder ON bid_sn=de_id")->where('de_id="'.$id.'"')->find();
-		dump($info);
-		$this->assign("info", $info);
-		$this->assign("status", array('未支付', '已支付','已退款','退款失败'));
+		echo '<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>查看保证金详细</h3>
+			</div>
+			<div class="modal-body form-horizontal">
+				<fieldset>
+					<div class="control-group">
+					  	<label class="control-label" for="de_id">保证金订单号：</label>
+					  	<div class="controls">
+							<h4>'.$info['de_id'].'</h4>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="mem_id">发起人：</label>
+					  	<div class="controls">
+							<a href="__GROUP__/Member/memberInfo/id/'.$info['de_mid'].'" data-rel="tooltip" data-original-title="查看用户资料">'.$info['de_mid'].'</a>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="bid_subject">应标主题：</label>
+					  	<div class="controls">
+							<a href="'.__GROUP__.'/Bid/editBidder/id/'.$info['bid_id'].'" data-rel="tooltip" data-original-title="查看应标详情">'.$info['bid_subject'].'</a>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="deposit">应标主题：</label>
+					  	<div class="controls">
+							<span class="yellow">'.$info['de_deposit'].'</span>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="createtime">创建时间：</label>
+					  	<div class="controls">
+							<span class="">'.timeFormat($info['de_createtime'], 'Y-m-d').'</span>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="paystatus">交易状态：</label>
+					  	<div class="controls">
+							<span class="label lable'.switchDeStatus($info['de_paystatus']).'">'.$status[$info['de_paystatus']].'</span>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="paytime">付款时间：</label>
+					  	<div class="controls">
+							<span class="">'.timeFormat($info['de_paytime'], 'Y-m-d').'</span>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="backtime">退款时间：</label>
+					  	<div class="controls">
+							<span class="">'.timeFormat($info['de_backtime'], 'Y-m-d').'</span>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="bid_subject">支付宝状态码：</label>
+					  	<div class="controls">
+							<span class="red">'.$info['de_backcode'].'</span>
+					  	</div>
+					</div>
+				</fieldset>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">关闭</a>
+			</div>';
+		exit;
 	}
 	
 }

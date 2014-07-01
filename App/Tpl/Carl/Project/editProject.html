@@ -230,7 +230,11 @@
 								</form>
 							</div>
 							<div class="box-content tab-pane" id="bids">
-								kong de 
+								<ol>
+									<volist name="bidders" id="bid">
+									<li><a href="__GROUP__/Bid/editBidder/id/{$bid.bid_id}">{$bid.bid_subject}</a> {$status[$bid['de_paystatus']]}</li>	
+									</volist>
+								</ol>
 							</div>
 						</div>
 					</div>
