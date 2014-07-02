@@ -303,7 +303,7 @@ class ProjectAction extends BaseAction{
 		$props = D("Property")->getProps();
 		$this->assign("props", $props);
 		// 详细分类
-		
+		//
 		$this->display();
 	}
 		

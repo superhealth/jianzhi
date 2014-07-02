@@ -89,7 +89,7 @@ $parameter = array(
 );
 
 //建立请求
-$alipaySubmit = new AlipaySubmit($alipay_config);
+//$alipaySubmit = new AlipaySubmit($alipay_config);
 $html_text = $alipaySubmit->buildRequestForm($parameter,"get", "确认");
 echo $html_text;
 

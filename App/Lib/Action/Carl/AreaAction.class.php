@@ -1,7 +1,7 @@
 <?php
 /**
  * 地区设置模块
- * @author Carl
+ * @author dapianzi
  *
  */
 class AreaAction extends BaseAction{

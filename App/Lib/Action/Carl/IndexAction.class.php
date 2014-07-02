@@ -197,7 +197,21 @@ class IndexAction extends BaseAction{
 			echo str_replace(array("%id%", "%name%", "%order%", "%href%","%desc%","%url%"), array($info['link_id'], $info['link_name'], $info['link_order'], $info['link_href'], $info['link_title'], __ACTION__), $responseHTML);
 		}
 	}
-
+	
+	/**
+	 * 更新缓存
+	 */
+	public function links_update(){
+		if(!per_check("links_edit")){
+			$this->error("无此权限！");
+		}
+		if(D("Links")->updateCache()){
+			$this->success("更新成功！");
+		}else{
+			$this->error("更新失败！");
+		}
+	}
+	
 	/**
 	 * 删除友情链接
 	 * @param string $chkt
@@ -430,6 +444,19 @@ class IndexAction extends BaseAction{
 		}
 	}
 	
+	/**
+	 * 更新缓存
+	 */
+	public function advs_update(){
+		if(!per_check("advs_edit")){
+			$this->error("无此权限！");
+		}
+		if(D("Advs")->updateCache()){
+			$this->success("更新成功！");
+		}else{
+			$this->error("更新失败！");
+		}
+	}
 
 	/**
 	 * 首页区块
@@ -496,7 +523,14 @@ class IndexAction extends BaseAction{
 			}
 			
 		}
-	}	
+	}
+	
+	/**
+	 * 更新缓存
+	 */
+	public function blockUpdate(){
+		
+	}
 	
 	/**
 	 * 删除区块

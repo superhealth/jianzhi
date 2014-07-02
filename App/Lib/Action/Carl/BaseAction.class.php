@@ -26,6 +26,9 @@ class BaseAction extends Action{
 			$msg[1] = $this->result_msg[$msg[1]];
 			$this->assign("msg", $msg);
 		}
+		$groups = D("Block")->getGroups();
+		$this->assign("groups", $groups);
+		
 	}
 	
 	public function _empty(){

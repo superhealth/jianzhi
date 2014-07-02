@@ -25,6 +25,8 @@ class DueAction extends CommonAction{
 	 */
 	public function dueOrders(){
 		$orders = D("duefee")->getDuefees($_SESSION['member'], 0);	//
+		$this->assign("orders", $orders);
+		$this->display();
 	}
 	
 	/**
