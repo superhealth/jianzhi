@@ -5,12 +5,30 @@
  *
  */
 class NoticeModel extends Model{
-	//未读消息数
+	/**
+	 * 用户$mid的
+	 * @param string $mid
+	 * @return Ambigous <mixed, boolean, NULL, string, unknown, multitype:, multitype:multitype: , void>
+	 */
+	public function notices($mid){
+		return $this->where("no_mid='{$mid}'")->select();
+	}
+	
+	/**
+	 * 用户$mid的未读通知数
+	 * @param string $mid
+	 */
 	public function noRead($mid){
 		return $this->where("no_mid='{$mid}' AND no_read=0")->count();	
 	}
 	
-	//发送消息
+	/**
+	 * 发送短消息
+	 * @param string $mid
+	 * @param string $subject
+	 * @param string $content
+	 * @return Ambigous <mixed, boolean, string, false, number>
+	 */
 	public function sendNotice($mid, $subject, $content){
 		$data = array(
 			"no_mid"	=> $mid,

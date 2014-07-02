@@ -232,7 +232,7 @@ class MemberAction extends CommonAction{
 	 * 系统通知
 	 */
 	public function sysNotice(){
-		
+		$notices = D("Notice")->get
 	}
 	
 	/**
