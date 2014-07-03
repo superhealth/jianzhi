@@ -9,7 +9,9 @@ class CommonAction extends EmptyAction{
 	 * 初始化方法
 	 */
 	public function _initialize(){
-		
+		if(isset($_SESSION['member'])){
+			$noticeCount = D("Notice")->noRead($_SESSION['member']);
+		}
 	}
 	
 	/**

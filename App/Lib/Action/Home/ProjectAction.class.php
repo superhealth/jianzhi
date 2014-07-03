@@ -17,7 +17,20 @@ class ProjectAction extends CommonAction{
 	 * @param $step 步骤
 	 */
 	public function createProject($step = 1){
-		
+		switch($step){
+			case 1:
+				
+				break;
+			case 2:
+				
+				break;
+			case 3:
+				
+				break;
+				
+			default:
+				
+		}
 	}
 	
 
@@ -38,6 +51,9 @@ class ProjectAction extends CommonAction{
 		$bidders = D("Bidder")->getProBids($info['pro_id']);
 		$this->assign("bidders", $bidders);
 		$this->assign("info", $info);
+		dump($info);
+		dump($atts);
+		dump($bidders);
 		$this->display();
 	}
 	

@@ -6,8 +6,10 @@ class MemberAction extends CommonAction{
 	public function index(){
 		unset($_SESSION['member']);
 		$this->checkMember();
-		global $member;
+		$member = $this->memberInit();
+		
 		$this->assign("member", $member);
+		dump($member);
 	}
 	
 	/**
