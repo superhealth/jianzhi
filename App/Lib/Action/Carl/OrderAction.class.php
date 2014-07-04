@@ -9,28 +9,28 @@ class OrderAction extends BaseAction{
 	public function index(){
 		$duefee = M("duefee");
 		$map = array(
-			"du_paytime" => array("gt", time()-2592000) 	//30*24*3600 默认一个月内
+			"due_paytime" => array("gt", time()-2592000) 	//30*24*3600 默认一个月内
 		);
 		$param = array();
 		//筛选支付方式
 		if(isset($_REQUEST['pay']) && $_REQUEST['pay']!="all"){
 			if($_REQUEST['pay']=='alipay'){
-				$map['du_operator'] = "alipay";
+				$map['due_operator'] = "alipay";
 			}else{
-				$map['du_operator'] = array("neq", "alipay");
+				$map['due_operator'] = array("neq", "alipay");
 			}
 			$param['pay'] = $_REQUEST['pay'];
 		}
 		//支付状态
 		if(isset($_REQUEST['status']) && $_REQUEST['status']!="all"){
-			$map['du_paystatus']  = $_REQUEST['status'];
+			$map['due_paystatus']  = $_REQUEST['status'];
 			$param['status'] = $_REQUEST['status'];
 		}
 		//查询用户名
 		if(isset($_REQUEST['words'])){
 			$words = addslashes($_REQUEST['words']);
 			if(strlen($words)>=3){
-				$map['du_mid']  = array('like', "%{$words}%");
+				$map['due_mid']  = array('like', "%{$words}%");
 				$param['words'] = $_REQUEST['words'];
 			}
 		}
@@ -50,9 +50,9 @@ class OrderAction extends BaseAction{
 		$this->assign("pager", $pager);
 		//$join = "";
 		//$field = "";
-		$order = "du_paytime DESC";
+		$order = "due_paytime DESC";
 		$duefees = $duefee->where($map)->order($order)->limit($limit)->select();
-		$this->assign("duefee", $duefee);
+		$this->assign("duefees", $duefees);
 		$this->assign("operator", array("alipay"=>"支付宝", "other"=>"线下转账"));
 		$this->display();
 	}
@@ -108,6 +108,25 @@ class OrderAction extends BaseAction{
 				$param['words'] = $_REQUEST['words'];
 			}
 		}
+		if(empty($_REQUEST['start'])){
+			$start = 0;
+		}else{
+			$start = strtotime($_REQUEST['start']);
+			$param['start'] = $_REQUEST['start'];
+		}
+		if(empty($_REQUEST['end'])){
+			$end = time();
+		}else{
+			$end = strtotime($_REQUEST['end']);
+			if($start>$end){
+				$end = time();
+			}else{
+				$param['end'] = $_REQUEST['end'];
+			}
+			
+		}
+		$map['de_createtime'] = array("between", $start.','.$end);
+		
 		$this->assign("param", $param);
 		$total = $deposit->where($map)->count();
 		import("Org.Util.Page");
@@ -140,7 +159,7 @@ class OrderAction extends BaseAction{
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>查看保证金详细</h3>
 			</div>
-			<div class="modal-body form-horizontal">
+			<div class="modal-body form-horizontal" style="overflow:auto;">
 				<fieldset>
 					<div class="control-group">
 					  	<label class="control-label" for="de_id">保证金订单号：</label>
@@ -194,6 +213,12 @@ class OrderAction extends BaseAction{
 					  	<label class="control-label" for="bid_subject">支付宝状态码：</label>
 					  	<div class="controls">
 							<span class="red">'.$info['de_backcode'].'</span>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="bid_subject">状态记录：</label>
+					  	<div class="controls">
+							<div class="well">'.$info['de_log'].'</div>
 					  	</div>
 					</div>
 				</fieldset>

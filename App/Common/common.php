@@ -186,6 +186,28 @@ function switchDeStatus($status=""){
 			return "-warning";
 	}
 }
+/**
+ * 续费单状态
+ */
+function switchDueStatus($status=""){
+	switch($status){
+		case 0:
+			return "-info"	;
+			break;
+		case 1:
+			return "-success";
+			break;
+		case 2:
+			return "-inverse";
+			break;
+		case 3:
+			return "-danger";
+			break;
+		default:
+			return "-warning";
+	}
+}
+
 
 /**
  * check permission

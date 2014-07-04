@@ -27,10 +27,7 @@
 							<div class="row-fluid">
 								<form method="get" action="__URL__/index">
 									<div class="span10">
-									按时间：
-									<input type="text" class="datepicker" name="start" id="date-start" value="" /><span class="inline">至</span>
-									<input type="text" class="datepicker" name="end" id="date-end" value="" />
-									&nbsp;&nbsp;支付方式：<select name="pay" class=" _filter" data-rel="chosen">
+									支付方式：<select name="pay" class=" _filter" data-rel="chosen">
 										<option value="all">全部</option>
 										{$states|getOptions=$param['state']}
 									</select>
@@ -38,6 +35,9 @@
 										<option value="all">全部</option>
 										{$actions|getOptions=$param['active']}
 									</select>
+									&nbsp;&nbsp;按时间：
+									<input type="text" class="datepicker" style="width:100px;" name="start" id="date-start" value="" /><span class="inline">至</span>
+									<input type="text" class="datepicker" style="width:100px;" name="end" id="date-end" value="" />
 									&nbsp;&nbsp;查找会员: <input type="text" name="words"  class="_filter_txt" value="{$param.words}" />
 									&nbsp;&nbsp;<button class="btn btn-small btn-primary">查找</button>
 									</div>
@@ -60,15 +60,15 @@
 								  <tbody>
 									<volist name="duefees" id="item">
 									<tr>
-										<td><input type="checkbox" name="id[]" value="{$item.du_id}" /></td>
-										<td>{$item.du_mid}</td>
-										<td>{$item.du_discount}年</td>
-										<td>￥{$item.du_amount}</td>
-										<td>{$item.du_operator}</td>
-										<td><span class="label label{$item.mem_active|switch_active}" type="button">{$status[$item['du_paystatus']]}</span></td>
-										<td><span class="center">{$item.du_paytime|timeFormat="Y-m-d"}</span></td>
+										<td><input type="checkbox" name="id[]" value="{$item.due_id}" /></td>
+										<td>{$item.due_mid}</td>
+										<td>{$item.due_discount}年</td>
+										<td>￥{$item.due_amount}</td>
+										<td>{$item.due_operator}</td>
+										<td><span class="label label{$item.due_paystatus|switchDueStatus}" type="button">{$status[$item['due_paystatus']]}</span></td>
+										<td><span class="center">{$item.due_paytime|timeFormat="Y-m-d"}</span></td>
 										<td>
-											<a class="btn btn-info" href="__URL__/viewDue/id/{$item.du_id}">
+											<a class="btn btn-info" href="__URL__/viewDue/id/{$item.due_id}">
 												<i class="icon-edit icon-white"></i>  
 												查看                                           
 											</a>

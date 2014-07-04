@@ -28,13 +28,13 @@
 							<div class="row-fluid">
 								<form method="get" action="__ACTION__">
 									<div class="span10">
-									按时间：
-									<input type="text" class="datepicker" style="width:100px;" name="start" id="date-start" value="" /><span class="inline">至</span>
-									<input type="text" class="datepicker" style="width:100px;" name="end" id="date-end" value="" />
-									&nbsp;&nbsp;付款状态：<select name="status" class=" _filter" data-rel="chosen">
+									付款状态：<select name="status" class=" _filter" data-rel="chosen">
 										<option value="all">全部</option>
-										{$actions|getOptions=$param['active']}
+										{$status|getOptions=$param['status']}
 									</select>
+									&nbsp;&nbsp;按时间：
+									<input type="text" class="datepicker" style="width:100px;" name="start" id="date-start" value="{$param.start}" /><span class="inline">至</span>
+									<input type="text" class="datepicker" style="width:100px;" name="end" id="date-end" value="{$param.end}" />
 									&nbsp;&nbsp;查找会员: <input type="text" style="width:100px;" name="words"  class="_filter_txt" value="{$param.words}" />
 									&nbsp;&nbsp;<button class="btn btn-mini btn-primary">查找</button>
 									</div>
@@ -59,7 +59,7 @@
 									<tr>
 										<td><input type="checkbox" name="id[]" value="{$item.de_id}" /></td>
 										<td>{$item.de_id}</td>
-										<td><a href="__URL__/editBidder/id/{$item.bid_id}" title="{$item.bid_subject}">{$item.bid_subject}</a></td>
+										<td><a href="__GROUP__/Bid/editBidder/id/{$item.bid_id}" title="{$item.bid_subject}">{$item.bid_subject}</a></td>
 										<td><a href="__GROUP__/Member/memberInfo/id/{$item.de_mid}" >{$item.de_mid}</a></td>
 										<td>￥{$item.de_deposit}</td>
 										<td>{$item.de_createtime|timeFormat="Y-m-d"}</td>
