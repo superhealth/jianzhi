@@ -9,7 +9,7 @@ class OrderAction extends BaseAction{
 	public function index(){
 		$duefee = M("duefee");
 		$map = array(
-			"due_paytime" => array("gt", time()-2592000) 	//30*24*3600 默认一个月内
+			"due_createtime" => array("gt", time()-2592000) 	//30*24*3600 默认一个月内
 		);
 		$param = array();
 		//筛选支付方式
@@ -34,16 +34,28 @@ class OrderAction extends BaseAction{
 				$param['words'] = $_REQUEST['words'];
 			}
 		}
-		//按起止时间查询已支付
-		if($map['du_paystatus']!="0"){
-			//选择起止时间
+		//按时间段筛选
+		if(empty($_REQUEST['start'])){
+			$start = 0;
+		}else{
 			$start = strtotime($_REQUEST['start']);
-			$end = strtotime($_REQUEST['end']);
+			$param['start'] = $_REQUEST['start'];
 		}
+		if(empty($_REQUEST['end'])){
+			$end = time();
+		}else{
+			$end = strtotime($_REQUEST['end']);
+			if($start>$end){
+				$end = time();
+			}else{
+				$param['end'] = $_REQUEST['end'];
+			}
+		}
+		$map['due_createtime'] = array("between", $start.','.$end);
 		$this->assign("param", $param);
 		$total = $duefee->where($map)->count();
 		import("Org.Util.Page");
-		$page = new Page($total, 12, $param);
+		$page = new Page($total, 10, $param);
 		// 分页查询
 		$limit = $page->firstRow.",".$page->listRows;
 		$pager = $page->shown();
@@ -61,13 +73,80 @@ class OrderAction extends BaseAction{
 	 * 查看续费单详细
 	 */
 	public function viewDue($id=""){
-		$duefee = M("duefee")->where("du_id={$id}")->find();
-		if(!empty($duefee)){
-			$html = "";
-			exit($html);
-		}else{
-			echo response_msg("参数错误！", "error", true);
-		}
+		$status = array('未支付', '已支付','已退款','退款失败');
+		$info = M("duefee")->join("zt_bidder ON bid_sn=de_id")->where('de_id="'.$id.'"')->find();
+		echo '<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>查看保证金详细</h3>
+			</div>
+			<div class="modal-body form-horizontal" style="overflow:auto;">
+				<fieldset>
+					<div class="control-group">
+					  	<label class="control-label" for="de_id">保证金订单号：</label>
+					  	<div class="controls">
+							<h4>'.$info['de_id'].'</h4>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="mem_id">发起人：</label>
+					  	<div class="controls">
+							<a href="__GROUP__/Member/memberInfo/id/'.$info['de_mid'].'" data-rel="tooltip" data-original-title="查看用户资料">'.$info['de_mid'].'</a>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="bid_subject">应标主题：</label>
+					  	<div class="controls">
+							<a href="'.__GROUP__.'/Bid/editBidder/id/'.$info['bid_id'].'" data-rel="tooltip" data-original-title="查看应标详情">'.$info['bid_subject'].'</a>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="deposit">应标主题：</label>
+					  	<div class="controls">
+							<span class="yellow">'.$info['de_deposit'].'</span>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="createtime">创建时间：</label>
+					  	<div class="controls">
+							<span class="">'.timeFormat($info['de_createtime'], 'Y-m-d').'</span>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="paystatus">交易状态：</label>
+					  	<div class="controls">
+							<span class="label lable'.switchDeStatus($info['de_paystatus']).'">'.$status[$info['de_paystatus']].'</span>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="paytime">付款时间：</label>
+					  	<div class="controls">
+							<span class="">'.timeFormat($info['de_paytime'], 'Y-m-d').'</span>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="backtime">退款时间：</label>
+					  	<div class="controls">
+							<span class="">'.timeFormat($info['de_backtime'], 'Y-m-d').'</span>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="bid_subject">支付宝状态码：</label>
+					  	<div class="controls">
+							<span class="red">'.$info['de_backcode'].'</span>
+					  	</div>
+					</div>
+					<div class="control-group">
+					  	<label class="control-label" for="bid_log">状态记录：</label>
+					  	<div class="controls">
+							<div class="well">'.$info['de_log'].'</div>
+					  	</div>
+					</div>
+				</fieldset>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">关闭</a>
+			</div>';
+		exit;
 	}
 	
 	/**
@@ -94,10 +173,12 @@ class OrderAction extends BaseAction{
 		$deposit = M("deposit");
 		$map = array();
 		$param = array();
+		//按支付状态查询
 		if(isset($_REQUEST['status']) && $_REQUEST['status']!="all"){
 			$map['de_paystatus']  = $_REQUEST['status'];
 			$param['status'] = $_REQUEST['status'];
 		}
+		//关键字搜索应标标题和用户名
 		if(isset($_REQUEST['words'])){
 			$words = addslashes($_REQUEST['words']);
 			if(strlen($words)>=3){
@@ -108,6 +189,7 @@ class OrderAction extends BaseAction{
 				$param['words'] = $_REQUEST['words'];
 			}
 		}
+		//按时间段筛选
 		if(empty($_REQUEST['start'])){
 			$start = 0;
 		}else{
@@ -123,10 +205,9 @@ class OrderAction extends BaseAction{
 			}else{
 				$param['end'] = $_REQUEST['end'];
 			}
-			
 		}
 		$map['de_createtime'] = array("between", $start.','.$end);
-		
+		//保存参数
 		$this->assign("param", $param);
 		$total = $deposit->where($map)->count();
 		import("Org.Util.Page");
@@ -216,7 +297,7 @@ class OrderAction extends BaseAction{
 					  	</div>
 					</div>
 					<div class="control-group">
-					  	<label class="control-label" for="bid_subject">状态记录：</label>
+					  	<label class="control-label" for="bid_log">状态记录：</label>
 					  	<div class="controls">
 							<div class="well">'.$info['de_log'].'</div>
 					  	</div>

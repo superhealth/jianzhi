@@ -7,7 +7,7 @@
 class SysconfModel extends Model{
 	private $cacheFile = SYSCONF;	//缓存文件
 	/**
-	 * 获取属性变量
+	 * 获取系统参数
 	 * @param string $flag 是否检查文件更新时间
 	 */
 	public function sysConfs($flag=false){
@@ -20,9 +20,14 @@ class SysconfModel extends Model{
 	}
 	
 	/**
-	 * 
+	 * 获取系统配置参数
+	 * @param string $key 
+	 * @return string sysconf value
 	 */
-	public function getConf($key){
+	public function getConf($key=""){
+		if(empty($key)){
+			return false;
+		}
 		$sysconfs = $this->sysConfs();
 		return $sysconfs[$key];
 	}

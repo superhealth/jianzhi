@@ -588,8 +588,20 @@ function enumsToSelect($sortId, $enum=""){
 	return $select;
 }
 
-
-
+/**
+ * 产生续费单订单号
+ * @param string $m 
+ */
+function createDuefeeSn($m){
+	return 'NF'.dechex($_SERVER['REQUEST_TIME']).$m;
+}
+/**
+ * 产生保证金订单号
+ * @param string $m
+ */
+function createDepositSn($m){
+	return 'BZ'.dechex($_SERVER['REQUEST_TIME']).$m;
+}
 
 
 

@@ -43,8 +43,8 @@ class AlipayAction extends EmptyAction{
 	/**
 	 * 支付年费
 	 */
-	public function duefeePay($duefee){
-		import('@.ORG.alipay_submit');			
+	public function duefeePay(){
+			
 		//支付类型
 		$payment_type = "1";
 		//必填，不能修改
@@ -65,7 +65,7 @@ class AlipayAction extends EmptyAction{
 		$out_trade_no = $duefee['out_trade_no'];
 		//商户网站订单系统中唯一订单号，必填		
 		//订单名称
-		$subject = '年费续费单';
+		$subject = '年费续费单'.$out_trade_no;
 		//必填		
 		//付款金额
 		$total_fee = $duefee['total_fee'];
@@ -106,8 +106,9 @@ class AlipayAction extends EmptyAction{
 				"exter_invoke_ip"	=> $duefee['exter_invoke_ip'],
 				"_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
 		);		
+		import('@.ORG.alipay_submit');
 		//建立请求
-		//$alipaySubmit = new AlipaySubmit($alipay_config);
+		$alipaySubmit = new AlipaySubmit($alipay_config);
 		$html_text = $alipaySubmit->buildRequestForm($parameter,"get", "确认");
 		echo $html_text;
 	}
@@ -121,7 +122,6 @@ class AlipayAction extends EmptyAction{
 		$alipayNotify = new AlipayNotify($this->alipay_config);
 		$verify_result = $alipayNotify->verifyReturn();
 		if($verify_result) {//验证成功
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//请在这里加上商户的业务逻辑程序代码		
 			//——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
 			//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表		
@@ -132,10 +132,11 @@ class AlipayAction extends EmptyAction{
 			//交易状态
 			$trade_status = $_GET['trade_status'];	
 			
-			// D('Duefee')->duefeeStatus($out_trade_no, $trade_status);
+			
 			
 			if($_GET['trade_status'] == 'TRADE_FINISHED' || $_GET['trade_status'] == 'TRADE_SUCCESS') {
 				//判断该笔订单是否在商户网站中已经做过处理
+				//D('Duefee')->duefeeStatus($out_trade_no, $trade_status, $trade_no);
 				//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 				//如果有做过处理，不执行商户的业务程序
 			}
@@ -178,7 +179,7 @@ class AlipayAction extends EmptyAction{
 				//1、开通了普通即时到账，买家付款成功后。
 				//2、开通了高级即时到账，从该笔交易成功时间算起，过了签约时的可退款时限（如：三个月以内可退款、一年以内可退款等）后。		
 				//调试用，写文本函数记录程序运行情况是否正常
-				//logResult("这里写入想要调试的代码变量值，或其他运行的结果记录");
+				logResult("这里写入想要调试的代码变量值，或其他运行的结果记录");
 			}
 			else if ($_POST['trade_status'] == 'TRADE_SUCCESS') {
 				//判断该笔订单是否在商户网站中已经做过处理
@@ -187,7 +188,7 @@ class AlipayAction extends EmptyAction{
 				//注意：
 				//该种交易状态只在一种情况下出现——开通了高级即时到账，买家付款成功后。		
 				//调试用，写文本函数记录程序运行情况是否正常
-				//logResult("这里写入想要调试的代码变量值，或其他运行的结果记录");
+				logResult("这里写入想要调试的代码变量值，或其他运行的结果记录");
 			}		
 			//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——		
 			echo "success";		//请不要修改或删除
@@ -200,10 +201,75 @@ class AlipayAction extends EmptyAction{
 		}
 	}
 	
+	public function duefeeBack(){
+		import('@.ORG.alipay_submit');	
+		//服务器异步通知页面路径
+		$notify_url = "http://www.xxx.com/refund_fastpay_by_platform_pwd-PHP-UTF-8/notify_url.php";
+		//需http://格式的完整路径，不允许加?id=123这类自定义参数
+		//卖家支付宝帐户
+		$seller_email = $_POST['WIDseller_email'];
+		//必填
+		//退款当天日期
+		$refund_date = $_POST['WIDrefund_date'];
+		//必填，格式：年[4位]-月[2位]-日[2位] 小时[2位 24小时制]:分[2位]:秒[2位]，如：2007-10-01 13:13:13
+		//批次号
+		$batch_no = $_POST['WIDbatch_no'];
+		//必填，格式：当天日期[8位]+序列号[3至24位]，如：201008010000001
+		//退款笔数
+		$batch_num = $_POST['WIDbatch_num'];
+		//必填，参数detail_data的值中，“#”字符出现的数量加1，最大支持1000笔（即“#”字符出现的数量999个）		
+		//退款详细数据
+		$detail_data = $_POST['WIDdetail_data'];
+		//必填，具体格式请参见接口技术文档
+		//构造要请求的参数数组，无需改动
+		$parameter = array(
+				"service" => "refund_fastpay_by_platform_pwd",
+				"partner" => trim($alipay_config['partner']),
+				"notify_url"	=> $notify_url,
+				"seller_email"	=> $seller_email,
+				"refund_date"	=> $refund_date,
+				"batch_no"	=> $batch_no,
+				"batch_num"	=> $batch_num,
+				"detail_data"	=> $detail_data,
+				"_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
+		);		
+		//建立请求
+		$alipaySubmit = new AlipaySubmit($alipay_config);
+		$html_text = $alipaySubmit->buildRequestForm($parameter,"get", "确认");
+		echo $html_text;
+	}
 	
-
 	/**
-	 * 支付年费
+	 * 退回年费异步结果
+	 * @param array $id 选中需要退款的续费单id
+	 */
+	public function duefeeBackNotify(){
+		import('@.ORG.alipay_notify');
+		//计算得出通知验证结果
+		$alipayNotify = new AlipayNotify($alipay_config);
+		$verify_result = $alipayNotify->verifyNotify();		
+		if($verify_result) {//验证成功	
+			//批次号		
+			$batch_no = $_POST['batch_no'];		
+			//批量退款数据中转账成功的笔数		
+			$success_num = $_POST['success_num'];
+		
+			//批量退款数据中的详细信息
+			$result_details = $_POST['result_details'];
+		
+			echo "success";		//请不要修改或删除
+			logResult("这里写入想要调试的代码变量值，或其他运行的结果记录");		
+		}
+		else {
+			//验证失败
+			echo "fail";
+			logResult("这里写入想要调试的代码变量值，或其他运行的结果记录");
+		}
+		
+	}	
+	
+	/**
+	 * 支付保证金
 	 */
 	public function depositPay($deposit=""){
 		import('@.ORG.alipay_submit');
@@ -278,7 +344,7 @@ class AlipayAction extends EmptyAction{
 	}
 	
 	/**
-	 * 保证金同步页面
+	 * 保证金支付同步页面
 	 */
 	public function depositReturnUrl(){
 		import("@.alipay_notify");
@@ -315,7 +381,7 @@ class AlipayAction extends EmptyAction{
 	}
 	
 	/**
-	 * 保证金异步通知
+	 * 保证金支付异步通知
 	 */
 	public function depositNotifyUrl(){
 		import("@.alipay_notify");
@@ -363,7 +429,9 @@ class AlipayAction extends EmptyAction{
 		}
 	}
 	
-	
+	/**
+	 * 退回保证金
+	 */
 	public function depositBack(){
 		require_once("lib/alipay_submit.class.php");		
 		/**************************请求参数**************************/		
@@ -406,4 +474,30 @@ class AlipayAction extends EmptyAction{
 		echo $html_text;
 	}
 
+	/**
+	 * 退款异步通知
+	 */
+	public function depositBackNotify(){
+		import('@.ORG.alipay_notify');
+		//计算得出通知验证结果
+		$alipayNotify = new AlipayNotify($alipay_config);
+		$verify_result = $alipayNotify->verifyNotify();
+		if($verify_result) {//验证成功
+			//批次号
+			$batch_no = $_POST['batch_no'];
+			//批量退款数据中转账成功的笔数
+			$success_num = $_POST['success_num'];
+		
+			//批量退款数据中的详细信息
+			$result_details = $_POST['result_details'];
+		
+			echo "success";		//请不要修改或删除
+			logResult("这里写入想要调试的代码变量值，或其他运行的结果记录");
+		}
+		else {
+			//验证失败
+			echo "fail";
+			logResult("这里写入想要调试的代码变量值，或其他运行的结果记录");
+		}
+	}
 }

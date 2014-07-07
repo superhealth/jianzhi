@@ -34,5 +34,26 @@ class DuefeeModel extends Model{
 			$where['du_paystatus'] = $status;
 		}
 		return $this->where($where)->count();
+	}	
+	
+	/**
+	 * 打包退款数据
+	 * @param array $data
+	 */
+	public function packBackData($data="", $reason=""){
+		if(empty($data)||!is_array($data)){
+			return "";
+		}
+		$data = array();
+		$reason = empty($reason) ? '管理员操作退回' : $reason;
+		foreach($data as $v){
+			$data[] = $v['due_id'].'^'.$v['due_price'].'^'.$reason;
+		}
+		return implode('#', $data);
 	}
+	
+	public function createDuefee(){
+		
+	}
+	
 }
