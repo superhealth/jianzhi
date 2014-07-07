@@ -232,21 +232,27 @@ class MemberAction extends CommonAction{
 	 * 系统通知
 	 */
 	public function sysNotice(){
-		$notices = D("Notice")->get
+		$notices = D("Notice")->getNotic($_SESSION['member']);
+		$this->assign("notices", $notices);
+		$this->display();
 	}
 	
 	/**
 	 * 收藏项目
 	 */
 	public function proCollection(){
-		
+		$collections = D("Collection")->getCollections($_SESSION['member']);
+		$this->assign("collections", $collections);
+		$this->display();
 	}
 	
 	/**
 	 * 充值消费记录
 	 */
 	public function dueRecord(){
-		
+		$duefees = D("Duefee")->getDuefees($_SESSION['member'], 1);
+		$this->assign("duefees", $duefees);
+		$this->display();
 	}
 	
 }
