@@ -46,7 +46,7 @@
 								  </div>
 								</div>
 								<div class="control-group">
-								  <label class="control-label" for="bid_subject">应标项目：</label>
+								  <label class="control-label" for="bid_proid">应标项目：</label>
 								  <div class="controls">
 									<h4><a href="__GROUP__/Project/editProject/id/{$info.bid_proid}" data-rel="tooltip" data-original-title="查看项目">{$info.pro_subject}</a></h4>
 								  </div>
@@ -54,14 +54,33 @@
 								<div class="control-group">
 								  <label class="control-label" for="bid_createtime">创建时间：</label>
 								  <div class="controls">
-									<input type="text" class="datepicker" id="bid_createtime" name="bid_createtime" value="{$info.bid_createtime|timeFormat='Y-m-d'}" />
+									<input type="text" disabled value="{$info.bid_createtime|timeFormat='Y-m-d'}" />
 								  </div>
 								</div>
 								<div class="control-group">
 								  <label class="control-label" for="bid_subject">项目主题：</label>
 								  <div class="controls">
-									<input type="text" name="bid_subject" id="bid_subject" value="{$info.bid_subject}" style="width:640px;" />
+									<input type="text" value="{$info.bid_subject}" style="width:640px;" disabled />
 									<span class="help-inline"></span>
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="bid_price">总报价：</label>
+								  <div class="controls">
+								  	<input type="text" value="{$info.bid_price']}" disabled />
+									<span class="help-inline"></span><br />
+									是否公开：
+									{$flags[$info['bid_price_flag']]}
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="bid_taxes">报价单详情：</label>
+								  <div class="controls">
+								  	税费：{$taxes[$info['bid_taxes']]}
+									<br />包含运费：
+									{$flags[$info['bid_transport']]}
+									<br />包含保险：
+									{$flags[$info['bid_insurance']]}
 								  </div>
 								</div>
 								<div class="control-group">
@@ -69,10 +88,8 @@
 								  <div class="controls">
 								  	<if condition="$quoted neq ''">
 									{$quoted.att_name}({$quoted.att_size}) <a class="btn btn-mini btn-primary" href="__GROUP__/Attachement/download/id/{$info.bid_quoted}" data-rel="tooltip" data-original-title="下载"><i class="icon icon-white icon-arrowthick-s"></i> 下载</a><br /></if>
-									<input type="file" name="bid_quoted" id="bid_quoted" />
-									<span class="help-inline"></span><br />
 									是否公开：
-									{$flags|getRadio="bid_quoted_flag",$info['bid_quoted_flag']}
+									{$flags[$info['bid_quoted_flag']]}
 								  </div>
 								</div>
                                 <div class="control-group">
@@ -80,10 +97,8 @@
 								  <div class="controls">
 								  	<if condition="$tenders neq ''">
 									{$tenders.att_name}({$tenders.att_size})<a class="btn btn-mini btn-primary" href="__GROUP__/Attachement/download/id/{$info.bid_tenders}" data-rel="tooltip" data-original-title="下载"><i class="icon icon-white icon-arrowthick-s"></i> 下载</a><br /></if>
-									<input type="file" name="bid_tenders" id="bid_tenders" />
-									<span class="help-inline"></span><br />
 									是否公开：
-									{$flags|getRadio="bid_tenders_flag",$info['bid_tenders_flag']}
+									{$flags[$info['bid_tenders_flag']]}
 								  </div>
 								</div>
 								<div class="control-group">
@@ -95,19 +110,19 @@
 								<div class="control-group">
 								  <label class="control-label" for="bid_state">应标状态：</label>
 								  <div class="controls">
-									{$state|getRadio="bid_state",$info['bid_state']}
+									{$state[$info['bid_state']]}
 								  </div>
 								</div>
 								<div class="control-group">
 								  <label class="control-label" for="bid_publishtime">发布日期：</label>
 								  <div class="controls">
-									<input type="text" class="datepicker" id="bid_publishtime" name="bid_publishtime" value="{$info.bid_publishtime|timeFormat='Y-m-d'}" />
+									<input type="text" disabled value="{$info.bid_publishtime|timeFormat='Y-m-d'}" />
 								  </div>
 								</div>
                                 <div class="control-group">
 								  <label class="control-label" for="bid_description">应标说明：</label>
 								  <div class="controls">
-									<script type="text/plain" name="bid_description" id="bid_description">{$info.bid_description}</script>
+									<div class="well">{$info.bid_description}</div>
 								  </div>
 								</div>
 							  </fieldset>
@@ -168,99 +183,5 @@
 		<include file="public:footer" />
 	</div>
 	<include file="public:js" />
-    <script type="text/javascript">
-		var imgExp = new RegExp("(.jpg|.jpeg|.gif|.png)$");
-		function bidderCheck(){
-			var legalscan = $("#mc_legalscan").val();
-			var licencescan = $("#mc_licencescan").val();
-			if(legalscan != "" && !imgExp.test(idscan)){
-				$("#mc_legalscan").parents(".control-group").addClass("error");
-				$("#mc_legalscan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
-				return false;
-			}
-			if(licencescan != "" && !imgExp.test(idscan)){
-				$("#mc_licencescan").parents(".control-group").addClass("error");
-				$("#mc_licencescan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
-				return false;
-			}
-			return true;
-		}	
-		$(function(){
-			$("#pro_createtime").datepicker("option", {maxDate: new Date()});
-			$(".area").change(function(){
-				var n = $(this).attr("id").substr(4,1);
-				var name = $(this).val();
-				findSubArea(name, parseInt(n)+1);
-			});
-			
-			$("#pro_sort").change(function(){
-				var sortid = $(this).val();
-				$.post("/Sort/getEnums", "sortid="+sortid, function(res){
-					$('#enums').html(res);	
-				}, "text");
-			});
-			
-			$("#attach_add").uploadify({
-			'auto':false,
-			'queueID':'upfileLists',
-			'fileObjName':'upload',
-			'multi':true,
-			'uploader':'__APP__/Attach/upload',
-			'formData': {"belong":"project", "id":$("#pro_id").val()},
-			'fileTypeDesc':'支持的格式：',
-			'fileTypeExts':'*.jpg;*.jpge;*.gif;*.png;*.rar;*.zip;*.pdf;*.doc;*.docx;*.xls;*.xlsx',
-			'fileSizeLimit':'1MB',
-			'queueSizeLimit' : 5,
-			'onSelectError':function(file, errorCode, errorMsg){
-				switch(errorCode) {
-					case -100:
-						bootbox.alert("上传的文件数量已经超出系统限制的5个总数量！");
-						break;
-					case -110:
-						bootbox.alert("文件 ["+file.name+"] 大小超出系统限制的1M大小！");
-						break;
-					case -120:
-						bootbox.alert("文件 ["+file.name+"] 大小异常！");
-						break;
-					case -130:
-						bootbox.alert("文件 ["+file.name+"] 类型不正确！");
-						break;
-					default:
-						bootbox.alert(errorMsg);
-				}
-			},
-			'onFallback':function(){
-				bootbox.alert("您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
-			},
-			'onUploadSuccess':function(file, data, response){
-				if(!response){
-					bootbox.alert("连接服务器失败！请检查网络！");
-				}else{
-					var data = eval("("+data+")");
-					if(data.code==1){
-						for(var i=0; i<data.data.length;i++){
-							$("#att-table tbody").append('<tr><td>'+data.data[i].att_name+'</td><td>'+data.data[i].att_size+'</td><td><button type="button" class="btn btn-mini btn-danger" onclick="delAtt(this,'+data.data[i].att_id+');"><i class="icon icon-white icon-trash"></i>删除</button></td></tr>');
-						}
-					}else{
-						bootbox.alert(data.data);
-					}
-				}
-			}
-		});
-	});	
-	function delAtt(obj,id){
-		try{$.get("/Attach/del", {"belong":"project", "id":$("#pro_id").val(), "attId":id}, function(res){
-			if(res=="success"){
-				$(obj).parent().parent().remove();
-			}else{
-				bootbox.alert(res);
-			}
-		}, "text");
-		}catch(e){
-			bootbox.alert("网络连接失败！");
-		}
-	}
-	textareaInit("bid_description");
-	</script>
 </body>
 </html>

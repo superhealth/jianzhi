@@ -68,6 +68,26 @@
 								  </div>
 								</div>
 								<div class="control-group">
+								  <label class="control-label" for="bid_price">总报价：</label>
+								  <div class="controls">
+								  	<input type="text" name="bid_price" id="bid_price" value="{$info.bid_price}" />
+									<span class="help-inline"></span><br />
+									是否公开：
+									{$flags|getRadio="bid_price_flag",$info['bid_price_flag']}
+								  </div>
+								</div>
+								<div class="control-group">
+								  <label class="control-label" for="bid_taxes">报价单详情：</label>
+								  <div class="controls">
+								  	税费：<select name="bid_taxes" id="bid_taxes" rel="chosen">
+									{$taxes|getOptions=$info['bid_taxes']}</select>
+									<br />包含运费：
+									{$flags|getRadio="bid_transport",$info['bid_transport']}
+									<br />包含保险：
+									{$flags|getRadio="bid_insurance",$info['bid_insurance']}
+								  </div>
+								</div>
+								<div class="control-group">
 								  <label class="control-label" for="bid_quoted">报价书：</label>
 								  <div class="controls">
 								  	<if condition="$quoted neq ''">
@@ -184,97 +204,36 @@
 	</div>
 	<include file="public:js" />
     <script type="text/javascript">
-		var imgExp = new RegExp("(.jpg|.jpeg|.gif|.png)$");
-		function bidderCheck(){
-			var legalscan = $("#mc_legalscan").val();
-			var licencescan = $("#mc_licencescan").val();
-			if(legalscan != "" && !imgExp.test(idscan)){
-				$("#mc_legalscan").parents(".control-group").addClass("error");
-				$("#mc_legalscan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
-				return false;
-			}
-			if(licencescan != "" && !imgExp.test(idscan)){
-				$("#mc_licencescan").parents(".control-group").addClass("error");
-				$("#mc_licencescan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
-				return false;
-			}
-			return true;
-		}	
-		$(function(){
-			$("#pro_createtime").datepicker("option", {maxDate: new Date()});
-			$(".area").change(function(){
-				var n = $(this).attr("id").substr(4,1);
-				var name = $(this).val();
-				findSubArea(name, parseInt(n)+1);
-			});
-			
-			$("#pro_sort").change(function(){
-				var sortid = $(this).val();
-				$.post("/Sort/getEnums", "sortid="+sortid, function(res){
-					$('#enums').html(res);	
-				}, "text");
-			});
-			
-			$("#attach_add").uploadify({
-			'auto':false,
-			'queueID':'upfileLists',
-			'fileObjName':'upload',
-			'multi':true,
-			'uploader':'__APP__/Attach/upload',
-			'formData': {"belong":"project", "id":$("#pro_id").val()},
-			'fileTypeDesc':'支持的格式：',
-			'fileTypeExts':'*.jpg;*.jpge;*.gif;*.png;*.rar;*.zip;*.pdf;*.doc;*.docx;*.xls;*.xlsx',
-			'fileSizeLimit':'1MB',
-			'queueSizeLimit' : 5,
-			'onSelectError':function(file, errorCode, errorMsg){
-				switch(errorCode) {
-					case -100:
-						bootbox.alert("上传的文件数量已经超出系统限制的5个总数量！");
-						break;
-					case -110:
-						bootbox.alert("文件 ["+file.name+"] 大小超出系统限制的1M大小！");
-						break;
-					case -120:
-						bootbox.alert("文件 ["+file.name+"] 大小异常！");
-						break;
-					case -130:
-						bootbox.alert("文件 ["+file.name+"] 类型不正确！");
-						break;
-					default:
-						bootbox.alert(errorMsg);
-				}
-			},
-			'onFallback':function(){
-				bootbox.alert("您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
-			},
-			'onUploadSuccess':function(file, data, response){
-				if(!response){
-					bootbox.alert("连接服务器失败！请检查网络！");
-				}else{
-					var data = eval("("+data+")");
-					if(data.code==1){
-						for(var i=0; i<data.data.length;i++){
-							$("#att-table tbody").append('<tr><td>'+data.data[i].att_name+'</td><td>'+data.data[i].att_size+'</td><td><button type="button" class="btn btn-mini btn-danger" onclick="delAtt(this,'+data.data[i].att_id+');"><i class="icon icon-white icon-trash"></i>删除</button></td></tr>');
-						}
-					}else{
-						bootbox.alert(data.data);
-					}
-				}
-			}
+	var imgExp = new RegExp("(.jpg|.jpeg|.gif|.png)$");
+	function bidderCheck(){
+		var quoted = $("#bid_quoted").val();
+		var tenders = $("#bid_tenders").val();
+		if(quoted != "" && !imgExp.test(quoted)){
+			$("#bid_quoted").parents(".control-group").addClass("error");
+			$("#bid_quoted").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
+			return false;
+		}
+		if(tenders != "" && !imgExp.test(tenders)){
+			$("#bid_tenders").parents(".control-group").addClass("error");
+			$("#bid_tenders").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
+			return false;
+		}
+		var price = $("#bid_price").val();
+		if(isNaN(price)){
+			$("#bid_price").parents(".control-group").addClass("error");
+			$("#bid_price").parent().siblings(".help-inline").html("请输入确切的数字！");
+			return false;
+		}
+		return true;
+	}	
+	$(function(){
+		$("#bid_createtime").datepicker("option", {maxDate: new Date()});
+		$("#bid_createtime").change(function(){
+			var create = $(this).val();
+			$("#bid_publishtime").datepicker("option", {minDate:create});
 		});
 	});	
-	function delAtt(obj,id){
-		try{$.get("/Attach/del", {"belong":"project", "id":$("#pro_id").val(), "attId":id}, function(res){
-			if(res=="success"){
-				$(obj).parent().parent().remove();
-			}else{
-				bootbox.alert(res);
-			}
-		}, "text");
-		}catch(e){
-			bootbox.alert("网络连接失败！");
-		}
-	}
+	
 	textareaInit("bid_description");
 	</script>
 </body>

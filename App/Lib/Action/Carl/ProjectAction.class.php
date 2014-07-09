@@ -134,6 +134,7 @@ class ProjectAction extends BaseAction{
 	
 	/**
 	 * 查看编辑项目详情
+	 * @param string $action 
 	 */
 	public function editProject($action=""){
 		if(!per_check("project_edit")){
@@ -152,6 +153,7 @@ class ProjectAction extends BaseAction{
 				$this->error("修改失败！");
 			}
 		}else{
+			
 			//显示项目详情
 			if(isset($_REQUEST['id'])){
 				$info = M("project")->join("zt_contact ON pro_contact=con_id")->where("pro_id='{$_REQUEST['id']}'")->find();

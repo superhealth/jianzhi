@@ -15,16 +15,16 @@
 				<div>
 					<ul class="breadcrumb">
 						<li><a href="__GROUP__">首页</a> <span class="divider">/</span></li>
-						<li><a href="__URL__/index">生产属性设置</a></li>
+						<li><a href="__URL__/index">税费选项设置</a></li>
 					</ul>
 				</div>
 				<div class="row-fluid sortable">
 					<div class="box">
 						<div class="box-header well" data-original-title>
-							<h2>生产属性设置</h2>
+							<h2>税费选项设置</h2>
 						</div>
 						<div class="box-content">
-							<div class="row-fluid">
+							<!--div class="row-fluid">
 								<form method="post" action="">
 								<div class="span6">
 									<div class="dataTables_filter">
@@ -32,26 +32,28 @@
 									</div>
 								</div>
 								</form>
-							</div>
+							</div-->
 							<form method="post"> 
 							<table class="table table-bordered">
 								  <thead>
 									  <tr>
 										  <th><input type="checkbox" /> ID</th>
-										  <th>生产属性</th>
-										  <th>排序</th>
+										  <th>税费名称</th>
+										  <th>税费百分比</th>
+										  <th>税费说明</th>
 										  <th>操作</th>                                       
 									  </tr>
 								  </thead>   
 								  <tbody>
-									<volist name="props" id="item">
+									<volist name="taxes" id="item">
 									<tr>
-										<td><input type="checkbox" name="id[]" value="{$item.pp_id}" />{$item.pp_id}</td>
-										<td><a class="_actions_" href="#" data-href="__URL__/edit/id/{$item.pp_id}">{$item.pp_name}</a></td>
-										<td>{$item.pp_order}</td>
+										<td><input type="checkbox" name="id[]" value="{$item.tax_id}" />{$item.pp_id}</td>
+										<td><a class="_actions_" href="#" data-href="__URL__/edit/id/{$item.tax_id}">{$item.tax_name}</a></td>
+										<td>{$item.tax_value}%</td>
+										<td>{$item.tax_desc}</td>
 										<td>
-											<a class="btn btn-mini btn-info _actions_" href="#" data-href="__URL__/edit/id/{$item.pp_id}"><i class="icon-edit icon-white"></i> 编辑</a>
-											<a class="btn btn-mini btn-danger _delete_" href="#" data-href="__URL__/delete/id/{$item.pp_id}"><i class="icon-trash icon-white"></i> 删除</a>
+											<a class="btn btn-mini btn-info _actions_" href="#" data-href="__URL__/edit/id/{$item.tax_id}"><i class="icon-edit icon-white"></i> 编辑</a>
+											<a class="btn btn-mini btn-danger _delete_" href="#" data-href="__URL__/delete/id/{$item.tax_id}"><i class="icon-trash icon-white"></i> 删除</a>
 										</td>                                     
 									</tr>
 									</volist>                         
@@ -89,9 +91,13 @@
 					backdrop: "static"
 				});
 				$("#commit").click(function(){
-					if($("#pp_name").val()==""){
-						$("#pp_name").parent().parent().addClass("error");
-						$("#pp_name").next().html("生产属性名不能为空！");
+					var value = $("#tax_value").val();
+					if($("#tax_name").val()==""){
+						$("#tax_name").parent().parent().addClass("error");
+						$("#tax_name").next().html("税费名称不能为空！");
+					}else if(!isNaN(value)){
+						$("#tax_value").parent().parent().addClass("error");
+						$("#tax_value").next().html("请填写0-100内的数字！");
 					}else{
 						var form = $(this).parents("form")	;
 						form.attr("action", $(this).attr("data-act")).submit();

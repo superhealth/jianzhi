@@ -7,7 +7,7 @@
 class BidAction extends BaseAction{
 	private $status = array('未支付', '已支付', '已退款','退款失败');		//保证金支付状态
 	private $state = array('未发布','应标中','备选','中标');		//应标单状态
-	private $flags = array(0=>'不公开', 1=>'公开' );
+	private $flags = array(0=>'否', 1=>'是' );
 	/**
 	 * 所有投标单，筛选
 	 */
@@ -101,15 +101,17 @@ class BidAction extends BaseAction{
 		);
 		$field = 'zt_bidder.*, pro_subject, pro_id, de_deposit, de_id, de_paystatus, zt_contact.*';
 		$bidInfo = M('bidder')->field($field)->join($join)->where("bid_id={$id}")->find();
-		$quoted = M('attachement')->where('att_id="'.$bidInfo['bid_quoted'].'"')->find();
-		$this->assign('quoted', $quoted);
-		$tenders = M('attachement')->where('att_id="'.$bidInfo['bid_tenders'].'"')->find();
-		$this->assign('tenders', $tenders);
+		
 		if($bidInfo){
+			$quoted = M('attachement')->where('att_id="'.$bidInfo['bid_quoted'].'"')->find();
+			$tenders = M('attachement')->where('att_id="'.$bidInfo['bid_tenders'].'"')->find();
 			$this->assign('info', $bidInfo);
+			$this->assign('quoted', $quoted);
+			$this->assign('tenders', $tenders);
 			$this->assign('state', $this->state);
 			$this->assign('status', $this->status);
 			$this->assign('flags', $this->flags);
+			$this->assign("taxes", D("Taxes")->getTaxes());
 			$this->display();
 		}else{
 			$this->error("参数错误！");
@@ -136,6 +138,7 @@ class BidAction extends BaseAction{
 			$this->assign("state", $this->state);
 			$this->assign("status", $this->status);
 			$this->assign("flags", $this->flags);
+			$this->assign("taxes", D("Taxes")->getTaxes());
 			$this->display();
 		}else{
 			$this->error('参数错误！');

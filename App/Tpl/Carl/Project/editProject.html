@@ -230,11 +230,37 @@
 								</form>
 							</div>
 							<div class="box-content tab-pane" id="bids">
-								<ol>
-									<volist name="bidders" id="bid">
-									<li><a href="__GROUP__/Bid/editBidder/id/{$bid.bid_id}">{$bid.bid_subject}</a> {$status[$bid['de_paystatus']]}</li>	
-									</volist>
-								</ol>
+							<legend>项目【{$info.pro_subject}】的应标单：</legend>
+							<table class="table table-bordered">
+								 <thead>
+									  <tr>
+										  <th><input type="checkbox" />应标序列号</th>
+										  <th>应标主题</th>
+										  <th>作者</th>
+										  <th>创建时间</th>
+										  <th>投标状态</th>
+										  <th>保证金</th>
+										  <th>支付状态</th>
+										  <th>操作</th> 
+									  </tr>
+								  </thead>   
+								  <tbody>
+									<volist name="bidders" id="item">
+									<tr>
+										<td><input type="checkbox" name="id[]" value="{$item.bid_id}" />{$item.bid_sn}</td>
+										<td><a href="__GROUP__/Bid/editBidder/id/{$item.bid_id}" title="{$item.bid_subject}">{$item.subject} ..</a></td>
+										<td><a href="__GROUP__/Member/memberInfo/id/{$item.bid_mid}" >{$item.bid_mid}</a></td>
+										<td>{$item.bid_createtime|timeFormat="Y-m-d"}</td>
+										<td><span class="label label{$item['bid_state']|switchBidState}">{$state[$item['bid_state']]}</td>
+										<td>￥{$item.de_deposit}</span></td>
+										<td><span class="label label{$item['de_paystatus']|switchDeStatus}">{$status[$item['de_paystatus']]}</td>
+										<td>
+											<a class="btn btn-info btn-mini" href="__GROUP__/Bid/editBidder/id/{$item.bid_id}"><i class="icon-edit icon-white"></i> 详细</a>
+										</td>                                   
+									</tr>
+									</volist>                         
+								</tbody>
+							</table>
 							</div>
 						</div>
 					</div>

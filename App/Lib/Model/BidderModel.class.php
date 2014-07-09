@@ -15,7 +15,7 @@ class BidderModel extends Model{
 				"zt_project ON bid_proid=pro_id",
 				"zt_deposit ON bid_sn=de_id"
 		);
-		$field = "zt_bidder.*, pro_subject, de_deposit, de_paystatus";
+		$field = "zt_bidder.*,LEFT(bid_subject,20) subject, pro_subject, de_deposit, de_paystatus";
 		$order = "bid_createtime DESC";
 		$where = array("bid_mid"=>addslashes($mid));
 		if(!$all){
@@ -35,7 +35,7 @@ class BidderModel extends Model{
 				"zt_project ON bid_proid=pro_id",
 				"zt_deposit ON bid_sn=de_id"
 		);
-		$field = "zt_bidder.*, pro_subject, de_deposit, de_paystatus";
+		$field = "zt_bidder.*,LEFT(bid_subject,20) subject, pro_subject, de_deposit, de_paystatus";
 		$order = "bid_publishtime DESC";
 		$where = array("bid_proid"=>addslashes($pid));
 		if(!$all){
