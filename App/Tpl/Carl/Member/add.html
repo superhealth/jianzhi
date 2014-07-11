@@ -143,9 +143,9 @@
     <script type="text/javascript">
 		function memberCheck(){
 			if($("#mem_id").val()==""){
-				
-			}else if($("#")){
-				
+				$("#mem_id").parent().parent().addClass("error");
+				$("#mem_id").next().html("会员名不能为空！");
+				return false;
 			}
 			return true;
 		}

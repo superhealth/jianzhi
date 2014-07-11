@@ -53,7 +53,7 @@ class TaxesAction extends BaseAction{
 					<div class="control-group">
 						<label class="control-label" for="tax_value">税费百分比</label>
 						<div class="controls">
-						  	<input type="text" name="tax_value" id="tax_value" />
+						  	<input type="text" name="tax_value" id="tax_value" style="width:40px;" />
 						  	<span class="help-inline"></span>
 						</div>
 					</div>
@@ -119,9 +119,8 @@ class TaxesAction extends BaseAction{
 					<div class="control-group">
 						<label class="control-label" for="tax_value">税费百分比</label>
 						<div class="controls">
-						  	<input type="text" name="tax_value" id="tax_value" size="8" value="%value%" />%
-							<br />
-						  	<span class="help-inline"></span>
+						  	<input type="text" name="tax_value" id="tax_value" style="width:40px;" value="%value%" />%
+							<span class="help-inline"></span>
 						</div>
 					</div>
 					<div class="control-group">

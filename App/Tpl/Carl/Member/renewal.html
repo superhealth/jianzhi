@@ -17,15 +17,9 @@
 			<div id="content" class="span10">
 				<div>
 					<ul class="breadcrumb">
-						<li>
-							<a href="__GROUP__">后台首页</a> <span class="divider">/</span>
-						</li>
-						<li>
-							<a href="__URL__/index">会员中心</a> <span class="divider">/</span>
-						</li>
-						<li>
-							<a href="#">会员续费</a>
-						</li>
+						<li><a href="__GROUP__">后台首页</a> <span class="divider">/</span></li>
+						<li><a href="__URL__/index">会员中心</a> <span class="divider">/</span></li>
+						<li><a href="#">会员续费</a></li>
 					</ul>
 				</div>
             <div class="row-fluid sortable">
@@ -147,6 +141,10 @@
 		})
 		function renewalSave(){
 			var m = $("#due_mid").val();
+			if(m==""){
+				bootbox.alert("请先选择续费的会员！");
+				return false;
+			}
 			var discount = $("#due_discount").val();
 			var amount = $("#amount").text();
 			return bootbox.confirm("<h3>对用户<span class='green'>"+m+"</span>发起续费 <strong class='danger'>"+discount+"</strong> 年，续费金额<span class='warning'>"+amount+"</span></h3>");

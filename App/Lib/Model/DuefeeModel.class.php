@@ -52,8 +52,36 @@ class DuefeeModel extends Model{
 		return implode('#', $data);
 	}
 	
-	public function createDuefee(){
-		
+	/**
+	 * 创建续费单
+	 * @param number $year 续费期限
+	 * @param string $mid 用户id
+	 * @return Ambigous <string, number>|boolean
+	 */
+	public function createDuefee($year = 1, $mid){
+		$count = $this->where('due_mid="'.$mid.'" AND due_paystatus=0')->count();
+		if($count > 0){
+			return 'created already';
+		}else{
+			$data = array(
+				'due_id' => createDuefeeSn(substr($mid, 0, 1)),
+				'due_mid' => $mid,
+				'due_discount' => $year,
+				'due_price' => D('Sysconf')->getConf('cfg_duefee'),
+				'due_paystatus'	=> 0,
+				'due_createtime'	=> $_SERVER['REQUEST_TIME']
+			);
+			$rs = $this->add($data);
+			if($rs){
+				$subject = '【系统消息】 会员年费续费提醒';
+				$duenotice = D('Sysconf')->getConf('cfg_duenotice');
+				$content = '您的会员有效时间已不足'.$duenotice.'天，请及时续费以继续使用我们的服务，谢谢！';
+				D("Notice")->sendNotice($mid, $subject, $content);
+				return $this->getLastInsID();
+			}else{
+				return false;
+			}
+		}
 	}
 	
 }

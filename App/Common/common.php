@@ -177,13 +177,14 @@ function switchDeStatus($status=""){
 			return "-success";
 			break;
 		case 2:
-			return "-inverse";
+			return "-warning";
 			break;
 		case 3:
+			return "-inverse";
+			break;
+		case 4:
 			return "-danger";
 			break;
-		default:
-			return "-warning";
 	}
 }
 /**

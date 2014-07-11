@@ -280,18 +280,12 @@
 	</div>
 	<include file="public:js" />
     <script type="text/javascript">
-		var imgExp = new RegExp("(.jpg|.jpeg|.gif|.png)$");
 		function projectCheck(){
-			var legalscan = $("#mc_legalscan").val();
-			var licencescan = $("#mc_licencescan").val();
-			if(legalscan != "" && !imgExp.test(idscan)){
-				$("#mc_legalscan").parents(".control-group").addClass("error");
-				$("#mc_legalscan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
-				return false;
-			}
-			if(licencescan != "" && !imgExp.test(idscan)){
-				$("#mc_licencescan").parents(".control-group").addClass("error");
-				$("#mc_licencescan").parent().siblings(".help-inline").html("请上传jpg|jpeg|gif|png格式的图片！");
+			if($("#pro_subject").val()==""){
+				$("#pro_subject")[0].focus();
+				$("#pro_subject").parents(".control-group").addClass("error");
+				$("#pro_subject").next().html("请填写项目主题！");
+				
 				return false;
 			}
 			return true;

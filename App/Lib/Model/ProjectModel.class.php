@@ -35,7 +35,12 @@ class ProjectModel extends Model{
 		return $this->where($where)->count();
 	}
 	
-	//删除项目中的附件
+	/**
+	 * 添加$id的项目的附件
+	 * @param string $id
+	 * @param array $att
+	 * 
+	 */
 	public function addAtts($id, $att){
 		$id = addslashes($id);
 		$old = $this->where("pro_id={$id}")->getField("pro_attachement");
@@ -44,6 +49,11 @@ class ProjectModel extends Model{
 		return $this->where("pro_id={$id}")->setField("pro_attachement", $new);
 	}
 	
+	/**
+	 * 删除$id的项目的附件
+	 * @param string $id
+	 * @param array $att
+	 */
 	public function delAtts($id, $att){
 		$id = addslashes($id);
 		if(!is_array($att)){
@@ -52,5 +62,16 @@ class ProjectModel extends Model{
 		$old = $this->where("pro_id={$id}")->getField("pro_attachement");
 		$new = implode(",",array_diff(explode(",", $old), $att));
 		return $this->where("pro_id={$id}")->setField("pro_attachement", $new);
+	}
+	
+	
+	public function updateProState($interval=1800){
+		$cornTime = M("cornhash")->where('ch_name="project"')->getField('ch_time');
+		if($cornTime<$_SERVER['REQUEST_TIME']-$interval){
+			$where = array('pro_opentime'=>array('lt', $_SERVER['REQUEST_TIME']));
+			//$de_id = $this->where($where)->setField('pro_state', 2);
+			$pro = $this->where($where)->select();
+			dump($pro);
+		}
 	}	
 }

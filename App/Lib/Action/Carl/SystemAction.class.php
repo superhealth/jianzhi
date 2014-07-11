@@ -89,7 +89,13 @@ class SystemAction extends BaseAction{
 		}
 	} 
 	
+	/**
+	 * 保存系统参数
+	 */
 	function sysconf_save(){
+		if(!per_check("cfg_edit")){
+			$this->error("无此权限！");
+		}
 		$data = array();
 		foreach($_POST as $k=>$v){
 			if(substr($k, 0, 4)=="key_"){
@@ -101,14 +107,17 @@ class SystemAction extends BaseAction{
 		redirect(__URL__."/index");
 	}
 	
+	/**
+	 * 更新缓存
+	 */
 	function sysconf_update(){
-		if(!per_check("cfg_edit")){
+		if(!per_check("cache_update")){
 			$this->error("无此权限！");
 		}else{
 			if(D("Sysconf")->updateCache()){
 				$this->success("更新成功！");
 			}else{
-				$this->encodeData("更新失败！");
+				$this->error("更新失败！");
 			}
 		}
 	}
@@ -208,7 +217,6 @@ class SystemAction extends BaseAction{
 	
 	/* 编辑用户 */
 	public function userEdit($id="",$action=""){
-		
 		if($action=="edit"){
 			$data = M("admin")->create();
 			$data['pass'] = md5($_POST['u_pass']);

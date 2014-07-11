@@ -171,7 +171,7 @@ class PropertyAction extends BaseAction{
 	 * 更新缓存
 	 */
 	public function update(){
-		if(!per_check("prop_edit")){
+		if(!per_check("cache_update")){
 			$this->error("无此权限！");
 		}
 		if(D("Property")->updateCache()){

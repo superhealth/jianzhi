@@ -9,7 +9,7 @@ class SupportAction extends CommonAction{
 	 * 服务中心
 	 */
 	public function index(){
-		
+		$this->display();
 	}
 	
 	/**

@@ -46,12 +46,12 @@
 									</div></legend>
 								<volist name="sysconf" id="cfg">
 								<div class="control-group">
-									<label class="control-label" for="{$cfg.key}">{$cfg.desc}</label>
+									<label class="control-label" for="{$cfg.key}">{$cfg.desc}[{$cfg.key}]</label>
 									<div class="controls">
 										<if condition="$cfg['tag'] eq 'input'">
-										<input type="text" class="input-xlarge span8" id="{$cfg.key}" name="key_{$cfg.id}" value="{$cfg.value}" />
+										<input type="text" class="input-xlarge span6" id="{$cfg.key}" name="key_{$cfg.id}" value="{$cfg.value}" />
 										<else />
-										<textarea class="span8" id="{$cfg.key}" name="key_{$cfg.id}">{$cfg.value}</textarea>
+										<textarea class="span6" id="{$cfg.key}" name="key_{$cfg.id}">{$cfg.value}</textarea>
 										</if>
 										<span class="help-inline"></span>
 									</div>

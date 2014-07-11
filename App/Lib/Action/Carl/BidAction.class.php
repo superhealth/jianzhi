@@ -5,7 +5,7 @@
  *
  */
 class BidAction extends BaseAction{
-	private $status = array('未支付', '已支付', '已退款','退款失败');		//保证金支付状态
+	private $status = array('待支付', '已支付','待退款','已退款','退款失败');		//保证金支付状态
 	private $state = array('未发布','应标中','备选','中标');		//应标单状态
 	private $flags = array(0=>'否', 1=>'是' );
 	/**
@@ -120,6 +120,8 @@ class BidAction extends BaseAction{
 
 	/**
 	 * 查看编辑投标单历史档案
+	 * @param string $id 
+	 * 
 	 */
 	public function viewHistory($id=''){
 		$join = array(
@@ -279,9 +281,11 @@ class BidAction extends BaseAction{
 	
 	/**
 	 * 删除投标单
+	 * @param string $id 投标单id
+	 * 
 	 */
 	public function delBidder($id=""){
-		if(!per_check("bidder_edit")){
+		if(!per_check("bidder_delete")){
 			$this->error("无此权限！");
 		}
 		$map = array("bid_id"=>array("in", $id));
@@ -309,7 +313,7 @@ class BidAction extends BaseAction{
 	}
 	
 	public function delHistory($id=""){
-		if(!per_check("bidder_edit")){
+		if(!per_check("bidder_delete")){
 			$this->error("无此权限！");
 		}
 		$map = array("re_id"=>array("in", $id));

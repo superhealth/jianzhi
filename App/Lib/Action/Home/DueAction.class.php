@@ -9,7 +9,9 @@ class DueAction extends CommonAction{
 	 * 充值中心
 	 */
 	public function index(){
-		echo '<a href="'.__URL__.'/createDueOrder/year/2" >提交</a>'
+		$this->checkMember();
+		
+		echo '<a href="'.__URL__.'/createDueOrder/year/2" >提交</a>';
 	}
 	
 	/**
@@ -26,29 +28,10 @@ class DueAction extends CommonAction{
 	 * 待支付
 	 */
 	public function dueOrders(){
-		$orders = D("duefee")->getDuefees($_SESSION['member'], 0);	//
+		$this->checkMember();
+		$orders = D("duefee")->getDuefees($_SESSION['member']);	//
 		$this->assign("orders", $orders);
 		$this->display();
 	}
-	
-	/**
-	 * 发起支付
-	 */
-	public function alipaySubmit(){
-		
-	}
-	
-	/**
-	 * 接收结果
-	 */
-	public function alipayNotice(){
-		
-	}
-	
-	/**
-	 * 返回
-	 */
-	public function alipayReturn(){
-		
-	}
+
 }

@@ -187,6 +187,10 @@ class ProjectAction extends BaseAction{
 	 * @param string $id 联系人所在项目id
 	 */
 	public function saveContact($id=""){
+		if(!per_check('project_edit')){
+			$this->error('无此权限！');
+		}
+		 
 		$count = M("project")->where("pro_id='{$id}'")->count();
 		if($count!=1){
 			$this->error("参数错误！");
@@ -268,7 +272,7 @@ class ProjectAction extends BaseAction{
 	 * 移入历史档案区
 	 */
 	public function toHistory($id=""){
-		if(!per_check("project_edit")){
+		if(!per_check("project_record")){
 			$this->error("无此权限！");
 		}
 		$data = M("project")->where("pro_id='{$id}'")->find();
@@ -314,7 +318,7 @@ class ProjectAction extends BaseAction{
 	 * @param string $id 项目id
 	 */
 	public function delProject($id=""){
-		if(!per_check("project_edit")){
+		if(!per_check("project_delete")){
 			$this->error("无此权限！");
 		}
 		$map = array("pro_id"=>array("in", $id));
@@ -338,7 +342,7 @@ class ProjectAction extends BaseAction{
 	 * @param string $id 档案id
 	 */
 	public function delHistory($id=""){
-		if(!per_check("project_edit")){
+		if(!per_check("pro_record_del")){
 			$this->error("无此权限！");
 		}
 		$map = array("re_id"=>array("in", $id));

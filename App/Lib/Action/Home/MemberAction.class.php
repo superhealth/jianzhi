@@ -4,12 +4,12 @@ class MemberAction extends CommonAction{
 	 * 用户中心
 	 */
 	public function index(){
-		unset($_SESSION['member']);
 		$this->checkMember();
-		$member = $this->memberInit();
+		$this->memberInit();
+		//$this->assign("member", $GLOBALS['member']);
 		
-		$this->assign("member", $member);
-		dump($member);
+		dump($GLOBALS['member']);
+		echo '<a href="'.__URL__.'/logout">退出</a>';
 	}
 	
 	/**
@@ -19,17 +19,13 @@ class MemberAction extends CommonAction{
 		//来源
 		$referer = urlencode($_SERVER['HTTP_REFERER']);
 		//$this->assign("url",$referer);
-		$this->show("<form action='".__URL__."/checkLogin' method='post'><input type='hidden' name='ref' value='{$referer}' /><button>登录</button></form>", "utf-8");
+		$this->show("<form action='".__URL__."/checkLogin' method='post'><input type='hidden' name='ref' value='{$referer}' /><input type='text' name='user' /><br /><input type='password' name='pass' /><button>登录</button></form>", "utf-8");
 		$this->display();
 	}
 	/**
 	 * 验证用户
 	 */
 	public function checkLogin(){
-		$_SESSION['member'] = "dapianzi";
-		$url = empty($_POST['ref']) ? "" : urldecode($_POST['ref']);
-		$this->success("登录成功！", $url);
-		exit;
 		$map = array("mem_id"=> addslashes($_POST['user']));
 		$info = M("member")->field("mem_pass, mem_state")->where($map)->find();
 		if($info['mem_pass'] == md5($_POST['pass'])){
@@ -49,20 +45,42 @@ class MemberAction extends CommonAction{
 		}
 	}
 	
+	public function logout(){
+		unset($_SESSION['member']);
+		unset($GLOBALS['member']);
+		redirect(__GROUP__."/Member");
+	}
+	
 	/**
 	 * 初始化会员
 	 */
 	private function memberInit(){
 		//初始化会员信息
 		global $member;
+		//更新会员状态
+		D('Member')->updateMemberActive();
 		if(isset($_SESSION['member']) && !empty($_SESSION['member'])){
 			$member['info'] = M("member")->where("mem_id='{$_SESSION['member']}'")->find();
 			if(empty($member['info'])){
 				unset($_SESSION['member']);
+				unset($member);
 				redirect(__URL__."/index");exit;
 			}
+			//检查会员状态
+			if($member['info']['mem_active']==1){
+				$duefeeNoticeDuration = D("Sysconf")->getConf('cfg_duenotice');
+				if($member['info']['mem_expiretime']<$_SERVER['REQUEST_TIME']){
+					//更新会员状态
+					M("member")->where("mem_id='{$_SESSION['member']}'")->setField("mem_active", 0);
+					$member['info']['mem_active'] = 0;
+				}else if($member['info']['mem_expiretime']>$_SERVER['REQUEST_TIME']-$duefeeNoticeDuration*24*3600){
+					//自动创建续费单并提醒
+					D('Duefee')->createDuefee($_SESSION['member']);
+				}
+			}
+			
 			//系统消息
-			$member['notice'] = D("notice")->getNoticeCount();
+			$member['notice'] = D("Notice")->noRead($_SESSION['member']);
 		}
 	}
 	

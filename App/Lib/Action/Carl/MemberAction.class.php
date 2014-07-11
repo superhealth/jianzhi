@@ -14,7 +14,7 @@ class MemberAction extends BaseAction{
 	 * 所有用户
 	 */
 	public function index(){
-		$this->memberCheckActive();
+		D("Member")->updateMemberActive();
 		$m = M("member");
 		//筛选条件
 		$map = array();
@@ -68,7 +68,7 @@ class MemberAction extends BaseAction{
 	 * 添加会员
 	 */
 	public function add($action =""){
-		if(!per_check("mem_edit")){
+		if(!per_check("mem_add")){
 			$this->error("无此权限！");
 		}
 		if($action=="save"){
@@ -127,10 +127,10 @@ class MemberAction extends BaseAction{
 				$this->assign("id", $id);
 				$this->display($template);
 			}else{
-				$this->error("参数错误! ", __URL__."/memberInfo/id/{$id}");
+				$this->error("参数错误! ", __URL__."/index");
 			}
 		}else{
-			$this->error("参数错误! ", __URL__."/memberInfo/id/{$id}");
+			$this->error("参数错误! ", __URL__."/index");
 		}
 	}
 	
@@ -283,6 +283,9 @@ class MemberAction extends BaseAction{
 	 * 锁定用户
 	 */
 	public function block($id=""){
+		if(!per_check('mem_block')){
+			$this->error("无此权限！");
+		}
 		$map = array("mem_id"=> array("in", $id));
 		if(M("member")->where($map)->setField("mem_state", 2)){
 			$ids = is_array($id)?implode(",", $id):$id;
@@ -297,6 +300,9 @@ class MemberAction extends BaseAction{
 	 * 解锁用户
 	 */
 	public function unBlock($id=""){
+		if(!per_check('mem_block')){
+			$this->error("无此权限！");
+		}
 		$map = array("mem_id"=> array("in", $id));
 		if(M("member")->where($map)->setField("mem_state", 1)){
 			$ids = is_array($id)?implode(",", $id):$id;
@@ -317,6 +323,7 @@ class MemberAction extends BaseAction{
 		$this->assign("to", $to);
 		$this->display();
 	}
+	
 	/**
 	 * 发送系统通知
 	 */
@@ -335,6 +342,9 @@ class MemberAction extends BaseAction{
 	 * 会员人工续费界面（银行转账方式）
 	 */
 	public function renewal($id=""){
+		if(!per_check('mem_renewal')){
+			$this->error("无此权限！");
+		}
 		$this->assign("id", $id);
 		$duefee = D("Sysconf")->getConf("cfg_duefee");
 		$this->assign("duefee", $duefee);
@@ -345,6 +355,9 @@ class MemberAction extends BaseAction{
 	 * 人工续费操作
 	 */
 	public function renewalSave(){
+		if(!per_check('mem_renewal')){
+			$this->error("无此权限！");
+		}
 		$duefee = M("duefee");
 		$data = $duefee->create();
 		$m = M("member")->where("mem_id='{$data['due_mid']}'")->find();

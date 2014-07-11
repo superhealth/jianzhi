@@ -95,7 +95,7 @@
 					if($("#tax_name").val()==""){
 						$("#tax_name").parent().parent().addClass("error");
 						$("#tax_name").next().html("税费名称不能为空！");
-					}else if(!isNaN(value)){
+					}else if(isNaN(value)||value>100||value<0){
 						$("#tax_value").parent().parent().addClass("error");
 						$("#tax_value").next().html("请填写0-100内的数字！");
 					}else{

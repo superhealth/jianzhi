@@ -142,6 +142,9 @@ class SortAction extends BaseAction{
 	 * @param string $chkt 选中的ID
 	 */
 	public function sort_delete($chkt=""){
+		if(!per_check('sort_edit')){
+			$this->error('无此权限！');
+		}
 		$map = array(
 			"sort_id"	=> array("in",$chkt)
 		);
@@ -313,6 +316,9 @@ class SortAction extends BaseAction{
 	 * @param string $chkt
 	 */
 	public function enum_delete($id=""){
+		if(!per_check('enum_edit')){
+			$this->error('无此权限！');
+		}
 		if($id){
 			$info = M("enumsort")->field("es_name, es_order, es_base, sort_name")->join("sort ON es_sort_id=sort_id")->where("es_id={$id}")->find("sort_name");
 			if(M("enumsort")->where("es_id={$id}")->delete()){
@@ -328,6 +334,9 @@ class SortAction extends BaseAction{
 	 * 更新分类信息缓存
 	 */
 	public function update(){
+		if(!per_check('cache_update')){
+			$this->error('无此权限！');
+		}
 		D("Sort")->updateCache();
 		D("Enumsort")->updateCache();
 		$this->success("更新完毕！");

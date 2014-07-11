@@ -36,9 +36,9 @@
 										{$actions|getOptions=$param['active']}
 									</select>
 									&nbsp;&nbsp;按时间：
-									<input type="text" class="datepicker" style="width:100px;" name="start" id="date-start" value="" /><span class="inline">至</span>
-									<input type="text" class="datepicker" style="width:100px;" name="end" id="date-end" value="" />
-									&nbsp;&nbsp;查找会员: <input type="text" name="words"  class="_filter_txt" value="{$param.words}" />
+									<input type="text" class="datepicker" style="width:80px;" name="start" id="date-start" value="" /><span class="inline">至</span>
+									<input type="text" class="datepicker" style="width:80px;" name="end" id="date-end" value="" />
+									<br />会员名: <input type="text" name="words"  class="_filter_txt" value="{$param.words}" />
 									&nbsp;&nbsp;<button class="btn btn-small btn-primary">查找</button>
 									</div>
 								</form>
@@ -47,7 +47,7 @@
 							<table class="table table-bordered">
 								 <thead>
 									  <tr>
-										  <th><input type="checkbox" />选中</th>
+										  <th><input type="checkbox" />续费单号</th>
 										  <th>会员名</th>
 										  <th>续费年限</th>
 										  <th>续费金额</th>
@@ -60,17 +60,16 @@
 								  <tbody>
 									<volist name="duefees" id="item">
 									<tr>
-										<td><input type="checkbox" name="id[]" value="{$item.due_id}" /></td>
+										<td><input type="checkbox" name="id[]" value="{$item.due_id}" />{$item.due_id}</td>
 										<td>{$item.due_mid}</td>
 										<td>{$item.due_discount}年</td>
 										<td>￥{$item['due_price']*$item['due_discount']}</td>
-										<td>{$item.due_operator}</td>
+										<td><if condition="$item['due_operator'] eq 'alipay'">支付宝付款<else />{$item['due_operator']}后台操作</if></td>
 										<td><span class="label label{$item.due_paystatus|switchDueStatus}" type="button">{$status[$item['due_paystatus']]}</span></td>
 										<td><span class="center">{$item.due_paytime|timeFormat="Y-m-d"}</span></td>
 										<td>
-											<a class="btn btn-mini btn-info" href="__URL__/viewDue/id/{$item.due_id}">
-												<i class="icon-edit icon-white"></i>  
-												查看                                           
+											<a class="btn btn-mini btn-info _actions_" href="javascript:void(0);" data-href="__URL__/viewDue/id/{$item.due_id}">
+												<i class="icon-edit icon-white"></i> 查看                                           
 											</a>
 										</td>                                   
 									</tr>
@@ -85,9 +84,9 @@
 								  <div class="pagination pagination-centered">{$pager.show}</div>
 								</div>
 							</div> 
-							<div class="row-fluid">
+							<!--div class="row-fluid">
 								<button class="btn btn-mini btn-danger _deletes_" type="button" data-href="__URL__/delDue"><i class="icon icon-trash icon-white"></i>删除选中</button>
-							</div> 
+							</div--> 
                             </form>
 						</div>
 					</div>
@@ -122,8 +121,17 @@
 				var start = $(this).val();
 				$('#date-end').datepicker('option',{ minDate: start})
 			});
+			$("._actions_").click(function(){
+				var url = $(this).data("href");
+				$.get(url,null,function(msg){
+					$("#myModal").html(msg);
+					$("#myModal").modal({
+						keyboard: true,
+						backdrop: "static"
+					});
+				},"text");	
+			});
 		});
-		$('.datepicker').datepicker('option',{ maxDate: '2013-7-6'})
 	</script>
 </body>
 </html>

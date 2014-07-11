@@ -21,4 +21,19 @@ class MemberModel extends Model{
 	}
 	
 	
+	/**
+	 * 更新会员状态
+	 * @param number $interval 超时间隔
+	 */
+	public function updateMemberActive($interval=1800){
+		$cornTime = M("cronhash")->where('ch_name="member"')->getField('ch_time');
+		if($cornTime<$_SERVER['REQUEST_TIME']-$interval){
+			//更新过期会员状态
+			M("member")->where("mem_active=1 AND mem_expiretime<={$now}")->setField("mem_active", 0);
+			//更新续费提醒
+			M("cornhash")->where('ch_name="member"')->setField("ch_time", $_SERVER['REQUEST_TIME']);
+		}
+	}
+	
+	
 }

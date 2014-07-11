@@ -9,15 +9,13 @@ class CommonAction extends EmptyAction{
 	 * 初始化方法
 	 */
 	public function _initialize(){
-		if(isset($_SESSION['member'])){
-			$noticeCount = D("Notice")->noRead($_SESSION['member']);
-		}
+		
 	}
 	
 	/**
 	 * 检测用户登录状态
 	 */
-	protected function checkMember(){
+	public function checkMember(){
 		if(empty($_SESSION['member'])){
 			$this->error("请先登录！", __GROUP__."/Member/login");exit;
 		}

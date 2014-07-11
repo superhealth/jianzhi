@@ -202,7 +202,7 @@ class IndexAction extends BaseAction{
 	 * 更新缓存
 	 */
 	public function links_update(){
-		if(!per_check("links_edit")){
+		if(!per_check("cache_update")){
 			$this->error("无此权限！");
 		}
 		if(D("Links")->updateCache()){
@@ -230,6 +230,8 @@ class IndexAction extends BaseAction{
 			}
 		}
 	}
+	
+	
 	
 	/**
 	 * 友情链接
@@ -448,7 +450,7 @@ class IndexAction extends BaseAction{
 	 * 更新缓存
 	 */
 	public function advs_update(){
-		if(!per_check("advs_edit")){
+		if(!per_check("cache_update")){
 			$this->error("无此权限！");
 		}
 		if(D("Advs")->updateCache()){
@@ -521,7 +523,6 @@ class IndexAction extends BaseAction{
 				$this->assign("info", $info);
 				$this->display();
 			}
-			
 		}
 	}
 	
@@ -529,7 +530,14 @@ class IndexAction extends BaseAction{
 	 * 更新缓存
 	 */
 	public function blockUpdate(){
-		
+		if(!per_check('cache_update')){
+			$this->error('无此权限!');
+		}
+		if(D('Block')->updateCache()){
+			$this->success('更新成功！');
+		}else{
+			$this->error('更新失败！');
+		}
 	}
 	
 	/**
