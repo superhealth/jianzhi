@@ -672,6 +672,9 @@ CREATE TABLE `zt_cronhash` (
   `ch_time` int(11) NOT NULL,
   PRIMARY KEY (`ch_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+insert into `zt_cronhash`(`ch_name`,`ch_time`) values('member','0');
+insert into `zt_cronhash`(`ch_name`,`ch_time`) values('project','0');
+insert into `zt_cronhash`(`ch_name`,`ch_time`) values('deposit','0');
 CREATE TABLE `zt_deposit` (
   `de_id` char(16) NOT NULL,
   `de_mid` varchar(64) NOT NULL,
@@ -727,23 +730,29 @@ CREATE TABLE `zt_duefee` (
   `due_paytime` int(11) NOT NULL,
   `due_backcode` varchar(32) NOT NULL,
   `due_remark` varchar(256) NOT NULL,
+  `due_log` text NOT NULL,
   PRIMARY KEY (`due_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('1','1','100.00','dapianzi','1403255201','carl','1','1403255201','','招商银行 2014 - 06 - 20 ');
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('2','1','100.00','dapianzi','1403255232','carl','1','1403255232','','招商银行 2014 - 06 - 20 ');
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('3','1','100.00','dapianzi','1403258394','carl','1','1403258394','','招商银行 2014 - 06 - 20 ');
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('4','1','100.00','dapianzi','1403258519','carl','1','1403258519','','招商银行 2014 - 06 - 20 ');
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('5','1','100.00','oowoolf','1403258684','carl','1','1403258684','','a');
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('6','1','100.00','oowoolf','1403258721','carl','1','1403258721','','a');
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('7','2','100.00','dahubi','1403258828','carl','1','1403258828','','23');
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('8','2','100.00','dahubi','1403258863','carl','1','1403258863','','23');
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('9','2','100.00','dahubi','1403258982','carl','1','1403258982','','23');
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('10','2','100.00','dahubi','1403259216','carl','1','1403259216','','adf');
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('11','2','100.00','dahubi','1403259425','carl','1','1403259425','','');
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('12','2','100.00','dahubi','1403259506','carl','1','1403259506','','');
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('13','2','100.00','dahubi','1403259759','carl','1','1403259759','','');
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('14','2','100.00','dahubi','1403259779','carl','1','1403259779','','');
-insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`) values('15','5','100.00','dapianzi','1403259823','carl','1','1403259823','','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('1','1','100.00','dapianzi','1403255201','carl','1','1403255201','','招商银行 2014 - 06 - 20 ','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('2','1','100.00','dapianzi','1403255232','carl','1','1403255232','','招商银行 2014 - 06 - 20 ','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('3','1','100.00','dapianzi','1403258394','carl','1','1403258394','','招商银行 2014 - 06 - 20 ','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('4','1','100.00','dapianzi','1403258519','carl','1','1403258519','','招商银行 2014 - 06 - 20 ','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('5','1','100.00','oowoolf','1403258684','carl','1','1403258684','','a','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('6','1','100.00','oowoolf','1403258721','carl','1','1403258721','','a','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('7','2','100.00','dahubi','1403258828','carl','1','1403258828','','23','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('8','2','100.00','dahubi','1403258863','carl','1','1403258863','','23','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('9','2','100.00','dahubi','1403258982','carl','1','1403258982','','23','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('10','2','100.00','dahubi','1403259216','carl','1','1403259216','','adf','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('11','2','100.00','dahubi','1403259425','carl','1','1403259425','','','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('12','2','100.00','dahubi','1403259506','carl','1','1403259506','','','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('13','2','100.00','dahubi','1403259759','carl','1','1403259759','','','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('14','2','100.00','dahubi','1403259779','carl','1','1403259779','','','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('15','5','100.00','dapianzi','1403259823','carl','1','1403259823','','','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('NF53bf4753d','1','100.00','dapianzi','1405044563','alipay','0','0','','','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('NF53bf478ad','1','100.00','dapianzi','1405044618','alipay','0','0','','','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('NF53bf479bd','1','100.00','dapianzi','1405044635','alipay','0','0','','','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('NF53bf47bed','1','100.00','dapianzi','1405044670','alipay','0','0','','','');
+insert into `zt_duefee`(`due_id`,`due_discount`,`due_price`,`due_mid`,`due_createtime`,`due_operator`,`due_paystatus`,`due_paytime`,`due_backcode`,`due_remark`,`due_log`) values('NF53bf52a6','1','100.00','安防','1405047462','alipay','0','0','','','');
 CREATE TABLE `zt_enumsort` (
   `es_id` int(11) NOT NULL AUTO_INCREMENT,
   `es_name` varchar(32) NOT NULL,
@@ -789,7 +798,7 @@ CREATE TABLE `zt_log` (
   `log_time` int(11) NOT NULL,
   `log_ip` varchar(64) NOT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=125 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=135 DEFAULT CHARSET=utf8;
 insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('1','','','0','0','');
 insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('2','','','0','0','');
 insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('3','','','0','0','');
@@ -914,6 +923,16 @@ insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`l
 insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('122','转移','将应标单《html5 canvas 详细使用教程》移入历史档案区','carl','1404106664','127.0.0.1');
 insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('123','锁定','锁定用户：oowoolf','carl','1404300516','127.0.0.1');
 insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('124','编辑','编辑应标单【37个几句创意的响应式网站】','carl','1404892378','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('125','新增','添加税费选项 <strong>阿迪</strong>','carl','1404962490','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('126','新增','添加税费选项 <strong>测试</strong>','carl','1404962511','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('127','新增','添加税费选项 <strong>test</strong>','carl','1404962656','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('128','新增','添加税费选项 <strong>test2</strong>','carl','1404962681','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('129','编辑','修改税费选项 测试','carl','1404962696','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('130','编辑','修改税费选项 测试','carl','1404962783','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('131','删除','删除税费选项：阿迪','carl','1404962790','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('132','删除','删除税费选项：测试,test','carl','1404962795','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('133','删除','删除税费选项：test2','carl','1404962803','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('134','编辑','编辑会员[dapianzi]的基本信息','carl','1405044345','127.0.0.1');
 CREATE TABLE `zt_member` (
   `mem_id` varchar(32) NOT NULL,
   `mem_rank` int(11) NOT NULL,
@@ -931,11 +950,11 @@ CREATE TABLE `zt_member` (
   UNIQUE KEY `m_id` (`mem_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户注册信息';
 insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_varifycode`) values('oowoolf','10000','bab68d575e5e96461ad6ac2c975f9396','609164964@qq.com','13760432926','2','1','0','0','0','1403258721','sfasdfad');
-insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_varifycode`) values('dapianzi','9999','bab68d575e5e96461ad6ac2c975f9396','448379160@qq.com','15270694370','1','1','0','0','0','1371571200','{code:88888888,time:0}');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_varifycode`) values('dapianzi','9999','bab68d575e5e96461ad6ac2c975f9396','448379160@qq.com','15270694370','1','1','0','0','1','1406736000','{code:88888888,time:0}');
 insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_varifycode`) values('dahubi','5000','bab68d575e5e96461ad6ac2c975f9396','carl@chuango.com','13145816924','2','1','2014','1','1','1529403759','{code:88888888,time:0}');
 insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_varifycode`) values('valerie','0','','valierie@qq.com','13145816924','1','0','6','0','1','1563638400','{code:88888888,time:0}');
 insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_varifycode`) values('安防','0','0056105c92090781759314ae6aab82c7','dfa0@qq.com','啊','1','0','6','0','1','1405872000','{code:88888888,time:0}');
-insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_varifycode`) values('dfads','0','6a204bd89f3c8348afd5c77c717a097a','adsfads@gmail.com','adsfa','1','0','1403193600','1','1','1405872000','{code:88888888,time:0}');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_varifycode`) values('dfads','0','6a204bd89f3c8348afd5c77c717a097a','adsfads@gmail.com','adsfa','1','0','1403193600','1','0','1305872000','{code:88888888,time:0}');
 CREATE TABLE `zt_membercompany` (
   `mc_id` int(11) NOT NULL AUTO_INCREMENT,
   `mc_mid` varchar(32) NOT NULL,
@@ -973,10 +992,14 @@ CREATE TABLE `zt_notice` (
   `no_time` int(11) NOT NULL,
   `no_read` tinyint(1) NOT NULL,
   `no_to` varchar(32) NOT NULL,
+  `no_mid` char(32) NOT NULL,
   PRIMARY KEY (`no_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`) values('1','【系统消息】啦啦啦啦啦','a嘎达发噶啊地方噶阿迪发送的','0','0','');
-insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`) values('2','【系统消息】啦啦啦啦啦','a嘎达发噶啊地方噶阿迪发送的','0','0','');
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('1','【系统消息】啦啦啦啦啦','a嘎达发噶啊地方噶阿迪发送的','0','0','','');
+insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('2','【系统消息】啦啦啦啦啦','a嘎达发噶啊地方噶阿迪发送的','0','0','','');
+insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('3','【系统消息】 会员年费续费提醒','您的会员有效时间已不足30天，请及时续费以继续使用我们的服务，谢谢！','1405044635','0','','dapianzi');
+insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('4','【系统消息】 会员年费续费提醒','您的会员有效时间已不足30天，请及时续费以继续使用我们的服务，谢谢！','1405044670','0','','dapianzi');
+insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('5','【系统消息】 会员年费续费提醒','您的会员有效时间已不足30天，请及时续费以继续使用我们的服务，谢谢！','1405047462','0','','安防');
 CREATE TABLE `zt_pro_record` (
   `re_id` int(11) NOT NULL AUTO_INCREMENT,
   `pro_id` int(11) NOT NULL,
@@ -1073,7 +1096,7 @@ insert into `zt_project`(`pro_id`,`pro_sn`,`pro_sort`,`pro_mid`,`pro_enums`,`pro
 insert into `zt_project`(`pro_id`,`pro_sn`,`pro_sort`,`pro_mid`,`pro_enums`,`pro_prop`,`pro_subject`,`pro_description`,`pro_attachement`,`pro_deposit`,`pro_opentime`,`pro_place`,`pro_publishtime`,`pro_createtime`,`pro_startstop`,`pro_cover`,`pro_limit`,`pro_addition`,`pro_status`,`pro_view`,`pro_step`,`pro_contact`) values('26','bw743Et4','4','安防','','1','rPb6NIMLd3yPiyQI','9rvpkrSoYMNCDBzqNadYpO0ienU4ZeojRbsGAAydoiEA1GcODwcv0d6MhAScgZZT9eopBHB','','734.00','0','','1404204112','1403600205','','0','0','','0','388','0','0');
 insert into `zt_project`(`pro_id`,`pro_sn`,`pro_sort`,`pro_mid`,`pro_enums`,`pro_prop`,`pro_subject`,`pro_description`,`pro_attachement`,`pro_deposit`,`pro_opentime`,`pro_place`,`pro_publishtime`,`pro_createtime`,`pro_startstop`,`pro_cover`,`pro_limit`,`pro_addition`,`pro_status`,`pro_view`,`pro_step`,`pro_contact`) values('27','Wcj7HEim','2','安防','','3','oZZNMp3HBbESs0L','r5oja9J4HnZUDzvk6TakD4fmniFoUlITjpfPcdDEEXHlgmMoFILSzRUwi4NJAFUyDubCV9','','838.00','0','','1404209856','1403597472','','0','0','','2','536','0','0');
 insert into `zt_project`(`pro_id`,`pro_sn`,`pro_sort`,`pro_mid`,`pro_enums`,`pro_prop`,`pro_subject`,`pro_description`,`pro_attachement`,`pro_deposit`,`pro_opentime`,`pro_place`,`pro_publishtime`,`pro_createtime`,`pro_startstop`,`pro_cover`,`pro_limit`,`pro_addition`,`pro_status`,`pro_view`,`pro_step`,`pro_contact`) values('28','g2olzjD5','4','安防','','2','j4bP5WHZMbJ8qpZA','tIHeUFzoanRWdrebBYWZdvGFxbH7xzGCHNT40q0MSzfBiOmUMeyuerxJaxxsw8f2OfXfXzhw','','277.00','0','','1404202471','1403600612','','0','0','','1','500','0','0');
-insert into `zt_project`(`pro_id`,`pro_sn`,`pro_sort`,`pro_mid`,`pro_enums`,`pro_prop`,`pro_subject`,`pro_description`,`pro_attachement`,`pro_deposit`,`pro_opentime`,`pro_place`,`pro_publishtime`,`pro_createtime`,`pro_startstop`,`pro_cover`,`pro_limit`,`pro_addition`,`pro_status`,`pro_view`,`pro_step`,`pro_contact`) values('29','ewn0OT4n','3','安防','','5','aFhfco3IOM7TRN5s','ET4H63DgsJVqEUtT04pRi9j3YDjHOuYvacmITI83iviGhyxmbiViNL0dvlUn95eq3o3C4gZG','','377.00','0','','1404211992','1403606195','','0','0','','3','643','0','0');
+insert into `zt_project`(`pro_id`,`pro_sn`,`pro_sort`,`pro_mid`,`pro_enums`,`pro_prop`,`pro_subject`,`pro_description`,`pro_attachement`,`pro_deposit`,`pro_opentime`,`pro_place`,`pro_publishtime`,`pro_createtime`,`pro_startstop`,`pro_cover`,`pro_limit`,`pro_addition`,`pro_status`,`pro_view`,`pro_step`,`pro_contact`) values('29','ewn0OT4n','1','安防','','5','SDC设计师网址导航','<ul class=\"website-list list-paddingleft-2\"><li><p><a href=\"http://e.weibo.com/uidesign\" class=\"website\" target=\"_blank\" style=\"padding:0px;margin:10px 15px 0px;font-size:1.16em;text-decoration:none;color:#266da1;display:block;\">优秀网页设计</a></p><p class=\"description\" style=\"padding:0px;margin:10px 15px 0px;font-size:1em;color:#a2a2a2;line-height:1.5;\">网页设计干货微博！每日更新及时，推荐关注</p><p><br/></p></li><li class=\"new-item\"><p><a href=\"http://weibo.com/mdabao\" class=\"website\" target=\"_blank\" style=\"padding:0px 0px 0px 14px;margin:10px 15px 0px;font-size:1.16em;text-decoration:none;color:#266da1;display:block;background-image:url(http://hao.uisdc.com/css/icon.png);background-position:0px -297px;background-repeat:no-repeat no-repeat;\">意匠id</a></p><p class=\"description\" style=\"padding:0px;margin:10px 15px 0px;font-size:1em;color:#a2a2a2;line-height:1.5;\">最精致的微博拥有最好的粉丝，分享美好，分享生活</p><p><br/></p></li><li><p><a href=\"http://e.weibo.com/wepan\" class=\"website\" target=\"_blank\" style=\"padding:0px;margin:10px 15px 0px;font-size:1.16em;text-decoration:none;color:#266da1;display:block;\">微盘</a></p><p class=\"description\" style=\"padding:0px;margin:10px 15px 0px;font-size:1em;color:#a2a2a2;line-height:1.5;\">优设哥分享设计资源和干货就靠微盘了，强烈推荐</p><p><br/></p></li><li><p><a href=\"http://weibo.com/baiduuxc\" class=\"website\" target=\"_blank\" style=\"padding:0px;margin:10px 15px 0px;font-size:1.16em;text-decoration:none;color:#266da1;display:block;\">百度用户体验部</a></p><p class=\"description\" style=\"padding:0px;margin:10px 15px 0px;font-size:1em;color:#a2a2a2;line-height:1.5;\">百度最大的设计团队，由215名设计师组成</p><p><br/></p></li><li><p><a href=\"http://weibo.com/qiushid\" class=\"website\" target=\"_blank\" style=\"padding:0px;margin:10px 15px 0px;font-size:1.16em;text-decoration:none;color:#266da1;display:block;\">求是设计会</a></p><p class=\"description\" style=\"padding:0px;margin:10px 15px 0px;font-size:1em;color:#a2a2a2;line-height:1.5;\">超人气的设计类微博，传承信仰，继续热情</p><p><br/></p></li><li><p><a href=\"http://weibo.com/mobiweb\" class=\"website\" target=\"_blank\" style=\"padding:0px;margin:10px 15px 0px;font-size:1.16em;text-decoration:none;color:#266da1;display:block;\">移动WEB前端设计</a></p><p class=\"description\" style=\"padding:0px;margin:10px 15px 0px;font-size:1em;color:#a2a2a2;line-height:1.5;\">前端牛人的微博，分享超炫的HTML5和CSS3干货</p><p><br/></p></li></ul><p><br /></p>','','377.00','0','no|no|no','0','1403539200','','0','0','','3','643','0','0');
 insert into `zt_project`(`pro_id`,`pro_sn`,`pro_sort`,`pro_mid`,`pro_enums`,`pro_prop`,`pro_subject`,`pro_description`,`pro_attachement`,`pro_deposit`,`pro_opentime`,`pro_place`,`pro_publishtime`,`pro_createtime`,`pro_startstop`,`pro_cover`,`pro_limit`,`pro_addition`,`pro_status`,`pro_view`,`pro_step`,`pro_contact`) values('31','WuZpOn11','1','安防','女装|下装|纯棉','4','你所不知道的5个HTML新特性','<p><a href=\"http://www.webhek.com/tag/html5/\" style=\"border:0px;font-family:&#39;microsoft yahei&#39;, 微软雅黑, &#39;hiragino sans gb&#39;, stheiti, &#39;wenquanyi micro hei&#39;, simsun, sans-serif, lucida, verdana, serif;font-size:16px;margin:0px;outline:0px;padding:0px;vertical-align:baseline;color:#24890d;line-height:24px;background-color:#ffffff;\">HTML5的诞生</a><span style=\"color:#2b2b2b;font-family:&#39;microsoft yahei&#39;, 微软雅黑, &#39;hiragino sans gb&#39;, stheiti, &#39;wenquanyi micro hei&#39;, simsun, sans-serif, lucida, verdana, serif;font-size:16px;line-height:24px;background-color:#ffffff;\">给我们提供了很多精彩的JavaScript和HTML新功能和新特征。有些新特征我们已知多年并大量的使用，而另外一些主要是用在前沿的手机移动技术上，或者桌面应用中起辅助作用。不管这些HTML5新功能有多强大，多好用，它们都是为了帮助我们更好的开发浏览器前端应用。我之前给大家分享过一篇</span><a href=\"http://www.webhek.com/html5-apis/\" style=\"border:0px;font-family:&#39;microsoft yahei&#39;, 微软雅黑, &#39;hiragino sans gb&#39;, stheiti, &#39;wenquanyi micro hei&#39;, simsun, sans-serif, lucida, verdana, serif;font-size:16px;margin:0px;outline:0px;padding:0px;vertical-align:baseline;color:#24890d;line-height:24px;background-color:#ffffff;\">你不知道的5个HTML5新功能</a><span style=\"color:#2b2b2b;font-family:&#39;microsoft yahei&#39;, 微软雅黑, &#39;hiragino sans gb&#39;, stheiti, &#39;wenquanyi micro hei&#39;, simsun, sans-serif, lucida, verdana, serif;font-size:16px;line-height:24px;background-color:#ffffff;\">，目的是希望里面的提到的一些技术能帮助改进你的web应用。这里我还想分享给大家一些少有人知道的HTML5新功能，希望能对你有些用处！</span></p>','','7.00','1406736000','中国|河北省|唐山市','0','1403539200','','0','0','','2','777','0','1');
 insert into `zt_project`(`pro_id`,`pro_sn`,`pro_sort`,`pro_mid`,`pro_enums`,`pro_prop`,`pro_subject`,`pro_description`,`pro_attachement`,`pro_deposit`,`pro_opentime`,`pro_place`,`pro_publishtime`,`pro_createtime`,`pro_startstop`,`pro_cover`,`pro_limit`,`pro_addition`,`pro_status`,`pro_view`,`pro_step`,`pro_contact`) values('32','wGXFxnGf','2','安防','','1','ErEAi2aXeDJcSmyc','bQmgF8mgfOiyr1mYcihOZOhYL56L0dU4GSrbf5W0Ir7Pv5vCxOovXhlUjI1t8h3hnsKpm5','','895.00','0','','1404209165','1403601104','','0','0','','2','284','0','0');
 CREATE TABLE `zt_property` (
@@ -1094,7 +1117,7 @@ CREATE TABLE `zt_purview` (
   `per_desc` varchar(128) NOT NULL,
   `per_group` varchar(64) NOT NULL,
   PRIMARY KEY (`per_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('1','admin_edit','管理后台用户','系统');
 insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('2','admin_delete','删除后台用户','系统');
 insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('3','per_edit','权限管理','系统');
@@ -1105,6 +1128,16 @@ insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('7',
 insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('8','advs_edit','广告管理','站点');
 insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('9','attach_edit','附件管理','附件');
 insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('10','attach_download','下载附件','附件');
+insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('11','area_edit','编辑地区','项目管理');
+insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('12','project_edit','编辑项目','项目管理');
+insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('13','project_record','转为档案','项目管理');
+insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('14','project_delete','删除项目','项目管理');
+insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('15','pro_record_del','删除档案','项目管理');
+insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('16','prop_edit','生产属性管理','项目管理');
+insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('17','cron_update','更新数据状态','系统');
+insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('18','cache_update','更新系统缓存','系统');
+insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('19','links_edit','友情链接','系统');
+insert into `zt_purview`(`per_id`,`per_name`,`per_desc`,`per_group`) values('20','advs_edit','广告管理','系统');
 CREATE TABLE `zt_role` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_name` varchar(32) NOT NULL,
@@ -1160,7 +1193,7 @@ CREATE TABLE `zt_taxes` (
   `tax_value` int(11) NOT NULL,
   `tax_desc` varchar(256) NOT NULL,
   PRIMARY KEY (`tax_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 insert into `zt_taxes`(`tax_id`,`tax_name`,`tax_value`,`tax_desc`) values('1','无','0','');
 insert into `zt_taxes`(`tax_id`,`tax_name`,`tax_value`,`tax_desc`) values('2','A','3','');
 insert into `zt_taxes`(`tax_id`,`tax_name`,`tax_value`,`tax_desc`) values('3','B','6','');
