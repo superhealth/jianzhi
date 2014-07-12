@@ -765,7 +765,7 @@ class IndexAction extends BaseAction{
 		$this->assign("pager", $pager);
 		$order = "link_order"; */
 		$currencys = $curr->select();
-		$this->assign("currency", $currencys);
+		$this->assign("currencys", $currencys);
 		$this->display();
 	}
 	/**

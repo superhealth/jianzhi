@@ -47,7 +47,7 @@
 								<volist name="currencys" id="item">
 								<tr>
                                 	<td><input type="checkbox" name="chkt[]" value="{$item.cur_id}" /></td>
-                                    <td><a class="_actions_" href="#" data-href="__URL__/currency_edit/id/{$item.cur_id}">{$item.unit_name}</a></td>
+                                    <td><a class="_actions_" href="#" data-href="__URL__/currency_edit/id/{$item.cur_id}">{$item.cur_name}</a></td>
 									<td><code>{$item.cur_sign}</code></td>
 									<td>
 										<a class="btn btn-mini btn-info _actions_" href="#" data-href="__URL__/currency_edit/id/{$item.cur_id}">
@@ -104,7 +104,7 @@
 					if($("#cur_name").val()==""){
 						$("#cur_name").parent().parent().addClass("error");
 						$("#cur_name").next().html("币种名称不能为空！");
-					}else if(isNaN($("#unit_multiple").val())){
+					}else if($("#cur_sign").val()==""){
 						$("#cur_sign").parent().parent().addClass("error");
 						$("#cur_sign").next().html("币种符号不能为空！");
 					}else{
