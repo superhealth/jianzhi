@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title> 后台数据管理中心</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<include file="public:css" />		
+</head>
+<body>
+	<include file="public:header" />
+		<div class="container-fluid">
+		<div class="row-fluid">
+			<include file="public:left" />
+			<div id="content" class="span10">
+				<div>
+					<ul class="breadcrumb">
+						<li><a href="__GROUP__">首页</a> <span class="divider">/</span></li>
+						<li><a href="__URL__/unit">币种设置</a></li>
+					</ul>
+				</div>
+			<div class="row-fluid sortable">
+            	<div class="box span12">
+					<div class="box-header well" data-original-title>
+						<h2>币种设置</h2>
+					</div>
+					<div class="box-content">
+						<div class="row-fluid">
+                        	<form method="post" action="">
+							<div class="span6">
+								<div class="dataTables_filter">
+									<label>查找: <input type="text" name="words" class="_filter_txt" value="{$param.words}" /></label>
+								</div>
+							</div>
+                            </form>
+						</div>
+						<form method="post"> 
+						<table class="table table-bordered">
+							  <thead>
+								  <tr>
+                                  	  <th><input type="checkbox" /> ID</th>
+									  <th>币种名称</th>
+                                      <th>币种符号</th>
+									  <th>操作</th>                                       
+								  </tr>
+							  </thead>   
+							  <tbody>
+								<volist name="currencys" id="item">
+								<tr>
+                                	<td><input type="checkbox" name="chkt[]" value="{$item.cur_id}" /></td>
+                                    <td><a class="_actions_" href="#" data-href="__URL__/currency_edit/id/{$item.cur_id}">{$item.unit_name}</a></td>
+									<td><code>{$item.cur_sign}</code></td>
+									<td>
+										<a class="btn btn-mini btn-info _actions_" href="#" data-href="__URL__/currency_edit/id/{$item.cur_id}">
+											<i class="icon-edit icon-white"></i> 编辑                                            
+										</a>
+										<a class="btn btn-mini btn-danger _delete_" href="#" data-href="__URL__/currency_delete/chkt/{$item.cur_id}">
+											<i class="icon-trash icon-white"></i> 删除
+										</a>
+                                    </td>                                     
+								</tr>
+								</volist>                         
+							  </tbody>
+						 </table>
+						 <div class="row-fluid">
+						  	<div class="span3">
+						  	  <div class="dataTables_info">{$pager.header}</div>
+						  	</div>
+						  	<div class="span9">
+						  	  <div class="pagination pagination-centered">{$pager.show}</div>
+						  	</div>
+						 </div>
+						 <div class="row-fluid">
+						 	<button class="btn btn-mini btn-danger _deletes_" type="button" data-href="__URL__/currency_delete"><i class="icon-trash icon-white"></i> 删除选中</button>
+						 	<button class="btn btn-mini btn-success _actions_" type="button" data-href="__URL__/currency_add" ><i class="icon icon-attachment icon-white"></i> 添加币种</button>
+							<a class="btn btn-mini btn-success _actions_" href="__URL__/currency_update"><i class="icon icon-arrowrefresh-e icon-white"></i>更新缓存</a>
+						 </div> 
+						 </form>    
+					</div>
+				</div><!--/span-->
+			</div><!--/row-->
+			</div>
+		</div>
+		<hr>
+		<div class="modal hide fade" id="myModal">
+			
+		</div>
+		<include file="public:footer" />
+	</div>
+	<include file="public:js" />
+	<script type="text/javascript">
+	$(function(){
+		$("._actions_").click(function(){
+			var url = $(this).attr("data-href");
+			commit(url);
+		});
+		function commit(url){
+			$.get(url,null,function(msg){
+				$("#myModal").html(msg);
+				$("#myModal").modal({
+					keyboard: true,
+					backdrop: "static"
+				});
+				$("#commit").click(function(){
+					if($("#cur_name").val()==""){
+						$("#cur_name").parent().parent().addClass("error");
+						$("#cur_name").next().html("币种名称不能为空！");
+					}else if(isNaN($("#unit_multiple").val())){
+						$("#cur_sign").parent().parent().addClass("error");
+						$("#cur_sign").next().html("币种符号不能为空！");
+					}else{
+						var form = $(this).parents("form")	;
+						form.attr("action", $(this).attr("data-act")).submit();
+						$("#myModal").modal("hide");
+					}
+				});
+				$("#myModal input").focus(function(){
+					$(this).parent().parent().removeClass("error");
+					$(this).next().html("");
+				});
+			},"text");	
+		}
+	});
+	</script>
+</body>
+</html>

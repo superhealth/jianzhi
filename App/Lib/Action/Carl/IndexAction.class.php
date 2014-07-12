@@ -562,4 +562,355 @@ class IndexAction extends BaseAction{
 		}
 	}
 	
+	/**
+	 * 友情链接
+	 */
+	public function units(){
+		$unit = M("unit");
+		/* $map = array();
+		$param = array();
+		if(isset($_REQUEST['words'])){
+			$words = addslashes($_REQUEST['words']);
+			if(strlen($words)>=3){
+				$where['link_name']  = array('like', "%{$words}%");
+				$where['link_title']  = array('like', "%{$words}%");
+				$where['_logic'] = 'or';
+				$map['_complex'] = $where;
+				$param['words'] = $_REQUEST['words'];
+			}
+		}
+		$this->assign("param", $param);
+		$total = $link->where($map)->count();
+		import("Org.Util.Page");
+		$page = new Page($total, 10, $param);
+		// 分页查询
+		$limit = $page->firstRow.",".$page->listRows;
+		$pager = $page->shown();
+		$this->assign("pager", $pager);
+		$order = "link_order"; */
+		$units = $unit->select();
+		$this->assign("units", $units);
+		$this->display();
+	}
+	/**
+	 * 添加友情链接
+	 */
+	public function unit_add($action=""){
+		if($action=="add"){
+			if(!per_check("unit_edit")){
+				$this->error("无此权限！");
+			}
+			$data = M("unit")->create();
+			if(M("unit")->add($data)){
+				$this->watchdog("新增", "添加货币单位‘{$data['unit_name']}’");
+				$this->success("添加‘{$data['unit_name']}’成功！", __URL__."/units");
+			}else{
+				$this->error("添加‘{$data['unit_name']}’失败！");
+			}
+		}else{
+			if(!per_check("unit_edit")){
+				echo response_msg("无此权限！", "error", true);
+				exit;
+			}
+			$responseHTML = '<form method="post" class="form-horizontal" enctype="multipart/form-data" ><fieldset>
+				<input type="hidden" name="action" value="add" />
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					<h3>添加货币单位</h3>
+				</div>
+				<div class="modal-body">
+					<div class="control-group">
+						<label class="control-label" for="unit_name">名称</label>
+						<div class="controls">
+							 <input type="text" id="unit_name" name="unit_name" />
+							 <span class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="unit_multiple">数值</label>
+						<div class="controls">
+						  	<input type="text" id="unit_multiple" name="unit_multiple" />
+						  	<span class="help-inline"></span>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="btn" data-dismiss="modal">关闭</a>
+					<a href="#" class="btn btn-primary" id="commit" data-act="%url%">保存</a>
+				</div></fieldset></form>';
+			echo str_replace("%url%", __ACTION__, $responseHTML);
+		}
+	}
+	
+	/**
+	 * 修改友情链接
+	 * @param string $man_id
+	 */
+	public function unit_edit($action = ""){
+		if($action=="edit"){
+			if(!per_check("unit_edit")){
+				$this->error("无此权限！");
+			}else{
+				$data = M("unit")->create();
+				if(M("unit")->save($data)){
+					$this->watchdog("编辑", "修改货币单位‘{$data['unit_name']}’");
+					$this->success("修改成功！", __URL__."/units");
+				}else{
+					$this->error("修改失败！");
+				}
+			}
+		}else{
+			if(!per_check("unit_edit")){
+				echo response_msg("无此权限!", "error", true);
+				exit;
+			}
+			if(!isset($_REQUEST['id'])){
+				echo response_msg("参数错误！", "error", true);
+				exit;
+			}
+			$responseHTML = '<form method="post" class="form-horizontal" enctype="multipart/form-data" ><fieldset>
+				<input type="hidden" name="action" value="edit" />
+				<input type="hidden" name="unit_id" value="%id%" />
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					<h3>修改货币单位</h3>
+				</div>
+				<div class="modal-body">
+					<div class="control-group">
+						<label class="control-label" for="unit_name">名称</label>
+						<div class="controls">
+							 <input type="text" id="unit_name" name="unit_name" value="%name%" />
+							 <span class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="unit_multiple">数值</label>
+						<div class="controls">
+						  	<input type="text" id="unit_multiple" name="unit_multiple" value="%multiple%" />
+						  	<span class="help-inline"></span>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="btn" data-dismiss="modal">关闭</a>
+					<a href="#" class="btn btn-primary" id="commit" data-act="%url%">保存</a>
+				</div></fieldset></form>';
+			$info = M("unit")->where("unit_id={$_REQUEST['id']}")->find();
+			if(empty($info)){
+				echo response_msg("参数错误!", "error", true);
+				exit;
+			}
+			echo str_replace(array("%id%", "%name%", "%multiple%","%url%"), array($info['unit_id'], $info['unit_name'], $info['unit_multiple'], __ACTION__), $responseHTML);
+		}
+	}
+	
+	/**
+	 * 更新缓存
+	 */
+	public function unit_update(){
+		if(!per_check("cache_update")){
+			$this->error("无此权限！");
+		}
+		if(D("Unit")->updateCache()){
+			$this->success("更新成功！");
+		}else{
+			$this->error("更新失败！");
+		}
+	}
+	
+	/**
+	 * 删除友情链接
+	 * @param string $chkt
+	 */
+	public function unit_delete($chkt=""){
+		if(!per_check("unit_edit")){
+			$this->error("无此权限！");
+		}else{
+			$map = array("unit_id"=>array("in", $chkt));
+			$links = M("unit")->where($map)->getField("unit_name", true);
+			if(M("unit")->where($map)->delete()){
+				$this->watchdog("删除", "删除货币单位‘".implode("’,‘", $links)."’。");
+				$this->success("删除货币单位‘".implode("’,‘", $links)."’成功！");
+			}else{
+				$this->error("删除失败！");
+			}
+		}
+	}
+	
+
+	/**
+	 * 币种
+	 */
+	public function currencys(){
+		$curr = M("currency");
+	/* $map = array();
+		$param = array();
+		if(isset($_REQUEST['words'])){
+		$words = addslashes($_REQUEST['words']);
+		if(strlen($words)>=3){
+		$where['link_name']  = array('like', "%{$words}%");
+		$where['link_title']  = array('like', "%{$words}%");
+		$where['_logic'] = 'or';
+		$map['_complex'] = $where;
+		$param['words'] = $_REQUEST['words'];
+		}
+		}
+		$this->assign("param", $param);
+		$total = $link->where($map)->count();
+		import("Org.Util.Page");
+		$page = new Page($total, 10, $param);
+		// 分页查询
+		$limit = $page->firstRow.",".$page->listRows;
+		$pager = $page->shown();
+		$this->assign("pager", $pager);
+		$order = "link_order"; */
+		$currencys = $curr->select();
+		$this->assign("currency", $currencys);
+		$this->display();
+	}
+	/**
+	 * 添加币种
+	 */
+	public function currency_add($action=""){
+		if($action=="add"){
+			if(!per_check("currency_edit")){
+				$this->error("无此权限！");
+			}
+			$data = M("currency")->create();
+			if(M("currency")->add($data)){
+				$this->watchdog("新增", "添加币种‘{$data['cur_name']}’");
+				$this->success("添加‘{$data['cur_name']}’成功！", __URL__."/currencys");
+			}else{
+				$this->error("添加‘{$data['cur_name']}’失败！");
+			}
+		}else{
+			if(!per_check("currency_edit")){
+				echo response_msg("无此权限！", "error", true);
+				exit;
+			}
+			$responseHTML = '<form method="post" class="form-horizontal" enctype="multipart/form-data" ><fieldset>
+				<input type="hidden" name="action" value="add" />
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					<h3>添加友情链接</h3>
+				</div>
+				<div class="modal-body">
+					<div class="control-group">
+						<label class="control-label" for="cur_name">币种名称</label>
+						<div class="controls">
+							 <input type="text" id="cur_name" name="cur_name" />
+							 <span class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="cur_sign">符号</label>
+						<div class="controls">
+						  	<input type="text" id="cur_sign" name="cur_sign" />
+						  	<span class="help-inline"></span>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="btn" data-dismiss="modal">关闭</a>
+					<a href="#" class="btn btn-primary" id="commit" data-act="%url%">保存</a>
+				</div></fieldset></form>';
+			echo str_replace("%url%", __ACTION__, $responseHTML);
+		}
+	}
+	
+	/**
+	 * 修改友情链接
+	 * @param string $man_id
+	 */
+	public function currency_edit($action = ""){
+		if($action=="edit"){
+			if(!per_check("currency_edit")){
+				$this->error("无此权限！");
+			}else{
+				$data = M("currency")->create();
+				if(M("currency")->save($data)){
+					$this->watchdog("编辑", "修改币种‘{$data['currency_name']}’");
+					$this->success("修改成功！", __URL__."/currencys");
+				}else{
+					$this->error("修改失败！");
+				}
+			}
+		}else{
+			if(!per_check("currency_edit")){
+				echo response_msg("无此权限!", "error", true);
+				exit;
+			}
+			if(!isset($_REQUEST['id'])){
+				echo response_msg("参数错误！", "error", true);
+				exit;
+			}
+			$responseHTML = '<form method="post" class="form-horizontal" enctype="multipart/form-data" ><fieldset>
+				<input type="hidden" name="action" value="edit" />
+				<input type="hidden" name="cur_id" value="%id%" />
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					<h3>修改币种</h3>
+				</div>
+				<div class="modal-body">
+					<div class="control-group">
+						<label class="control-label" for="cur_name">币种名称</label>
+						<div class="controls">
+							 <input type="text" id="cur_name" name="cur_name" value="%name%" />
+							 <span class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="cur_sign">币种符号</label>
+						<div class="controls">
+						  	<input type="text" id="cur_sign" name="cur_sign" value="%sign%" />
+						  	<span class="help-inline"></span>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="btn" data-dismiss="modal">关闭</a>
+					<a href="#" class="btn btn-primary" id="commit" data-act="%url%">保存</a>
+				</div></fieldset></form>';
+			$info = M("currency")->where("cur_id={$_REQUEST['id']}")->find();
+			if(empty($info)){
+				echo response_msg("参数错误!", "error", true);
+				exit;
+			}
+			echo str_replace(array("%id%", "%name%", "%sign%","%url%"), array($info['cur_id'], $info['cur_name'], $info['cur_sign'], __ACTION__), $responseHTML);
+		}
+	}
+	
+	/**
+	 * 更新缓存
+	 */
+	public function currency_update(){
+		if(!per_check("cache_update")){
+			$this->error("无此权限！");
+		}
+		if(D("Currency")->updateCache()){
+			$this->success("更新成功！");
+		}else{
+			$this->error("更新失败！");
+		}
+	}
+	
+	/**
+	 * 删除友情链接
+	 * @param string $chkt
+	 */
+	public function currency_delete($chkt=""){
+		if(!per_check("currency_edit")){
+			$this->error("无此权限！");
+		}else{
+			$map = array("cur_id"=>array("in", $chkt));
+			$curs = M("currency")->where($map)->getField("cur_name", true);
+			if(M("currency")->where($map)->delete()){
+				$this->watchdog("删除", "删除币种‘".implode("’,‘", $curs)."’。");
+				$this->success("删除币种‘".implode("’,‘", $curs)."’成功！");
+			}else{
+				$this->error("删除失败！");
+			}
+		}
+	}
+	
 }
