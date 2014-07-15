@@ -594,15 +594,25 @@ function enumsToSelect($sortId, $enum=""){
  * @param string $m 
  */
 function createDuefeeSn($m){
-	return 'NF'.dechex($_SERVER['REQUEST_TIME']).$m;
+	return strtoupper('NF'.dechex($_SERVER['REQUEST_TIME']).substr(md5($m), 0, 4));
 }
+
 /**
- * 产生保证金订单号
+ * 产生投标项目序列号
  * @param string $m
  */
-function createDepositSn($m){
-	return 'BZ'.dechex($_SERVER['REQUEST_TIME']).$m;
+function createBidderSn($m){
+	return strtoupper('TB'.dechex($_SERVER['REQUEST_TIME']).substr(md5($m), 0, 4));
 }
+
+/**
+ * 产生项目序列号
+ * @param string $m
+ */
+function createProjectSn($m){
+	return strtoupper('XM'.dechex($_SERVER['REQUEST_TIME']).substr(md5($m), 0, 4));
+}
+
 
 
 

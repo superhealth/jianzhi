@@ -27,15 +27,16 @@ class MemberAction extends CommonAction{
 	 */
 	public function checkLogin(){
 		$map = array("mem_id"=> addslashes($_POST['user']));
-		$info = M("member")->field("mem_pass, mem_state")->where($map)->find();
-		if($info['mem_pass'] == md5($_POST['pass'])){
+		$info = M("member")->field("mem_password, mem_state")->where($map)->find();
+		if($info['mem_password'] == md5($_POST['pass'])){
 			
-			if($memberInfo['mem_state'] == 2){
+			if($info['mem_state'] == 2){
 				$this->error("对不起~您的账户可能由于敏感操作已被锁定！");
-			}elseif($memberInfo['mem_state']==0){
+			}elseif($info['mem_state']==0){
 				$this->error("该账户还未未激活");
 			}else{
 				$_SESSION['member'] = $_POST['user'];
+				M("member")->where($map)->setInc('mem_logincount');
 				$this->memberInit();
 				$url = empty($_REQUEST['ref']) ? __URL__."/index" : urldecode($_REQUEST['ref']);
 				$this->success("登录成功！", $url);
@@ -45,6 +46,9 @@ class MemberAction extends CommonAction{
 		}
 	}
 	
+	/**
+	 * 注销用户
+	 */
 	public function logout(){
 		unset($_SESSION['member']);
 		unset($GLOBALS['member']);
@@ -85,22 +89,35 @@ class MemberAction extends CommonAction{
 	}
 	
 	/**
+	 * 用户条款
+	 */
+	public function agreement(){
+		$this->display();
+	}
+	
+	/**
 	 * 注册页
 	 */
 	public function register(){
 		$this->display();
 	}
+	
 	/**
 	 * 保存注册信息
 	 */
 	public function reg(){
-		$data = M("member")->create();
-		$data['regtime'] = "";
-		if($data['']){
-			
+		
+		$data['mem_id'] = addslashes($_POST['user']);
+		$data['mem_password'] = addslashes($_POST['pass']);
+		$data['mem_regtime'] = $_SERVER['REQUEST_TIME'];
+		if($data['mem_id']==""){
+			$this->error('账号不能为空！');
+		}elseif($data['mem_password']==''){
+			$this->error('密码不能为空！');
 		}
 		if(M("member")->add($data)){
-			$url = empty($_REQUEST['ref']) ? $_REQUEST['ref'] : __URL__."/index";
+			//$url = empty($_REQUEST['ref']) ? $_REQUEST['ref'] : __URL__."/index";
+			$this->postVerifyMail($member);
 			$this->success("注册账号成功！", __URL__."/login");
 		}else{
 			$this->error("注册失败！");
@@ -152,11 +169,10 @@ class MemberAction extends CommonAction{
 				if($verifyCode == $verifyInfo['code']){
 					//验证通过
 					$_SESSION['member'] = $member;
-					MemberAction::memberInit();
 					$this->success("邮箱验证成功！", __URL__."/index");
 				}
 			}else{
-				$this->_empty();
+				$this->error('链接已失效！点击<a href="'.__URL__.'/sendVerifyMail">重新发送验证邮件</a>.', __URL__."/index");
 			}
 		}else{
 			$this->_empty();
@@ -215,9 +231,13 @@ class MemberAction extends CommonAction{
 	/**
 	 * 修改密码
 	 */
-	public function safty(){
+	public function safty($action=""){
 		$this->checkMember();
-		echo "success!";
+		if($action=="save"){
+			
+		}else{
+			$this->display();
+		}
 	}
 	/**
 	 * 修改资料
