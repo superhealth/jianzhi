@@ -106,17 +106,31 @@ class MemberAction extends CommonAction{
 	 * 保存注册信息
 	 */
 	public function reg(){
-		
 		$data['mem_id'] = addslashes($_POST['user']);
 		$data['mem_password'] = addslashes($_POST['pass']);
 		$data['mem_regtime'] = $_SERVER['REQUEST_TIME'];
+		$data['mem_email'] = addslashes($_POST['email']);
+		$data['mem_type'] = $_POST['type'];
 		if($data['mem_id']==""){
 			$this->error('账号不能为空！');
 		}elseif($data['mem_password']==''){
 			$this->error('密码不能为空！');
 		}
+		$data['mem_state'] = 0;
+		$data['mem_logincount'] = 0;
+		$data['mem_active'] = 1;
+		$freetime = D("Sysconf")->getConf("cfg_freetime");
+		dump($freetime);
+		$data['mem_expiretime'] = $_SERVER['REQUEST_TIME'] + $freetime*24*3600;
+		dump($data);exit;
+		$this->error("注册失败！", "", 99);
 		if(M("member")->add($data)){
 			//$url = empty($_REQUEST['ref']) ? $_REQUEST['ref'] : __URL__."/index";
+			if($data['mem_type']==0){
+				M("memberperson")->add(array('mc_mid'=>$data['mem_id']));
+			}else{
+				M("membercompany")->add(array('mc_mid'=>$data['mem_id'], 'mc_company'=>addslashes($_POST['com_name'])));
+			}
 			$this->postVerifyMail($member);
 			$this->success("注册账号成功！", __URL__."/login");
 		}else{
@@ -127,8 +141,8 @@ class MemberAction extends CommonAction{
 	/**
 	 * 发送验证邮件
 	 */
-	public function sendVerifyMail(){
-		$send = $this->postVerifyMail($_SESSION['member']);
+	public function sendVerifyMail($member=""){
+		$send = $this->postVerifyMail($member);
 		if($send===true){
 			$this->success("邮件发送成功！");
 		}elseif($send===false){

@@ -2,54 +2,57 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title></title>
+<title>用户注册</title>
 <include file="public:css" />
 </head>
+<body>
 <include file="public:header" />
 <div class="content">
 	<div class="box reg_box">
 		<div class="box_title">用户注册</div>
 		<div class="box_content">
-			<form action="">
+			<form action="__URL__/reg" method="post">
 				<div class="input_group">
-					<label class="" for="">用户名</label>
+					<label for="user">用户名：</label>
 					<div class="input_control">
-						<input type="text" class="" name="" id="" value="" />
-						<span class="helpline">&radic;</span>
+						<input type="text" class="inp inp-reg" name="user" id="user" value="" placeholder="用户登录账号" />
+						<span class="helpline"></span>
 					</div>
 				</div>
 				<div class="input_group">
-					<label class="" for="">密码</label>
+					<label for="pass">密码：</label>
 					<div class="input_control">
-						<input type="text" class="" name="" id="" value="" />
-						<span class="helpline">&radic;</span>
+						<input type="password" class="inp inp-reg" name="pass" id="pass" value="" />
+						<span class="helpline"></span>
 					</div>
 				</div>
 				<div class="input_group">
-					<label class="" for="">确认密码</label>
-					<input type="text" class="" name="" id="" value="" />
-					<span class="helpline">&radic;</span>
-				</div>
-				<div class="input_group">
-					<label class="" for="">确认密码</label>
+					<label for="repass">确认密码：</label>
 					<div class="input_control">
-						<input type="text" class="" name="" id="" value="" />
-						<span class="helpline error">&radic;</span>
+						<input type="password" class="inp inp-reg" name="repass" id="repass" value="" />
+						<span class="helpline"></span>
 					</div>
 				</div>
 				<div class="input_group">
-					<label for="">公司</label><input type="radio" name="" id="" />
-					<label for="">个人</label><input type="radio" name="" id="" />
-				</div>
-				<div class="input_group">
-					<label class="" for="">公司名称</label>
+					<label for="email">E-mail：</label>
 					<div class="input_control">
-						<input type="text" class="" name="" id="" value="" />
-						<br /><span class="helpline success">&radic;</span>
+						<input type="email" class="inp inp-reg" name="email" id="email" value="" />
+						<span class="helpline"></span>
 					</div>
 				</div>
-				<div class="">
-					<input type="radio" id="" />我已阅读并同意<a href="__URL__/agreement">《XXXXXX协议》</a>
+				<div class="reg_type">
+					<label class="type_chk"><input type="checkbox" name="type" value="1" id="company" />公司注册</label>
+					<label class="type_chk"><input type="checkbox" name="type" value="0" id="person" />个人注册</label>
+				</div>
+				<div class="input_group input_company">
+					<label for="com_name">公司名称：</label>
+					<div class="input_control">
+						<input type="text" class="inp inp-reg" name="com_name" id="com_name" value="" />
+						<br /><span class="helpline"></span>
+					</div>
+				</div>
+				<div class="agreement">
+					<label class="type_chk"><input type="checkbox" id="agreement" />我已阅读并同意<a class="agreement_link" href="__URL__/agreement">《XXXXXX协议》</a></label>
 				</div>
 				<button class="btn reg_btn" type="button" >立即注册<button>
 			</form>
@@ -58,6 +61,5 @@
 </div>
 <include file="public:footer" />
 <include file="public:js" />
-<body>
 </body>
 </html>

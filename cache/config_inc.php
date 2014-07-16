@@ -20,7 +20,6 @@ return array(
 "cfg_duefee" => 100, // 年费(￥) 
 "cfg_duenotice" => 30, // 年费续费提醒(天) 
 "cfg_crontime" => 30, // 系统刷新时间间隔（分钟） 
-"cfg_alipayid" => "", // alipay合作者身份(pid) 
-"cfg_alipaykey" => "", // alipay查询安全校验码(key) 
+"cfg_freetime" => 30, // 新注册用户免费时间(天) 
 ); 
 ?>
