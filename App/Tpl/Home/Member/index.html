@@ -2,9 +2,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
+<title></title>
+<include file="public:css" />
 </head>
-
+<include file="public:header" />
+<div class="content">
+	<h3>个人中心</h3>
+	<div >实名验证：{$mstatus}
+	<if condition="$mstatus eq '0'">未验证<a class="btn" href="__URL__/verify">验证</a>
+	<elseif condition="$mstatus eq '1'"/>等待验证
+	<elseif condition="$mstatus eq '2'"/>已验证<a class="btn" href="__URL__/verify">修改实名信息</a>
+	<else />验证未通过<a class="btn" href="__URL__/verify">重新验证</a>
+	</if>
+	<switch name="status">
+    <case value="0"></case>
+    <case value="1"></case>
+    <default />
+ </switch></div>
+	<div >续费状态：</div>
+	<div >系统消息：</div>
+	<div >实名验证：</div>
+	<div >实名验证：</div>
+	<div >实名验证：</div>
+	<div >实名验证：</div>
+</div>
+<include file="public:footer" />
+<include file="public:js" />
 <body>
 </body>
 </html>

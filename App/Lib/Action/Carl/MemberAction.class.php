@@ -9,7 +9,7 @@ class MemberAction extends BaseAction{
 	private $actives = array("到期", "可用");	//用户续费
 	private $states = array("未激活", "已激活", "锁定");	//用户状态
 	private $status = array("未审核","审核中", "通过","未通过");	//公司审核状态
-	private $sexes = array("保密", "男", "女");	//用户性别
+	private $sexes = array("女","男");	//用户性别
 	/**
 	 * 所有用户
 	 */
@@ -337,6 +337,90 @@ class MemberAction extends BaseAction{
 			$this->error("发送失败！");
 		}
 	}
+	
+	/**
+	 * 会员等待实名认证
+	 */
+	public function verifyMember(){
+		if(!per_check('mem_verify')){
+			$this->error("无此权限！");
+		}
+		$m = M("member");
+		$map['mp_status'] = 1;
+		$map['mc_status'] = 1;
+		$map['_logic'] = "or";
+		$where['_complex'] = $map;
+		$join = array('zt_membercompany ON mem_id=mc_mid', 'zt_memberperson ON mem_id=mp_mid');
+		$total = $m->join($join)->where($where)->count();
+		import("Org.Util.Page");
+		$page = new Page($total, 12, $param);
+		// 分页查询
+		$limit = $page->firstRow.",".$page->listRows;
+		$pager = $page->shown();
+		$this->assign("pager", $pager);
+		//查询字段
+		$members = $m->join($join)->where($where)->limit($limit)->select();
+		$this->assign("members", $members);
+		$this->assign("types", $this->types);
+		$this->display();
+	}
+	
+	/**
+	 * 会员实名认证
+	 */
+	public function checkVerify($id=""){
+		//会员类型
+		$type = M("member")->where("mem_id='{$id}'")->getField("mem_type");
+		if($type==1){
+			$info = M("membercompany")->where('mc_mid="'.$id.'"')->find();
+			$info['licencescan'] = M("attachement")->where("att_id={$info['mc_licencescan']}")->getField("att_path");
+			$this->assign('info', $info);
+			$this->display('Member:checkVerifyCompany');
+		}else{
+			$info = M("memberperson")->where('mp_mid="'.$id.'"')->find();
+			$info['idscan'] = M("attachement")->where("att_id={$info['mp_idscan']}")->getField("att_path");
+			$this->assign('info', $info);
+			$this->assign("sexes", $this->sexes);
+			$this->display('Member:checkVerifyPerson');
+		}
+	}
+	 
+	/**
+	 * 会员实名认证
+	 */
+	public function verify($id="", $type="", $tips=""){
+		if(!per_check('mem_verify')){
+			$this->error("无此权限！");
+		}
+		$res = $_GET['res'];
+		$result = $res=='ok' ? 2 : 3;
+		if($type=="company"){
+			$table = 'membercompany';
+			$map = array("mc_id"=>$id);
+			$data = array('mc_status'=>$result); 
+			$field = 'mc_mid';
+		}else{
+			$table = 'memberperson';
+			$map = array("mp_id"=>$id);
+			$data = array('mp_status'=>$result);
+			$field = 'mp_mid';
+		}
+		if(M($table)->where($map)->save($data)){
+			$name = M($table)->where($map)->getField($field);
+			if($res=='ok'){
+				$content = '恭喜您通过了实名认证程序！';
+			}else{
+				$content = '很遗憾，您所提交的实名认证资料未能通过审核。<br />原因：'.$tips;
+			}
+			$subject = '【系统消息】 实名认证审核结果';
+			D('Notice')->sendNotice($name, $subject, $content);
+			$this->watchdog("审核", '实名审核《'.$name.'》,审核结果：'.($res=='ok' ? '通过' : '未通过'));
+			$this->success('审核完成！', __URL__.'/verifyMember');
+		}else{
+			$this->error('审核失败！');
+		}
+	}
+	
 	
 	/**
 	 * 会员人工续费界面（银行转账方式）

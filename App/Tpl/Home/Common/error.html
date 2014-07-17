@@ -8,9 +8,9 @@
 <body>
 <include file="public:header" />
 <div class="content">
-	<div class="box">
+	<div class="box error_box">
 		<div class="box_title">错误提醒</div>
-		<div class="box_content error_box">
+		<div class="box_content error_content">
 			<h2 class="error_title">{$error}</h2>
 			<p>页面自动 <a id="href" href="<?php echo($jumpUrl); ?>">跳转</a> 等待时间： <b id="wait"><?php echo($waitSecond); ?></b>
 		</div>
@@ -23,7 +23,7 @@
 var wait = document.getElementById('wait'),href = document.getElementById('href').href;
 var interval = setInterval(function(){
 	var time = --wait.innerHTML;
-	if(time < 1) {
+	if(time == 0) {
 		location.href = href;
 		clearInterval(interval);
 	};

@@ -9,7 +9,17 @@ class CommonAction extends EmptyAction{
 	 * 初始化方法
 	 */
 	public function _initialize(){
-		
+		if(!empty($_SESSION['member'])){
+			$notice = D("Notice")->noRead($_SESSION['member']);
+			$this->assign("notice", $notice);
+			$type = M("member")->where("mem_id='{$_SESSION['member']}'")->getField("mem_type");
+			if($type==1){
+				$status = M("membercompany")->where("mc_mid='{$_SESSION['member']}'")->getField("mc_status");
+			}else{
+				$status = M("memberperson")->where("mp_mid='{$_SESSION['member']}'")->getField("mp_status");
+			}
+			$this->assign("status", $status);
+		}
 	}
 	
 	/**
@@ -17,7 +27,7 @@ class CommonAction extends EmptyAction{
 	 */
 	public function checkMember(){
 		if(empty($_SESSION['member'])){
-			$this->error("请先登录！", __GROUP__."/Member/login");exit;
+			$this->error("请先登录！", __GROUP__."/Member/login/flag/true", 1);exit;
 		}
 	}
 	
@@ -32,7 +42,7 @@ class CommonAction extends EmptyAction{
 	/**
 	 * 操作成功
 	 */
-	public function success($message,$jumpUrl='',$wait=1){
+	public function success($message,$jumpUrl='',$wait=3){
 		$this->assign('waitSecond',$wait);
         if(!empty($jumpUrl)) $this->assign('jumpUrl',$jumpUrl);
         $this->assign('msgTitle',L('_OPERATION_SUCCESS_'));
@@ -47,7 +57,7 @@ class CommonAction extends EmptyAction{
 	 * 操作失败
 	 * 
 	 */
-	public function error($message,$jumpUrl='',$wait=3){
+	public function error($message,$jumpUrl='',$wait=5){
 		$this->assign('waitSecond',$wait);
 		if(!empty($jumpUrl)) $this->assign('jumpUrl',$jumpUrl);
 		$this->assign('msgTitle',L('_OPERATION_FAIL_'));
