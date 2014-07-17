@@ -530,7 +530,7 @@ CREATE TABLE `zt_attachement` (
   `att_time` int(11) NOT NULL,
   `att_download` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`att_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=60 DEFAULT CHARSET=utf8;
 insert into `zt_attachement`(`att_id`,`att_name`,`att_path`,`att_type`,`att_size`,`att_mid`,`att_time`,`att_download`) values('19','Michael.jpg','/uploads/20140626/oowoolf/Michael.jpg','jpg','4.7Kb','1','1403775779','0');
 insert into `zt_attachement`(`att_id`,`att_name`,`att_path`,`att_type`,`att_size`,`att_mid`,`att_time`,`att_download`) values('4','啊打发.zip','/uploads/啊打发.zip','zip','1.82Mb','carl','1402555642','0');
 insert into `zt_attachement`(`att_id`,`att_name`,`att_path`,`att_type`,`att_size`,`att_mid`,`att_time`,`att_download`) values('21','logo.png','/uploads/20140626/oowoolf/logo.png','png','26.38Kb','1','1403775817','0');
@@ -554,6 +554,10 @@ insert into `zt_attachement`(`att_id`,`att_name`,`att_path`,`att_type`,`att_size
 insert into `zt_attachement`(`att_id`,`att_name`,`att_path`,`att_type`,`att_size`,`att_mid`,`att_time`,`att_download`) values('37','W6.jpg','/uploads/20140626/carl/W6.jpg','jpg','9.6Kb','carl','1403779014','0');
 insert into `zt_attachement`(`att_id`,`att_name`,`att_path`,`att_type`,`att_size`,`att_mid`,`att_time`,`att_download`) values('41','W6.jpg','/uploads/20140626/carl/W6.jpg','jpg','9.6Kb','carl','1403786351','0');
 insert into `zt_attachement`(`att_id`,`att_name`,`att_path`,`att_type`,`att_size`,`att_mid`,`att_time`,`att_download`) values('42','index_news.jpg','/uploads/20140626/carl/index_news.jpg','jpg','24Kb','carl','1403786722','0');
+insert into `zt_attachement`(`att_id`,`att_name`,`att_path`,`att_type`,`att_size`,`att_mid`,`att_time`,`att_download`) values('58','15.jpg','/uploads/20140717/wanglufei/15.jpg','jpg','4.83Kb','王路飞','1405598521','0');
+insert into `zt_attachement`(`att_id`,`att_name`,`att_path`,`att_type`,`att_size`,`att_mid`,`att_time`,`att_download`) values('59','15.jpg','/uploads/20140717/wanglufei/15.jpg','jpg','4.83Kb','王路飞','1405598640','0');
+insert into `zt_attachement`(`att_id`,`att_name`,`att_path`,`att_type`,`att_size`,`att_mid`,`att_time`,`att_download`) values('56','sco.jpg','/uploads/20140717/dapianzi/sco.jpg','jpg','4.88Kb','dapianzi','1405586600','0');
+insert into `zt_attachement`(`att_id`,`att_name`,`att_path`,`att_type`,`att_size`,`att_mid`,`att_time`,`att_download`) values('57','sco.jpg','/uploads/20140717/dapianzi/sco.jpg','jpg','4.88Kb','dapianzi','1405586689','0');
 insert into `zt_attachement`(`att_id`,`att_name`,`att_path`,`att_type`,`att_size`,`att_mid`,`att_time`,`att_download`) values('55','2014-06-24_092051.jpg','/uploads/20140630/carl/2014-06-24_092051.jpg','jpg','91.69Kb','carl','1404096941','0');
 CREATE TABLE `zt_bid_record` (
   `re_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -675,6 +679,15 @@ CREATE TABLE `zt_cronhash` (
 insert into `zt_cronhash`(`ch_name`,`ch_time`) values('member','0');
 insert into `zt_cronhash`(`ch_name`,`ch_time`) values('project','0');
 insert into `zt_cronhash`(`ch_name`,`ch_time`) values('deposit','0');
+CREATE TABLE `zt_currency` (
+  `cur_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cur_name` varchar(32) NOT NULL,
+  `cur_sign` varchar(8) NOT NULL,
+  PRIMARY KEY (`cur_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+insert into `zt_currency`(`cur_id`,`cur_name`,`cur_sign`) values('1','人民币','RMB');
+insert into `zt_currency`(`cur_id`,`cur_name`,`cur_sign`) values('2','美元','USD');
+insert into `zt_currency`(`cur_id`,`cur_name`,`cur_sign`) values('3','港元','HKD');
 CREATE TABLE `zt_deposit` (
   `de_id` char(16) NOT NULL,
   `de_mid` varchar(64) NOT NULL,
@@ -798,7 +811,7 @@ CREATE TABLE `zt_log` (
   `log_time` int(11) NOT NULL,
   `log_ip` varchar(64) NOT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=135 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=149 DEFAULT CHARSET=utf8;
 insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('1','','','0','0','');
 insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('2','','','0','0','');
 insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('3','','','0','0','');
@@ -933,6 +946,20 @@ insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`l
 insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('132','删除','删除税费选项：测试,test','carl','1404962795','127.0.0.1');
 insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('133','删除','删除税费选项：test2','carl','1404962803','127.0.0.1');
 insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('134','编辑','编辑会员[dapianzi]的基本信息','carl','1405044345','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('135','新增','添加货币单位‘元’','carl','1405158739','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('136','新增','添加货币单位‘万元’','carl','1405158752','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('137','新增','添加货币单位‘百万’','carl','1405158769','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('138','新增','添加货币单位‘亿元’','carl','1405158784','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('139','新增','添加币种‘人民币’','carl','1405159195','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('140','新增','添加币种‘美元’','carl','1405159214','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('141','编辑','修改币种‘’','carl','1405159282','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('142','编辑','修改币种‘’','carl','1405159291','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('143','新增','添加币种‘港元’','carl','1405159303','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('144','审核','实名审核《dapianzi》,审核结果：','carl','1405595583','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('145','审核','实名审核《dapianzi》,审核结果：通过','carl','1405595998','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('146','审核','实名审核《oowoolf》,审核结果：未通过','carl','1405596060','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('147','审核','实名审核《dahubi》,审核结果：未通过','carl','1405596167','127.0.0.1');
+insert into `zt_log`(`log_id`,`log_action`,`log_detail`,`log_user`,`log_time`,`log_ip`) values('148','审核','实名审核《王路飞》,审核结果：未通过','carl','1405598663','127.0.0.1');
 CREATE TABLE `zt_member` (
   `mem_id` varchar(32) NOT NULL,
   `mem_rank` int(11) NOT NULL,
@@ -945,21 +972,32 @@ CREATE TABLE `zt_member` (
   `mem_type` tinyint(1) NOT NULL DEFAULT '0',
   `mem_active` tinyint(1) NOT NULL DEFAULT '0',
   `mem_expiretime` int(11) NOT NULL DEFAULT '0',
-  `mem_varifycode` varchar(64) NOT NULL DEFAULT '{code:88888888,time:0}',
+  `mem_verifycode` varchar(64) NOT NULL DEFAULT '',
   PRIMARY KEY (`mem_id`),
   UNIQUE KEY `m_id` (`mem_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户注册信息';
-insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_varifycode`) values('oowoolf','10000','bab68d575e5e96461ad6ac2c975f9396','609164964@qq.com','13760432926','2','1','0','0','0','1403258721','sfasdfad');
-insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_varifycode`) values('dapianzi','9999','bab68d575e5e96461ad6ac2c975f9396','448379160@qq.com','15270694370','1','1','0','0','1','1406736000','{code:88888888,time:0}');
-insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_varifycode`) values('dahubi','5000','bab68d575e5e96461ad6ac2c975f9396','carl@chuango.com','13145816924','2','1','2014','1','1','1529403759','{code:88888888,time:0}');
-insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_varifycode`) values('valerie','0','','valierie@qq.com','13145816924','1','0','6','0','1','1563638400','{code:88888888,time:0}');
-insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_varifycode`) values('安防','0','0056105c92090781759314ae6aab82c7','dfa0@qq.com','啊','1','0','6','0','1','1405872000','{code:88888888,time:0}');
-insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_varifycode`) values('dfads','0','6a204bd89f3c8348afd5c77c717a097a','adsfads@gmail.com','adsfa','1','0','1403193600','1','0','1305872000','{code:88888888,time:0}');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('oowoolf','10000','bab68d575e5e96461ad6ac2c975f9396','609164964@qq.com','13760432926','1','4','0','0','0','1403258721','WRD064L-1405575528');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('dapianzi','9999','bab68d575e5e96461ad6ac2c975f9396','448379160@qq.com','15270694370','1','6','0','0','1','1406736000','{code:88888888,time:0}');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('dahubi','5000','bab68d575e5e96461ad6ac2c975f9396','carl@chuango.com','13145816924','2','1','2014','1','1','1529403759','{code:88888888,time:0}');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('valerie','0','bab68d575e5e96461ad6ac2c975f9396','valierie@qq.com','13145816924','1','4','6','0','1','1563638400','{code:88888888,time:0}');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('安防','0','bab68d575e5e96461ad6ac2c975f9396','dfa0@qq.com','啊','1','0','6','0','1','1405872000','{code:88888888,time:0}');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('dfads','0','bab68d575e5e96461ad6ac2c975f9396','adsfads@gmail.com','adsfa','1','0','1403193600','1','0','1305872000','{code:88888888,time:0}');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('woshiwang','0','woshiwang','609164964@qq.com','','0','0','1405564083','1','1','1408156083','{code:88888888,time:0}');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('王路飞','0','bab68d575e5e96461ad6ac2c975f9396','609164964@qq.com','','1','1','1405564439','1','1','1408156439','');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('王辛巴','0','bab68d575e5e96461ad6ac2c975f9396','609164964@qq.com','','0','0','1405565637','0','1','1408157637','{code:88888888,time:0}');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('王大锤','0','bab68d575e5e96461ad6ac2c975f9396','609164964@qq.com','','1','0','1405565779','0','1','1408157779','');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('luren','0','bab68d575e5e96461ad6ac2c975f9396','oowoolf@gmail.com','','0','0','1405573944','0','1','1408165944','');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('lurena','0','bab68d575e5e96461ad6ac2c975f9396','oowoolf@gmail.com','','0','0','1405574055','0','1','1408166055','WW2F01B-1405574055');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('lurenb','0','bab68d575e5e96461ad6ac2c975f9396','oowoolf@gmail.com','','0','0','1405574096','0','1','1408166096','K8NA851N-1405574096');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('lurenc','0','bab68d575e5e96461ad6ac2c975f9396','oowoolf@gmail.com','','0','0','1405574182','0','1','1408166182','HX2TI8DK-1405574182');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('lurend','0','bab68d575e5e96461ad6ac2c975f9396','609164964@qq.com','','0','0','1405574221','1','1','1408166221','');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('lurene','0','bab68d575e5e96461ad6ac2c975f9396','609164964@qq.com','','0','0','1405574344','1','1','1408166344','6Y0DMKDB-1405574344');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('lureng','0','bab68d575e5e96461ad6ac2c975f9396','609164964@qq.com','','0','0','1405582340','0','1','1408174340','7N5XP89W-1405582340');
 CREATE TABLE `zt_membercompany` (
   `mc_id` int(11) NOT NULL AUTO_INCREMENT,
   `mc_mid` varchar(32) NOT NULL,
   `mc_company` varchar(64) DEFAULT ' ',
-  `mc_adress` varchar(256) DEFAULT ' ',
+  `mc_addr` varchar(256) DEFAULT ' ',
   `mc_licence` varchar(64) DEFAULT ' ',
   `mc_licencescan` int(11) DEFAULT '0',
   `mc_legal` varchar(32) DEFAULT ' ',
@@ -967,24 +1005,33 @@ CREATE TABLE `zt_membercompany` (
   `mc_legalid` varchar(32) DEFAULT ' ',
   `mc_status` tinyint(4) DEFAULT '0',
   `mc_step` tinyint(4) DEFAULT '1',
-  PRIMARY KEY (`mc_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-insert into `zt_membercompany`(`mc_id`,`mc_mid`,`mc_company`,`mc_adress`,`mc_licence`,`mc_licencescan`,`mc_legal`,`mc_legalscan`,`mc_legalid`,`mc_status`,`mc_step`) values('1','dahubi','chuango','琼玉路8号','134123','22','dapianzi','23','36073319804324','0','1');
-insert into `zt_membercompany`(`mc_id`,`mc_mid`,`mc_company`,`mc_adress`,`mc_licence`,`mc_licencescan`,`mc_legal`,`mc_legalscan`,`mc_legalid`,`mc_status`,`mc_step`) values('2','dfads','adfadsfadsf','adfasd','adfasd','10','adsfads','11','adsfa','0','1');
+  `mc_tel` varchar(32) NOT NULL,
+  PRIMARY KEY (`mc_id`),
+  UNIQUE KEY `mc_mid` (`mc_mid`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+insert into `zt_membercompany`(`mc_id`,`mc_mid`,`mc_company`,`mc_addr`,`mc_licence`,`mc_licencescan`,`mc_legal`,`mc_legalscan`,`mc_legalid`,`mc_status`,`mc_step`,`mc_tel`) values('1','dahubi','chuango','琼玉路8号','134123','22','dapianzi','23','36073319804324','1','1','');
+insert into `zt_membercompany`(`mc_id`,`mc_mid`,`mc_company`,`mc_addr`,`mc_licence`,`mc_licencescan`,`mc_legal`,`mc_legalscan`,`mc_legalid`,`mc_status`,`mc_step`,`mc_tel`) values('2','dfads','adfadsfadsf','adfasd','adfasd','10','adsfads','11','adsfa','1','1','');
+insert into `zt_membercompany`(`mc_id`,`mc_mid`,`mc_company`,`mc_addr`,`mc_licence`,`mc_licencescan`,`mc_legal`,`mc_legalscan`,`mc_legalid`,`mc_status`,`mc_step`,`mc_tel`) values('3','woshiwang','134513',' ',' ','0',' ','0',' ','0','1','');
+insert into `zt_membercompany`(`mc_id`,`mc_mid`,`mc_company`,`mc_addr`,`mc_licence`,`mc_licencescan`,`mc_legal`,`mc_legalscan`,`mc_legalid`,`mc_status`,`mc_step`,`mc_tel`) values('4','王路飞','134513',' 啊打发凤凰嘎达分',' ','59',' 啊打发啊','0',' ','1','1','3265-16532142');
+insert into `zt_membercompany`(`mc_id`,`mc_mid`,`mc_company`,`mc_addr`,`mc_licence`,`mc_licencescan`,`mc_legal`,`mc_legalscan`,`mc_legalid`,`mc_status`,`mc_step`,`mc_tel`) values('5','lurend','afdsf',' ',' ','0',' ','0',' ','0','1','');
+insert into `zt_membercompany`(`mc_id`,`mc_mid`,`mc_company`,`mc_addr`,`mc_licence`,`mc_licencescan`,`mc_legal`,`mc_legalscan`,`mc_legalid`,`mc_status`,`mc_step`,`mc_tel`) values('6','lurene','afdsf',' ',' ','0',' ','0',' ','0','1','');
 CREATE TABLE `zt_memberperson` (
   `mp_id` int(11) NOT NULL AUTO_INCREMENT,
   `mp_mid` varchar(32) NOT NULL,
   `mp_name` varchar(32) DEFAULT ' ',
   `mp_identily` varchar(32) DEFAULT ' ',
   `mp_idscan` int(11) DEFAULT '0',
-  `mp_sex` tinyint(4) DEFAULT '0',
+  `mp_sex` tinyint(4) DEFAULT '1',
   `mp_addr` varchar(128) DEFAULT ' ',
-  PRIMARY KEY (`mp_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-insert into `zt_memberperson`(`mp_id`,`mp_mid`,`mp_name`,`mp_identily`,`mp_idscan`,`mp_sex`,`mp_addr`) values('1','oowoolf','王路飞','234','21','1','奥奥');
-insert into `zt_memberperson`(`mp_id`,`mp_mid`,`mp_name`,`mp_identily`,`mp_idscan`,`mp_sex`,`mp_addr`) values('2','dapianzi','王路飞','13451234','6','1','45364534');
-insert into `zt_memberperson`(`mp_id`,`mp_mid`,`mp_name`,`mp_identily`,`mp_idscan`,`mp_sex`,`mp_addr`) values('3','valerie',' 周薇',' 啊打发','0','2',' 啊打发');
-insert into `zt_memberperson`(`mp_id`,`mp_mid`,`mp_name`,`mp_identily`,`mp_idscan`,`mp_sex`,`mp_addr`) values('4','安防','adfads','dfadsadgf','0','1','sfgsdfga');
+  `mp_tel` varchar(32) NOT NULL,
+  `mp_status` tinyint(4) NOT NULL,
+  PRIMARY KEY (`mp_id`),
+  UNIQUE KEY `mp_mid` (`mp_mid`)
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+insert into `zt_memberperson`(`mp_id`,`mp_mid`,`mp_name`,`mp_identily`,`mp_idscan`,`mp_sex`,`mp_addr`,`mp_tel`,`mp_status`) values('1','oowoolf','王路飞','234','21','1','奥奥','','3');
+insert into `zt_memberperson`(`mp_id`,`mp_mid`,`mp_name`,`mp_identily`,`mp_idscan`,`mp_sex`,`mp_addr`,`mp_tel`,`mp_status`) values('2','dapianzi','王路飞','360733198804323247','57','1','45364534','13766043321','2');
+insert into `zt_memberperson`(`mp_id`,`mp_mid`,`mp_name`,`mp_identily`,`mp_idscan`,`mp_sex`,`mp_addr`,`mp_tel`,`mp_status`) values('3','valerie',' 周薇',' 啊打发','0','0',' 啊打发','','1');
+insert into `zt_memberperson`(`mp_id`,`mp_mid`,`mp_name`,`mp_identily`,`mp_idscan`,`mp_sex`,`mp_addr`,`mp_tel`,`mp_status`) values('4','安防','adfads','dfadsadgf','0','1','sfgsdfga','','1');
 CREATE TABLE `zt_notice` (
   `no_id` int(11) NOT NULL AUTO_INCREMENT,
   `no_subject` varchar(128) NOT NULL,
@@ -994,12 +1041,17 @@ CREATE TABLE `zt_notice` (
   `no_to` varchar(32) NOT NULL,
   `no_mid` char(32) NOT NULL,
   PRIMARY KEY (`no_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('1','【系统消息】啦啦啦啦啦','a嘎达发噶啊地方噶阿迪发送的','0','0','','');
 insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('2','【系统消息】啦啦啦啦啦','a嘎达发噶啊地方噶阿迪发送的','0','0','','');
 insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('3','【系统消息】 会员年费续费提醒','您的会员有效时间已不足30天，请及时续费以继续使用我们的服务，谢谢！','1405044635','0','','dapianzi');
 insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('4','【系统消息】 会员年费续费提醒','您的会员有效时间已不足30天，请及时续费以继续使用我们的服务，谢谢！','1405044670','0','','dapianzi');
 insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('5','【系统消息】 会员年费续费提醒','您的会员有效时间已不足30天，请及时续费以继续使用我们的服务，谢谢！','1405047462','0','','安防');
+insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('6','[系统消息] 实名认证审核结果','很遗憾，您所提交的实名认证资料未能通过审核。<br />原因：','1405595583','0','','dapianzi');
+insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('7','【系统消息】 实名认证审核结果','恭喜您通过了实名认证程序！','1405595998','0','','dapianzi');
+insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('8','【系统消息】 实名认证审核结果','很遗憾，您所提交的实名认证资料未能通过审核。<br />原因：没有手机号','1405596060','0','','oowoolf');
+insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('9','【系统消息】 实名认证审核结果','很遗憾，您所提交的实名认证资料未能通过审核。<br />原因：没有扫描件','1405596167','0','','dahubi');
+insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_to`,`no_mid`) values('10','【系统消息】 实名认证审核结果','很遗憾，您所提交的实名认证资料未能通过审核。<br />原因：不合格','1405598663','0','','王路飞');
 CREATE TABLE `zt_pro_record` (
   `re_id` int(11) NOT NULL AUTO_INCREMENT,
   `pro_id` int(11) NOT NULL,
@@ -1185,8 +1237,7 @@ insert into `zt_sysconf`(`id`,`key`,`type`,`value`,`desc`) values('17','cfg_REPL
 insert into `zt_sysconf`(`id`,`key`,`type`,`value`,`desc`) values('18','cfg_duefee','int','100','年费(￥)');
 insert into `zt_sysconf`(`id`,`key`,`type`,`value`,`desc`) values('19','cfg_duenotice','int','30','年费续费提醒(天)');
 insert into `zt_sysconf`(`id`,`key`,`type`,`value`,`desc`) values('20','cfg_crontime','int','30','系统刷新时间间隔（分钟）');
-insert into `zt_sysconf`(`id`,`key`,`type`,`value`,`desc`) values('21','cfg_alipayid','string','','alipay合作者身份(pid)');
-insert into `zt_sysconf`(`id`,`key`,`type`,`value`,`desc`) values('22','cfg_alipaykey','string','','alipay查询安全校验码(key)');
+insert into `zt_sysconf`(`id`,`key`,`type`,`value`,`desc`) values('21','cfg_freetime','int','30','新注册用户免费时间(天)');
 CREATE TABLE `zt_taxes` (
   `tax_id` int(11) NOT NULL AUTO_INCREMENT,
   `tax_name` varchar(32) NOT NULL,
@@ -1205,3 +1256,13 @@ CREATE TABLE `zt_tips` (
   `tips_content` text NOT NULL,
   PRIMARY KEY (`tips_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+CREATE TABLE `zt_unit` (
+  `unit_id` int(11) NOT NULL AUTO_INCREMENT,
+  `unit_name` varchar(16) NOT NULL,
+  `unit_multiple` int(11) NOT NULL,
+  PRIMARY KEY (`unit_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+insert into `zt_unit`(`unit_id`,`unit_name`,`unit_multiple`) values('1','元','1');
+insert into `zt_unit`(`unit_id`,`unit_name`,`unit_multiple`) values('2','万元','10000');
+insert into `zt_unit`(`unit_id`,`unit_name`,`unit_multiple`) values('3','百万','1000000');
+insert into `zt_unit`(`unit_id`,`unit_name`,`unit_multiple`) values('4','亿元','100000000');

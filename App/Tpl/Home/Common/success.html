@@ -10,9 +10,9 @@
 <div class="content">
 	<div class="box success_box">
 		<div class="box_title">跳转提醒</div>
-		<div class="box_content error_box">
-			<h2 class="error_title">{$message}</h2>
-			<p>页面自动 <a id="href" href="<?php echo($jumpUrl); ?>">跳转</a> 等待时间： <b id="wait"><?php echo($waitSecond); ?></b>
+		<div class="box_content success_content">
+			<h2 class="success_title">{$message}</h2>
+			<p>页面将在<b id="wait"><?php echo($waitSecond); ?></b>秒后自动跳转。<a class="btn" id="href" href="<?php echo($jumpUrl); ?>">立刻跳转</a> 
 		</div>
 	</div>
 </div>
@@ -23,7 +23,7 @@
 var wait = document.getElementById('wait'),href = document.getElementById('href').href;
 var interval = setInterval(function(){
 	var time = --wait.innerHTML;
-	if(time < 1) {
+	if(time == 0) {
 		location.href = href;
 		clearInterval(interval);
 	};

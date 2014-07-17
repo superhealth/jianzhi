@@ -7,17 +7,28 @@ class MemberAction extends CommonAction{
 		$this->checkMember();
 		$this->memberInit();
 		//$this->assign("member", $GLOBALS['member']);
-		
-		dump($GLOBALS['member']);
-		echo '<a href="'.__URL__.'/logout">退出</a>';
+		$member = M("member")->where("mem_id='{$_SESSION['member']}'")->find();
+		if($member['mem_type']==0){
+			$memberinfo = M("memberperson")->where("mp_mid='{$_SESSION['member']}'")->find();
+			$status = $memberinfo['mp_status'];
+		}else{
+			$memberinfo = M("membercompany")->where("mc_mid='{$_SESSION['member']}'")->find();
+			$status = $memberinfo['mc_status'];
+		}
+		$this->assign('member', $member);
+		$this->assign('memberinfo', $memberinfo);
+		$this->assign('mstatus', $status);
+		$this->display();
 	}
 	
 	/**
 	 * 登录页
 	 */
-	public function login(){
+	public function login($flag = false){
 		//来源
-		$referer = urlencode($_SERVER['HTTP_REFERER']);
+		if($flag){
+			$referer = urlencode($_SERVER['HTTP_REFERER']);
+		}
 		//$this->assign("url",$referer);
 		$this->show("<form action='".__URL__."/checkLogin' method='post'><input type='hidden' name='ref' value='{$referer}' /><input type='text' name='user' /><br /><input type='password' name='pass' /><button>登录</button></form>", "utf-8");
 		$this->display();
@@ -33,7 +44,7 @@ class MemberAction extends CommonAction{
 			if($info['mem_state'] == 2){
 				$this->error("对不起~您的账户可能由于敏感操作已被锁定！");
 			}elseif($info['mem_state']==0){
-				$this->error("该账户还未未激活");
+				$this->error('该账户还未未激活！点击<a href="'.__URL__.'/sendVerifyMail/member/'.$_POST['user'].'">发送验证邮件</a>.', __URL__."/login");
 			}else{
 				$_SESSION['member'] = $_POST['user'];
 				M("member")->where($map)->setInc('mem_logincount');
@@ -52,15 +63,13 @@ class MemberAction extends CommonAction{
 	public function logout(){
 		unset($_SESSION['member']);
 		unset($GLOBALS['member']);
-		redirect(__GROUP__."/Member");
+		redirect(__URL__."/login");
 	}
 	
 	/**
 	 * 初始化会员
 	 */
 	private function memberInit(){
-		//初始化会员信息
-		global $member;
 		//更新会员状态
 		D('Member')->updateMemberActive();
 		if(isset($_SESSION['member']) && !empty($_SESSION['member'])){
@@ -82,9 +91,6 @@ class MemberAction extends CommonAction{
 					D('Duefee')->createDuefee($_SESSION['member']);
 				}
 			}
-			
-			//系统消息
-			$member['notice'] = D("Notice")->noRead($_SESSION['member']);
 		}
 	}
 	
@@ -107,7 +113,7 @@ class MemberAction extends CommonAction{
 	 */
 	public function reg(){
 		$data['mem_id'] = addslashes($_POST['user']);
-		$data['mem_password'] = addslashes($_POST['pass']);
+		$data['mem_password'] = md5($_POST['pass']);
 		$data['mem_regtime'] = $_SERVER['REQUEST_TIME'];
 		$data['mem_email'] = addslashes($_POST['email']);
 		$data['mem_type'] = $_POST['type'];
@@ -121,18 +127,22 @@ class MemberAction extends CommonAction{
 		$data['mem_active'] = 1;
 		$freetime = D("Sysconf")->getConf("cfg_freetime");
 		$data['mem_expiretime'] = $_SERVER['REQUEST_TIME'] + $freetime*24*3600;
+<<<<<<< HEAD
 		$this->error("注册失败！", "", 99);exit;
+=======
+>>>>>>> origin/master
 		if(M("member")->add($data)){
 			//$url = empty($_REQUEST['ref']) ? $_REQUEST['ref'] : __URL__."/index";
 			if($data['mem_type']==0){
-				M("memberperson")->add(array('mc_mid'=>$data['mem_id']));
+				M("memberperson")->add(array('mp_mid'=>$data['mem_id']));
 			}else{
 				M("membercompany")->add(array('mc_mid'=>$data['mem_id'], 'mc_company'=>addslashes($_POST['com_name'])));
 			}
-			$this->postVerifyMail($member);
-			$this->success("注册账号成功！", __URL__."/login");
+			$mail = preg_replace('/(?<=.{2}).*(?=.{2}@)/', "**",$data['mem_email']);
+			$this->success("恭喜你，注册成功！我们已向您的邮箱<b>{$mail}</b>发送验证邮件，请登录该邮箱完成验证。", __URL__."/login",5);
+			$this->postVerifyMail($data['mem_id']);exit;
 		}else{
-			$this->error("注册失败！");
+			$this->error("注册失败！请联系《订单网》工作人员。");
 		}
 	}
 
@@ -142,11 +152,37 @@ class MemberAction extends CommonAction{
 	public function sendVerifyMail($member=""){
 		$send = $this->postVerifyMail($member);
 		if($send===true){
-			$this->success("邮件发送成功！");
+			$this->success("邮件发送成功！", __URL__."/login");
 		}elseif($send===false){
-			$this->error("邮件发送失败！");
+			$this->error("邮件发送失败！", __URL__."/login");
 		}else{
-			$this->error($send);
+			$this->error($send, __URL__."/login");
+		}
+	}
+	
+	public function checkUser($name=""){
+		if($name){
+			$exist = M("member")->where('mem_id="'.$name.'"')->count();
+			if($exist>0){
+				exit('fail');
+			}else{
+				exit('ok');
+			}
+		}else{
+			exit("fail");
+		}
+	}
+	
+	public function checkCompany($name=""){
+		if($name){
+			$exist = M("membercompany")->where('mc_company="'.$name.'"')->count();
+			if($exist>0){
+				exit('fail');
+			}else{
+				exit('ok');
+			}
+		}else{
+			exit("fail");
 		}
 	}
 	
@@ -158,12 +194,13 @@ class MemberAction extends CommonAction{
 		if(empty($email)){
 			return "不存在的用户或未绑定邮箱！";
 		}
-		$verify = array("code"=>randomStr(8, 4), "expire"=>time());
-		$verify = json_encode_nonull($verify);
-		$subject = "[招投网]验证您的电子邮箱地址";
-		$body = ":)";
+		$verify = array(randomStr(8, 4), time());
+		$verifyCode = implode("-", $verify);
+		$subject = "[订单网]验证您的电子邮箱地址";
+		$host = D('Sysconf')->getConf('cfg_basehost');
+		$body = '尊敬的 <b>'.$member.'</b> 您好！感谢您注册成为《订单网》会员，请点击 <a href="http://'.$host.'/Member/verifyMail/member/'.$member.'/verifyCode/'.$verify[0].'">邮箱验证链接</a> 完成邮箱验证。<br />如果您不是 <b>'.$member.'</b> ，请忽略该邮件。';
 		if(think_send_mail($email, $member, $subject, $body)){
-			M("member")->where("mem_id='{$member}'")->setField("mem_verifycode", $verify);
+			M("member")->where("mem_id='{$member}'")->setField("mem_verifycode", $verifyCode);
 			return true;
 		}else{
 			return false;
@@ -176,18 +213,39 @@ class MemberAction extends CommonAction{
 	public function verifyMail($member="", $verifyCode=""){
 		$verify = M("member")->where("mem_id='{$member}'")->getField("mem_verifycode");
 		if(!empty($verify)){
-			$verifyInfo = json_decode($verify);
-			if($verifyInfo['expire'] > time()-7*24*3600){
-				if($verifyCode == $verifyInfo['code']){
+			$verifyInfo = explode("-", $verify);
+			if($verifyInfo[1] > time()-7*24*3600){
+				if($verifyCode == $verifyInfo[0]){
 					//验证通过
-					$_SESSION['member'] = $member;
-					$this->success("邮箱验证成功！", __URL__."/index");
+					M("member")->where('mem_id="'.$member.'"')->save(array('mem_state'=>1, 'mem_verifycode'=>''));
+					$this->success("邮箱验证成功！", __URL__."/login");
 				}
 			}else{
-				$this->error('链接已失效！点击<a href="'.__URL__.'/sendVerifyMail">重新发送验证邮件</a>.', __URL__."/index");
+				$this->error('链接已失效！点击<a href="'.__URL__.'/sendVerifyMail/member/{$member}">重新发送验证邮件</a>.', __URL__."/login", 5);
 			}
 		}else{
 			$this->_empty();
+		}
+	}
+	
+	/**
+	 * 邮箱发送验证码
+	 */
+	public function verifyCode($member=""){
+		$email = M("member")->where("mem_id='{$member}'")->getField("mem_email");
+		if(empty($email)){
+			return "不存在的用户或未绑定邮箱！";
+		}
+		$verify = array(randomStr(8, 4), time());
+		$verifyCode = implode("-", $verify);
+		$subject = "[订单网] 找回密码申诉";
+		$host = D('Sysconf')->getConf('cfg_basehost');
+		$body = '尊敬的 <b>'.$member.'</b> 您好！您本次操作的验证码是 <br /><b style="font-size:larger;">'.$verify[0].'</b><br />如果您不是 <b>'.$member.'</b>，请忽略该邮件。';
+		if(think_send_mail($email, $member, $subject, $body)){
+			M("member")->where("mem_id='{$member}'")->setField("mem_verifycode", $verifyCode);
+			return true;
+		}else{
+			return false;
 		}
 	}
 	
@@ -221,7 +279,7 @@ class MemberAction extends CommonAction{
 					$mid = addslashes($_REQUEST['mid']);
 					$exist = M("member")->where("mem_id='{$mid}'")->count();
 					if(!empty($exist)){
-						$this->sendVerifyMail($mid);
+						$this->verifyCode($mid);
 					}else{
 						$this->error("无效的用户名");
 					}
@@ -255,6 +313,7 @@ class MemberAction extends CommonAction{
 	 * 修改资料
 	 */
 	public function myInfo($action=""){
+		$this->checkMember();
 		if($action=="save"){
 			
 		}
@@ -282,6 +341,7 @@ class MemberAction extends CommonAction{
 	 * 系统通知
 	 */
 	public function sysNotice(){
+		$this->checkMember();
 		$notices = D("Notice")->getNotic($_SESSION['member']);
 		$this->assign("notices", $notices);
 		$this->display();
@@ -291,6 +351,7 @@ class MemberAction extends CommonAction{
 	 * 收藏项目
 	 */
 	public function proCollection(){
+		$this->checkMember();
 		$collections = D("Collection")->getCollections($_SESSION['member']);
 		$this->assign("collections", $collections);
 		$this->display();
@@ -304,5 +365,61 @@ class MemberAction extends CommonAction{
 		$this->assign("duefees", $duefees);
 		$this->display();
 	}
+	
+	public function verify($type=""){
+		$this->checkMember();
+		if($type=="person"){
+			$data = M("memberperson")->create();
+			$upload = upload($_SESSION['member']);
+			if(!$upload[0]){
+				if(empty($_REQUEST['fileflag'])){
+					$this->error($upload[1]);
+				}
+			}else{
+				$up_data = D("Attachement")->addAtt($upload[1], $_SESSION['member']);
+				$data['mp_idscan'] = $up_data['mp_idscan'];
+			}
+			$data['mp_status'] = 1;
+			if(M("memberperson")->where("mp_mid='{$_SESSION['member']}'")->save($data)){
+				$this->success('实名验证提交成功！ 验证结果将发至邮箱和本站消息中心，请注意查收！', '__URL__/index');
+			}else{
+				$this->error('提交到服务器失败！请稍后再试或联系网站工作人员。');
+			}
+		}else if($type=="company"){
+			$data = M("membercompany")->create();
+			$upload = upload($_SESSION['member']);
+			if(!$upload[0]){
+				if(empty($_REQUEST['fileflag'])){
+					$this->error($upload[1]);
+				}
+			}else{
+				$up_data = D("Attachement")->addAtt($upload[1], $_SESSION['member']);
+				$data['mc_licencescan'] = $up_data['mc_licencescan'];
+			}
+			$data['mc_status'] = 1;
+			if(M("membercompany")->where("mc_mid='{$_SESSION['member']}'")->save($data)){
+				$this->success('实名验证提交成功！ 验证结果将发至邮箱和本站消息中心，请注意查收！', '__URL__/index');
+			}else{
+				$this->error('提交到服务器失败！请稍后再试或联系网站工作人员。');
+			}
+		}else{
+			$type = M("member")->where("mem_id='{$_SESSION['member']}'")->getField("mem_type");
+			if($type==1){
+				$info = M('membercompany')->where('mc_mid="'.$_SESSION['member'].'"')->find();
+				$licencescan = M("attachement")->where("att_id={$info['mc_licencescan']}")->getField("att_path");
+				$this->assign('licencescan', $licencescan);
+				$this->assign('info', $info);
+				$this->display("Member:verifycompany");
+			}else{
+				$info = M('memberperson')->where('mp_mid="'.$_SESSION['member'].'"')->find();
+				$idscan = M("attachement")->where("att_id={$info['mp_idscan']}")->getField("att_path");
+				$this->assign('idscan', $idscan);
+				$this->assign('info', $info);
+				$this->display("Member:verifyperson");
+			}
+		}
+	}
+	
+	
 	
 }

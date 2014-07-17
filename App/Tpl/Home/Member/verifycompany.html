@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<include file="public:css" />
+</head>
+<include file="public:header" />
+<div class="content">
+	<div class="box verify_box">
+		<div class="box_title">企业身份实名验证  /  提交企业资料 </div>
+		<div class="box_content verify_content">
+			<form action="" method="post"  enctype="multipart/form-data">
+				<input type="hidden" name="type" value="company" />
+				<div class="input_group">
+					<label for="mc_company">公司名称：</label>
+					<div class="input_control">
+						<input type="text" class="inp inp-mid" name="mc_company" id="mc_company" value="{$info.mc_company}" />
+						<span class="helpline"></span>
+					</div>
+				</div>
+				<div class="input_group">
+					<label for="mc_addr">公司注册地：</label>
+					<div class="input_control">
+						<input type="text" class="inp inp-lag" name="mc_addr" id="mc_addr" value="{$info.mc_addr}" />
+						<span class="helpline"></span>
+					</div>
+				</div>
+				<div class="input_group">
+					<label for="mc_legal">联系人：</label>
+					<div class="input_control">
+						<input type="text" class="inp" name="mc_legal" id="mc_legal" value="{$info.mc_legal}" />
+						<span class="helpline"></span>
+					</div>
+				</div>
+				<div class="input_group">
+					<label for="mc_tel">公司电话：</label>
+					<div class="input_control">
+						<input type="email" class="inp" name="mc_tel" id="mc_tel" value="{$info.mc_tel}" />
+						<span class="helpline"></span>
+					</div>
+				</div>
+				<div class="input_group">
+					<label for="com_name">营业执照：</label>
+					<div class="input_control">
+						<if condition="$licencescan neq ''"><a class="thumb" href="{$licencescan}"><img  src="{$licencescan}" style="max-height:100px;" /></a><input type="hidden" name="fileflag" value="1" /><br /></if>
+						<input type="text" class="inp inp-file-text" disabled="disabled" />
+						<button class="btn_file" type="button"><input type="file" class="inp inp-file" name="mc_licencescan" id="mc_licencescan"/>浏览</button>
+						<span class="helpline"></span>
+						<div class="clearfix"></div>
+						<span class="tips">(注：上传格式：JPG， GIF， PNG， BMP， JPEG；大小：55K-1M)</span>
+					</div>
+				</div>
+				<div class="input_group">
+					<div class="input_control">
+						<button class="btn verify_btn" id="verify_c" type="button" data-act="__URL__/verify" >提交验证<button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<include file="public:footer" />
+<include file="public:js" />
+<body>
+</body>
+</html>
