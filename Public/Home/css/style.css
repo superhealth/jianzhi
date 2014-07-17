@@ -48,7 +48,7 @@ textarea { overflow: auto; vertical-align: top;}
 .input_control{margin-left:65px;}
 .inp{border:1px solid #d0d0d0;padding:3px;}
 .inp.error{border:1px solid #C33;padding:3px;}
-.success_box, .error_box{padding:60px 150px; margin:80px auto 120px auto; width:500px;}
+.success_box, .error_box{padding:60px 150px; width:500px;}
 /* reg */
 .reg_box{width:380px; margin-left:500px; margin-top:80px;margin-bottom:100px;}
 .reg_btn{width:200px;height:35px;line-height:35px; margin:10px auto; font-size:18px;display:block; font-weight:bold;}
