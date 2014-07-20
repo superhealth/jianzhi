@@ -127,10 +127,7 @@ class MemberAction extends CommonAction{
 		$data['mem_active'] = 1;
 		$freetime = D("Sysconf")->getConf("cfg_freetime");
 		$data['mem_expiretime'] = $_SERVER['REQUEST_TIME'] + $freetime*24*3600;
-<<<<<<< HEAD
-		$this->error("注册失败！", "", 99);exit;
-=======
->>>>>>> origin/master
+		//$this->error("注册失败！", "", 99);exit;
 		if(M("member")->add($data)){
 			//$url = empty($_REQUEST['ref']) ? $_REQUEST['ref'] : __URL__."/index";
 			if($data['mem_type']==0){

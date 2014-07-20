@@ -50,9 +50,7 @@ textarea { overflow: auto; vertical-align: top;}
 .inp-mid{width:300px;}
 .inp-lag{width:480px;}
 .inp.error{border:1px solid #C33;padding:3px;}
-<<<<<<< HEAD
-.success_box, .error_box{padding:60px 150px; width:500px;}
-=======
+
 .success_box, .error_box{margin:50px auto 80px auto; width:800px;}
 .success_content, .error_content{padding:50px 150px; width:500px;}
 .success_title, .error_title{margin-bottom:20px;}
@@ -63,8 +61,6 @@ textarea { overflow: auto; vertical-align: top;}
 .btn_file{display:block; float:left; height:28px; border:1px solid #ccc; background:#ccc; width:80px;text-align:center; position:relative;}
 .inp-file{position:absolute; width:100%;height:100%;left:0; top:0; padding:0; opacity:0; display:block; z-index:999;}
 
-
->>>>>>> origin/master
 /* reg */
 .reg_box{width:380px; margin-left:500px; margin-top:80px;margin-bottom:100px;}
 .reg_box .input_group label{width:60px; text-align:right;float:left;padding:4px 0;}
