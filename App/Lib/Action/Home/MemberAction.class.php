@@ -136,7 +136,7 @@ class MemberAction extends CommonAction{
 			}
 			$mail = preg_replace('/(?<=.{2}).*(?=.{2}@)/', "**",$data['mem_email']);
 			$this->success("恭喜你，注册成功！我们已向您的邮箱<b>{$mail}</b>发送验证邮件，请登录该邮箱完成验证。", __URL__."/login",5);
-			$this->postVerifyMail($data['mem_id']);exit;
+			postVerifyMail($data['mem_id']);exit;
 		}else{
 			$this->error("注册失败！请联系《订单网》工作人员。");
 		}
@@ -146,7 +146,7 @@ class MemberAction extends CommonAction{
 	 * 发送验证邮件
 	 */
 	public function sendVerifyMail($member=""){
-		$send = $this->postVerifyMail($member);
+		$send = postVerifyMail($member);
 		if($send===true){
 			$this->success("邮件发送成功！", __URL__."/login");
 		}elseif($send===false){
@@ -165,7 +165,7 @@ class MemberAction extends CommonAction{
 				exit('ok');
 			}
 		}else{
-			exit("fail");
+			exit("empty");
 		}
 	}
 	
@@ -182,26 +182,6 @@ class MemberAction extends CommonAction{
 		}
 	}
 	
-	/**
-	 * 发送验证邮件
-	 */
-	private function postVerifyMail($member){
-		$email = M("member")->where("mem_id='{$member}'")->getField("mem_email");
-		if(empty($email)){
-			return "不存在的用户或未绑定邮箱！";
-		}
-		$verify = array(randomStr(8, 4), time());
-		$verifyCode = implode("-", $verify);
-		$subject = "[订单网]验证您的电子邮箱地址";
-		$host = D('Sysconf')->getConf('cfg_basehost');
-		$body = '尊敬的 <b>'.$member.'</b> 您好！感谢您注册成为《订单网》会员，请点击 <a href="http://'.$host.'/Member/verifyMail/member/'.$member.'/verifyCode/'.$verify[0].'">邮箱验证链接</a> 完成邮箱验证。<br />如果您不是 <b>'.$member.'</b> ，请忽略该邮件。';
-		if(think_send_mail($email, $member, $subject, $body)){
-			M("member")->where("mem_id='{$member}'")->setField("mem_verifycode", $verifyCode);
-			return true;
-		}else{
-			return false;
-		}
-	}
 	
 	/**
 	 * 验证邮箱有效性,绑定邮箱
@@ -215,33 +195,14 @@ class MemberAction extends CommonAction{
 					//验证通过
 					M("member")->where('mem_id="'.$member.'"')->save(array('mem_state'=>1, 'mem_verifycode'=>''));
 					$this->success("邮箱验证成功！", __URL__."/login");
+				}else{
+					$this->_empty();
 				}
 			}else{
 				$this->error('链接已失效！点击<a href="'.__URL__.'/sendVerifyMail/member/{$member}">重新发送验证邮件</a>.', __URL__."/login", 5);
 			}
 		}else{
 			$this->_empty();
-		}
-	}
-	
-	/**
-	 * 邮箱发送验证码
-	 */
-	public function verifyCode($member=""){
-		$email = M("member")->where("mem_id='{$member}'")->getField("mem_email");
-		if(empty($email)){
-			return "不存在的用户或未绑定邮箱！";
-		}
-		$verify = array(randomStr(8, 4), time());
-		$verifyCode = implode("-", $verify);
-		$subject = "[订单网] 找回密码申诉";
-		$host = D('Sysconf')->getConf('cfg_basehost');
-		$body = '尊敬的 <b>'.$member.'</b> 您好！您本次操作的验证码是 <br /><b style="font-size:larger;">'.$verify[0].'</b><br />如果您不是 <b>'.$member.'</b>，请忽略该邮件。';
-		if(think_send_mail($email, $member, $subject, $body)){
-			M("member")->where("mem_id='{$member}'")->setField("mem_verifycode", $verifyCode);
-			return true;
-		}else{
-			return false;
 		}
 	}
 	
@@ -258,41 +219,6 @@ class MemberAction extends CommonAction{
 		
 	}
 	 */
-	
-	/**
-	 * 找回密码
-	 */
-	public function retrieve($step="1"){
-		if(empty($step)){
-			$step = "1";
-		}
-		switch($step){
-			case "1":
-				$this->display();
-				break;
-			case "2":
-				if(isset($_REQUEST['mid'])){
-					$mid = addslashes($_REQUEST['mid']);
-					$exist = M("member")->where("mem_id='{$mid}'")->count();
-					if(!empty($exist)){
-						$this->verifyCode($mid);
-					}else{
-						$this->error("无效的用户名");
-					}
-				}else{
-					$this->error("请输入用户名");
-				}
-				break;
-			case "3":
-				
-				break;
-			case "4":
-				
-				break;
-			default:
-				
-		}
-	}
 	
 	/**
 	 * 修改密码

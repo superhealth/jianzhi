@@ -20,7 +20,6 @@ class MemberModel extends Model{
 		return $this->save($data);
 	}
 	
-	
 	/**
 	 * 更新会员状态
 	 * @param number $interval 超时间隔

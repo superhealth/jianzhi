@@ -10,7 +10,7 @@ class BidAction extends CommonAction{
 	 * 
 	 */
 	public function index(){
-		
+		$this->checkMember();
 	}
 	
 	/**
@@ -18,7 +18,7 @@ class BidAction extends CommonAction{
 	 * @param string $step 创建步骤
 	 */
 	public function createBidder($step = 1){
-		
+		$this->checkMember();
 	}
 	
 	/**
@@ -33,27 +33,27 @@ class BidAction extends CommonAction{
 	 * 修改投标信息
 	 */
 	public function modifyBidder(){
-		
+		$this->checkMember();
 	}
 	/**
 	 * 取消投标信息
 	 */
 	public function cancleBidder(){
-		
+		$this->checkMember();
 	}
 	
 	/**
 	 * 移入历史档案区
 	 */
 	public function toHistory(){
-		
+		$this->checkMember();
 	}
 	
 	/**
 	 * 草稿箱
 	 */
 	public function drafts(){
-		
+		$this->checkMember();
 	}
 	
 }

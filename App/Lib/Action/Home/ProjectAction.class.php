@@ -99,6 +99,11 @@ class ProjectAction extends CommonAction{
 		}
 	}
 	
+	public function saveNewProject(){
+		
+		
+	}
+	
 
 	/**
 	 * 项目详情

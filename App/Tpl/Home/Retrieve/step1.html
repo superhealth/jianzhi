@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<include file="public:css" />
+</head>
+<body>
+<include file="public:header" />
+<div class="content">
+	<div class="box retrieve_box">
+		<div class="retrieve_title">{$info.type}注册</div>
+		<div class="retrieve_head">
+			<div class="retrieve_step">
+				<span class="step_style">1</span>确认
+			</div>
+		</div>
+		<div class="box_content success_content">
+			<h2 >恭喜{$info.user}注册成功！</h2>
+			<p>已向邮箱<a class="">{$info.email}</a>发送验证邮件，请登录该邮箱完成验证。若10分钟内为收到邮件，点此<a class="btn" href="__URL__/sendVerifyMail/member/{$info.user}">重新发送</a></p>
+		</div>
+	</div>
+</div>
+<include file="public:footer" />
+<include file="public:js" />
+
+</body>
+</html>
