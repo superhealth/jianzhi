@@ -36,7 +36,9 @@ class CommonAction extends EmptyAction{
 	 */
 	public function getAuthcode(){
 		import("ORG.Util.Image");
-		Image::buildImageVerify($length=4, $mode=1, $type='png', $width=48, $height=22, $verifyName='authcode');
+		/* 获取验证码 */
+		Image::buildImageVerify($length=4, $mode=5, $type='png', $width=48, $height=22, $verifyName='authcode');
+		
 	}
 	
 	/**

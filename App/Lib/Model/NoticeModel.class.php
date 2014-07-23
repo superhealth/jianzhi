@@ -29,13 +29,14 @@ class NoticeModel extends Model{
 	 * @param string $content
 	 * @return Ambigous <mixed, boolean, string, false, number>
 	 */
-	public function sendNotice($mid, $subject, $content){
+	public function sendNotice($mid, $subject, $content, $type){
 		$data = array(
 			"no_mid"	=> $mid,
 			"no_subject"	=> $subject,
 			"no_content"	=> $content,
 			"no_time"	=> time(),
-			"no_read"	=> 0
+			"no_read"	=> 0,
+			'no_type'	=> $type
 		);
 		return $this->add($data);
 	}

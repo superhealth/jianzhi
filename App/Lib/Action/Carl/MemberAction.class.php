@@ -408,12 +408,13 @@ class MemberAction extends BaseAction{
 		if(M($table)->where($map)->save($data)){
 			$name = M($table)->where($map)->getField($field);
 			if($res=='ok'){
-				$content = '恭喜您通过了实名认证程序！';
+				$content = '恭喜您顺利通过了实名认证程序！';
 			}else{
-				$content = '很遗憾，您所提交的实名认证资料未能通过审核。<br />原因：'.$tips;
+				$content = '很遗憾，您所提交的实名认证资料未能通过审核。<br />原因是：'.$tips;
 			}
-			$subject = '【系统消息】 实名认证审核结果';
-			D('Notice')->sendNotice($name, $subject, $content);
+			$type = '服务通知';
+			$subject = '实名认证审核结果';
+			D('Notice')->sendNotice($name, $subject, $content, $type);
 			$this->watchdog("审核", '实名审核《'.$name.'》,审核结果：'.($res=='ok' ? '通过' : '未通过'));
 			$this->success('审核完成！', __URL__.'/verifyMember');
 		}else{
@@ -444,38 +445,43 @@ class MemberAction extends BaseAction{
 		}
 		$duefee = M("duefee");
 		$data = $duefee->create();
-		$m = M("member")->where("mem_id='{$data['due_mid']}'")->find();
+		$m = M("member")->where("mem_id='{$data['due_mid']}'")->count();
 		//检查会员
 		if(empty($m)){
 			$this->error("不存在的会员<span class='red'>{$data['due_mid']}</span>");
 		}
-		dump($data['due_discount']);
 		$data['due_discount'] = (int)($data['due_discount']);
 		if($data['due_discount']<1){
-			dump($data['due_discount']);
 			$this->error("没有选择续费年限！");
 		}
-		$data['due_price'] = $GLOBALS['sys_cfg']['cfg_duefee'];
+		$data['due_id'] = createDuefeeSn($_SESSION['user']);
+		$data['due_price'] = D('Sysconf')->getConf('cfg_duefee');
 		$data['due_amount'] = $data['due_price']*$data['due_discount'];
 		$data['due_operator'] = $_SESSION['user'];
 		$data['due_createtime'] = time();
 		$data['due_paystatus'] = 	1;
 		$data['due_paytime'] = time();
 		if($duefee->add($data)){
-			$id = $duefee->getLastInsID();
 			//会员续费情况		
 			$member = new MemberModel("member");
 			if($member->renewal($data['due_mid'], $data['due_discount'])){
 				$detail = "会员<span class='blue'>{$data['due_mid']}</span> 续费 <strong class='yellow'>{$data['due_discount']}</strong>年；操作员：<span class='green'>[{$data['due_operator']}]</span>. ";
+				//操作记录
 				$this->watchdog("续费", $detail);
+				//
+				$subject = '银行转账续费成功通知';
+				$expire = M('member')->where("mem_id='{$data['due_mid']}'")->getField('mem_expiretime');
+				$content = '恭喜您已通过银行转账成功续费，会员到期时间变更为'.date('Y年m月d日',$expire).'。感谢您对《订单网》的支持！';
+				$type = '账户消息';
+				D('Notice')->sendNotice($data['due_mid'], $subject, $content, $type);
 				$this->success("续费成功！", __URL__."/memberInfo/id/{$data['due_mid']}");
 			}else{
 				//回滚
-				$duefee->where("due_id={$id}")->delete();
+				$duefee->where("due_id='{$data['due_id']}'")->delete();
 				$this->error("续费失败！".$member->getError());
 			}
 		}else{
-			$this->error("续费操作失败！");
+			$this->error("续费操作失败！错误信息：".$duefee->getLastSql());
 		}
 	}
 	
@@ -532,21 +538,6 @@ class MemberAction extends BaseAction{
 		$this->display();
 		
 		$this->display();
-	}
-	
-	/**
-	 * 检查过期会员
-	 */
-	private function memberCheckActive(){
-		$now = time();
-		//上次检查时间
-		if(!isset($_SESSION['member_check'])){
-			$_SESSION['member_check'] = 0;
-		}
-		if($_SESSION['member_check']<$now-1800){
-			M("member")->where("mem_active=1 AND mem_expiretime<={$now}")->setField("mem_active", 0);
-			$_SESSION['member_check'] = $now;
-		}
 	}
 	
 	/**

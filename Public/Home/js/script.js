@@ -116,7 +116,7 @@ $(function(){
 		$(this).removeClass("error").removeClass("success");
 		$(this).nextAll(".helpline").removeClass("error").removeClass("success");
 	});
-	
+	/* 实名验证 */
 	$("#verify_p").click(function(){
 		var flag = true;
 		var cellExp = /^1[3-8]\d{9}$/;
@@ -177,12 +177,33 @@ $(function(){
 		$(this).parent().next().removeClass("error");
 		$(this).parent().prev().val($(this).val());
 	});
-	
-	
-	
-	
-	
-	
+	/* 找回密码 */
+	$('#re_step_1').click(function(){
+		if($("#user").val()==""){
+			$("#user").addClass("error");
+			$("#user").next().addClass("error").html("请输入用户名！");
+		}else{
+			var authcode = $('#code').val();
+			if(authcode==''){
+				$("#code").addClass("error");
+				$("#code").nextAll('.helpline').addClass("error").html("请输入验证码！");
+			}else{
+				$.post('/Retrieve/checkAuthcode', {'authcode':authcode}, function(res){
+					if(res=='ok'){
+						
+					}else{
+						$("#code").addClass("error");
+						$("#code").nextAll('.helpline').addClass("error").html("验证码输入错误！");
+					}
+				}, 'text');
+			}
+		}
+		
+	});
+	$('.authcode').click(function(){
+		$(this).attr('src', '/Retrieve/getAuthcode?'+new Date().getTime());
+	});
+
 	
 	$('.datepicker').datepicker({ currentText: 'Now' ,dateFormat: "yy-mm-dd"});
 	//gallery colorbox

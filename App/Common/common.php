@@ -1587,6 +1587,8 @@ function verifyCode($member="", $subject=""){
 	}
 }
 
-
+function emailToHide($email){
+	return preg_replace('/(?<=.{2}).*(?=.{2}@)/', "**",$email);
+}
 
 

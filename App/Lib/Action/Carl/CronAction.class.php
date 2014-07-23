@@ -13,7 +13,7 @@ class CronAction extends Action{
 		//检查会员续费是否到期
 		D("Memeber")>updateMemberActive();
 		//检查保证金是否退回
-		D("Memeber")>updateDepositStatus();
+		//D("Memeber")>updateDepositStatus();
 		//检查项目开标
 		D("Memeber")>updateProState();
 	}
@@ -46,18 +46,7 @@ class CronAction extends Action{
 		D("Area")->updateCache();
 		
 	}
-	
-	private function checkMemberActive($now){
-		//上次检查时间
-		if(!isset($_SESSION['member_check'])){
-			$_SESSION['member_check'] = 0;
-		}
-		if($_SESSION['member_check']<$now-$this->t){
-			M("member")->where("mem_active=1 AND mem_expiretime<={$now}")->setField("mem_active", 0);
-			$_SESSION['member_check'] = $now;
-		}
-	}
-	
+
 	private function checkDepositBack($now){
 		//上次坚持时间
 		if(!isset($_SESSION['deposit_check'])){

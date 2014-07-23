@@ -36,7 +36,7 @@ textarea { overflow: auto; vertical-align: top;}
 .licence{color:#FACD89; margin:0; padding:0; line-height:55px; font-size:15px; text-indent:5px;}
 
 /* public */
-.box{border:1px solid #bfbfbf; border-radius: 5px; -webkit-border-radius:5px; -moz-border-radius:5px; }
+.box{border:1px solid #bfbfbf; border-radius: 5px; -webkit-border-radius:5px; -moz-border-radius:5px;background:#fff; }
 .box_title{height:42px; padding-left:36px; font-size:18px; font-weight:bold; line-height:42px; background:url(../image/title-bg.jpg) repeat-x;}
 .box_content{padding:20px 0;}
 .helpline{display:none; padding-left:16px;margin-left:5px;background-image:url(../image/helpline.png); background-repeat:no-repeat; line-height:16px; font-size:10px; letter-spacing:-0.05em;}
@@ -46,7 +46,7 @@ textarea { overflow: auto; vertical-align: top;}
 .input_group{padding:8px 10px;}
 .input_group label{width:60px; text-align:right;float:left;padding:4px 0;}
 .input_control{margin-left:65px;}
-.inp{border:1px solid #d0d0d0;padding:3px;width:150px;}
+.inp{border:1px solid #d0d0d0;padding:3px;width:150px; border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px; -ms-border-radius:3px;}
 .inp-mid{width:300px;}
 .inp-lag{width:480px;}
 .inp.error{border:1px solid #C33;padding:3px;}
@@ -82,7 +82,22 @@ textarea { overflow: auto; vertical-align: top;}
 label.sex{margin-left:10px; margin-right:20px; width:60px; float:none;}
 label.sex input{margin-right:5px; vertical-align: middle;}
 
-
+/* retrieve */
+.retrieve_box{margin:50px auto 80px auto; width:750px;  }
+.retrieve_title{height:55px; padding-left:36px; font-size:18px; line-height:48px; background:url(../image/retrieve-bg.png) repeat-x; color:#fff; }
+.retrieve_head{height:60px; padding:25px 30px;}
+.retrieve_step{float:left; line-height:60px; font-size:16px; font-weight:bold;width:160px; margin-left:35px; margin-right:35px;}
+.step_style{display:block;float:left; width:54px; padding-left:6px; height:60px; margin-right:10px; background:url(../image/retrieve-bg-2.png) 0 -80px no-repeat; text-align:center; font-size:32px; color:#fff; font-weight:normal; font-family:Verdana, Geneva, sans-serif;}
+.retrieve_step.cur .step_style{background:url(../image/retrieve-bg-2.png) 0 0 no-repeat;}
+.retrieve_step.cur{color:#ed6059;}
+.retrieve_content{padding:20px 0;}
+.retrieve_group{padding:8px 10px;}
+.retrieve_group label{width:200px; text-align:right;float:left;padding:4px 0; font-size:16px; }
+.retrieve_control{margin-left:220px;}
+.inp-retrieve{font-size:16px; width:240px;}
+.inp-authcode{width:140px;}
+.authcode{width:80px; height:28px; margin-left:20px;}
+.retrieve_btn{display:block; height:36px; font-size:18px; font-weight:bold; width:90px; margin:30px auto 70px auto;}
 
 
 

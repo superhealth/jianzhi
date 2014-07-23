@@ -73,21 +73,25 @@ class MemberAction extends CommonAction{
 		//更新会员状态
 		D('Member')->updateMemberActive();
 		if(isset($_SESSION['member']) && !empty($_SESSION['member'])){
-			$member['info'] = M("member")->where("mem_id='{$_SESSION['member']}'")->find();
+			$member = M("member")->where("mem_id='{$_SESSION['member']}'")->find();
 			if(empty($member['info'])){
 				unset($_SESSION['member']);
 				unset($member);
 				redirect(__URL__."/index");exit;
 			}
 			//检查会员状态
-			if($member['info']['mem_active']==1){
+			if($member['mem_active']==1){
 				$duefeeNoticeDuration = D("Sysconf")->getConf('cfg_duenotice');
-				if($member['info']['mem_expiretime']<$_SERVER['REQUEST_TIME']){
+				if($member['mem_expiretime']<$_SERVER['REQUEST_TIME']){
 					//更新会员状态
-					M("member")->where("mem_id='{$_SESSION['member']}'")->setField("mem_active", 0);
-					$member['info']['mem_active'] = 0;
-				}else if($member['info']['mem_expiretime']>$_SERVER['REQUEST_TIME']-$duefeeNoticeDuration*24*3600){
+					D("Member")->expired($_SESSION['member']);
+					$member['mem_active'] = 0;
+				}else if($member['mem_expiretime']>$_SERVER['REQUEST_TIME']-$duefeeNoticeDuration*24*3600){
 					//自动创建续费单并提醒
+					$subject = '年费过期提醒';
+					$content = $member.' 您好，您的会员将于'.date('Y年m月d日', $member['mem_expiretime']).'到期。请及时续费以继续使用《订单网》的服务，点此<a href="/Due">立即续费</a>。';
+					$type = '账户消息';
+					D('Notice')->sendNotice($member, $subject, $content, $type);
 					D('Duefee')->createDuefee($_SESSION['member']);
 				}
 			}
@@ -135,7 +139,7 @@ class MemberAction extends CommonAction{
 			}else{
 				M("membercompany")->add(array('mc_mid'=>$data['mem_id'], 'mc_company'=>addslashes($_POST['com_name'])));
 			}
-			$mail = preg_replace('/(?<=.{2}).*(?=.{2}@)/', "**",$data['mem_email']);
+			$mail = emailToHide($data['mem_email']);
 			$this->success("恭喜你，注册成功！我们已向您的邮箱<b>{$mail}</b>发送验证邮件，请登录该邮箱完成验证。", __URL__."/login",5);
 			postVerifyMail($data['mem_id']);exit;
 		}else{
@@ -194,7 +198,13 @@ class MemberAction extends CommonAction{
 			if($verifyInfo[1] > time()-7*24*3600){
 				if($verifyCode == $verifyInfo[0]){
 					//验证通过
-					M("member")->where('mem_id="'.$member.'"')->save(array('mem_state'=>1, 'mem_verifycode'=>''));
+					$verifyInfo[1] = 0;
+					M("member")->where('mem_id="'.$member.'"')->save(array('mem_state'=>1, 'mem_verifycode'=>implode('-', $verifyInfo)));
+					$email = M("member")->where("mem_id='{$member}'")->getField("mem_email");
+					$subject = '邮箱验证通知';
+					$content = '恭喜您已通过邮箱验证，绑定的邮箱地址是：'.emailToHide($email);
+					$type = '服务通知';
+					D('Notice')->sendNotice($member, $subject, $content, $type);
 					$this->success("邮箱验证成功！", __URL__."/login");
 				}else{
 					$this->_empty();
@@ -289,6 +299,11 @@ class MemberAction extends CommonAction{
 		$this->display();
 	}
 	
+	
+	/**
+	 * 实名验证
+	 * @param string $type 实名验证类别 个人或者企业
+	 */
 	public function verify($type=""){
 		$this->checkMember();
 		if($type=="person"){
@@ -304,7 +319,7 @@ class MemberAction extends CommonAction{
 			}
 			$data['mp_status'] = 1;
 			if(M("memberperson")->where("mp_mid='{$_SESSION['member']}'")->save($data)){
-				$this->success('实名验证提交成功！ 验证结果将发至邮箱和本站消息中心，请注意查收！', '__URL__/index');
+				$this->success('实名验证提交成功！ 验证结果将在3-5个工作日内发至本站消息中心，请注意查收！', '__URL__/index');
 			}else{
 				$this->error('提交到服务器失败！请稍后再试或联系网站工作人员。');
 			}
@@ -321,7 +336,7 @@ class MemberAction extends CommonAction{
 			}
 			$data['mc_status'] = 1;
 			if(M("membercompany")->where("mc_mid='{$_SESSION['member']}'")->save($data)){
-				$this->success('实名验证提交成功！ 验证结果将发至邮箱和本站消息中心，请注意查收！', '__URL__/index');
+				$this->success('实名验证提交成功！ 验证结果将在3-5个工作日内发至本站消息中心，请注意查收！', '__URL__/index');
 			}else{
 				$this->error('提交到服务器失败！请稍后再试或联系网站工作人员。');
 			}
