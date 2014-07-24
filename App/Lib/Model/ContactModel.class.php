@@ -1,4 +1,9 @@
 <?php
+/**
+ * 联系人模型
+ * @author dapianzi
+ *
+ */
 class ContactModel extends Model{
 	
 	/**

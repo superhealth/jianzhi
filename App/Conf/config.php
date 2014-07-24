@@ -34,7 +34,7 @@ return  array(
 		//'DEFAULT_APP'           => '@',     // 默认项目名称，@表示当前项目
 		//'DEFAULT_LANG'          => 'zh-cn', // 默认语言
 		//'DEFAULT_THEME'         => '',	// 默认模板主题名称
-		'DEFAULT_GROUP'         => 'Home',  // 默认分组
+		'DEFAULT_GROUP'         => 'Carl',  // 默认分组
 		'DEFAULT_TIMEZONE'      => 'Asia/Chongqing',	// 默认时区
 		//'DEFAULT_AJAX_RETURN'   => 'JSON',  // 默认AJAX 数据返回格式,可选JSON XML ...
 		//'DEFAULT_JSONP_HANDLER' => 'jsonpReturn', // 默认JSONP格式返回的处理方法

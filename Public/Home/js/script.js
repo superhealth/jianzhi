@@ -29,7 +29,7 @@ $(function(){
 			$(this).next().addClass("success").html("一致！");
 		}
 	});
-	$("#user").blur(function(){
+	$("#reg_user").blur(function(){
 		var user = $(this);
 		if($(this).val()==""){
 			user.addClass("error");
@@ -71,10 +71,10 @@ $(function(){
 	$(".reg_btn").click(function(){
 		var flag = true;
 		var mailExp = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-		if($("#user").val()==""){
+		if($("#reg_user").val()==""){
 			flag = false;
-			$("#user").addClass("error");
-			$("#user").next().addClass("error").html("用户名不能为空！");
+			$("#reg_user").addClass("error");
+			$("#reg_user").next().addClass("error").html("用户名不能为空！");
 		}
 		if($("#pass").val()==""){
 			flag = false;
@@ -101,7 +101,7 @@ $(function(){
 			$("#com_name").addClass("error");
 			$("#com_name").nextAll(".helpline").addClass("error").html("公司名不能为空！");
 		}
-		if($("#user").hasClass("error")||$("com_name").hasClass("error")){
+		if($("#reg_user").hasClass("error")||$("com_name").hasClass("error")){
 			flag = false;
 		}
 		if(flag){
@@ -179,18 +179,19 @@ $(function(){
 	});
 	/* 找回密码 */
 	$('#re_step_1').click(function(){
-		if($("#user").val()==""){
-			$("#user").addClass("error");
-			$("#user").next().addClass("error").html("请输入用户名！");
+		if($("#re_user").val()==""){
+			$("#re_user").addClass("error");
+			$("#re_user").next().addClass("error").html("请输入用户名！");
 		}else{
 			var authcode = $('#code').val();
 			if(authcode==''){
 				$("#code").addClass("error");
 				$("#code").nextAll('.helpline').addClass("error").html("请输入验证码！");
 			}else{
-				$.post('/Retrieve/checkAuthcode', {'authcode':authcode}, function(res){
+				var btn = $(this);
+				$.post('/Home/Retrieve/checkAuthcode', {'authcode':authcode}, function(res){
 					if(res=='ok'){
-						
+						btn.parents("form").attr("action", btn.data("act")).submit();
 					}else{
 						$("#code").addClass("error");
 						$("#code").nextAll('.helpline').addClass("error").html("验证码输入错误！");
@@ -200,8 +201,43 @@ $(function(){
 		}
 		
 	});
+	$('#reCode').click(function(){
+		$.post('/Home/Retrieve/reCode', {'user':$('#re_user').val()}, function(res){
+			bootbox.alert(res);
+		}, 'text');
+	});
+	$('#re_step_2').click(function(){
+		if($("#safeCode").val()==""){
+			$("#safeCode").addClass("error");
+			$("#safeCode").next().addClass("error").html("请输入安全码！");
+		}else{
+			var code = $('#safeCode').val();
+			var btn = $(this);
+			$.post('/Home/Retrieve/checkCode', {'code':code, 'user':$('#re_user').val()}, function(res){
+				if(res=='success'){
+					btn.parents("form").attr("action", btn.data("act")).submit();
+				}else{
+					$("#safeCode").addClass("error");
+					$("#safeCode").nextAll('.helpline').addClass("error").html(res);
+				}
+			}, 'text');
+		}
+	});
+	$('#re_step_3').click(function(){
+		if($("#pass").val()==""){
+			$("#pass").addClass("error");
+			$("#pass").next().addClass("error").html("请输入新密码！");
+		}else if($("#pass").val() != $("#repass").val()){
+			$("#newpass").addClass("error");
+			$("#newpass").next().addClass("error").html("请输入新密码！");
+		}else{
+			$(this).parents("form").attr("action", $(this).data("act")).submit();
+		}
+	});
+	
+	
 	$('.authcode').click(function(){
-		$(this).attr('src', '/Retrieve/getAuthcode?'+new Date().getTime());
+		$(this).attr('src', '/Home/Retrieve/getAuthcode?'+new Date().getTime());
 	});
 
 	

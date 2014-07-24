@@ -1,6 +1,10 @@
 <?php
+/**
+ * 用户模型
+ * @author dapianzi
+ *
+ */
 class MemberModel extends Model{
-	private $yearstamp = 31536000;
 	//用户续费
 	public function renewal($id, $year=0){
 		$info = $this->where("mem_id='{$id}'")->find();
@@ -15,27 +19,29 @@ class MemberModel extends Model{
 			$data['mem_expiretime'] = $expire>$now ? $expire + ($this->yearstamp*$year) : $now + ($this->yearstamp*$year);			
 		}else{
 			$data['mem_active'] = 1;
-			$data['mem_expiretime'] = $now + ($this->yearstamp*$year);
+			$data['mem_expiretime'] = $now + (31536000*$year);
 		}
 		return $this->save($data);
 	}
 	
 	/**
 	 * 更新会员状态
-	 * @param number $interval 超时间隔
+	 * @param number $interval 检查周期
 	 */
 	public function updateMemberActive($interval=1800){
+		// 上次更新时间
 		$cornTime = M("cronhash")->where('ch_name="member"')->getField('ch_time');
 		if($cornTime<$_SERVER['REQUEST_TIME']-$interval){
-			//更新过期会员状态
+			// 更新过期会员状态
 			M("member")->where("mem_active=1 AND mem_expiretime<={$now}")->setField("mem_active", 0);
-			//更新续费提醒
+			// 保存更新时间
 			M("cronhash")->where('ch_name="member"')->setField("ch_time", $_SERVER['REQUEST_TIME']);
 		}
 	}
 	
 	public function expired($member){
 		$this->where("mem_id='{$member}'")->setField("mem_active", 0);
+		// 发送消息提醒
 		$subject = '年费到期通知';
 		$content = $member.' 您好，您的会员已经到期。请马上续费以继续使用《订单网》的服务，点此<a href="/Due">立即续费</a>。';
 		$type = '账户消息';

@@ -26,18 +26,20 @@
 				<div class="retrieve_group">
 					<label class="retrieve_label">用户名：</label>
 					<div class="retrieve_control">
-						<input type="text" class="inp inp-retrieve" name="user" id="user" />
+						<input type="text" class="inp inp-retrieve" name="user" id="re_user" />
 						<span class="helpline"></span>
 					</div>
 				</div>
 				<div class="retrieve_group">
 					<label class="retrieve_label">验证码：</label>
 					<div class="retrieve_control">
-						<input type="text" class="inp inp-retrieve inp-authcode" name="code" id="code" /><img class="authcode" src="__URL__/getAuthcode?45134" title="看不清点击刷新" alt="验证码" /></span>
+						<input type="text" class="inp inp-retrieve inp-authcode" name="code" id="code" /><img class="authcode" src="__URL__/getAuthcode?{$Think.server.REQUEST_TIME}" title="看不清点击刷新" alt="验证码" />
 						<span class="helpline"></span>
 					</div>
 				</div>
-				<button class="btn retrieve_btn" id="re_step_1" type="button" data-act="__URL__/step2" >下一步<button>
+				<div class="btn-group">
+					<a class="btn retrieve_btn" id="re_step_1" data-act="__URL__/step2" >下一步</a>
+				</div>
 			</form>
 		</div>
 	</div>

@@ -1,4 +1,9 @@
 <?php
+/**
+ * 详细分类模型
+ * @author dapianzi
+ *
+ */
 class EnumsortModel extends Model{
 	private $cacheFile = "/enum.cache.php";	//缓存文件
 	/**

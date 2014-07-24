@@ -20,6 +20,7 @@ textarea { overflow: auto; vertical-align: top;}
 .clearfix:before,.clearfix:after { display: table; content: "";}
 .clearfix:after { clear: both;}
 .red{color:#c33;}
+.blue{color:#19a6f5;}
 /* header */
 .top_nav{width:100%;height:31px; background:#eee;}
 .top_nav_left,.top_nav_right{line-height:31px;}
@@ -42,7 +43,7 @@ textarea { overflow: auto; vertical-align: top;}
 .helpline{display:none; padding-left:16px;margin-left:5px;background-image:url(../image/helpline.png); background-repeat:no-repeat; line-height:16px; font-size:10px; letter-spacing:-0.05em;}
 .helpline.error{display:inline; background-position:0 0; color:#c33;}
 .helpline.success{display:inline; background-position:0 -16px; color:#090;}
-.btn{background:#ED6059; color:#fff !important; box-shadow:inset rgba(0,0,0,0.2) 4px 8px 8px;border-radius: 5px; -webkit-border-radius:5px; -moz-border-radius:5px; text-align:center; padding:3px 10px;}
+.btn{background:#ED6059; color:#fff !important; box-shadow:inset rgba(0,0,0,0.2) 4px 8px 8px;border-radius: 5px; -webkit-border-radius:5px; -moz-border-radius:5px; text-align:center; padding:3px 10px; cursor:pointer;}
 .input_group{padding:8px 10px;}
 .input_group label{width:60px; text-align:right;float:left;padding:4px 0;}
 .input_control{margin-left:65px;}
@@ -97,9 +98,11 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .inp-retrieve{font-size:16px; width:240px;}
 .inp-authcode{width:140px;}
 .authcode{width:80px; height:28px; margin-left:20px;}
-.retrieve_btn{display:block; height:36px; font-size:18px; font-weight:bold; width:90px; margin:30px auto 70px auto;}
-
-
+.retrieve_btn{height:36px; font-size:18px; font-weight:bold; width:90px;margin-left:20px;;margin-right:20px;}
+.btn-group{text-align:center; margin:30px auto 70px auto;}
+.retrieve_tips{font-size:16px; width:460px;margin:20px auto; }
+.success_tips{width:320px;}
+.btn-recode{margin-left:20px;}
 
 
 

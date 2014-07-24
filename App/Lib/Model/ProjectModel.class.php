@@ -64,7 +64,10 @@ class ProjectModel extends Model{
 		return $this->where("pro_id={$id}")->setField("pro_attachement", $new);
 	}
 	
-	
+	/**
+	 * 检查是否开标，更新项目状态
+	 * @param number $interval 检查周期
+	 */
 	public function updateProState($interval=1800){
 		$cornTime = M("cornhash")->where('ch_name="project"')->getField('ch_time');
 		if($cornTime<$_SERVER['REQUEST_TIME']-$interval){

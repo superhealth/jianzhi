@@ -1,4 +1,9 @@
 <?php
+/**
+ * 保证金模型
+ * @author dapianzi
+ *
+ */
 class DepositModel extends Model{
 	/**
 	 * 获取用户$mid的保证金订单

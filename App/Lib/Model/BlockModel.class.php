@@ -1,6 +1,6 @@
 <?php
 /**
- * 友情链接模型
+ * 首页区块模型
 * @author dapianzi
 *
 */

@@ -2,9 +2,46 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
+<title></title>
+<include file="public:css" />
 </head>
-
 <body>
+<include file="public:header" />
+<div class="content">
+	<div class="box retrieve_box">
+		<div class="retrieve_title">找回密码</div>
+		<div class="retrieve_head">
+			<div class="retrieve_step">
+				<span class="step_style">1</span>确认账号
+			</div>
+			<div class="retrieve_step cur">
+				<span class="step_style">2</span>安全验证
+			</div>
+			<div class="retrieve_step">
+				<span class="step_style">3</span>修改密码
+			</div>
+		</div>
+		<div class="box_content retrieve_content">
+			<form action="" method="post">
+				<p class="retrieve_tips">亲爱的 <strong>{$info.mem_id}</strong> 您好！<br />我们已经向您的注册邮箱 <span class="blue">{$info.email}</span> 发送安全验证邮件，请在下面的文本框输入邮件中的安全码。谢谢！</p>
+				<div class="retrieve_group">
+					<label class="retrieve_label">安全码：</label>
+					<div class="retrieve_control">
+						<input type="hidden" name="user" id="re_user" value="{$info.mem_id}" />
+						<input type="text" class="inp inp-retrieve inp-authcode" name="code" id="safeCode"/>
+						<button type="button" class="btn btn-recode" id="reCode">再次发送</button>
+						<span class="helpline"></span>
+					</div>
+				</div>
+				<div class="btn-group">
+					<a class="btn retrieve_btn" href="__URL__/step1" >上一步</a>
+					<a class="btn retrieve_btn" id="re_step_2" data-act="__URL__/step3" >下一步</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<include file="public:footer" />
+<include file="public:js" />
 </body>
 </html>

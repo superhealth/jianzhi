@@ -1,4 +1,9 @@
 <?php
+/**
+ * 地区模型
+ * @author dapianzi
+ *
+ */
 class AreaModel extends Model{
 	private $cacheFile = "/area.cache.php";	//缓存文件
 	/**

@@ -74,7 +74,7 @@ class MemberAction extends CommonAction{
 		D('Member')->updateMemberActive();
 		if(isset($_SESSION['member']) && !empty($_SESSION['member'])){
 			$member = M("member")->where("mem_id='{$_SESSION['member']}'")->find();
-			if(empty($member['info'])){
+			if(empty($member)){
 				unset($_SESSION['member']);
 				unset($member);
 				redirect(__URL__."/index");exit;
@@ -160,7 +160,10 @@ class MemberAction extends CommonAction{
 			$this->error($send, __URL__."/login");
 		}
 	}
-	
+	/**
+	 * ajax检查用户名 $name是否重复
+	 * @param string $name 待检查的用户名
+	 */
 	public function checkUser($name=""){
 		if($name){
 			$exist = M("member")->where('mem_id="'.$name.'"')->count();
@@ -173,7 +176,10 @@ class MemberAction extends CommonAction{
 			exit("empty");
 		}
 	}
-	
+	/**
+	 * ajax 检查公司名字 $name是否重复
+	 * @param string $name 待检查的公司名
+	 */
 	public function checkCompany($name=""){
 		if($name){
 			$exist = M("membercompany")->where('mc_company="'.$name.'"')->count();
@@ -187,14 +193,17 @@ class MemberAction extends CommonAction{
 		}
 	}
 	
-	
 	/**
 	 * 验证邮箱有效性,绑定邮箱
+	 * @param string $member 用户名
+	 * @param string $verifyCode 验证码
 	 */
 	public function verifyMail($member="", $verifyCode=""){
+		// 获取服务器端保存的用户验证码
 		$verify = M("member")->where("mem_id='{$member}'")->getField("mem_verifycode");
 		if(!empty($verify)){
 			$verifyInfo = explode("-", $verify);
+			// 检查是否过期 过期时间7天
 			if($verifyInfo[1] > time()-7*24*3600){
 				if($verifyCode == $verifyInfo[0]){
 					//验证通过
@@ -204,6 +213,7 @@ class MemberAction extends CommonAction{
 					$subject = '邮箱验证通知';
 					$content = '恭喜您已通过邮箱验证，绑定的邮箱地址是：'.emailToHide($email);
 					$type = '服务通知';
+					// 发送消息
 					D('Notice')->sendNotice($member, $subject, $content, $type);
 					$this->success("邮箱验证成功！", __URL__."/login");
 				}else{

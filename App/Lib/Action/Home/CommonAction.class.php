@@ -1,7 +1,7 @@
 <?php
 /**
  * 公共模块
- * @author Carl
+ * @author dapianzi
  *
  */
 class CommonAction extends EmptyAction{
@@ -40,11 +40,20 @@ class CommonAction extends EmptyAction{
 		Image::buildImageVerify($length=4, $mode=5, $type='png', $width=48, $height=22, $verifyName='authcode');
 		
 	}
-	
+	/**
+	 * 检查验证码
+	 */
+	public function checkAuthcode($authcode=""){
+		if($_SESSION['authcode'] == md5(strtolower($authcode))){
+			exit('ok');
+		}else{
+			exit('fail');
+		}
+	}
 	/**
 	 * 操作成功
 	 */
-	public function success($message,$jumpUrl='',$wait=3){
+	public function success($message,$jumpUrl='',$wait=2){
 		$this->assign('waitSecond',$wait);
         if(!empty($jumpUrl)) $this->assign('jumpUrl',$jumpUrl);
         $this->assign('msgTitle',L('_OPERATION_SUCCESS_'));
@@ -59,7 +68,7 @@ class CommonAction extends EmptyAction{
 	 * 操作失败
 	 * 
 	 */
-	public function error($message,$jumpUrl='',$wait=5){
+	public function error($message,$jumpUrl='',$wait=4){
 		$this->assign('waitSecond',$wait);
 		if(!empty($jumpUrl)) $this->assign('jumpUrl',$jumpUrl);
 		$this->assign('msgTitle',L('_OPERATION_FAIL_'));
