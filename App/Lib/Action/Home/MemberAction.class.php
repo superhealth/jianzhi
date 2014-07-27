@@ -30,7 +30,7 @@ class MemberAction extends CommonAction{
 			$referer = urlencode($_SERVER['HTTP_REFERER']);
 		}
 		//$this->assign("url",$referer);
-		$this->show("<form action='".__URL__."/checkLogin' method='post'><input type='hidden' name='ref' value='{$referer}' /><input type='text' name='user' /><br /><input type='password' name='pass' /><button>登录</button></form>", "utf-8");
+		$this->show("<form action='".__URL__."/checkLogin' method='post'><input type='hidden' name='ref' value='{$referer}' /><input type='text' name='user' /><br /><input type='password' name='pass' /><button type='submit'>登录</button></form>", "utf-8");
 		$this->display();
 	}
 	/**
@@ -283,10 +283,16 @@ class MemberAction extends CommonAction{
 	/**
 	 * 系统通知
 	 */
-	public function sysNotice(){
+	public function sysNotice($type = ''){
 		$this->checkMember();
-		$notices = D("Notice")->getNotic($_SESSION['member']);
+		$notices = D("Notice")->notices($_SESSION['member'], $type);
 		$this->assign("notices", $notices);
+		$this->display();
+	}
+	
+	public function viewNotice($id=""){
+		$notice = M('notice')->where('no_mid="'.$_SESSION['member'].'" AND no_id='.$id)->find();
+		$this->assign('notice', $notice);
 		$this->display();
 	}
 	

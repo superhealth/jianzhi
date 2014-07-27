@@ -4,7 +4,7 @@ body{background:#f9f9f9;}
 html {font-size: 12px;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;}
 a, a:active, a:visited{outline: 0; text-decoration:none; color:#000;}
 a:focus {outline: thin dotted #333;outline: 5px auto -webkit-focus-ring-color;outline-offset: -2px;}
-a:hover{ color:#06F;}
+a:hover{ color:#E95E58;}
 sub,sup {position: relative; font-size: 75%; line-height: 0; vertical-align: baseline;}
 sup {top: -0.5em;}
 sub {bottom: -0.25em;}
@@ -12,6 +12,7 @@ img {max-width: 100%;vertical-align: middle;border: 0;-ms-interpolation-mode: bi
 button,input,select,textarea { margin: 0; font-size: 100%; vertical-align: middle;padding: 0;}
 button,input { *overflow: visible; line-height: normal; border: 0;}
 textarea { overflow: auto; vertical-align: top;}
+ul li{list-style:none;}
 .content{width:1024px; margin-left:auto; margin-right:auto;}
 .left{float:left;}
 .right{float:right;}
@@ -26,8 +27,21 @@ textarea { overflow: auto; vertical-align: top;}
 .top_nav_left,.top_nav_right{line-height:31px;}
 .top_nav_left a,.top_nav_right a{margin-left:20px; margin-right:20px;}
 .header{width:100%;height:46px;background:#fff;}
-.logo{width:96px; height:46px; margin-left:30px;}
+.logo{width:96px; height:46px; margin-left:30px;float:left;}
 .headline{width:100%;height:3px;background:#00479D;}
+.nav_bar{float:right; width:898px;}
+.nav_list{margin-left:30px;}
+.nav_list li{float:left;}
+.nav_list li a{display:block;height:46px; line-height:46px; padding:0 15px; font-size:16px;}
+.nav_list li a.active{color:#E95E58;}
+.nav_search{margin-right:20px; padding:10px 0;width:334px;}
+.search_inp{border:0; height:20px; line-height: 20px; padding:2px 5px;width:190px; border:1px solid #E7E7E7; float:left;}
+.search_filter{position:relative; width:70px; height:24px; line-height:24px; float:left; text-align:center; border-top:1px solid #E7E7E7; border-bottom:1px solid #E7E7E7; cursor: default;}
+.filter_type{position:absolute; left:-1px; top:24px; width:70px; border-top:1px solid #fff; border-left:1px solid #E7E7E7; border-right:1px solid #E7E7E7; border-bottom:1px solid #E7E7E7; background:#fff;}
+.off .filter_type{display:none;}
+.filter_type li:hover{background:#039; color:#fff;}
+.search_btn{width:60px; height:24px; line-height:24px; float:left; text-align:center; border:1px solid #E7E7E7; cursor:pointer; background:#eee;}
+
 
 /* footer */
 .footer1{width:100%;background:#00479d;}
