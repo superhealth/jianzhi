@@ -255,6 +255,22 @@ $(function(){
 	
 	$('.datepicker').datepicker({ currentText: 'Now' ,dateFormat: "yy-mm-dd"});
 	//gallery colorbox
-	$('a.thumb').colorbox({transition:"elastic", maxWidth:"95%", maxHeight:"95%"});
+	//$('a.thumb').colorbox({transition:"elastic", maxWidth:"95%", maxHeight:"95%"});
 	
+	$('.search_filter').click(function(){
+		if($(this).hasClass('off'))
+		{
+			$(this).removeClass('off').addClass('on');
+			var p = $(this);
+			$(".filter_type li").click(function(){
+				$("#filter_val").text($(this).text());
+				$('#filter_inp').val($(this).data('id'));
+				p.removeClass('off').addClass('on');
+			});
+		}
+		else
+		{
+			$(this).removeClass('on').addClass('off');
+		}
+	});
 });

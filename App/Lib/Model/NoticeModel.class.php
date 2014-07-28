@@ -10,8 +10,12 @@ class NoticeModel extends Model{
 	 * @param string $mid
 	 * @return Ambigous <mixed, boolean, NULL, string, unknown, multitype:, multitype:multitype: , void>
 	 */
-	public function notices($mid){
-		return $this->where("no_mid='{$mid}'")->select();
+	public function notices($mid, $type){
+		if(!empty($type)){
+			$where['no_type'] = $type;
+		}
+		$where['no_mid'] = $mid;
+		return $this->where($where)->select();
 	}
 	
 	/**
