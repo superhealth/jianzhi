@@ -116,6 +116,18 @@ $(function(){
 		$(this).removeClass("error").removeClass("success");
 		$(this).nextAll(".helpline").removeClass("error").removeClass("success");
 	});
+	$("#login_btn").click(function(){
+		if($("#log_user").val()==''){
+			$("#com_name").addClass("error");
+			$("#com_name").nextAll(".helpline").addClass("error").html("请输入用户名！");
+		}else if($("#log_pass").val()==""){
+			$("#com_name").addClass("error");
+			$("#com_name").nextAll(".helpline").addClass("error").html("请输入登录密码！");
+		}else{
+			$(this).parents('form').attr("action", $(this).data("act")).submit();
+		}
+	});
+	
 	/* 实名验证 */
 	$("#verify_p").click(function(){
 		var flag = true;

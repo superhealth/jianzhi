@@ -30,7 +30,7 @@ class MemberAction extends CommonAction{
 			$referer = urlencode($_SERVER['HTTP_REFERER']);
 		}
 		//$this->assign("url",$referer);
-		$this->show("<form action='".__URL__."/checkLogin' method='post'><input type='hidden' name='ref' value='{$referer}' /><input type='text' name='user' /><br /><input type='password' name='pass' /><button>登录</button></form>", "utf-8");
+		//$this->show("<form action='".__URL__."/checkLogin' method='post'><input type='hidden' name='ref' value='{$referer}' /><input type='text' name='user' /><br /><input type='password' name='pass' /><button>登录</button></form>", "utf-8");
 		$this->display();
 	}
 	/**

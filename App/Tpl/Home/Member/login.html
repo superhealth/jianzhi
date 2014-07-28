@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户登录</title>
+<include file="public:css" />
+</head>
+<body>
+<include file="public:header" />
+<div class="content">
+	<div class="box log_box">
+		<div class="box_title">用户登录</div>
+		<div class="box_content log_content">
+			<form method="post" action="">
+				<input type='hidden' name='ref' value='{$referer}' />
+				<div>
+					<input type="text" class="inp inp-login" name="user" id="login_user" value="" placeholder="用户登录账号" />
+					<br /><span class="helpline"></span>
+				</div>
+				<div>
+					<input type="password" class="inp inp-login" name="pass" id="login_pass" value="" />
+					<br /><span class="helpline"></span>
+				</div>
+				<div class="retrieve">
+					<a class="left" href="__GROUP__/Retrieve" >忘记登录密码？</a>
+					<a class="right" href="__URL__/register" >免费注册</a>
+				</div>
+				<button class="btn login_btn" id="login_btn" type="button" data-act="__URL__/reg" >登&nbsp;&nbsp;&nbsp;&nbsp;录<button>
+			</form>
+		</div>
+	</div>
+</div>
+<include file="public:footer" />
+<include file="public:js" />
+</body>
+</html>

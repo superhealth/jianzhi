@@ -30,6 +30,7 @@ textarea { overflow: auto; vertical-align: top;}
 .headline{width:100%;height:3px;background:#00479D;}
 
 /* footer */
+.footer{position:fixed; bottom:0;width:100%;}
 .footer1{width:100%;background:#00479d;}
 .footer2{width:100%;background:#002e73;}
 .foot_links{line-height:40px;color:#fff;}
@@ -104,6 +105,15 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .success_tips{width:320px;}
 .btn-recode{margin-left:20px;}
 
+/* login */
+.log_box{width:250px;margin-top:100px; margin-left:650px;}
+.log_content{padding:25px;}
+.inp-login{width:169px;padding-left:25px;margin-top:20px;}
+#login_user{background:url(../image/login.png) 0 0 no-repeat;}
+#login_pass{background:url(../image/login.png) 0 -25px no-repeat;}
+.retrieve{padding:20px 10px 20px 10px;}
+.retrieve::after{content:"";display:table; clear:both;}
+.login_btn{display:block; width:100%; font-size:16px; font-weight:bold; height:36px;}
 
 
 
