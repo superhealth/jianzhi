@@ -13,6 +13,7 @@ button,input,select,textarea { margin: 0; font-size: 100%; vertical-align: middl
 button,input { *overflow: visible; line-height: normal; border: 0;}
 textarea { overflow: auto; vertical-align: top;}
 ul li{list-style:none;}
+.container{background:#f9f9f9; padding-bottom:95px;}
 .content{width:1024px; margin-left:auto; margin-right:auto;}
 .left{float:left;}
 .right{float:right;}
@@ -25,14 +26,15 @@ ul li{list-style:none;}
 /* header */
 .top_nav{width:100%;height:31px; background:#eee;}
 .top_nav_left,.top_nav_right{line-height:31px;}
+.top_nav_left{margin-left:100px;}
 .top_nav_left a,.top_nav_right a{margin-left:20px; margin-right:20px;}
 .header{width:100%;height:46px;background:#fff;}
-.logo{width:96px; height:46px; margin-left:30px;float:left;}
+.logo{width:96px; height:46px; margin-left:100px;float:left;}
 .headline{width:100%;height:3px;background:#00479D;}
-.nav_bar{float:right; width:898px;}
-.nav_list{margin-left:30px;}
+.nav_bar{float:right; width:828px;}
+.nav_list{margin-left:20px;}
 .nav_list li{float:left;}
-.nav_list li a{display:block;height:46px; line-height:46px; padding:0 15px; font-size:16px;}
+.nav_list li a{display:block;height:46px; line-height:46px; padding:0 12px; font-size:16px;}
 .nav_list li a.active{color:#E95E58;}
 .nav_search{margin-right:20px; padding:10px 0;width:334px;}
 .search_inp{border:0; height:20px; line-height: 20px; padding:2px 5px;width:190px; border:1px solid #E7E7E7; float:left;}
@@ -76,11 +78,12 @@ ul li{list-style:none;}
 .inp-file-text{display:block; float:left; width:220px; border:1px solid #ccc;height:20px;}
 .btn_file{display:block; float:left; height:28px; border:1px solid #ccc; background:#ccc; width:80px;text-align:center; position:relative;}
 .inp-file{position:absolute; width:100%;height:100%;left:0; top:0; padding:0; opacity:0; display:block; z-index:999;}
-
+.breadcrumb{width:974px; padding-left:50px;margin-left:auto; margin-right:auto; height:25px; line-height:25px;}
+.breadcrumb a{}
 /* reg */
 .reg_box{width:380px; margin-left:500px; margin-top:80px;margin-bottom:100px;}
 .reg_box .input_group label{width:60px; text-align:right;float:left;padding:4px 0;}
-.reg_btn{width:180px;height:30px; margin:10px auto; font-size:18px;display:block; font-weight:bold;}
+.reg_btn{width:180px;height:30px; margin:10px auto; font-size:16px;display:block; font-weight:bold;}
 .reg_type{padding:8px 10px;}
 .inp-reg{width:150px;}
 .type_chk{margin-left:40px;}
@@ -108,14 +111,14 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .retrieve_step.cur{color:#ed6059;}
 .retrieve_content{padding:20px 0;}
 .retrieve_group{padding:8px 10px;}
-.retrieve_group label{width:200px; text-align:right;float:left;padding:4px 0; font-size:16px; }
+.retrieve_group label{width:200px; text-align:right;float:left;padding:4px 0; font-size:15px; }
 .retrieve_control{margin-left:220px;}
 .inp-retrieve{font-size:16px; width:240px;}
 .inp-authcode{width:140px;}
 .authcode{width:80px; height:28px; margin-left:20px;}
-.retrieve_btn{height:36px; font-size:18px; font-weight:bold; width:90px;margin-left:20px;;margin-right:20px;}
+.retrieve_btn{height:36px; font-size:16px; font-weight:bold; width:90px;margin-left:20px;;margin-right:20px;}
 .btn-group{text-align:center; margin:30px auto 70px auto;}
-.retrieve_tips{font-size:16px; width:460px;margin:20px auto; }
+.retrieve_tips{font-size:14px; width:460px;margin:20px auto; }
 .success_tips{width:320px;}
 .btn-recode{margin-left:20px;}
 
@@ -129,7 +132,15 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .retrieve::after{content:"";display:table; clear:both;}
 .login_btn{display:block; width:100%; font-size:16px; font-weight:bold; height:36px;}
 
+/* member */
 
+.mem_left{width:188px; border-width:2px 2px 0 2px; border-style:solid; border-color: #bebebe; background: #fff; float:left;}
+.mem_menu{font-size:14px;}
+.mem_subtoggle{display:block; height:30px; line-height:30px; padding-left:28px; border-bottom:2px solid #bebebe; background:#eee; font-weight:bold;}
+.mem_submenu{margin:0; padding:0; list-style:none; border-bottom:2px solid #bebebe; padding:18px 0; display:none;}
+.mem_submenu.on{display:block;}
+.mem_submenu a{display:block; height:36px; line-height:36px; padding-left:38px;}
+.mem_submenu a:hover{background:#eee;}
 
 
 

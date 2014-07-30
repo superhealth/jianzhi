@@ -279,22 +279,6 @@ class MemberAction extends CommonAction{
 	}
 	
 	/**
-	 * 系统通知
-	 */
-	public function sysNotice($type = ''){
-		$this->checkMember();
-		$notices = D("Notice")->notices($_SESSION['member'], $type);
-		$this->assign("notices", $notices);
-		$this->display();
-	}
-	
-	public function viewNotice($id=""){
-		$notice = M('notice')->where('no_mid="'.$_SESSION['member'].'" AND no_id='.$id)->find();
-		$this->assign('notice', $notice);
-		$this->display();
-	}
-	
-	/**
 	 * 收藏项目
 	 */
 	public function proCollection(){

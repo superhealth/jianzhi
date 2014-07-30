@@ -273,4 +273,18 @@ $(function(){
 			$(this).removeClass('on').addClass('off');
 		}
 	});
+	
+	$(".mem_subtoggle").click(function()
+	{
+		if($(this).data("flag")=="on")
+		{
+			$(this).data("flag", "off");
+			$(this).next(".mem_submenu").slideUp();
+		}
+		else
+		{
+			$(this).data("flag", "on");
+			$(this).next(".mem_submenu").slideDown();
+		}
+	});
 });
