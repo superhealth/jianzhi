@@ -1,0 +1,48 @@
+<div class="mem_left">
+			<div class="mem_menu"><a class="mem_menulink" href="__GROUP__/Member/myInfo">用户设置</a><a class="mem_subtoggle" href="#">&nbsp;</a>
+				<ul class="mem_submenu">
+					<li><a href="__GROUP__/Member/myInfo">用户档案设置</a></li>
+					<li><a href="__GROUP__/Member/safety">安全中心</a></li>
+				</ul>
+			</div>
+			<div class="mem_menu"><a class="mem_menulink" href="__GROUP__/Notice/index">消息中心</a><a class="mem_subtoggle" href="#">&nbsp;</a>
+				<ul class="mem_submenu">
+					<li><a href="__GROUP__/Notice/index/type/sys">公告</a></li>
+					<li><a href="__GROUP__/Notice/index/type/ser">服务通知</a></li>
+					<li><a href="__GROUP__/Notice/index/type/pro">招方消息</a></li>
+					<li><a href="__GROUP__/Notice/index/type/bid">投方消息</a></li>
+					<li><a href="__GROUP__/Notice/index/type/acc">账户消息</a></li>
+				</ul>
+			</div>
+			<div class="mem_menu"><a class="mem_menulink" href="__GROUP__/Due/">我的发单招标</a><a class="mem_subtoggle" href="#">&nbsp;</a>
+				<ul class="mem_submenu">
+					<li><a href="__GROUP__/Project/newProject">创建新项目</a></li>
+					<li><a href="__GROUP__/Project/newProject">已发项目</a></li>
+					<li><a href="__GROUP__/Project/newProject">收到的应标</a></li>
+					<li><a href="__GROUP__/Project/">草稿箱</a></li>
+				</ul>
+			</div>
+			<div class="mem_menu"><a class="mem_menulink" href="__GROUP__/Project/">我的应标接单</a><a class="mem_subtoggle" href="#">&nbsp;</a>
+				<ul class="mem_submenu">
+					<li><a href="__GROUP__/Project">已投项目</a></li>
+					<li><a href="__GROUP__/Collection">收藏的项目</a></li>
+					<li><a href="__GROUP__/Project">草稿箱</a></li>
+					<li><a href="__GROUP__/Project">接单历史档案</a></li>
+				</ul>
+			</div>
+			<div class="mem_menu"><a class="mem_menulink" href="__GROUP__/Due/">我的帐户</a><a class="mem_subtoggle" href="#">&nbsp;</a>
+				<ul class="mem_submenu">
+					<li><a href="__GROUP__/Due">年费与缴费</a></li>
+				</ul>
+			</div>
+		</div>
+		<script>
+		$(function(){
+			$(".mem_submenu a").each(function() {
+				if(String(window.location).indexOf($(this).attr("href"))>=0){
+					$(this).addClass("active");
+					$(this).parents(".mem_submenu").css("display", "block").prev(".mem_subtoggle").addClass("on");
+				}
+			});
+		});
+		</script>

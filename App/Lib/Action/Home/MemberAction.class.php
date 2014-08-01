@@ -1,4 +1,9 @@
 <?php
+/**
+ * 用户模块
+ * @author dapianzi
+ *
+ */
 class MemberAction extends CommonAction{
 	/**
 	 * 用户中心
@@ -60,7 +65,6 @@ class MemberAction extends CommonAction{
 	 */
 	public function logout(){
 		unset($_SESSION['member']);
-		unset($GLOBALS['member']);
 		redirect(__URL__."/login");
 	}
 	
