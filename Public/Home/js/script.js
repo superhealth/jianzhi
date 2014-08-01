@@ -1,9 +1,10 @@
 // JavaScript Document
 $(function(){
-	// regform
+	// 注册时选择个人或者公司
 	if($("#company").prop("checked")==true){
 		$(".input_company").show();
 	}
+	// 选择公司
 	$("#company").click(function(e){
 		if($(this).prop("checked")==false){
 			e.preventDefault();
@@ -12,6 +13,7 @@ $(function(){
 			$("#person").prop("checked", false);
 		}
 	});
+	//  选择个人
 	$("#person").click(function(e){
 		if($(this).prop("checked")==false){
 			e.preventDefault();
@@ -20,6 +22,7 @@ $(function(){
 			$("#company").prop("checked", false);
 		}
 	});
+	// 校对密码
 	$("#repass").blur(function(){
 		if($(this).val()!=$("#pass").val()){
 			$(this).addClass("error");
@@ -29,6 +32,7 @@ $(function(){
 			$(this).next().addClass("success").html("一致！");
 		}
 	});
+	// 检查用户名是否重复
 	$("#reg_user").blur(function(){
 		var user = $(this);
 		if($(this).val()==""){
@@ -48,7 +52,7 @@ $(function(){
 			}
 		}, 'text');
 	});
-
+	// 检查公司名字是否重复
 	$("#com_name").blur(function(){
 		var com_inp = $(this);
 		if($(this).val()==""){
@@ -68,6 +72,7 @@ $(function(){
 			}
 		}, 'text');
 	});
+	// 注册
 	$(".reg_btn").click(function(){
 		var flag = true;
 		var mailExp = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -112,10 +117,12 @@ $(function(){
 			$(this).parents("form").attr("action", $(this).data("act")).submit();
 		}
 	});
+	// 清除错误提示
 	$(".inp").focus(function(){
 		$(this).removeClass("error").removeClass("success");
 		$(this).nextAll(".helpline").removeClass("error").removeClass("success");
 	});
+	// 登录
 	$("#login_btn").click(function(){
 		if($("#log_user").val()==''){
 			$("#com_name").addClass("error");
@@ -128,7 +135,7 @@ $(function(){
 		}
 	});
 	
-	/* 实名验证 */
+	/* 个人实名验证 */
 	$("#verify_p").click(function(){
 		var flag = true;
 		var cellExp = /^1[3-8]\d{9}$/;
@@ -162,6 +169,7 @@ $(function(){
 			$(this).parents("form").attr("action", $(this).data("act")).submit();
 		}
 	});
+	// 公司实名认证
 	$("#verify_c").click(function(){
 		var flag = true;
 		var cellExp = /((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/;
@@ -185,10 +193,12 @@ $(function(){
 			$(this).parents("form").attr("action", $(this).data("act")).submit();
 		}
 	});
+	// 
 	$(".inp-file").change(function(){
 		$(this).parent().next().removeClass("error");
 		$(this).parent().prev().val($(this).val());
 	});
+	
 	/* 找回密码 */
 	$('#re_step_1').click(function(){
 		if($("#re_user").val()==""){
@@ -213,11 +223,13 @@ $(function(){
 		}
 		
 	});
+	// 找回密码第二步 重新发送安全码
 	$('#reCode').click(function(){
 		$.post('/Home/Retrieve/reCode', {'user':$('#re_user').val()}, function(res){
 			bootbox.alert(res);
 		}, 'text');
 	});
+	// 找回密码第二步
 	$('#re_step_2').click(function(){
 		if($("#safeCode").val()==""){
 			$("#safeCode").addClass("error");
@@ -235,6 +247,7 @@ $(function(){
 			}, 'text');
 		}
 	});
+	// 找回密码 第三步验证
 	$('#re_step_3').click(function(){
 		if($("#pass").val()==""){
 			$("#pass").addClass("error");
@@ -246,17 +259,7 @@ $(function(){
 			$(this).parents("form").attr("action", $(this).data("act")).submit();
 		}
 	});
-	
-	
-	$('.authcode').click(function(){
-		$(this).attr('src', '/Home/Retrieve/getAuthcode?'+new Date().getTime());
-	});
-
-	
-	$('.datepicker').datepicker({ currentText: 'Now' ,dateFormat: "yy-mm-dd"});
-	//gallery colorbox
-	//$('a.thumb').colorbox({transition:"elastic", maxWidth:"95%", maxHeight:"95%"});
-	
+	// 顶部搜索模拟下拉框
 	$('.search_filter').click(function(){
 		if($(this).hasClass('off'))
 		{
@@ -273,18 +276,30 @@ $(function(){
 			$(this).removeClass('on').addClass('off');
 		}
 	});
-	
+	// 
 	$(".mem_subtoggle").click(function()
 	{
-		if($(this).data("flag")=="on")
+		if($(this).hasClass("on"))
 		{
-			$(this).data("flag", "off");
+			$(this).removeClass("on");
 			$(this).next(".mem_submenu").slideUp();
 		}
 		else
 		{
-			$(this).data("flag", "on");
+			$(this).addClass("on");
 			$(this).next(".mem_submenu").slideDown();
 		}
 	});
+	
+	
+	// 刷新验证码	
+	$('.authcode').click(function(){
+		$(this).attr('src', '/Home/Retrieve/getAuthcode?'+new Date().getTime());
+	});
+
+	
+	$('.datepicker').datepicker({ currentText: 'Now' ,dateFormat: "yy-mm-dd"});
+	//gallery colorbox
+	$('a.thumb').colorbox({transition:"elastic", maxWidth:"95%", maxHeight:"95%"});
+
 });

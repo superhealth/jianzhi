@@ -4,57 +4,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title></title>
 <include file="public:css" />
+<include file="public:js" />
 </head>
 <include file="public:header" />
 <div class="container">
 	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">会员中心</a></div>
 	<div class="content">
-		<div class="mem_left">
-			<div class="mem_menu"><a data-flag="on" class="mem_subtoggle" href="#">用户设置</a>
-				<ul class="mem_submenu" style="display:block";>
-					<li><a href="">aaa</a></li>
-					<li><a href="">aaa</a></li>
-					<li><a href="">aaa</a></li>
-				</ul>
-			</div>
-			<div class="mem_menu"><a data-flag="off" class="mem_subtoggle" href="#">消息中心</a>
-				<ul class="mem_submenu">
-					<li><a href="">aaa</a></li>
-					<li><a href="">aaa</a></li>
-					<li><a href="">aaa</a></li>
-					<li><a href="">aaa</a></li>
-				</ul>
-			</div>
-			<div class="mem_menu"><a data-flag="off" class="mem_subtoggle" href="#">我的帐户</a>
-				<ul class="mem_submenu">
-					<li><a href="">aaa</a></li>
-					<li><a href="">aaa</a></li>
-					<li><a href="">aaa</a></li>
-					<li><a href="">aaa</a></li>
-				</ul>
-			</div>
-		</div>
+		<include file="public:left" />
 		<div class="mem_main">
-			<h3>个人中心</h3>
-			<div >实名验证：{$mstatus}
-				<if condition="$mstatus eq '0'">未验证<a class="btn" href="__URL__/verify">验证</a>
-				<elseif condition="$mstatus eq '1'"/>等待验证
-				<elseif condition="$mstatus eq '2'"/>已验证<a class="btn" href="__URL__/verify">修改实名信息</a>
-				<else />验证未通过<a class="btn" href="__URL__/verify">重新验证</a>
-				</if>
+			<h3 class="mem_sub_title">个人中心</h3>
+			<div class="mem_content">
+				<div class="welcome-box">欢迎来到订单网会员中心！   请选择左侧类别； </div>
 			</div>
-			<div >续费状态：</div>
-			<div >系统消息：</div>
-			<div >实名验证：</div>
-			<div >实名验证：</div>
-			<div >实名验证：</div>
-			<div >实名验证：</div>
 		</div>
 		<div class="clearfix"></div>
 	</div>
 </div>
 <include file="public:footer" />
-<include file="public:js" />
+
 <body>
 </body>
 </html>

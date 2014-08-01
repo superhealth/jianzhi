@@ -536,8 +536,6 @@ class MemberAction extends BaseAction{
 		$members = $m->field($field)->where($map)->order($order)->limit($limit)->select();
 		$this->assign("members", $members);
 		$this->display();
-		
-		$this->display();
 	}
 	
 	/**
@@ -560,6 +558,7 @@ class MemberAction extends BaseAction{
 		}
 		$html .= '</div></div><div class="modal-footer"><a href="#" class="btn" data-dismiss="modal">关闭</a></div>';
 		echo $html;
+		exit;
 	}
 	
 	/**
@@ -571,6 +570,7 @@ class MemberAction extends BaseAction{
 		}else{
 			echo "<h3 class='green'>用户名可用</h3>";
 		}
+		exit;
 	}
 }
 

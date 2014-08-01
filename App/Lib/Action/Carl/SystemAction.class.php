@@ -227,7 +227,7 @@ class SystemAction extends BaseAction{
 				$this->watchdog("编辑", "修改用户 {$user_info['name']}的登录密码");
 				$msg = response_msg("OPERATION_SUCCESS", "success");
 			}else{
-				echo response_msg("INVALID_ARGUMENT");
+				$msg = response_msg("INVALID_ARGUMENT");
 			}
 			redirect(__URL__."/users/msg/{$msg}");
 		}else{

@@ -1,5 +1,5 @@
 /* CSS Document */
-*,body{margin:0; padding:0; font-family:微软雅黑, MS Yahei, Arial, sans-serif;}
+*,body{margin:0; padding:0; font-family: Arial,微软雅黑, MS Yahei, sans-serif;}
 body{background:#f9f9f9;}
 html {font-size: 12px;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;}
 a, a:active, a:visited{outline: 0; text-decoration:none; color:#000;}
@@ -133,15 +133,23 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .login_btn{display:block; width:100%; font-size:16px; font-weight:bold; height:36px;}
 
 /* member */
-
+/* public */
 .mem_left{width:188px; border-width:2px 2px 0 2px; border-style:solid; border-color: #bebebe; background: #fff; float:left;}
+.mem_main{margin-left:195px;}
 .mem_menu{font-size:14px;}
-.mem_subtoggle{display:block; height:30px; line-height:30px; padding-left:28px; border-bottom:2px solid #bebebe; background:#eee; font-weight:bold;}
-.mem_submenu{margin:0; padding:0; list-style:none; border-bottom:2px solid #bebebe; padding:18px 0; display:none;}
-.mem_submenu.on{display:block;}
-.mem_submenu a{display:block; height:36px; line-height:36px; padding-left:38px;}
-.mem_submenu a:hover{background:#eee;}
+.mem_menulink{display:inline-block; width: 100px; height:30px; line-height:30px; padding-left:28px; border-bottom:2px solid #bebebe; background:#eee; font-weight:bold;}
+.mem_subtoggle{display:inline-block; width: 40px; height:30px; line-height:30px; text-align:center; border-bottom:2px solid #bebebe; padding-right:20px; background:#eee url(../image/arrow_bg.png) 0 -30px no-repeat;; font-weight:bold;}
+.mem_subtoggle.on{ background:#eee url(../image/arrow_bg.png) 0 0 no-repeat;}
 
+.mem_submenu{margin:0; padding:0; list-style:none; border-bottom:2px solid #bebebe; padding:18px 0; display:none;}
+.mem_submenu a{display:block; height:36px; line-height:36px; padding-left:38px;}
+.mem_submenu a:hover, .mem_submenu a.active{background:#eee;}
+.mem_sub_title{font-size:16px; height:33px; line-height:33px; padding-left:30px; border-bottom:1px solid #00a0e9;}
+
+/* member-index */
+.welcome-box{padding-top:80px; height:300px; text-align:center; margin: 50px 30px; font-size:16px; background:#fff; border-radius: 10px; }
+
+/* member-myInfo */
 
 
 
