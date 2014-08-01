@@ -136,7 +136,7 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 
 .mem_left{width:188px; border-width:2px 2px 0 2px; border-style:solid; border-color: #bebebe; background: #fff; float:left;}
 .mem_menu{font-size:14px;}
-.mem_subtoggle{display:inline-block;width:; height:30px; line-height:30px; padding-left:28px; border-bottom:2px solid #bebebe; background:#eee; font-weight:bold;}
+.mem_subtoggle{display:block; height:30px; line-height:30px; padding-left:28px; border-bottom:2px solid #bebebe; background:#eee; font-weight:bold;}
 .mem_submenu{margin:0; padding:0; list-style:none; border-bottom:2px solid #bebebe; padding:18px 0; display:none;}
 .mem_submenu.on{display:block;}
 .mem_submenu a{display:block; height:36px; line-height:36px; padding-left:38px;}
