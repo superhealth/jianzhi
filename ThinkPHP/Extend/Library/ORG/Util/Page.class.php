@@ -101,13 +101,13 @@ class Page {
         $upRow          =   $this->nowPage-1;
         $downRow        =   $this->nowPage+1;
         if ($upRow>0){
-            $upPage     =   "<li><a href='".str_replace('__PAGE__',$upRow,$url)."' title='上一页'>".$this->config['prev']."</a></li>";
+            $upPage     =   "<li><a class='p_prev' href='".str_replace('__PAGE__',$upRow,$url)."' title='上一页'>".$this->config['prev']."</a></li>";
         }else{
             $upPage     =   '';
         }
 
         if ($downRow <= $this->totalPages){
-            $downPage   =   "<li><a href='".str_replace('__PAGE__',$downRow,$url)."' title='下一页'>".$this->config['next']."</a></li>";
+            $downPage   =   "<li><a class='p_next' href='".str_replace('__PAGE__',$downRow,$url)."' title='下一页'>".$this->config['next']."</a></li>";
         }else{
             $downPage   =   '';
         }
@@ -117,8 +117,8 @@ class Page {
             $prePage    =   '';
         }else{
             $preRow     =   $this->nowPage-$this->rollPage;
-            $prePage    =   "<li><a href='".str_replace('__PAGE__',$preRow,$url)."' title='前".$this->rollPage."页'>前翻</a></li>";
-            $theFirst   =   "<li><a href='".str_replace('__PAGE__',1,$url)."' title='首页' >".$this->config['first']."</a></li>";
+            $prePage    =   "<li><a class='p_up' href='".str_replace('__PAGE__',$preRow,$url)."' title='前".$this->rollPage."页'>前翻</a></li>";
+            $theFirst   =   "<li><a class='p_first' href='".str_replace('__PAGE__',1,$url)."' title='首页' >".$this->config['first']."</a></li>";
         }
         if($nowCoolPage == $this->coolPages){
             $nextPage   =   '';
@@ -126,8 +126,8 @@ class Page {
         }else{
             $nextRow    =   $this->nowPage+$this->rollPage;
             $theEndRow  =   $this->totalPages;
-            $nextPage   =   "<li><a href='".str_replace('__PAGE__',$nextRow,$url)."' title='后".$this->rollPage."页' >后翻</a></li>";
-            $theEnd     =   "<li><a href='".str_replace('__PAGE__',$theEndRow,$url)."' title='最后一页' >".$this->config['last']."</a></li>";
+            $nextPage   =   "<li><a class='p_down' href='".str_replace('__PAGE__',$nextRow,$url)."' title='后".$this->rollPage."页' >后翻</a></li>";
+            $theEnd     =   "<li><a class='p_last' href='".str_replace('__PAGE__',$theEndRow,$url)."' title='最后一页' >".$this->config['last']."</a></li>";
         }
         // 1 2 3 4 5
         $linkPage = "";
@@ -141,7 +141,7 @@ class Page {
                 }
             }else{
                 if($this->totalPages != 1){
-                    $linkPage .= "<li class='active'><a href='#'>".$page."</a></li>";
+                    $linkPage .= "<li class='active'><a class='p_active' href='#'>".$page."</a></li>";
                 }
             }
         }
@@ -158,7 +158,7 @@ class Page {
     	$start = $this->firstRow+1;
     	$end = $this->firstRow+$this->listRows>$this->totalRows ? $this->totalRows : $this->firstRow+$this->listRows;
     	return array(
-    		'header'	=> "显示第{$start}-{$end}行，共{$this->totalRows}行.",
+    		'header'	=> $end==0 ? '' : "显示第{$start}-{$end}行，共{$this->totalRows}行.",
     		'show'	=> $this->show()
     	);
     }

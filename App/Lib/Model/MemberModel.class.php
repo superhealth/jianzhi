@@ -33,7 +33,7 @@ class MemberModel extends Model{
 		$cornTime = M("cronhash")->where('ch_name="member"')->getField('ch_time');
 		if($cornTime<$_SERVER['REQUEST_TIME']-$interval){
 			// 更新过期会员状态
-			M("member")->where("mem_active=1 AND mem_expiretime<={$now}")->setField("mem_active", 0);
+			M("member")->where("mem_active=1 AND mem_expiretime<=".$_SERVER['REQUEST_TIME'])->setField("mem_active", 0);
 			// 保存更新时间
 			M("cronhash")->where('ch_name="member"')->setField("ch_time", $_SERVER['REQUEST_TIME']);
 		}

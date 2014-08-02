@@ -277,8 +277,9 @@ $(function(){
 		}
 	});
 	// 
-	$(".mem_subtoggle").click(function()
+	$(".mem_subtoggle").click(function(e)
 	{
+		e.preventDefault();
 		if($(this).hasClass("on"))
 		{
 			$(this).removeClass("on");

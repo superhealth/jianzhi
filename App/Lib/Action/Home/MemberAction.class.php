@@ -91,8 +91,8 @@ class MemberAction extends CommonAction{
 				}else if($member['mem_expiretime']>$_SERVER['REQUEST_TIME']-$duefeeNoticeDuration*24*3600){
 					//自动创建续费单并提醒
 					$subject = '年费过期提醒';
-					$content = $member.' 您好，您的会员将于'.date('Y年m月d日', $member['mem_expiretime']).'到期。请及时续费以继续使用《订单网》的服务，点此<a href="/Due">立即续费</a>。';
-					$type = '账户消息';
+					$content = $_SESSION['member'].' 您好，您的会员将于'.date('Y年m月d日', $member['mem_expiretime']).'到期。请及时续费以继续使用《订单网》的服务，点此<a href="/Due">立即续费</a>。';
+					$type = 'acc';
 					D('Notice')->sendNotice($member, $subject, $content, $type);
 					D('Duefee')->createDuefee($_SESSION['member']);
 				}

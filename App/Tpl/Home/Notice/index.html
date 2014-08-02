@@ -15,26 +15,35 @@
 			<h3 class="mem_sub_title">个人中心</h3>
 			<div class="mem_content">
 				<ul class="notice-nav">
-					<li>消息分类</li>
+					<li><span class="notice_type_head">消息分类：</span></li>
 					<volist name="noticeType" id="nt">
-					<li><a href="__GROUP__/Notice/index/type/{$key}">{$nt}</a></li>
+					<li><a <if condition="$type eq $key">class="active"</if> href="__GROUP__/Notice/index/type/{$key}">{$nt}</a></li>
 					</volist>
 				</ul>
 				<div class="notice_list">
 					<div class="notice_caption">
-						<label><input type="checkbox" />全选</label>
-						<button>标记为已读</button>
-						<button>删除</button>
-						<span></span>
+						<label> 全选&nbsp;&nbsp;<input type="checkbox" /></label>
+						<button type="button" data-act="">标记为已读</button>
+						<button type="button" data-act="">删除</button>
+						<span class="notice_overview"><a href="?flag=0">未读 0</a>/ <a href="?flag=1">全部 8</a></span>
 					</div>
-					<table class="notice_tab">
-						<tr>
-							<td><input type="checkbox" name="" value="" /></td>
-							<td>{$nt.no_title}</td>
-							<td>{$nt.no_type}</td>
-							<td>{$nt.no_time|timeFormat='Y-m-d H:i:s'}</td>
-						</tr>
-					</table>
+					<ul class="notice_tab">
+          	<volist name='notices["data"]' id="notice">
+						<li>
+							<span class="no_checkbox"><input type="checkbox" name="no_id" value="{$notice.no_id}" />
+							</span><span class="no_subject"><a href="__URL__/viewNotice/id/{$notice.no_id}"><if condition="$notice['no_read'] eq 0"><strong>{$notice.no_subject}</strong><else />{$notice.no_subject}</if></a>
+							</span><span class="no_type">{$noticeType[$notice['no_type']]}
+							</span><span class="no_time">{$notice.no_time|timeFormat='Y-m-d H:i:s'}</span>
+						</li>
+            </volist>
+					</ul>
+          <div class="pagenation">
+          	<div class="page_info">
+            	<span>{$notices.pager.header}</span>
+            	<span class="notice_overview"><a href="?flag=0">未读 0</a>/ <a href="?flag=1">全部 8</a></span>
+            </div>
+            <div class="page_link">{$notices.pager.show}</div>
+          </div>
 				</div>
 			</div>
 		</div>

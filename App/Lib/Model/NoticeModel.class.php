@@ -7,15 +7,43 @@
 class NoticeModel extends Model{
 	/**
 	 * 用户$mid的
-	 * @param string $mid
+	 * @param string $mid 用户id
+	 * @param string $type 消息类型
+	 * @param number $row 消息数
 	 * @return Ambigous <mixed, boolean, NULL, string, unknown, multitype:, multitype:multitype: , void>
 	 */
-	public function notices($mid, $type){
+	public function notices($mid, $type="", $row = 10){
 		if(!empty($type)){
 			$where['no_type'] = $type;
 		}
 		$where['no_mid'] = $mid;
-		return $this->where($where)->select();
+		import("Org.Util.Page");
+		$total = $this->where($where)->count();;
+		$param['type'] = $type;
+		$page = new Page($total, $row, $param);
+		$limit = $page->firstRow.",".$page->listRows;
+		$result['pager'] = $page->shown();
+		$result['data'] =  $this->where($where)->limit($limit)->select();
+		return $result;
+	}
+	
+	/**
+	 * 查找$mid 的$type 类型消息数
+	 * @param unknown $mid
+	 * @param unknown $type
+	 * @param boolen $flag 是否未读数，默认为true
+	 */
+	public function noticeCount($mid, $type = "", $flag = true){
+		if($flag===true){
+			$where['no_read'] = 0;
+		}
+		$where['no_mid'] = $mid;
+		if(!empty($type)){
+			$where['no_type'] = $type;
+			return $this->where($where)->count();
+		}else{
+			return $this->where($where)->group('no_type')->getField('no_type, count(*) num');
+		}
 	}
 	
 	/**
@@ -45,6 +73,11 @@ class NoticeModel extends Model{
 		return $this->add($data);
 	}
 	
+	/**
+	 * 设置id为$id 的消息为已读
+	 * @param int $id
+	 * @return Ambigous <boolean, false, number>
+	 */
 	public function read($id){
 		return $this->where(array("no_id"=> array("in", $id)))->setField("no_read", 1);
 	}
