@@ -22,6 +22,13 @@ class CommonAction extends EmptyAction{
 		}
 	}
 	
+	public function leftInit(){
+		if(!empty($_SESSION['member'])){
+			$noticeCount = D('Notice')->noticeCount($_SESSION['member']);
+			$this->assign('noticeCount', $noticeCount);
+		}
+	}
+	
 	/**
 	 * 检测用户登录状态
 	 */

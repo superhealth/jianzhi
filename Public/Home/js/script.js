@@ -302,5 +302,9 @@ $(function(){
 	$('.datepicker').datepicker({ currentText: 'Now' ,dateFormat: "yy-mm-dd"});
 	//gallery colorbox
 	$('a.thumb').colorbox({transition:"elastic", maxWidth:"95%", maxHeight:"95%"});
-
+	
+	//check all
+	$('.checkAll').click(function(){
+		$('input:checkbox').prop('checked', $(this).prop('checked'));
+	});
 });

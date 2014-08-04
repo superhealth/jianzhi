@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<include file="public:css" />
+<include file="public:js" />
+</head>
+<include file="public:header" />
+<div class="container">
+	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">会员中心</a> / <a href="__GROUP__/Notice">消息中心</a></div>
+	<div class="content">
+		<include file="public:left" />
+		<div class="mem_main">
+			<h3 class="mem_sub_title">消息中心</h3>
+			<div class="mem_content">
+				<div class="notice_view_menu">
+					<div class="notice_view_btns"><a href="javascript:history.go(-1);">返回</a><a href="__URL__/del/id/{$notice.no_id}">删除</a></div>
+					<div class="notice_view_links">
+						<span><if condition="$no_prev eq ''">没有了<else /><a href="__URL__/view/id/{$no_prev}">上一封</a></if></span>
+						<span><if condition="$no_next eq ''">没有了<else /><a href="__URL__/view/id/{$no_next}">下一封</a></if></span>
+					</div>
+				</div>
+				<div class="notice_view_head">
+					<div class="notice_view_title">{$notice.no_subject}</div>
+					<div class="notice_view_time">发出时间：{$notice.no_time|timeFormat='Y年m月d日（D） H:i:s'}</div>
+				</div>
+				<div class="notice_view_content">
+					{$notice.no_content}
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+</div>
+<include file="public:footer" />
+<body>
+</body>
+</html>

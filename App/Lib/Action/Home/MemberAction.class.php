@@ -259,10 +259,30 @@ class MemberAction extends CommonAction{
 	 */
 	public function myInfo($action=""){
 		$this->checkMember();
-		if($action=="save"){
-			
+		$this->leftInit();
+		$type = M("member")->where('mem_id="'.$_SESSION['member'].'"')->getField('mem_type');
+		if($type=='1'){
+			$info = M('member')->join('zt_membercompany ON mem_id=mc_mid')->where('mem_id="'.$_SESSION['member'].'"')->find();
+		}else{
+			$info = M('member')->join('zt_memberperson ON mem_id=mp_mid')->where('mem_id="'.$_SESSION['member'].'"')->find();
 		}
+		$this->assign();
+		$this->assign();
+		$this->display();
 	}
+	
+	public function saveCom(){
+		$this->checkMember();
+		$this->leftInit();
+		
+	}
+	
+	public function savePer(){
+		$this->checkMember();
+		$this->leftInit();
+		
+	}
+	
 	
 	/**
 	 * 查看会员资料

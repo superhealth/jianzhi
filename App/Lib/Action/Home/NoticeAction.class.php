@@ -17,9 +17,9 @@ class NoticeAction extends CommonAction{
 	 * 系统通知
 	 */
 	public function index($type = ''){
-		
 		$this->checkMember();
-		$notices = D("Notice")->notices($_SESSION['member'], $type,2);
+		$this->leftInit();
+		$notices = D("Notice")->notices($_SESSION['member'], $type, 8);
 		$this->assign("notices", $notices);
 		$this->assign('noticeType', $this->typeArr);
 		$this->assign('type', $type);
@@ -30,9 +30,45 @@ class NoticeAction extends CommonAction{
 	}
 	
 	public function view($id=""){
+		$this->checkMember();
+		$this->leftInit();
 		$notice = M('notice')->where('no_mid="'.$_SESSION['member'].'" AND no_id='.$id)->find();
+		if(empty($notice)){
+			$this->display('notice404');exit;
+		}
+		D('Notice')->read($id);
 		$this->assign('notice', $notice);
+		$no_next = M('notice')->where('no_mid="'.$_SESSION['member'].'" AND no_time>'.$notice['no_time'])->order('no_time')->limit(1)->getField('no_id');
+		$no_prev = M('notice')->where('no_mid="'.$_SESSION['member'].'" AND no_time<'.$notice['no_time'])->order('no_time DESC')->limit(1)->getField('no_id');
+		$this->assign('no_next', $no_next);
+		$this->assign('no_prev', $no_prev);
 		$this->display();
+	}
+	
+	
+	public function read(){
+		if(empty($_POST['id'])){
+			exit('您未选中任何消息！');
+		}else{
+			if(D('Notice')->read($_POST['id'])){
+				exit('success');
+			}else{
+				exit('操作失败！');
+			}
+		}
+	}
+	
+	
+	public function del(){
+		if(empty($_POST['id'])){
+			exit('您未选中任何消息！');
+		}else{
+			if(M('Notice')->where(array('no_id'=> array('in', $_POST['id'])))->delete()){
+				exit('success');
+			}else{
+				exit('操作失败！');
+			}
+		}
 	}
 	
 }

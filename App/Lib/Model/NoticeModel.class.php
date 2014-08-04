@@ -13,17 +13,28 @@ class NoticeModel extends Model{
 	 * @return Ambigous <mixed, boolean, NULL, string, unknown, multitype:, multitype:multitype: , void>
 	 */
 	public function notices($mid, $type="", $row = 10){
+		$param = array();
 		if(!empty($type)){
 			$where['no_type'] = $type;
+			$param['type'] = $type;
+		}
+		if($_REQUEST['flag']=='no'){
+			$where['no_read'] = '0';
+			$param['flag'] = $_REQUEST['flag'];
 		}
 		$where['no_mid'] = $mid;
 		import("Org.Util.Page");
-		$total = $this->where($where)->count();;
-		$param['type'] = $type;
-		$page = new Page($total, $row, $param);
+		//total notices;
+		$result['total'] = $this->where($where)->count();
+		// noread:
+		$map = $where;
+		$map['no_read'] = 0;
+		$result['noread'] = $this->where($map)->count();
+		unset($map);
+		$page = new Page($result['total'], $row, $param);
 		$limit = $page->firstRow.",".$page->listRows;
 		$result['pager'] = $page->shown();
-		$result['data'] =  $this->where($where)->limit($limit)->select();
+		$result['data'] =  $this->where($where)->order('no_time DESC')->limit($limit)->select();
 		return $result;
 	}
 	

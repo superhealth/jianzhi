@@ -8,11 +8,11 @@
 </head>
 <include file="public:header" />
 <div class="container">
-	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">会员中心</a></div>
+	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">会员中心</a> / <a href="__GROUP__/Notice">消息中心</a></div>
 	<div class="content">
 		<include file="public:left" />
 		<div class="mem_main">
-			<h3 class="mem_sub_title">个人中心</h3>
+			<h3 class="mem_sub_title">消息中心</h3>
 			<div class="mem_content">
 				<ul class="notice-nav">
 					<li><span class="notice_type_head">消息分类：</span></li>
@@ -22,35 +22,63 @@
 				</ul>
 				<div class="notice_list">
 					<div class="notice_caption">
-						<label> 全选&nbsp;&nbsp;<input type="checkbox" /></label>
-						<button type="button" data-act="">标记为已读</button>
-						<button type="button" data-act="">删除</button>
-						<span class="notice_overview"><a href="?flag=0">未读 0</a>/ <a href="?flag=1">全部 8</a></span>
+						<label> 全选&nbsp;&nbsp;<input type="checkbox" class="checkAll" /></label>
+						<button type="button" class="ajax-inp" data-act="__URL__/read" data-fn="">标记为已读</button>
+						<button type="button" class="ajax-inp" data-act="__URL__/del" data=fn="del">删除</button>
+						<span class="notice_overview"><a href="?flag=no">未读&nbsp;{$notices.noread}&nbsp;</a>/ <a href="?flag=all">全部&nbsp;{$notices.total}&nbsp;</a></span>
 					</div>
 					<ul class="notice_tab">
-          	<volist name='notices["data"]' id="notice">
+          			<volist name='notices["data"]' id="notice">
 						<li>
-							<span class="no_checkbox"><input type="checkbox" name="no_id" value="{$notice.no_id}" />
-							</span><span class="no_subject"><a href="__URL__/viewNotice/id/{$notice.no_id}"><if condition="$notice['no_read'] eq 0"><strong>{$notice.no_subject}</strong><else />{$notice.no_subject}</if></a>
-							</span><span class="no_type">{$noticeType[$notice['no_type']]}
-							</span><span class="no_time">{$notice.no_time|timeFormat='Y-m-d H:i:s'}</span>
+							<span class="no_checkbox">&nbsp;<input type="checkbox" name="id[]" value="{$notice.no_id}" />
+							</span><span class="no_subject">&nbsp;<a href="__URL__/view/id/{$notice.no_id}"><if condition="$notice['no_read'] eq 0"><strong>{$notice.no_subject}</strong><else />{$notice.no_subject}</if></a>
+							</span><span class="no_type">&nbsp;{$noticeType[$notice['no_type']]}
+							</span><span class="no_time">&nbsp;{$notice.no_time|timeFormat='Y-m-d H:i:s'}</span>
 						</li>
-            </volist>
+            		</volist>
 					</ul>
-          <div class="pagenation">
-          	<div class="page_info">
-            	<span>{$notices.pager.header}</span>
-            	<span class="notice_overview"><a href="?flag=0">未读 0</a>/ <a href="?flag=1">全部 8</a></span>
-            </div>
-            <div class="page_link">{$notices.pager.show}</div>
-          </div>
+				  <div class="pagenation">
+					<div class="page_info">
+						<span>{$notices.pager.header}</span>
+						<span class="notice_overview"><a href="?flag=no">未读&nbsp;{$notices.noread}&nbsp;</a>/ <a href="?flag=all">全部&nbsp;{$notices.total}&nbsp;</a></span>
+					</div>
+					<if condition="$notices['total'] gt 8">
+					<div class="page_link">{$notices.pager.show}</div>
+					</if>
+				  </div>
 				</div>
 			</div>
 		</div>
 		<div class="clearfix"></div>
 	</div>
 </div>
+<div id="ajax_wait"><img src='__PUBLIC__/Home/img/ajax-loaders/ajax-loader-1.gif' /></div>
 <include file="public:footer" />
+<script >
+	$(function(){
+		$(".ajax-inp").click(function(){
+			var url = $(this).data('act');
+			var data = new Array();
+			$("input[name='id[]']:checked").each(function(index){
+				data[index] = 'id[]='+$(this).val();
+			});
+			data = data.join("&");
+			if(data==""){
+				bootbox.alert("您未选中任何消息！");
+				return;
+			}
+			$("#ajax_wait").show();
+			$.post(url, data, function(text){
+				$("#ajax_wait").hide();
+				if(text=='success'){
+					window.location.reload();
+				}else{
+					bootbox.alert(text);
+				}
+			}, 'text');
+		});
+	});
+</script>
 <body>
 </body>
 </html>
