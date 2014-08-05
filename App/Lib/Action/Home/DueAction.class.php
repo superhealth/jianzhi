@@ -1,7 +1,7 @@
 <?php
 /**
  * 用户充值模块
- * @author Carl
+ * @author dapianzi
  *
  */
 class DueAction extends CommonAction{
@@ -10,19 +10,33 @@ class DueAction extends CommonAction{
 	 */
 	public function index(){
 		$this->checkMember();
-		
-		echo '<a href="'.__URL__.'/createDueOrder/year/2" >提交</a>';
+		$this->leftInit();
+		$info = M('member')->join('zt_due')->where('')
+		$this->assign('expireFlag', 'soon');
+		$this->assign('expireDay', D('Sysconf')->getConf('cfg_duenotice'));
+		$this->assign('duefee', D('Sysconf')->getConf('cfg_duefee'));
+		$this->display();
+	}
+	
+	public function create(){
+		$this->checkMember();
+		$this->leftInit();
+		$id = D('Duefee')->createDuefee($_SESSION['member']);
+		$price = D('Sysconf')->getConf('cfg_duefee');
 	}
 	
 	/**
 	 * 生成订单
 	 * 
 	 */
-	public function createDueOrder($year=1){
+	public function save(){
 		$this->checkMember();
-		$id = D('Duefee')->createDuefee($year, $_SESSION['member']);
-		$price = D('Sysconf')->getConf('cfg_duefee');
+		
+		
 	}
+	
+	
+	
 	
 	/**
 	 * 待支付
