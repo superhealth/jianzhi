@@ -14,47 +14,143 @@
 		<div class="mem_main">
 			<h3 class="mem_sub_title">用户档案设置</h3>
 			<div class="mem_content">
-				<div class="welcome-box">
+				<if condition="$type neq 1">
+				<div class="info-box">
 				<form action="" method="post">
 					<div class="info_group">
 						<label>用户名</label>
 						<div class="info_control">
-							<span>{$mem}</span>
+							<span>{$info.mem_id} &nbsp;</span>
 						</div>
 					</div>
 					<div class="info_group">
 						<label>性质</label>
 						<div class="info_control">
-							<span></span>
+							<span>{$types[$info['mem_type']]} &nbsp;</span>
 						</div>
 					</div>
 					<div class="info_group">
 						<label>手机</label>
 						<div class="info_control">
-							<input type="text" name="" id="" value="" /><span class="helpline"></span>
+							<input type="text" class="inp inp-mid" name="mp_tel" id="mp_tel" value="{$info.mp_tel}" maxlength="32" /><span class="helpline"></span>
 						</div>
 					</div>
 					<div class="info_group">
 						<label>个人网站</label>
 						<div class="info_control">
-							<input type="text" name="" id="" value="" /><span class="helpline"></span>
+							<input type="text" class="inp inp-mid" name="mp_site" id="mp_site" value="{$info.mp_site}" maxlength="128" /><span class="helpline"></span>
 						</div>
 					</div>
 					<div class="info_group">
-						<label>个人简介</label>
+						<label>地址</label>
+						<div class="info_control">
+							<input type="text" class="inp inp-mid" name="mp_addr" id="mp_addr" value="{$info.mp_addr}" maxlength="256" /><span class="helpline"></span>
+						</div>
 					</div>
+					<div class="info_group">简介</div>
 					<div class="info_group">
-						<textarea></textarea>
+						<textarea class="info_txt auto" name="mp_desc" id="mp_desc">{$info.mp_desc}</textarea><span class="helpline"></span>
+					</div>
+					<div class="info_btns ">
+						<button class="btn info_btn" type="button" id="perSub" data-act="__URL__/savePer">确认保存</button>
+						<button class="btn info_btn" type="reset">取消</button>
 					</div>
 				</form>
 				</div>
+				<else />
+				<div class="info-box">
+				<form action="" method="post">
+					<div class="info_group">
+						<label>用户名</label>
+						<div class="info_control">
+							<span>{$info.mem_id} &nbsp;</span>
+						</div>
+					</div>
+					<div class="info_group">
+						<label>性质</label>
+						<div class="info_control">
+							<span>{$types[$info['mem_type']]} &nbsp;</span>
+						</div>
+					</div>
+					<div class="info_group">
+						<label>公司名</label>
+						<div class="info_control">
+							<span>{$info.mc_company} &nbsp;</span>
+						</div>
+					</div>
+					<div class="info_group">
+						<label>电话</label>
+						<div class="info_control">
+							<input type="text" class="inp inp-mid" name="mc_tel" id="mc_tel" value="{$info.mc_tel}" /><span class="helpline"></span>
+						</div>
+					</div>
+					<div class="info_group">
+						<label>公司网站</label>
+						<div class="info_control">
+							<input type="text" class="inp inp-mid" name="mc_site" id="mc_site" value="{$info.mc_site}" /><span class="helpline"></span>
+						</div>
+					</div>
+					<div class="info_group">
+						<label>公司地址</label>
+						<div class="info_control">
+							<input type="text" class="inp inp-mid" name="mc_addr" id="mc_site" value="{$info.mc_addr}" /><span class="helpline"></span>
+						</div>
+					</div>
+					<div class="info_group">公司简介</div>
+					<div class="info_group">
+						<textarea class="info_txt auto"  name="mc_desc" id="mc_desc">{$info.mc_desc}</textarea><span class="helpline"></span>
+					</div>
+					<div class="info_btns ">
+						<button class="btn info_btn" type="button" data-act="__URL__/saveCom">确认保存</button>
+						<button class="btn info_btn" type="reset">取消</button>
+					</div>
+				</form>
+				</div>
+				</if>
 			</div>
 		</div>
 		<div class="clearfix"></div>
 	</div>
 </div>
 <include file="public:footer" />
-
+<script type="text/javascript">
+	$(function(){
+		var eSite = /^(http(s?)\:\/\/)?([a-zA-Z]+\.)+(.*)$/; 
+		var eTel = /(^(\d{3,4}\-)?\d{7,8}$|^(1[0-9]{10})$)/;
+		$('#perSub').click(function(){
+			var flag = true;
+			if($('#mp_tel').val()!='' && !eTel.test($('#mp_tel').val())){
+				flag = false;
+				$("#mp_tel").addClass('error');
+				$("#mp_tel").next().addClass('error').html('不是有效的电话号码！');
+			}
+			if($('#mp_site').val()!='' && !eSite.test($('#mp_site').val())){
+				flag = false;
+				$("#mp_site").addClass('error');
+				$("#mp_site").next().addClass('error').html('不是有效的网址url！');
+			}
+			if(flag){
+				$(this).parents('form').attr('action', $(this).data('act')).submit();
+			}
+		});
+		$('#comSub').click(function(){
+			var flag = true;
+			if($('#mc_tel').val()!='' && !eTel.test($('#mc_tel').val())){
+				flag = false;
+				$("#mc_tel").addClass('error');
+				$("#mc_tel").next().addClass('error').html('不是有效的电话号码！');
+			}
+			if($('#mc_site').val()!='' && !eSite.test($('#mc_site').val())){
+				flag = false;
+				$("#mc_site").addClass('error');
+				$("#mc_site").next().addClass('error').html('不是有效的网址url！');
+			}
+			if(flag){
+				$(this).parents('form').attr('action', $(this).data('act')).submit();
+			}
+		});
+	});
+</script>
 <body>
 </body>
 </html>

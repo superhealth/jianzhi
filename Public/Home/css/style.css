@@ -149,10 +149,19 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .mem_submenu a:hover, .mem_submenu a.active{background:#eee;}
 .mem_sub_title{font-size:16px; height:33px; line-height:33px; padding-left:30px; border-bottom:1px solid #00a0e9;}
 .mem_content{margin-left:30px; margin-top:15px; }
+
 /* member-index */
 .welcome-box{padding-top:80px; height:300px; text-align:center; margin: 50px 30px; font-size:16px; background:#fff; border-radius: 10px; }
 
 /* member-myInfo */
+.info-box{width:678px; margin:25px auto; padding:30px 0 30px 100px; border:1px solid #bfbfbf; background:#fff;}
+.info_group{padding:6px; font-size:14px; line-height:24px;}
+.info_group label{width:120px; float:left;}
+.info_control{margin-left:125px; font-size:13px;}
+.info_txt{width:564px; min-height:180px; height:auto; border:1px solid #bfbfbf; padding:6px; resize:vertical; }
+.info_btns{margin-top:25px; margin-bottom:25px; margin-left:90px;}
+.info_btn{display:inline-block; width:100px; height:30px; font-size:14px; margin-left:60px; text-align:center; }
+
 
 /* notice */
 .notice-nav{ height:45px;list-style:none; background:#eee; border:2px solid #e5e5e5;}

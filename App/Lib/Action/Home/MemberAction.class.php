@@ -8,6 +8,7 @@ class MemberAction extends CommonAction{
 	/**
 	 * 用户中心
 	 */
+	private $types = array('个人', '企业');
 	public function index(){
 		$this->checkMember();
 		$this->memberInit();
@@ -266,8 +267,9 @@ class MemberAction extends CommonAction{
 		}else{
 			$info = M('member')->join('zt_memberperson ON mem_id=mp_mid')->where('mem_id="'.$_SESSION['member'].'"')->find();
 		}
-		$this->assign();
-		$this->assign();
+		$this->assign('type', $type);
+		$this->assign('info', $info);
+		$this->assign('types', $this->types);
 		$this->display();
 	}
 	
