@@ -58,7 +58,7 @@ class DuefeeModel extends Model{
 	 * @param string $mid 用户id
 	 * @return Ambigous <string, number>|boolean
 	 */
-	public function createDuefee($year = 1, $mid){
+	public function createDuefee($mid, $year = 1){
 		$count = $this->where('due_mid="'.$mid.'" AND due_paystatus=0')->getField('due_id');
 		if($count){
 			return $count;
@@ -77,7 +77,7 @@ class DuefeeModel extends Model{
 				$duenotice = D('Sysconf')->getConf('cfg_duenotice');
 				$content = '您的会员有效时间已不足'.$duenotice.'天，请及时续费以继续使用我们的服务，谢谢！';
 				D("Notice")->sendNotice($mid, $subject, $content);
-				return $this->getLastInsID();
+				return $data['due_id'];
 			}else{
 				return false;
 			}

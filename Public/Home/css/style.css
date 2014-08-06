@@ -23,6 +23,8 @@ ul li{list-style:none;}
 .clearfix:after { clear: both;}
 .red{color:#c33;}
 .blue{color:#19a6f5;}
+.green{color: #458746}
+.yellow{color: #f99406}
 #ajax_wait{width:16px; height:11px; padding:6px 40px; display:none; position:absolute; top:35%; left:50%; margin-left:-48px; margin-top:-11px; background:rgba(0,0,0,.4); transition: all ease-in .3s; -o-transition: all ease-in .3s; -moz-transition: all ease-in .3s; -webkit-transition: all ease-in .3s;}
 .breadcrumb a{margin-left:5px; margin-right:5px;}
 
@@ -219,7 +221,13 @@ a.p_prev{background:url(../image/page_bg.png) 0 0 no-repeat;}
 .duefee_status{margin-left:240px; height:150px; background:#fff; padding:50px 60px; font-size:15px}
 .btn-due{width:80px; font-size:13px; display:block; height:24px; line-height:24px; margin-top:36px;}
 .btn_view_records{font-size:13px; font-weight:normal; line-height:16px; color:#060606; -webkit-border-radius:5px; -moz-border-radius:5px;; border-radius:5px; margin-left:25px; padding:0 5px; width:37px; border:1px solid #060606;}
-
+.due_record{display:none; margin-top:20px; background:#fff; width:760px;}
+.due_record_caption, .due_records{padding-left:55px; padding-top:10px; padding-bottom:10px;}
+.due_record_caption{border-bottom:1px dashed #b5b5b5}
+.due_records li{margin-top:10px;}
+.record_cap, .record_item{display:inline-block; width:150px;margin-left:20px;line-height:25px;}
+.record_cap{font-size:13px;}
+.record_item{font-size:12px;}
 
 
 

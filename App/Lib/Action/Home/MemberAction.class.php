@@ -276,13 +276,24 @@ class MemberAction extends CommonAction{
 	public function saveCom(){
 		$this->checkMember();
 		$this->leftInit();
+		$data = M('membercompany')->create();
+		if(M('membercompany')->where('mc_mid="'.$_SESSION['member'].'"')->save($data)){
+			$this->success('修改成功！');
+		}else{
+			$this->error('修改失败！');
+		}
 		
 	}
 	
 	public function savePer(){
 		$this->checkMember();
 		$this->leftInit();
-		
+		$data = M('memberperson')->create();
+		if(M('memberperson')->where('mp_mid="'.$_SESSION['member'].'"')->save($data)){
+			$this->success('修改成功！');
+		}else{
+			$this->error('修改失败！');
+		}
 	}
 	
 	

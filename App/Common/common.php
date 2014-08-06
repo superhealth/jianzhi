@@ -1102,8 +1102,34 @@ function verifyCode($member="", $subject=""){
 	}
 }
 
+/**
+ * 对邮箱进行保密处理
+ * @param string $email
+ * @return 
+ */
 function emailToHide($email){
 	return preg_replace('/(?<=.{2}).*(?=.{2}@)/', "**",$email);
 }
+
+/**
+ * 获取会员状态，返回剩余时间。
+ * @param int $time 会员过期时间时间戳
+ * @return multitype:string number
+ */
+function getExpireStatus($time){
+	$remind = D('Sysconf')->getConf('cfg_duenotice');
+	$left = $time - $_SERVER['REQUEST_TIME'];
+	if($left<=0){
+		return array('flag'=>'expired', 'day'=>0);
+	}else if($left>$remind*24*3600){
+		return array('flag'=>'normal', 'day'=>(int)($left/(24*3600)));
+	}else{
+		return array('flag'=>'soon', 'day'=>(int)($left/(24*3600)));
+	}
+}
+
+
+
+
 
 

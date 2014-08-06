@@ -18,22 +18,32 @@
 					<div class="due_info">
           	<div class="due_info_title">当前年费信息</div>
           	<ul>
-            	<li><span class="info_item">用户名称：</span><span>XXXXX</span></li>
+            	<li><span class="info_item">用户名称：</span><span>{$mInfo.mem_id}</span></li>
               <li>&nbsp;</li>
-              <li><span class="info_item">用户类型：</span><span>公司/个人</span></li>
-              <li><span class="info_item">年费状态：</span><span>正常/待缴费</span></li>
-              <li><span class="info_item">到期时间：</span><span></span></li>
+              <li><span class="info_item">用户类型：</span><span>{$mInfo.mem_type}</span></li>
+              <li><span class="info_item">年费状态：</span><span>
+			    <if condition="$expireInfo['flag'] eq 'normal'"><span class='green'>正常</span>
+				<elseif condition="$expireInfo['flag'] eq 'soon'" /><span class="yellow">即将过期</span>
+				<else /><span class="red">待缴费</span>
+				</if></span>
+			  </li>
+              <li><span class="info_item">到期时间：</span><span>
+			    <if condition="$expireInfo['flag'] eq 'normal'"><span class='green'>{$mInfo.mem_expiretime|timeFormat='Y年m月d日'}</span>
+				<elseif condition="$expireInfo['flag'] eq 'soon'" /><span class="yellow">{$mInfo.mem_expiretime|timeFormat='Y年m月d日'}</span>
+				<else /><span class="red">{$mInfo.mem_expiretime|timeFormat='Y年m月d日'}</span>
+				</if>
+			  </span></li>
               <li>&nbsp;</li>
-              <li><span class="info_item">上期交费：</span><span>年 月 日  或 空</span></li>
-              <li><span class="info_item">上期金额：</span><span>￥元。</span></li>
+              <li><span class="info_item">上期交费：</span><span>{$records[0]['due_paytime']|timeFormat='Y年m月d日'}</span></li>
+              <li><span class="info_item">上期金额：</span><span>￥{$records[0]['due_discount']*$records[0]['due_price']}元。</span></li>
             </ul>
             
           </div>
           <div class="duefee_status">
-          	<if condition="$expireFlag eq 'normal'">
+          	<if condition="$expireInfo['flag'] eq 'normal'">
             年费充足，放心使用！
-            <elseif condition="$expireFlag eq 'soon'" />
-            <span class='red'>您的年费还有{$expireDay}天到期，请办理续费，金额：￥{$duefee} 元</span>
+            <elseif condition="$expireInfo['flag'] eq 'soon'" />
+            <span class='yellow'>您的年费还有{$expireInfo['day']}天到期，请办理续费，金额：￥{$duefee} 元</span>
             <a class="btn btn-due" href="__URL__/create" type="button">立即续费</a>
             <else />
             <span class='red'>您的年费已过期，请尽快办理续费 ，金额：￥{$duefee} 元</span>
@@ -43,12 +53,14 @@
 				</div>
 			</div>
       <h3 class="mem_sub_title">年费纪录<a href="#" id="view_records" class="btn_view_records">查看</a></h3>
-			<div class="mem_content">
+			<div class="mem_content due_record">
       	<div class="due_record_caption">
-        	<span></span><span></span><span></span>
+        	<span class="record_cap">日期</span><span class="record_cap">金额</span><span class="record_cap">支付方式</span>
         </div>
 				<ul class="due_records">
-					<li><span></span><span></span><span></span></li>
+					<volist name="records" id="ritem">
+					<li><span class="record_item">{$ritem.due_paytime|timeFormat='Y年m月d日'}</span><span class="record_item">￥{$ritem['due_discount']*$ritem['due_price']} 元</span><span class="record_item"><if condition="$ritem['due_operator'] eq 'alipay'">支付宝<else />银行转账</if></span></li>
+					</volist>
 				</ul>
 			</div>
 		</div>
@@ -59,7 +71,7 @@
 <script type="text/javascript">
 $(function(){
 	$('#view_records').click(function(){
-		
+		$('.due_record').show();
 	});
 });
 </script>
