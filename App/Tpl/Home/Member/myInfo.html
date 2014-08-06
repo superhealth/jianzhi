@@ -100,8 +100,8 @@
 						<label>企业联系人</label>
 						<div class="info_control">
 							<input type="text" class="inp" name="mc_cname" id="mc_cname" value="{$info.mc_cname}" />
-							<input type="radius" name="mc_csex" value="女" <if condition="$info['mc_csex'] eq '女'"></if> />女士
-							<input type="radius" name="mc_csex" value="男" <if condition="$info['mc_csex'] eq '女'"></if> />先生
+							<input type="radio" style="margin-left:20px;" name="mc_csex" value="女" <if condition="$info['mc_csex'] eq '女'">checked='checked'</if> />女士
+							<input type="radio" style="margin-left:20px;" name="mc_csex" value="男" <if condition="$info['mc_csex'] eq '男'">checked='checked'</if> />先生
 						</div>
 					</div>
 					<div class="info_group">公司简介</div>
@@ -109,7 +109,7 @@
 						<textarea class="info_txt auto"  name="mc_desc" id="mc_desc">{$info.mc_desc}</textarea><span class="helpline"></span>
 					</div>
 					<div class="info_btns ">
-						<button class="btn info_btn" type="button" data-act="__URL__/saveCom">确认保存</button>
+						<button class="btn info_btn" type="button" id="comSub" data-act="__URL__/saveCom">确认保存</button>
 						<button class="btn info_btn" type="reset">取消</button>
 					</div>
 				</form>

@@ -12,7 +12,7 @@
 		<div class="box_title">用户登录</div>
 		<div class="box_content log_content">
 			<form method="post" action="">
-				<input type='hidden' name='ref' value='{$referer}' />
+				<input type='hidden' name='ref' value='{$url}' />
 				<div>
 					<input type="text" class="inp inp-login" name="user" id="login_user" value="" placeholder="用户登录账号" />
 					<br /><span class="helpline"></span>
@@ -25,7 +25,7 @@
 					<a class="left" href="__GROUP__/Retrieve" >忘记登录密码？</a>
 					<a class="right" href="__URL__/register" >免费注册</a>
 				</div>
-				<button class="btn login_btn" id="login_btn" type="button" data-act="__URL__/checkLogin" >登&nbsp;&nbsp;&nbsp;&nbsp;录<button>
+				<button class="btn login_btn" id="login_btn" type="button" data-act="__URL__/checkLogin" >登&nbsp;&nbsp;&nbsp;&nbsp;录</button>
 			</form>
 		</div>
 	</div>

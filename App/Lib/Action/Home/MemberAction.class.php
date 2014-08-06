@@ -247,13 +247,12 @@ class MemberAction extends CommonAction{
 	/**
 	 * 修改密码
 	 */
-	public function safty($action=""){
+	public function safety(){
 		$this->checkMember();
-		if($action=="save"){
-			
-		}else{
-			$this->display();
-		}
+		$this->leftInit();
+		$mInfo = M('member')->where('mem_id="'.$_SESSION['member'].'"')->find();
+		$this->assign('mInfo', $mInfo);
+		$this->display();
 	}
 	/**
 	 * 修改资料

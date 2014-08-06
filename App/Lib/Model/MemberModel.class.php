@@ -13,13 +13,12 @@ class MemberModel extends Model{
 			return false;
 		}
 		$data['mem_id'] = $id;
-		$now = time();
 		$expire = (int)$info['mem_expiretime'];
 		if($info['mem_active']==1){
-			$data['mem_expiretime'] = $expire>$now ? $expire + ($this->yearstamp*$year) : $now + ($this->yearstamp*$year);			
+			$data['mem_expiretime'] = $expire>$_SERVER['REQUEST_TIME'] ? $expire + (31536000*$year) : $_SERVER['REQUEST_TIME'] + (31536000*$year);			
 		}else{
 			$data['mem_active'] = 1;
-			$data['mem_expiretime'] = $now + (31536000*$year);
+			$data['mem_expiretime'] = $_SERVER['REQUEST_TIME'] + (31536000*$year);
 		}
 		return $this->save($data);
 	}
