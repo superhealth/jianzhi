@@ -59,9 +59,9 @@ class DuefeeModel extends Model{
 	 * @return Ambigous <string, number>|boolean
 	 */
 	public function createDuefee($year = 1, $mid){
-		$count = $this->where('due_mid="'.$mid.'" AND due_paystatus=0')->count();
-		if($count > 0){
-			return 'created already';
+		$count = $this->where('due_mid="'.$mid.'" AND due_paystatus=0')->getField('due_id');
+		if($count){
+			return $count;
 		}else{
 			$data = array(
 				'due_id' => createDuefeeSn(substr($mid, 0, 1)),
