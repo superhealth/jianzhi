@@ -41,17 +41,28 @@ class DueAction extends CommonAction{
 	}
 	
 	/**
-	 * 生成订单
+	 * 生成订单并支付
 	 * 
 	 */
 	public function saveDue(){
 		$this->checkMember();
-		dump($_POST);
-		
+		$where = array(
+			'due_id' => addslashes($_POST['id']),
+			'due_mie'	=> $_SESSION['member'],
+			'due_paystatus'	=> 0
+		);
+		$data = array(
+			'due_invoice_t'	=> $_POST['invoicet'].'|'.$_POST['invoicett'],
+			'due_invioce_c'	=> addslashes($_POST['invoicec']),
+			'due_invioce_c'	=> addslashes($_POST['invoiceo']),
+		);
+		//保存发票信息
+		if(M('duefee')->where($where)->save($data)){
+			exit('success');
+		}else{
+			exit('fail');
+		}
 	}
-	
-	
-	
 	
 	/**
 	 * 待支付

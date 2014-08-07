@@ -4,113 +4,63 @@
  * @author dapianzi
  *
  */
-class AlipayAction extends EmptyAction{
-	private $alipay_config; // 支付宝配置
+class AlipayAction extends CommonAction{
 	/**
 	 * 初始化
 	 */
-	public function __construct(){
-		EmptyAction::__construct();
-		$this->alipay_config['partner']		= '';
-		//安全检验码，以数字和字母组成的32位字符
-		$this->alipay_config['key']			= '';
-		//↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-		//签名方式 不需修改
-		$this->alipay_config['sign_type']    = strtoupper('MD5');
-		//字符编码格式 目前支持 gbk 或 utf-8
-		$this->alipay_config['input_charset']= strtolower('utf-8');
-		//ca证书路径地址，用于curl中ssl校验
-		//请保证cacert.pem文件在当前文件夹目录中
-		$this->alipay_config['cacert']    = getcwd().'\\cacert.pem';	
-		//访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
-		$this->alipay_config['transport']    = 'http';
-		
-		//卖家账号
-		$this->alipay_config['seller_id'] = '';
-		$this->alipay_config['seller_email'] = '';
-		$this->alipay_config['seller_account_name'] = '';
-		$this->alipay_config['defaultbank'] = '';
-		
+	public function index(){
+		$this->_empty();
 	}
 	
 	/**
 	 * 测试
-	 */
+	 
 	public function testImplementation(){
 		$this->display();
 	}
-	
+	*/
 	/**
 	 * 支付年费
 	 */
 	public function duefeePay(){
+		$this->checkMember();
+		if(!empty($_POST['id'])){
+			$where = array(
+				'due_id' => addslashes($_POST['id']),
+				'due_mie'	=> $_SESSION['member'],
+				'due_paystatus'	=> 0
+			);
+			$dueInfo = M('duefee')->where($where)->find();
+			if(!empty($dueInfo)){
+				$alipay_config = C('ALIPAY');
+				$parameter = array(
+						"service" 	=> 'create_direct_pay_by_user',
+						"partner" 	=> trim($alipay_config['partner']),
+						"payment_type"	=> '1',
+						"notify_url"	=> 'http://test.jianzhi.com/Alipay/duefeeNotifyUrl',
+						"return_url"	=> 'http://test.jianzhi.com/Alipay/duefeeReturnUrl',
+						"seller_email"	=> $alipay_config['seller_email'],
+						"out_trade_no"	=> $dueInfo['due_id'],
+						"subject"	=> '年费',
+						"total_fee"	=> $dueInfo['due_price']*$dueInfo['due_discount'],
+						"body"		=> '订单网为期1年的服务费。',
+						"paymethod"	=> 'bankPay',
+						"defaultbank"	=> $alipay_config['defaultbank'],
+						"show_url"	=> __GROUP__.'/Due',
+						"anti_phishing_key"	=> '',
+						"exter_invoke_ip"	=> '',
+						"_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
+				);
+				import('@.ORG.alipay_submit');
+				//建立请求
+				$alipaySubmit = new AlipaySubmit($alipay_config);
+				$html_text = $alipaySubmit->buildRequestHttp($parameter);
+				echo $html_text;
+			}
 			
-		//支付类型
-		$payment_type = "1";
-		//必填，不能修改
-		//服务器异步通知页面路径
-		$notify_url = "http://test.jianzhi.com/Alipay/duefeeNotifyUrl";
-		//$return_url = "http://test.myorder.com.cn/Alipay/duefeeNotifyUrl";
-		//$return_url = "http://www.myorder.com.cn/Alipay/duefeeNotifyUrl";
-		//需http://格式的完整路径，不能加?id=123这类自定义参数		
-		//页面跳转同步通知页面路径
-		$return_url = "http://test.jianzhi.com/Alipay/duefeeReturnUrl";
-		//$return_url = "http://test.myorder.com.cn/Alipay/duefeeReturnUrl";
-		//$return_url = "http://www.myorder.com.cn/Alipay/duefeeReturnUrl";
-		//需http://格式的完整路径，不能加?id=123这类自定义参数，不能写成http://localhost/		
-		//卖家支付宝帐户
-		$seller_email = $this->alipay_config['seller_email'];
-		//必填		
-		//商户订单号
-		$out_trade_no = $duefee['out_trade_no'];
-		//商户网站订单系统中唯一订单号，必填		
-		//订单名称
-		$subject = '年费续费单'.$out_trade_no;
-		//必填		
-		//付款金额
-		$total_fee = $duefee['total_fee'];
-		//必填		
-		//订单描述		
-		$body = $duefee['body'];
-		//默认支付方式
-		$paymethod = "bankPay";
-		//必填
-		//默认网银
-		$defaultbank = $this->alipay_config['defaultbank'];
-		//必填，银行简码请参考接口技术文档		
-		//商品展示地址
-		$show_url = $duefee['show_url'];	
-		//防钓鱼时间戳
-		$anti_phishing_key = "";
-		//若要使用请调用类文件submit中的query_timestamp函数		
-		//客户端的IP地址
-		$exter_invoke_ip = "";
-		//非局域网的外网IP地址，如：221.0.0.1				
-		/************************************************************/		
-		//构造要请求的参数数组，无需改动
-		$parameter = array(
-				"service" => "create_direct_pay_by_user",
-				"partner" => trim($alipay_config['partner']),
-				"payment_type"	=> $payment_type,
-				"notify_url"	=> $notify_url,
-				"return_url"	=> $return_url,
-				"seller_email"	=> $seller_email,
-				"out_trade_no"	=> $out_trade_no,
-				"subject"	=> '年费续费单',
-				"total_fee"	=> $total_fee,
-				"body"	=> $body,
-				"paymethod"	=> '',
-				"defaultbank"	=> $this->alipay_config['defaultbank'],
-				"show_url"	=> $duefee['show_url'],
-				"anti_phishing_key"	=> $duefee['anti_phishing_key'],
-				"exter_invoke_ip"	=> $duefee['exter_invoke_ip'],
-				"_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
-		);		
-		import('@.ORG.alipay_submit');
-		//建立请求
-		$alipaySubmit = new AlipaySubmit($alipay_config);
-		$html_text = $alipaySubmit->buildRequestForm($parameter,"get", "确认");
-		echo $html_text;
+		}else{
+			$this->error('检测到非法数据！');
+		}
 	}
 	
 	

@@ -52,15 +52,15 @@ return  array(
 		/* 错误设置 */
 		//'ERROR_MESSAGE'         => '页面错误！请稍后再试～',//错误显示信息,非调试模式有效
 		//'ERROR_PAGE'            => '',	// 错误定向页面
-		//'SHOW_ERROR_MSG'        => false,    // 显示错误信息
-		//'TRACE_EXCEPTION'       => true,   // TRACE错误信息是否抛异常 针对trace方法
-		//'SHOW_PAGE_TRACE'		=>true,
+		'SHOW_ERROR_MSG'        => true,    // 显示错误信息
+		'TRACE_EXCEPTION'       => true,   // TRACE错误信息是否抛异常 针对trace方法
+		'SHOW_PAGE_TRACE'		=>true,
 		
 		/* 模板引擎设置 */
 		//'TMPL_CONTENT_TYPE'     => 'text/html', // 默认模板输出类型
 		'TMPL_ACTION_ERROR'     => APP_PATH.'Tpl/dispatch_jump.tpl', // 默认错误跳转对应的模板文件
 		'TMPL_ACTION_SUCCESS'   => APP_PATH.'Tpl/dispatch_jump.tpl', // 默认成功跳转对应的模板文件
-		'TMPL_EXCEPTION_FILE'   => APP_PATH.'Tpl/404.html',// 异常页面的模板文件
+		'TMPL_EXCEPTION_FILE'   => THINK_PATH.'Tpl/think_exception.tpl',// 异常页面的模板文件
 		//'TMPL_DETECT_THEME'     => false,       // 自动侦测模板主题
 		//'TMPL_TEMPLATE_SUFFIX'  => '.html',     // 默认模板文件后缀
 		'TMPL_FILE_DEPR'        =>  '/', //模板文件MODULE_NAME与ACTION_NAME之间的分割符
@@ -86,4 +86,16 @@ return  array(
 				'REPLY_EMAIL' => '', //回复EMAIL（留空则为发件人EMAIL）
 				'REPLY_NAME'  => '', //回复名称（留空则为发件人名称）
 		),
+		'ALIPAY' => array(
+			'partner'			=> '',
+			'key'				=> '',
+			'sign_type'		=> 'MD5',
+			'input_charset'=> 'utf-8',
+			'cacert'    		=> getcwd().'\\cacert.pem',
+			'transport'    	=> 'http',
+			'seller_id' 		=> '',
+			'seller_email' 	=> '',
+			'seller_account_name' => '',
+			'defaultbank' 	=> ''
+		)
 );

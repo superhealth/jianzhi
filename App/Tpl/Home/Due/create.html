@@ -29,14 +29,13 @@
             <div class="due_form_right">&nbsp;1年 （续费成功后将于 <strong class="green">{$dueInfo['expire']|timeFormat='Y年m月d日'}</strong> 过期）</div>
           </div>
         </div>
-        <form action='__URL__/saveDue' method="post">
-				<div class="due_white_box">
-					<div class="due_title">发票信息</div>
-					<div class="due_form_group">
+        <div class="due_white_box">
+          <div class="due_title">发票信息</div>
+          <div class="due_form_group">
             <div class="due_form_left">发票抬头：</div>
             <div class="due_form_right">
               <span class="radio_group">
-                <label><input type="radio" name="invoicet" value="个人" />个人</label>
+                <label><input type="radio" name="invoicet" value="个人" checked="checked" />个人</label>
                 <label><input type="radio" name="invoicet" value="公司" />公司</label>
               </span>
               <input type="text" class="inp inp-mid" name="invoicett" value="" placeholder="30字以内" maxlength="30" />
@@ -44,13 +43,16 @@
           </div>
           <div class="due_form_group">
             <div class="due_form_left">发票内容：</div>
-            <div class="due_form_right"><input type="text" class="inp inp-lag" name="invoicec" id="" value="" placeholder="网络信息服务年费" maxlength="30" /></div>
+            <div class="due_form_right"><input type="text" class="inp inp-lag" name="invoicec" value="" placeholder="网络信息服务年费" maxlength="30" /></div>
           </div>
           <div class="due_form_group">
             <div class="due_form_left">其他信息：</div>
-            <div class="due_form_right"><textarea class="invoicetxt" name="invoicei" id="" placeholder="例如：可抵扣增值税发票、开票资料 / 发票的收件地址、收件人+手机等信息。" ></textarea></div>
+            <div class="due_form_right"><textarea class="invoicetxt" name="invoiceo" placeholder="例如：可抵扣增值税发票、开票资料 / 发票的收件地址、收件人+手机等信息。" ></textarea></div>
           </div>
-				</div>
+		  <div class="due_form_group"><button class="btn btn-invoice" id="" type="button">确认发票信息</button></div>
+        </div>
+		<form action='__GROUP__/Alipay/duefeePay' method="post">
+		  <input type="hidden" name="id" value="{$dueInfo.due_id}" />
         <div class="due_white_box">
           <div class="due_title">选择支付方式</div>
           <div class="due_paytype">
@@ -106,6 +108,15 @@
 			}else{
 			  $('.pay-btn').addClass('pay-disabled').prop('disabled', true);
 			}
+		});
+		$('.btn').click(function(){
+			var data;
+			$.post('__URL__/saveDue', data, function(rs){
+				if('success'==rs){
+				}else{
+					bootbox.alert('保存发票信息失败！');
+				}
+			}, 'text');
 		});
 	});
 </script>
