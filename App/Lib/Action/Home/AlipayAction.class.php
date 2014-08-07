@@ -152,7 +152,8 @@ class AlipayAction extends CommonAction{
 	}
 	
 	public function duefeeBack(){
-		import('@.ORG.alipay_submit');	
+		import('@.ORG.alipay_submit');
+		$alipay_config = C('ALIPAY');
 		//服务器异步通知页面路径
 		$notify_url = "http://www.xxx.com/refund_fastpay_by_platform_pwd-PHP-UTF-8/notify_url.php";
 		//需http://格式的完整路径，不允许加?id=123这类自定义参数
@@ -195,6 +196,7 @@ class AlipayAction extends CommonAction{
 	 */
 	public function duefeeBackNotify(){
 		import('@.ORG.alipay_notify');
+		$alipay_config = C('ALIPAY');
 		//计算得出通知验证结果
 		$alipayNotify = new AlipayNotify($alipay_config);
 		$verify_result = $alipayNotify->verifyNotify();		
@@ -430,6 +432,7 @@ class AlipayAction extends CommonAction{
 	public function depositBackNotify(){
 		import('@.ORG.alipay_notify');
 		//计算得出通知验证结果
+		$alipay_config = C('ALIPAY');
 		$alipayNotify = new AlipayNotify($alipay_config);
 		$verify_result = $alipayNotify->verifyNotify();
 		if($verify_result) {//验证成功

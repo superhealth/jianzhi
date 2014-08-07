@@ -218,7 +218,7 @@ class MemberAction extends CommonAction{
 					$type = '服务通知';
 					// 发送消息
 					D('Notice')->sendNotice($member, $subject, $content, $type);
-					$this->success("邮箱验证成功！", __URL__."/login");
+					$this->success("邮箱验证成功！", __URL__."/index");
 				}else{
 					$this->_empty();
 				}
@@ -245,15 +245,78 @@ class MemberAction extends CommonAction{
 	 */
 	
 	/**
-	 * 修改密码
+	 * 安全中心
 	 */
 	public function safety(){
 		$this->checkMember();
 		$this->leftInit();
 		$mInfo = M('member')->where('mem_id="'.$_SESSION['member'].'"')->find();
+		$mInfo['email'] = emailToHide($mInfo['mem_email']);
 		$this->assign('mInfo', $mInfo);
 		$this->display();
 	}
+	
+	public function checkSafeCode(){
+		$code = addslashes($_POST['code']);
+		$check = D('Member')->checkVerifyCode($_SESSION['member'], $code);
+		if($check!==true){
+			exit('error');
+		}else{
+			//验证通过
+			$_SESSION['safeCode'] = $_SESSION['member'];
+			exit('success');
+		}
+	}
+	
+	public function checkSafe(){
+		$resJson = array('code'=>0, 'msg'=>'');
+		if(!$_SESSION['member']){
+			$resJson['code'] = 5;
+			echo json_encode_nonull($resJson);exit;
+		}
+		if(empty($_SESSION['safeCode'])||$_SESSION['safeCode']!==$_SESSION['member']){
+			if($_SERVER['REQUEST_TIME']-$_SESSION['emailSendTime']<180){
+				$resJson['code'] = 1;
+				$resJson['time'] = 180-$_SERVER['REQUEST_TIME']+$_SESSION['emailSendTime'];
+				echo json_encode_nonull($resJson);exit;
+			}
+			$send = verifyCode($_SESSION['member']);
+			if($send===true){
+				$_SESSION['emailSendTime'] = $_SERVER['REQUEST_TIME'];
+				$resJson['code'] = 1;
+				$resJson['time'] = 180;
+				echo json_encode_nonull($resJson);exit;
+			}elseif($send===false){
+				$resJson['code'] = 2;
+				$resJson['msg'] = '邮件发送失败！';
+				echo json_encode_nonull($resJson);exit;
+			}else{
+				$resJson['code'] = 2;
+				$resJson['msg'] = $send;
+				echo json_encode_nonull($resJson);exit;
+			}
+		}else{
+			echo json_encode_nonull($resJson);exit;
+		}
+	}
+	
+	public function reCode(){
+		if($_SERVER['REQUEST_TIME']-$_SESSION['emailSendTime']<180){
+			exit('您的操作太过频繁，请稍后再试！');
+		}
+		$send = verifyCode($_SESSION['member']);
+		if($send===true){
+			$_SESSION['emailSendTime'] = $_SERVER['REQUEST_TIME'];
+			exit('ok');
+		}elseif($send===false){
+			exit('安全码邮件发送失败，请稍后再试！');
+		}else{
+			exit($send);
+		}
+		
+	}
+	
+	
 	/**
 	 * 修改资料
 	 */

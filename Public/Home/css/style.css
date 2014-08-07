@@ -3,7 +3,7 @@
 body{background:#f9f9f9; padding-bottom:95px;}
 html {font-size: 12px;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;}
 a, a:active, a:visited{outline: 0; text-decoration:none; color:#000;}
-a:focus {outline: thin dotted #333;outline: 5px auto -webkit-focus-ring-color;outline-offset: -2px;}
+a:focus {outline: 0;outline-offset: -2px;}
 a:hover{ color:#E95E58;}
 sub,sup {position: relative; font-size: 75%; line-height: 0; vertical-align: baseline;}
 sup {top: -0.5em;}
@@ -63,7 +63,7 @@ ul li{list-style:none;}
 .helpline{display:none; padding-left:16px;margin-left:5px;background-image:url(../image/helpline.png); background-repeat:no-repeat; line-height:16px; font-size:10px; letter-spacing:-0.05em;}
 .helpline.error{display:inline; background-position:0 0; color:#c33;}
 .helpline.success{display:inline; background-position:0 -16px; color:#090;}
-.btn{background:#ED6059; color:#fff !important; box-shadow:inset rgba(0,0,0,0.2) 4px 8px 8px;border-radius: 5px; -webkit-border-radius:5px; -moz-border-radius:5px; text-align:center; padding:3px 10px; cursor:pointer;}
+.btn{background:#ED6059; color:#fff !important; box-shadow:inset rgba(0,0,0,0.1) 4px 4px 6px;border-radius: 5px; -webkit-border-radius:5px; -moz-border-radius:5px; text-align:center; padding:3px 10px; cursor:pointer;}
 .input_group{padding:8px 10px;}
 .input_group label{width:60px; text-align:right;float:left;padding:4px 0;}
 .input_control{margin-left:65px;}
@@ -161,6 +161,16 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .info_txt{width:564px; min-height:180px; height:auto; border:1px solid #bfbfbf; padding:6px; resize:vertical; }
 .info_btns{margin-top:25px; margin-bottom:25px; margin-left:90px;}
 .info_btn{display:inline-block; width:100px; height:30px; font-size:14px; margin-left:60px; text-align:center; }
+/* safety */
+.safety_list{height:30px; padding:30px;}
+.safety_list span{display:inline-block;}
+.safe_name{width:250px; font-size:14px; font-weight:bold; line-height:30px;}
+.safe_desc{width:250px; font-size:12px; line-height:30px;}
+.safe_btn{text-align:center; }
+.safe_btn .btn{display:inline-block; font-size:14px; height:24px; line-height:24px; width:80px; margin:0 auto; }
+#safeBox{position:fixed; width:350px; height:240px; left:50%; top:50%; margin-left:-175px; margin-top:-120px;}
+.sbox_head{height:50px; line-height:50px; background:#eaeaea; font-size:14px; padding:0 50px; position:relative;}
+#sbox_close{position:absolute; display:block; width:42px; height:20px; text-align:center; right:20px;top:15px; background:#f9f9f9; color:#aaa;}
 
 
 /* notice */

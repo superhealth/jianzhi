@@ -466,6 +466,7 @@ class IndexAction extends BaseAction{
 	public function blocks($group=""){
 		$block = M("block");
 		$map = empty($group) ? array() : array("bl_group"=>$group);
+		$param = array();
 		$total = $block->where($map)->count();
 		import("Org.Util.Page");
 		$page = new Page($total, 10, $param);
@@ -548,9 +549,9 @@ class IndexAction extends BaseAction{
 		if(!per_check("block_edit")){
 			$this->error("无此权限！");
 		}else{
-			$map = array("bl_id"=>array("in", $chkt));
+			$map = array("bl_id"=>array("in", $id));
 			$blocks = M("block")->where($map)->select();
-			foreach ($advs as $v){
+			foreach ($blocks as $v){
 				$detail .= "<br />删除区块".$v['bl_group']."的".$v['block_title']."元素。";
 			}
 			if(M("block")->where($map)->delete()){

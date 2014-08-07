@@ -104,8 +104,12 @@ class RetrieveAction extends CommonAction{
 	 * 再次发送安全码
 	 */
 	public function reCode(){
+		if($_SERVER['REQUEST_TIME']-$_SESSION['emailSendTime']<180){
+			exit('您的操作太过频繁，请稍后再试！');
+		}
 		$send = verifyCode(addslashes($_REQUEST['user']), $subject="[订单网] 找回密码操作安全码");
 		if($send===true){
+			$_SESSION['emailSendTime'] = $_SERVER['REQUEST_TIME'];
 			exit('邮件已发送！');
 		}elseif($send===false){
 			exit('安全码邮件发送失败，请稍后再试！');

@@ -61,7 +61,7 @@ class MemberModel extends Model{
 				if($code == $verifyInfo[0]){
 					// 验证通过
 					// 防止重复验证
-					M("member")->where('mem_id="'.$member.'"')->save(array('mem_state'=>1, 'mem_verifycode'=>implode('-', $verifyInfo)));
+					M("member")->where('mem_id="'.$user.'"')->save(array('mem_state'=>1, 'mem_verifycode'=>implode('-', $verifyInfo)));
 					return true;
 				}else{
 					return '验证码错误！';

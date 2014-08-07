@@ -353,7 +353,7 @@ class MemberAction extends BaseAction{
 		$join = array('zt_membercompany ON mem_id=mc_mid', 'zt_memberperson ON mem_id=mp_mid');
 		$total = $m->join($join)->where($where)->count();
 		import("Org.Util.Page");
-		$page = new Page($total, 12, $param);
+		$page = new Page($total, 12);
 		// 分页查询
 		$limit = $page->firstRow.",".$page->listRows;
 		$pager = $page->shown();
