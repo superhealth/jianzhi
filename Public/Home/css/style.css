@@ -168,9 +168,15 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .safe_desc{width:250px; font-size:12px; line-height:30px;}
 .safe_btn{text-align:center; }
 .safe_btn .btn{display:inline-block; font-size:14px; height:24px; line-height:24px; width:80px; margin:0 auto; }
-#safeBox{position:fixed; width:350px; height:240px; left:50%; top:50%; margin-left:-175px; margin-top:-120px;}
+#safeBox{position:fixed; width:350px; height:240px; left:50%; top:50%; margin-left:-175px; margin-top:-120px; display:none;}
 .sbox_head{height:50px; line-height:50px; background:#eaeaea; font-size:14px; padding:0 50px; position:relative;}
-#sbox_close{position:absolute; display:block; width:42px; height:20px; text-align:center; right:20px;top:15px; background:#f9f9f9; color:#aaa;}
+#sbox_close{position:absolute; line-height:20px; font-size:12px; display:block; width:42px; height:20px; text-align:center; right:20px;top:15px; background:#f9f9f9; color:#aaa;}
+.sbox_body{width:248px; border:solid 1px #bfbfbf; border-top:none; background:#fff; padding:20px 50px; }
+.sbox_body p{margin:15px 0; font-size:12px;}
+.sbox_body p.t_center{text-align:center;}
+.sbox_body a.sbox_btn{display:inline-block; border:solid 1px #bfbfbf; line-height:24px; background:#eaeaea; padding-left:20px; padding-right:20px;}
+.sbox_body a.sbox_btn:hover{color:#060606;}
+
 
 
 /* notice */

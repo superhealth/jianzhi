@@ -37,13 +37,13 @@
 <div id="safeBox">
   <div class="sbox_head">
     <span>身份验证</span>
-    <a class="sbox_close" id="sbox_close" href="#">关闭</a>
+    <a class="sbox_close" id="sbox_close" href="#">关&nbsp;&nbsp;闭</a>
   </div>
   <div class="sbox_body">
     <p>获取验证码的邮箱：  {$mInfo.email} </p>
-    <p><a href="#" id="sbox_send" disabled="disabled" class="sbox_send"><span id="wait_send"><span id="sbox_count"></span>秒后可重新获取验证码。</span><span id="recode">重新获取</span></a></p>
+    <p class="t_center"><a href="#" id="sbox_send" disabled="disabled" class="sbox_btn"><span id="sbox_count">180</span>秒后可重新获取验证码。</a></p>
     <p>验证码：<input type="text" class="inp" name="" id="sbox_code" /></p>
-    <p><a href="#" id="sbox_verify" >确认</a></p>
+    <p class="t_center"><a href="#" id="sbox_verify" class="sbox_btn" >确认</a></p>
   </div>
 </div>
 <include file="public:footer" />
@@ -52,23 +52,24 @@ $(function(){
 	tt = null;
 	var safeCode = {
 	show:function(time){
-		    $('#sbox_count').text(time);
+		    $('#sbox_send').html('<span id="sbox_count"></span>秒后可重新获取验证码。').prop('disabled',true);
+				$('#sbox_count').text(time);
 				$('#safeBox').show();
-				$('#wait_send').show();
-			  $('#recode').hide();
-				$('#sbox_send').prop('disabled',true);
 				clearTimeout(tt);
 				safeCode.timeCount();
+				$('#sbox_close').click(function(e){
+					e.preventDefault();
+					$("#safeBox").hide();
+				});
 	},
 	timeCount : function(){
 		var t = parseInt($('#sbox_count').text());
+		console.log(t);
 		if(t>0){
 			$('#sbox_count').text(t-1);
 			tt = setTimeout(safeCode.timeCount, 1000);
 		}else{
-		  $('#wait_send').hide();
-			$('#recode').show();
-			$('#sbox_send').prop('disabled',false);
+		  $('#sbox_send').html('重新获取').prop('disabled',false);
 		}
 	}
 }
