@@ -6,7 +6,7 @@
 			<a href="__GROUP__/Member/register" >免费注册</a>
 			<else />
 			<a href="__GROUP__/Member" >{$Think.session.member}<if condition="$status neq 2"><span class="red">(实名未验)</span></if></a>
-			<a href="__GROUP__/Member/sysNotice" >消息中心<if condition="$notice gt 0">({$notice})</if></a>
+			<a href="__GROUP__/Notice" >消息中心<if condition="$notice gt 0">({$notice})</if></a>
 			<a href="__GROUP__/Member/logout" >[退出]</a>
 			</if>
 		</div>

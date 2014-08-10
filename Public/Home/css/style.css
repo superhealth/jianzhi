@@ -176,6 +176,10 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .sbox_body p.t_center{text-align:center;}
 .sbox_body a.sbox_btn{display:inline-block; border:solid 1px #bfbfbf; line-height:24px; background:#eaeaea; padding-left:20px; padding-right:20px;}
 .sbox_body a.sbox_btn:hover{color:#060606;}
+#code_flag{display:inline-block; width:16px; height:16px; border-top:3px solid #fff; }
+#code_flag.success{background:url(../image/helpline.png) 0 -16px no-repeat;}
+#code_flag.error{background:url(../image/helpline.png) 0 0 no-repeat;}
+
 
 
 

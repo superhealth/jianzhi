@@ -257,7 +257,7 @@ class MemberAction extends CommonAction{
 	}
 	
 	public function checkSafeCode(){
-		$code = addslashes($_POST['code']);
+		$code = addslashes($_GET['code']);
 		$check = D('Member')->checkVerifyCode($_SESSION['member'], $code);
 		if($check!==true){
 			exit('error');
