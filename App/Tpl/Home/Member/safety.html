@@ -37,13 +37,14 @@
 <div id="safeBox">
   <div class="sbox_head">
     <span>身份验证</span>
-    <a class="sbox_close" id="sbox_close" href="#">关闭</a>
+    <a class="sbox_close" id="sbox_close" href="#">关&nbsp;&nbsp;闭</a>
   </div>
   <div class="sbox_body">
+  	<input type="hidden" id="sbox_href" value="#" />
     <p>获取验证码的邮箱：  {$mInfo.email} </p>
-    <p><a href="#" id="sbox_send" disabled="disabled" class="sbox_send"><span id="wait_send"><span id="sbox_count"></span>秒后可重新获取验证码。</span><span id="recode">重新获取</span></a></p>
-    <p>验证码：<input type="text" class="inp" name="" id="sbox_code" /></p>
-    <p><a href="#" id="sbox_verify" >确认</a></p>
+    <p class="t_center"><a href="#" id="sbox_send" disabled="disabled" class="sbox_btn"><span id="sbox_count">180</span>秒后可重新获取验证码。</a></p>
+    <p>验证码：<input type="text" class="inp" name="" id="sbox_code" /><span id="code_flag"></span></p>
+    <p class="t_center"><a href="#" id="sbox_verify" class="sbox_btn" >确认</a></p>
   </div>
 </div>
 <include file="public:footer" />
@@ -51,14 +52,19 @@
 $(function(){
 	tt = null;
 	var safeCode = {
-	show:function(time){
-		    $('#sbox_count').text(time);
+	show:function(time, url){
+				if(url!==undefined){
+					$('#sbox_href').val(url);
+				}
+		    $('#sbox_send').html('<span id="sbox_count"></span>秒后可重新获取验证码。').data('disabled',true);
+				$('#sbox_count').text(time);
 				$('#safeBox').show();
-				$('#wait_send').show();
-			  $('#recode').hide();
-				$('#sbox_send').prop('disabled',true);
 				clearTimeout(tt);
 				safeCode.timeCount();
+				$('#sbox_close').click(function(e){
+					e.preventDefault();
+					$("#safeBox").hide();
+				});
 	},
 	timeCount : function(){
 		var t = parseInt($('#sbox_count').text());
@@ -66,9 +72,7 @@ $(function(){
 			$('#sbox_count').text(t-1);
 			tt = setTimeout(safeCode.timeCount, 1000);
 		}else{
-		  $('#wait_send').hide();
-			$('#recode').show();
-			$('#sbox_send').prop('disabled',false);
+		  $('#sbox_send').html('重新获取').data('disabled',false);
 		}
 	}
 }
@@ -79,7 +83,7 @@ $(function(){
 			if(data.code===5){
 				window.location.reload();
 			}else if(data.code===1){
-				safeCode.show(data.time);
+				safeCode.show(data.time, _href);
 			}else if(data.code===0){
 				window.location.href = _href;
 			}else{
@@ -88,6 +92,9 @@ $(function(){
 		}, 'json');
 		$('#sbox_send').click(function(e){
 			e.preventDefault();
+			if($(this).data('disabled')){
+				return false;
+			}
 		  $.get('__URL__/reCode', null, function(msg){
 				if(msg=='ok'){
 					safeCode.show(180);
@@ -96,8 +103,19 @@ $(function(){
 				}
 			}, 'text');
 		});
+		
+		$('#sbox_code').blur(function(){
+			$.get('__URL__/checkSafeCode/code/'+$('#sbox_code').val(), null, function(flag){
+				$('.code_flag').removeClass().addClass(flag);
+			}, 'text');
+		});
+		
 		$('#sbox_verify').click(function(){
-			
+			if($('.code_flag').hasClass('success')){
+				location.href= $('#sbox_href').val();
+			}else{
+				return false;
+			}
 		});
 	});
 });
