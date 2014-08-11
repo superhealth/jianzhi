@@ -1076,6 +1076,7 @@ function postVerifyMail($member){
 	$body = '尊敬的 <b>'.$member.'</b> 您好！感谢您注册成为《订单网》会员，请点击 <a href="http://'.$host.'/Member/verifyMail/member/'.$member.'/verifyCode/'.$verify[0].'">邮箱验证链接</a> 完成邮箱验证。<br />如果您不是 <b>'.$member.'</b> ，请忽略该邮件。';
 	if(think_send_mail($email, $member, $subject, $body)){
 		M("member")->where("mem_id='{$member}'")->setField("mem_verifycode", $verifyCode);
+		$_SESSION['emailVerifyTime'] = $_SERVER['REQUEST_TIME'];
 		return true;
 	}else{
 		return false;
@@ -1096,6 +1097,7 @@ function verifyCode($member="", $subject=""){
 	$body = '尊敬的 <b>'.$member.'</b> 您好！您本次操作的安全码是 <br /><b style="font-size:larger;">'.$verify[0].'</b><br />如果您不是 <b>'.$member.'</b>，请忽略该邮件。';
 	if(think_send_mail($email, $member, $subject, $body)){
 		M("member")->where("mem_id='{$member}'")->setField("mem_verifycode", $verifyCode);
+		$_SESSION['emailSendTime'] = $_SERVER['REQUEST_TIME'];
 		return true;
 	}else{
 		return false;
