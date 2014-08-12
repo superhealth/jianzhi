@@ -167,6 +167,23 @@ class MemberAction extends CommonAction{
 		}
 	}
 	/**
+	 * ajax检查用户名 $email是否重复
+	 * @param string $email 待检查的用户名
+	 */
+	public function checkEmail($email=""){
+		if($email){
+			$exist = M("member")->where('mem_email="'.$email.'"')->count();
+			if($exist>0){
+				exit('fail');
+			}else{
+				exit('ok');
+			}
+		}else{
+			exit("empty");
+		}
+	}
+	
+	/**
 	 * ajax检查用户名 $name是否重复
 	 * @param string $name 待检查的用户名
 	 */
@@ -276,9 +293,7 @@ class MemberAction extends CommonAction{
 	}
 	
 	public function checkSafe(){
-		if(empty($_SESSION['member'])){
-			exit('Access Denied!');
-		}
+		$_SESSION['safeCode'] = $_SESSION['member'];
 		$resJson = array('code'=>0, 'msg'=>'');
 		if(!$_SESSION['member']){
 			$resJson['code'] = 5;
@@ -326,24 +341,62 @@ class MemberAction extends CommonAction{
 		}
 		
 	}
-	
+	/**
+	 * 修改邮箱页面
+	 */
 	public function chemail(){
 		$this->checkMember();
 		$this->leftInit();
-		if(!empty($_SESSION['safeCode'])&&$_SESSION['safeCode']===$_SESSION['member']){
+		if(empty($_SESSION['safeCode'])||$_SESSION['safeCode']!==$_SESSION['member']){
 			redirect(__URL__.'/safety');exit;
 		}
-		if($_POST['action'] == 'save'){
-			
-			
-		}else{
+		$this->display();
+	}
+	
+	public function chEmailStep2(){
+		$this->checkMember();
+		$this->leftInit();
+		if(empty($_SESSION['safeCode'])||$_SESSION['safeCode']!==$_SESSION['member']){
+			redirect(__URL__.'/safety');exit;
+		}
+		if($_SERVER['REQUEST_TIME']-$_SESSION['emailVerifyTime']<180){
+			$this->error('您的操作太过频繁，请稍后再试！');
+		}
+		$send = postChangeMail($_SESSION['member'], $_POST['new_email']);
+		if($send===true){
+			$_SESSION['changeEmail'] = $_POST['new_email'];
 			$this->display();
+		}elseif($send===false){
+			$this->error("邮件发送失败！");
+		}else{
+			$this->error($send);
 		}
 	}
 	
+	public function reChangeEmail(){
+		if(!empty($_SESSION['safeCode'])&&$_SESSION['safeCode']!==$_SESSION['member']){
+			exit('身份错误！请刷新页面再试。');
+		}
+		if($_SERVER['REQUEST_TIME']-$_SESSION['emailVerifyTime']<180){
+			exit('您的操作太过频繁，请稍后再试！');
+		}
+		$send = postChangeMail($_SESSION['member'], $_POST['email']);
+		if($send===true){
+			exit("邮件发送成功！");
+		}elseif($send===false){
+			exit("邮件发送失败！");
+		}else{
+			exit($send);
+		}
+		
+	}
+	/**
+	 * 验证新邮箱是否有效
+	 * @param string $code 验证邮箱有效性的安全码
+	 */
 	public function changeEmail($code=''){
-		if(!$_SESSION['member']||!$_SESSION['']){
-			$this->error('链接已失效！', __URL__."/login");
+		if(!$_SESSION['member']||!$_SESSION['changeEmail']){
+			$this->error('链接已失效！');
 		}
 		// 获取服务器端保存的用户验证码
 		$verify = M("member")->where('mem_id="'.$_SESSION['member'].'"')->getField("mem_verifycode");
@@ -351,22 +404,31 @@ class MemberAction extends CommonAction{
 			$verifyInfo = explode("-", $verify);
 			// 检查是否过期 过期时间7天
 			if($verifyInfo[1] > time()-7*24*3600){
-				if($verifyCode == $verifyInfo[0]){
+				if($code == $verifyInfo[0]){
 					//验证通过
 					$verifyInfo[1] = 0;
-					M("member")->where('mem_id="'.$_SESSION['member'].'"')->save(array('mem_email'=>1, 'mem_verifycode'=>implode('-', $verifyInfo)));
-					$email = M("member")->where('mem_id="'.$_SESSION['member'].'"')->getField("mem_email");
-					$subject = '邮箱修改成功通知';
-					$content = '恭喜您已通过邮箱验证完成邮箱修改，绑定的邮新箱地址是：'.emailToHide($email);
-					$type = '服务通知';
-					// 发送消息
-					D('Notice')->sendNotice($member, $subject, $content, $type);
-					$this->success("邮箱验证成功！", __URL__."/index");
+					$data = array(
+							'mem_email'=>$_SESSION['changeEmail'], 
+							'mem_verifycode'=>implode('-', $verifyInfo)
+						);
+					if(M("member")->where('mem_id="'.$_SESSION['member'].'"')->save($data)){
+						unset($_SESSION['safeCode']);
+						$subject = '邮箱修改成功通知';
+						$email = emailToHide($_SESSION['changeEmail']);
+						$content = '恭喜您已通过邮箱验证完成邮箱修改，绑定的邮新箱地址是：'.$email;
+						$type = '服务通知';
+						// 发送消息
+						D('Notice')->sendNotice($_SESSION['member'], $subject, $content, $type);
+						$this->success("您的新邮箱<strong>{$email}</strong>绑定成功！", __URL__."/index");;
+					}else{
+						$this->error('新邮箱修改失败！', __APP__);
+					}
+					
 				}else{
 					$this->_empty();
 				}
 			}else{
-				$this->error('链接已失效！点击<a href="'.__URL__.'/sendVerifyMail/member/{$member}">重新发送验证邮件</a>.', __URL__."/login", 5);
+				$this->_empty();
 			}
 		}else{
 			$this->_empty();
@@ -374,9 +436,33 @@ class MemberAction extends CommonAction{
 	}
 	
 	public function chpw(){
-		redirect(__URL__.'/safety');exit;
+		$this->checkMember();
+		$this->leftInit();
+		if(empty($_SESSION['safeCode'])||$_SESSION['safeCode']!==$_SESSION['member']){
+			redirect(__URL__.'/safety');exit;
+		}
+		$this->display();
 	}
 	
+	public function chpwEd(){
+		$this->checkMember();
+		$this->leftInit();
+		if(empty($_SESSION['safeCode'])||$_SESSION['safeCode']!==$_SESSION['member']){
+			redirect(__URL__.'/safety');exit;
+		}
+		if(M('member')->where('mem_id="'.$_SESSION['member'].'"')->setField('mem_password', md5($_POST['newpass']))){
+			unset($_SESSION['safeCode']);
+			$subject = '密码修改成功通知';
+			$content = '恭喜您已成功修改登录密码';
+			$type = '服务通知';
+			// 发送消息
+			D('Notice')->sendNotice($_SESSION['member'], $subject, $content, $type);
+			$this->display();
+		}else{
+			$this->error('修改密码失败！请不要输入之前使用过的密码！');
+			
+		}
+	}
 	/**
 	 * 修改资料
 	 */

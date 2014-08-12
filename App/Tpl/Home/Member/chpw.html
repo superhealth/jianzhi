@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<include file="public:css" />
+<include file="public:js" />
+</head>
+<include file="public:header" />
+<div class="container">
+	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">会员中心</a> /<a href="__GROUP__/Member/safety">安全中心</a> / <a href="__GROUP__/chpw">修改登陆密码</a></div>
+	<div class="content">
+		<include file="public:left" />
+		<div class="mem_main">
+			<h3 class="mem_sub_title">修改登陆密码</h3>
+      <div class="box retrieve_box">
+		
+		<div class="box_content retrieve_content">
+			<form action="" method="post">
+				<div class="retrieve_group">
+					<label class="retrieve_label">新密码：</label>
+					<div class="retrieve_control">
+						<input type="password" class="inp inp-retrieve" name="newpass" id="pass" />
+						<span class="helpline"></span>
+					</div>
+				</div>
+				<div class="retrieve_group">
+					<label class="retrieve_label">确认密码：</label>
+					<div class="retrieve_control">
+						<input type="password" class="inp inp-retrieve" name="repass" id="repass" />
+						<span class="helpline"></span>
+					</div>
+				</div>
+				<div class="btn-group">
+					<a class="btn retrieve_btn" id="re_step_3" data-act="__URL__/chpwEd" >完成</a>
+				</div>
+			</form>
+		</div>
+	</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+</div>
+<include file="public:footer" />
+<body>
+</body>
+</html>

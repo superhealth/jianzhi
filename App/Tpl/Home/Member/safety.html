@@ -81,11 +81,11 @@ $(function(){
 		var _href = $(this).data('href');
 		$.get('__URL__/checkSafe', null, function(data){
 			if(data.code===5){
-				window.location.reload();
+				location.reload();
 			}else if(data.code===1){
 				safeCode.show(data.time, _href);
 			}else if(data.code===0){
-				window.location.href = _href;
+				location.href = _href;
 			}else{
 				bootbox.alert('服务器返回错误：'+data.msg);
 			}

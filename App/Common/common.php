@@ -1083,6 +1083,24 @@ function postVerifyMail($member){
 	}
 }
 /**
+ * 发送验证邮件
+ */
+function postChangeMail($member, $email){
+	$verify = array(randomStr(8, 4), time());
+	$verifyCode = implode("-", $verify);
+	$subject = "[订单网]验证您的电子邮箱地址";
+	$host = D('Sysconf')->getConf('cfg_basehost');
+	$body = '尊敬的 <b>'.$member.'</b> 您好！感谢您注册成为《订单网》会员，请点击 <a href="http://'.$host.'/Member/changeEmail/code/'.$verify[0].'">邮箱验证链接</a> 完成邮箱验证。<br />如果您不是 <b>'.$member.'</b> ，请忽略该邮件。';
+	if(think_send_mail($email, $member, $subject, $body)){
+		M("member")->where("mem_id='{$member}'")->setField("mem_verifycode", $verifyCode);
+		$_SESSION['emailVerifyTime'] = $_SERVER['REQUEST_TIME'];
+		return true;
+	}else{
+		return false;
+	}
+}
+
+/**
  * 邮箱发送验证码
  */
 function verifyCode($member="", $subject=""){
