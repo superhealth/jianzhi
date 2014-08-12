@@ -77,40 +77,45 @@ class ProjectAction extends CommonAction{
 		$this->display();
 	}
 	
+	/**
+	 * 服务条款
+	 *  
+	 */
+	public function serviceTerm(){
+	  $this->display();
+	}
 	
 	/**
 	 * 发布项目
-	 * @param $step 步骤
+	 *  步骤1
 	 */
-	public function createProject($step = 1){
-		switch($step){
-			case 1:
-				
-				break;
-			case 2:
-				
-				break;
-			case 3:
-				
-				break;
-				
-			default:
-				
-		}
+	public function createStep1(){
+		$this->display();
 	}
-	
-	public function saveNewProject(){
-		
-		
-	}
-	
-
 	/**
-	 * 项目详情
-	 * @param string $id 项目ID
-	 * 
+	 * 发布项目
+	 *  步骤2
 	 */
-	public function viewProject($id=""){
+	public function createStep2(){
+		$this->display();
+	}
+	/**
+	 * 发布项目
+	 *  步骤3
+	 */
+	public function createStep3(){
+		$this->display();
+	}
+	/**
+	 * 发布项目
+	 *  步骤4
+	 */
+	public function createStep4(){
+		
+	}
+	
+	public function createEd(){
+		
 		
 	}
 	
