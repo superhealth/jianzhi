@@ -105,6 +105,10 @@ class ProjectAction extends CommonAction{
 	 *  步骤3
 	 */
 	public function createStep3(){
+		$this->checkMember();
+		$type = $_POST['pro_type'];
+		$enum = $_POST['pro_enum'];
+		$sn = createProjectSn($_SESSION['member']);
 		$this->display();
 	}
 	/**
@@ -112,11 +116,17 @@ class ProjectAction extends CommonAction{
 	 *  步骤4
 	 */
 	public function createStep4(){
-		
+		$this->checkMember();
+		$this->display();
 	}
 	
 	public function createEd(){
-		
+		$this->checkMember();
+		if(M('project')->save($data)){
+			$this->display()
+		}else{
+			$this->error('')
+		}
 		
 	}
 	

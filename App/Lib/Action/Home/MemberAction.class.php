@@ -293,7 +293,6 @@ class MemberAction extends CommonAction{
 	}
 	
 	public function checkSafe(){
-		$_SESSION['safeCode'] = $_SESSION['member'];
 		$resJson = array('code'=>0, 'msg'=>'');
 		if(!$_SESSION['member']){
 			$resJson['code'] = 5;
