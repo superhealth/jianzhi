@@ -97,6 +97,7 @@ class ProjectAction extends CommonAction{
 	 *  步骤2
 	 */
 	public function createStep2(){
+		$this->checkMember();
 		$this->display();
 	}
 	/**
