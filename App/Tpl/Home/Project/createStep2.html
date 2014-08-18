@@ -19,10 +19,10 @@
     </div>
   	<div class="pro_box left_box">
       <div class="pro_title">选择行业类别
-      	<ul class="pro_category_select">
-          <li class="pro_ca_s_main">电子</li>
-          <li class="pro_ca_s_sub">子类1</li>
-          <li class="pro_ca_s_sub">子类2</li>
+      	<div class="pro_ca_s_main">电子</div>
+      	<ul class="pro_ca_s_sub">
+          <li>子类1</li>
+          <li>子类2</li>
         </ul>
       </div>
       <div class="pro_body">
@@ -215,15 +215,14 @@
                 <div class="pro_ca_sub_item">子类2</div>
                </li>
             </ul>
-            <div class="clearfix"></div>
           </div>
           
           <div class="pro_btn_groups">
           	<form >
             	<input id="pro_type" name="pro_type" type="hidden" value="" />
               <input id="pro_enum" name="pro_enum" type="hidden" value="" />
-            	<button type="button" class="btn pro_step1_32" data-href="__URL__/createStep1">上一步</button>
-              <button type="button" class="btn pro_step1_32" data-href="__URL__/createStep3">下一步</button>
+            	<button type="button" class="btn btn-href" data-href="__URL__/createStep1">上一步</button>
+              <button type="button" class="btn btn-sub" data-act="__URL__/createStep3">下一步</button>
             </form>
           </div>
         </div>
@@ -235,12 +234,38 @@
 <include file="public:js" />
 <script type="text/javascript">
 	$(function(){
-		$(".pro").click(function(){
-			
+		$(".pro_ca_main_item").click(function(){
+			if($(this).hasClass('cur')){
+				return false;
+			}
+			$(this).siblings().removeClass('cur').end().addClass('cur');
+			var type = $(this).text();
+			$('.pro_ca_sub_item').removeClass('cur');
+			getEnums();
+			$(".pro_ca_s_main").text(type);
+			$("#pro_type").val(type);
 		});
-		$('.pro_').click(function(){
-			
+		
+		$('.pro_ca_sub_item').click(function(){
+			$(this).siblings().removeClass('cur').end().addClass('cur');
+			var _enums = getEnums();
+			$("#pro_enum").val(_enums.join(','));
 		});
+		
+		function getEnums(){
+			var enums = [];
+			$('.pro_ca_sub_item.cur').each(function(i){
+				enums[i] = $(this).text();
+			});
+			var len = enums.length;
+			console.log(len,enums);
+			var _html = "";
+			for(var i=0; i<len; i++){
+				_html += "<li>" + enums[i] + "</li>";
+			}
+			$(".pro_ca_s_sub").html(_html);
+			return enums;
+		}
 	});
 </script>
 </body>

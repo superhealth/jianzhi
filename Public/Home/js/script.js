@@ -292,6 +292,15 @@ $(function(){
 		}
 	});
 	
+	// 链接按钮
+	$('.btn-link').click(function(){
+		location.href = $(this).data('href');
+	});
+	// 链接按钮
+	$('.btn-sub').click(function(){
+		$(this).parents('form').attr('action', $(this).data('act')).submit();
+	});
+	
 	
 	// 刷新验证码	
 	$('.authcode').click(function(){

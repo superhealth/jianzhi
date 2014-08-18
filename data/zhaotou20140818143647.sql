@@ -676,7 +676,7 @@ CREATE TABLE `zt_cronhash` (
   `ch_time` int(11) NOT NULL,
   PRIMARY KEY (`ch_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-insert into `zt_cronhash`(`ch_name`,`ch_time`) values('member','1407400407');
+insert into `zt_cronhash`(`ch_name`,`ch_time`) values('member','1407997943');
 insert into `zt_cronhash`(`ch_name`,`ch_time`) values('project','0');
 insert into `zt_cronhash`(`ch_name`,`ch_time`) values('deposit','0');
 CREATE TABLE `zt_currency` (
@@ -985,8 +985,8 @@ CREATE TABLE `zt_member` (
   PRIMARY KEY (`mem_id`),
   UNIQUE KEY `m_id` (`mem_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户注册信息';
-insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('oowoolf','10000','bab68d575e5e96461ad6ac2c975f9396','609164964@qq.com','13760432926','1','8','0','0','1','1500722827','14VD4M6-1406205533');
-insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('dapianzi','9999','bab68d575e5e96461ad6ac2c975f9396','448379160@qq.com','15270694370','1','13','0','0','0','1406736000','ASTOE9ZN-1406204727');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('oowoolf','10000','bab68d575e5e96461ad6ac2c975f9396','609164964@qq.com','13760432926','1','9','0','0','1','1500722827','C001F9F-1407461151');
+insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('dapianzi','9999','bab68d575e5e96461ad6ac2c975f9396','448379160@qq.com','15270694370','1','15','0','0','0','1406736000','ASTOE9ZN-1406204727');
 insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('dahubi','5000','bab68d575e5e96461ad6ac2c975f9396','carl@chuango.com','13145816924','2','1','2014','1','1','1529403759','{code:88888888,time:0}');
 insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('valerie','0','bab68d575e5e96461ad6ac2c975f9396','valierie@qq.com','13145816924','1','4','6','0','1','1563638400','{code:88888888,time:0}');
 insert into `zt_member`(`mem_id`,`mem_rank`,`mem_password`,`mem_email`,`mem_tel`,`mem_state`,`mem_logincount`,`mem_regtime`,`mem_type`,`mem_active`,`mem_expiretime`,`mem_verifycode`) values('安防','0','bab68d575e5e96461ad6ac2c975f9396','dfa0@qq.com','啊','1','0','6','0','0','1405872000','{code:88888888,time:0}');
@@ -1056,7 +1056,7 @@ CREATE TABLE `zt_notice` (
   `no_type` varchar(32) NOT NULL,
   `no_mid` char(32) NOT NULL,
   PRIMARY KEY (`no_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_type`,`no_mid`) values('1','【系统消息】啦啦啦啦啦','a嘎达发噶啊地方噶阿迪发送的','0','0','pro','dapianzi');
 insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_type`,`no_mid`) values('2','【系统消息】啦啦啦啦啦','a嘎达发噶啊地方噶阿迪发送的','0','0','pro','dapianzi');
 insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_type`,`no_mid`) values('3','【系统消息】 会员年费续费提醒','您的会员有效时间已不足30天，请及时续费以继续使用我们的服务，谢谢！','1405044635','0','pro','dapianzi');
@@ -1104,6 +1104,8 @@ insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`n
 insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_type`,`no_mid`) values('47','年费过期提醒','lurenc 您好，您的会员将于2014年08月16日到期。请及时续费以继续使用《订单网》的服务，点此<a href=\"/Due\">立即续费</a>。','1407316081','0','acc','');
 insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_type`,`no_mid`) values('48','年费过期提醒','lurene 您好，您的会员将于2014年08月16日到期。请及时续费以继续使用《订单网》的服务，点此<a href=\"/Due\">立即续费</a>。','1407316116','0','acc','');
 insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_type`,`no_mid`) values('49','年费过期提醒','lurene 您好，您的会员将于2014年08月16日到期。请及时续费以继续使用《订单网》的服务，点此<a href=\"/Due\">立即续费</a>。','1407316118','0','acc','');
+insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_type`,`no_mid`) values('50','年费过期提醒','oowoolf 您好，您的会员将于2017年07月22日到期。请及时续费以继续使用《订单网》的服务，点此<a href=\"/Due\">立即续费</a>。','1407461143','0','acc','');
+insert into `zt_notice`(`no_id`,`no_subject`,`no_content`,`no_time`,`no_read`,`no_type`,`no_mid`) values('51','年费过期提醒','oowoolf 您好，您的会员将于2017年07月22日到期。请及时续费以继续使用《订单网》的服务，点此<a href=\"/Due\">立即续费</a>。','1407461146','0','acc','');
 CREATE TABLE `zt_pro_record` (
   `re_id` int(11) NOT NULL AUTO_INCREMENT,
   `pro_id` int(11) NOT NULL,

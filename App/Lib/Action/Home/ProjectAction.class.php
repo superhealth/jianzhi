@@ -106,9 +106,21 @@ class ProjectAction extends CommonAction{
 	 */
 	public function createStep3(){
 		$this->checkMember();
-		$type = $_POST['pro_type'];
-		$enum = $_POST['pro_enum'];
-		$sn = createProjectSn($_SESSION['member']);
+		if(empty($_COOKIE['newProject'])){
+			if(empty($_POST['pro_type'])){
+				$this->error('请选择类别！', __URL__.'/createStep2', 2);
+			}
+			$data = array(
+					'pro_sort'	=> $_POST['pro_type'],
+					'pro_emun'	=> $_POST['pro_enum'],
+					'pro_sn'		=> createProjectSn($_SESSION['member'])
+				);
+			if(M('project')->add($data)){
+				setcookie('newProject', $data, time()+3600*24);
+				$this->assign('newProject', $data);
+			}
+		}
+		$this->assign('newProject', $_COOKIE['newProject']);
 		$this->display();
 	}
 	/**
@@ -117,15 +129,35 @@ class ProjectAction extends CommonAction{
 	 */
 	public function createStep4(){
 		$this->checkMember();
+		if(empty($_COOKIE['newProject'])){
+			if(empty($_POST['pro_type'])){
+				$this->error('请选择类别！', __URL__.'/createStep2');
+			}
+			$data = array(
+					'pro_sort'	=> $_POST['pro_type'],
+					'pro_emun'	=> $_POST['pro_enum'],
+					
+					
+					
+					
+					
+					'pro_sn'		=> createProjectSn($_SESSION['member'])
+			);
+			if(M('project')->add($data)){
+				setcookie('newProject', $data, time()+3600*24);
+				$this->assign('newProject', $data);
+			}
+		}
+		$this->assign('newProject', $_COOKIE['newProject']);
 		$this->display();
 	}
 	
 	public function createEd(){
 		$this->checkMember();
 		if(M('project')->save($data)){
-			$this->display()
+			$this->display();
 		}else{
-			$this->error('')
+			$this->error('保存失败！请稍后再试或联系我们的客服');
 		}
 		
 	}

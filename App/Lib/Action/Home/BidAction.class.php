@@ -15,11 +15,27 @@ class BidAction extends CommonAction{
 	
 	/**
 	 * 新建应标
-	 * @param string $step 创建步骤
+	 * @param 创建步骤1
 	 */
-	public function createBidder($step = 1){
+	public function createStep1(){
 		$this->checkMember();
 	}
+	/**
+	 * 新建应标
+	 * @param 创建步骤2
+	 */
+	public function createStep2(){
+		$this->checkMember();
+	}
+	/**
+	 * 新建应标
+	 * @param 创建步骤3
+	 */
+	public function createStep3(){
+		$this->checkMember();
+	}
+	
+	
 	
 	/**
 	 * 查看投标信息
