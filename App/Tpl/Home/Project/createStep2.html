@@ -9,220 +9,66 @@
 <body>
 <include file="public:header" />
 <div class="container">
-  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">招标发单</a> /<a href="__GROUP__/Member/safety">安全中心</a> / <a href="__GROUP__/chpw">修改登陆密码</a></div>
+  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Project/createStep1">招标发单</a> /<a href="__GROUP__/Member/safety">选择类别</a></div>
   <div class="content">
   	<div class="pro_box right_box">
     	<div class="pro_title">温馨提示</div>
       <div class="pro_body">
-      	
+      	<ol class="tips_right">
+					<li>.....</li>
+					<li>......</li>
+					<li>......</li>
+				</ol>
       </div>
     </div>
   	<div class="pro_box left_box">
       <div class="pro_title">选择行业类别
-      	<div class="pro_ca_s_main">电子</div>
-      	<ul class="pro_ca_s_sub">
-          <li>子类1</li>
-          <li>子类2</li>
-        </ul>
+				<div class="pro_ca_sel">
+					<div class="pro_ca_s_main"></div>
+					<ul class="pro_ca_s_sub">
+					</ul>
+				</div>
       </div>
       <div class="pro_body">
         <div class="pro_category_main">
          	<h4>行业类别</h4>
          	<ul class="pro_ca_main_list">
-         		<li class="pro_ca_main_item">服装</li>
-            <li class="pro_ca_main_item cur">电子</li>
-            <li class="pro_ca_main_item">软件</li>
-            <li class="pro_ca_main_item">美术</li>
-            <li class="pro_ca_main_item">机械</li>
-            <li class="pro_ca_main_item">建筑</li>
-            <li class="pro_ca_main_item">家装</li>
-            <li class="pro_ca_main_item">食品</li>
+						<volist name="sorts" id="sitem">
+         		<li class="pro_ca_main_item" data-id="{$key}">{$sitem}</li>
+						</volist>
           </ul>
         </div>
         <div class="pro_category_sub">
-        	<div class="pro_ca_sub_default hide">
+        	<div class="pro_ca_sub_default">
           	<h4>请选择左侧的行业类别</h4>
             <p>若没有适合您的行业类别，请联系<a href="#">在线客服</a>，或发送电邮告诉我们：<a href="mailto:xxx@xxx.com">xxx@xxx.com</a></p>
           </div>
-          <div class="pro_ca_sub_list cur" id="1">
+					<volist name="enums" id="eitem">
+          <div class="pro_ca_sub_list" id="pro_ca_sub_{$key}">
           	<ul>
+							<volist name="eitem" id="bitem">
             	<li>
-                <img class="pro_ca_sub_icon" src="" alt="aaa" />
-                <div class="pro_ca_sub_item cur">子类1</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
+                <img class="pro_ca_sub_icon" src="__PUBLIC__/image/sort/{$key}.jpg" alt="{$key}" />
+								<volist name="bitem" id="sitem" key='j'>
+                
+								<if condition="($j eq 5) || ($j gt 5 && ($j-3)%7 eq 0)">
+                <div class="pro_ca_sub_item border_right">{$sitem}</div>
+								<else />
+								<div class="pro_ca_sub_item">{$sitem}</div>
+								</if>
+								</volist>
                </li>
-               <li>
-                <img class="pro_ca_sub_icon" src="" alt="aaa" />
-                <div class="pro_ca_sub_item cur">子类1</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-               </li>
+							 </volist>
             </ul>
+						<div class="clearfix"></div>
           </div>
-          <div class="pro_ca_sub_list" id="2">
-          	<ul>
-            	<li>
-                <img class="pro_ca_sub_icon" src="" alt="aaa" />
-                <div class="pro_ca_sub_item cur">子类1</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-               </li>
-               <li>
-                <img class="pro_ca_sub_icon" src="" alt="aaa" />
-                <div class="pro_ca_sub_item cur">子类1</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-               </li>
-            </ul>
-          </div>
-          <div class="pro_ca_sub_list" id="3">
-          	<ul>
-            	<li>
-                <img class="pro_ca_sub_icon" src="" alt="aaa" />
-                <div class="pro_ca_sub_item cur">子类1</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-               </li>
-               <li>
-                <img class="pro_ca_sub_icon" src="" alt="aaa" />
-                <div class="pro_ca_sub_item cur">子类1</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-               </li>
-            </ul>
-          </div>
-          <div class="pro_ca_sub_list" id="4">
-          	<ul>
-            	<li>
-                <img class="pro_ca_sub_icon" src="" alt="aaa" />
-                <div class="pro_ca_sub_item cur">子类1</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item border_right">子类2</div>
-               </li>
-               <li>
-                <img class="pro_ca_sub_icon" src="" alt="aaa" />
-                <div class="pro_ca_sub_item cur">子类1</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-                <div class="pro_ca_sub_item">子类2</div>
-               </li>
-            </ul>
-          </div>
-          
+          </volist>
           <div class="pro_btn_groups">
-          	<form >
+          	<form method="post">
             	<input id="pro_type" name="pro_type" type="hidden" value="" />
               <input id="pro_enum" name="pro_enum" type="hidden" value="" />
             	<button type="button" class="btn btn-href" data-href="__URL__/createStep1">上一步</button>
-              <button type="button" class="btn btn-sub" data-act="__URL__/createStep3">下一步</button>
+              <button type="button" class="btn btn-sub" data-act="__URL__/createSort">下一步</button>
             </form>
           </div>
         </div>
@@ -238,12 +84,17 @@
 			if($(this).hasClass('cur')){
 				return false;
 			}
+			$('.pro_ca_sub_default').hide();
 			$(this).siblings().removeClass('cur').end().addClass('cur');
-			var type = $(this).text();
+			
+			var sid = $(this).data('id'),
+						sname = $(this).text();
+			$('.pro_ca_sub_list').hide();
+			$('#pro_ca_sub_'+sid).show();
 			$('.pro_ca_sub_item').removeClass('cur');
-			getEnums();
-			$(".pro_ca_s_main").text(type);
-			$("#pro_type").val(type);
+			$(".pro_ca_s_sub").html('');
+			$(".pro_ca_s_main").text(sname);
+			$("#pro_type").val(sid);
 		});
 		
 		$('.pro_ca_sub_item').click(function(){

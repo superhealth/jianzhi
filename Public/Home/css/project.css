@@ -2,8 +2,8 @@
 
 .pro_box{padding:5px; border:1px solid #ececec; box-shadow:0 -1px 2px #eee;margin-left:10px; background:#fff;}
 
-.right_box{float:right; width:240px;}
-.left_box{float:left; width:740px;}
+.right_box{float:right; width:240px; clear:right;}
+.left_box{width:740px; position:relative;}
 .pro_title{height:30px; line-height:30px; font-size:14px; padding-left:20px; padding-top:5px; border-bottom:1px dashed #999;}
 .pro_body{padding:10px 20px; }
 
@@ -17,13 +17,14 @@
 .pro_step1_3{width:280px; padding-left:385px; margin-left:20px;}
 .pro_step1_31{display:block; text-align:center; padding:10px 0; font-size:12px;}
 .pro_step1_32{display:block; width:160px; height:30px; line-height:30px; font-size:14px; margin:15px auto; }
+.tips_right{list-style-position:inside; line-height:30px;}
 
 /* createStep2 */
-.pro_category_main{width:200px; background:#d3f0f0; padding:10px; float:left; min-height:480px; _height:480px;}
+.pro_category_main{width:200px; background:#d3f0f0; padding:10px; float:left; min-height:460px; _height:460px;}
 .pro_category_main h4{font-size:16px; font-weight:normal; text-align:center; padding:20px 0;}
 .pro_ca_main_list{padding:0; margin:0; list-style:none;}
 .pro_ca_main_item{display:block; float:left; width:46px; text-align:center; border:2px solid #d3f0f0; padding:3px 0px; cursor:pointer;}
-.pro_ca_main_item.cur, .pro_ca_main_item:hover{background:#fff; border-color:#fa6c0d; color:#fa6c0d;}
+.pro_ca_main_item.cur, .pro_ca_main_item:hover{background:#fff; border-color:#fa6c0d; color:#e60012;}
 .pro_category_sub{width:460px; margin-left:240px; min-height:480px; _height:480px;}
 .pro_ca_sub_default{display:block;}
 .pro_ca_sub_default.hide{display:none;}
@@ -38,10 +39,19 @@
 .pro_ca_sub_icon{display:block; width:50px; height:50px; border:solid 1px #bedbf9; margin:10px 40px 18px 30px; float:left; border-radius:7px; -webkit-border-radius:7px; -moz-border-radius:7px; -ms-border-radius:7px; box-shadow:1px 0 3px #bedbf9; -webkit-box-shadow:1px 0 3px #bedbf9; -moz-box-shadow:1px 0 3px #bedbf9;}
 .pro_ca_sub_item{display:block; width:60px; height:20px; line-height:20px; margin:10px 0; text-align:center; border-right:solid 1px #bedbf9; float:left; cursor:pointer;}
 .pro_ca_sub_item.border_right{border-right:none; }
-.pro_ca_sub_item.cur, .pro_ca_sub_item:hover{color:#fa6c0d; }
-.pro_btn_groups{width:100%; height:30px; text-align:center; clear:right; float:left; padding:20px 0;}
+.pro_ca_sub_item.cur, .pro_ca_sub_item:hover{color:#e60012; }
+.pro_btn_groups{width:100%; height:30px; text-align:center; clear:right; padding:20px 0;}
 .pro_btn_groups .btn{display:inline-block; width:80px; height:24px; font-size:14px; text-align:center; margin:0 35px;}
+.pro_ca_sel{width:575px; float:right;}
+.pro_ca_s_main{float:left; width:75px; height:30px; font-size:12px; background:#d3f0f0; text-align:center; color:#e60012;}
+.pro_ca_s_main:empty{display:none;}
+.pro_ca_s_sub{float:left; margin-left:20px; padding:0;}
+.pro_ca_s_sub li{list-style:none; float:left; width:50px; height:30px; text-align:center; font-size:12px;}
 
+/* createStep3 */
+.pro_groups{padding:8px 10px;}
+.pro_groups label{width:110px; text-align:right;float:left; line-height:23px;}
+.pro_control{margin-left:120px;}
 
 
 

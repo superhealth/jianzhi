@@ -12,69 +12,7 @@ class ProjectAction extends CommonAction{
 	 * 所有项目浏览
 	 */
 	public function index(){
-		$project = M("project");
-		$map = array();
-		//筛选条件
-		$param = array();
-		//项目状态
-		if(isset($_REQUEST['status']) && $_REQUEST['status']!="all"){
-			$map['pro_status']  = $_REQUEST['status'];
-			$param['status'] = $_REQUEST['status'];
-		}
-		//项目属性
-		if(isset($_REQUEST['prop']) && $_REQUEST['prop']!="all"){
-			$map['pro_prop']  = $_REQUEST['prop'];
-			$param['prop'] = $_REQUEST['prop'];
-		}
-		//项目分类
-		if(isset($_REQUEST['sort']) && $_REQUEST['sort']!="all"){
-			$map['pro_sort']  = $_REQUEST['sort'];
-			$param['sort'] = $_REQUEST['sort'];
-		}
-		// 项目主题 or 发布作者
-		if(isset($_REQUEST['words'])){
-			$words = addslashes($_REQUEST['words']);
-			if(strlen($words)>=3){
-				$where['pro_subject']  = array('like', "%{$words}%");
-				$where['pro_mid'] = array('like', "%{$words}%");
-				$where['_logic'] = "or";
-				$map['_complex'] = $where;
-				$param['words'] = $_REQUEST['words'];
-			}
-		}
-		//起止时间
-		
-		//按详细分类查询
-		
-		
-		$this->assign("param", $param);
-		// 分页
-		$total = $project->where($map)->count();
-		import("Org.Util.Page");
-		$page = new Page($total, 12, $param);
-		// 分页查询
-		$limit = $page->firstRow.",".$page->listRows;
-		$pager = $page->shown();
-		$this->assign("pager", $pager);
-		// 连接查询
-		$join = array(
-				"(SELECT bid_proid,count(*) bidders FROM zt_bidder GROUP BY bid_proid) b ON pro_id=b.bid_proid",
-		);
-		// 查询字段
-		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_publishtime, pro_status, IFNULL(bidders, 0) bidders";
-		// 排序
-		$order = "pro_publishtime DESC";
-		$projects = $project->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
-		// 项目状态
-		$this->assign("status", $this->status);
-		$this->assign("projects", $projects);
-		//所有分类
-		$sorts = D("Sort")->getSorts();
-		$this->assign("sorts", $sorts);
-		//所有属性
-		$props = D("Property")->getProps();
-		$this->assign("props", $props);
-		$this->display();
+		redirect(__URL__.'/createStep1');
 	}
 	
 	/**
@@ -98,7 +36,31 @@ class ProjectAction extends CommonAction{
 	 */
 	public function createStep2(){
 		$this->checkMember();
+		$sorts = D('Sort')->getSorts();
+		$this->assign('sorts', $sorts);
+		$enums = D('Enumsort')->enums();
+		$this->assign('enums', $enums);
 		$this->display();
+	}
+	
+	/**
+	 * 保存分类
+	 */
+	public function createSort(){
+		$this->checkMember();
+		if(empty($_POST['pro_type'])){
+			$this->error('请选择类别！', __URL__.'/createStep2', 2);
+		}
+		$data = array(
+				'pro_sort'	=> $_POST['pro_type'],
+				'pro_enum'	=> str_replace(',', '|', $_POST['pro_enum']),
+				'pro_sn'		=> createProjectSn($_SESSION['member'])
+		);
+		if(M('project')->add($data)){
+			cookie('newProject', serialize($data), time()+3600*24);
+			$_SESSION['newProject'] = $data;
+		}
+		redirect(__URL__.'/createStep3');
 	}
 	/**
 	 * 发布项目
@@ -106,23 +68,26 @@ class ProjectAction extends CommonAction{
 	 */
 	public function createStep3(){
 		$this->checkMember();
-		if(empty($_COOKIE['newProject'])){
-			if(empty($_POST['pro_type'])){
-				$this->error('请选择类别！', __URL__.'/createStep2', 2);
-			}
-			$data = array(
-					'pro_sort'	=> $_POST['pro_type'],
-					'pro_emun'	=> $_POST['pro_enum'],
-					'pro_sn'		=> createProjectSn($_SESSION['member'])
-				);
-			if(M('project')->add($data)){
-				setcookie('newProject', $data, time()+3600*24);
-				$this->assign('newProject', $data);
-			}
+		if(!empty($_SESSION['newProject'])){
+			$newProject = $_SESSION['newProject'];
+			unset($_SESSION['newProject']);
+		}else if(!empty($_COOKIE['newProject'])){
+			$newProject = unserialize($_COOKIE['newProject']);
 		}
-		$this->assign('newProject', $_COOKIE['newProject']);
+		$newProject['pro_sort'] = D('Sort')->getOneSort($newProject['pro_sort']);
+		$newProject['pro_enum'] = enumsDecode($newProject['pro_enum']);
+		$newProject['place'] = areaToSelect(array());
+		$this->assign('newProject', $newProject);dump($newProject);
 		$this->display();
 	}
+	
+	/**
+	 * 保存项目资料 项目信息
+	 */
+	public function createInfo1(){
+		
+	}
+	
 	/**
 	 * 发布项目
 	 *  步骤4
@@ -150,15 +115,27 @@ class ProjectAction extends CommonAction{
 		}
 		$this->assign('newProject', $_COOKIE['newProject']);
 		$this->display();
+		if(!empty($_SESSION['newProject'])){
+			$newProject = $_SESSION['newProject'];
+			unset($_SESSION['newProject']);
+		}else if(!empty($_COOKIE['newProject'])){
+			$newProject = unserialize($_COOKIE['newProject']);
+		}
+		$this->assign('newProject', $newProject);
+	}
+	
+	/**
+	 * 保存项目资料 对投标要求
+	 */
+	public function createInfo2(){
+		
+		M('project')->save($data);
 	}
 	
 	public function createEd(){
 		$this->checkMember();
-		if(M('project')->save($data)){
-			$this->display();
-		}else{
-			$this->error('保存失败！请稍后再试或联系我们的客服');
-		}
+		
+		$this->error('保存失败！请稍后再试或联系我们的客服');
 		
 	}
 	
@@ -241,5 +218,6 @@ class ProjectAction extends CommonAction{
 	 */
 	public function drafts(){
 		$this->checkMember();
+		$step = 0;
 	}
 }

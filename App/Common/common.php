@@ -527,7 +527,7 @@ function areaDecode($areaStr){
  * @return string
  */
 function areaToSelect($areaArr, $n=1, $areas=""){
-	$select = "<select id='area{$n}' name='area[]' class='area' ><option value='no'>不限</option>";
+	$select = "<select id='area{$n}' name='area[]' class='area' ><option value='no'>--选择--</option>";
 	if(empty($areas)){
 		$areas = D("Area")->Areas();
 	}

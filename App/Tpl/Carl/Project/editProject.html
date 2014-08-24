@@ -293,12 +293,6 @@
 		$(function(){
 			$("#pro_createtime").datepicker("option", {maxDate: new Date()});
 		
-			$(".area").change(function(){
-				var n = $(this).attr("id").substr(4,1);
-				var name = $(this).val();
-				findSubArea(name, parseInt(n)+1);
-			});
-			
 			$("#pro_sort").change(function(){
 				var sortid = $(this).val();
 				$.post("/Sort/getEnums", "sortid="+sortid, function(res){

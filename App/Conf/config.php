@@ -26,7 +26,7 @@ return  array(
 		'APP_FILE_CASE'         => false,   // 是否检查文件的大小写 对Windows平台有效
 		'APP_GROUP_LIST'        => 'Home,Carl',      // 项目分组设定,多个组之间用逗号分隔,例如'Home,Admin'
 		/* Cookie设置 */
-		//'COOKIE_EXPIRE'         => 0,    // Coodie有效期
+		'COOKIE_EXPIRE'         => 24*7*3600,    // Coodie有效期
 		//'COOKIE_DOMAIN'         => '',      // Cookie有效域名
 		//'COOKIE_PATH'           => '/',     // Cookie路径
 		//'COOKIE_PREFIX'         => '',      // Cookie前缀 避免冲突
@@ -71,7 +71,7 @@ return  array(
 		// 0 (普通模式); 1 (PATHINFO 模式); 2 (REWRITE  模式); 3 (兼容模式)  默认为PATHINFO 模式，提供最好的用户体验和SEO支持
 		//'URL_PATHINFO_DEPR'     => '/',	// PATHINFO模式下，各参数之间的分割符号
 		//'URL_PATHINFO_FETCH'    =>   'ORIG_PATH_INFO,REDIRECT_PATH_INFO,REDIRECT_URL', // 用于兼容判断PATH_INFO 参数的SERVER替代变量列表
-		//'URL_HTML_SUFFIX'       => '',  // URL伪静态后缀设置
+		'URL_HTML_SUFFIX'       => '.html',  // URL伪静态后缀设置
 		//'URL_PARAMS_BIND'       =>  true, // URL变量绑定到Action方法参数
 		'URL_404_REDIRECT'      =>  '', //404 跳转页面 部署模式有效
 		

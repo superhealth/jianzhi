@@ -174,6 +174,11 @@ $(document).ready(function(){
 			$(this).children("i").removeClass("icon-chevron-up").addClass("icon-chevron-down");
 		}
 	);
+	$(".area").change(function(){
+				var n = $(this).attr("id").substr(4,1);
+				var name = $(this).val();
+				findSubArea(name, parseInt(n)+1);
+			});
 	
 	//左侧菜单
 	$("._dropdown_").toggle(function(){

@@ -125,6 +125,7 @@ class MemberAction extends BaseAction{
 				}
 				$this->assign("info", $info);
 				$this->assign("id", $id);
+				$this->assign('place', areaToSelect(array()));
 				$this->display($template);
 			}else{
 				$this->error("参数错误! ", __URL__."/index");
@@ -142,6 +143,8 @@ class MemberAction extends BaseAction{
 			$this->error("无此权限！");
 		}
 		$data = M("memberperson")->create();
+		//保存地址
+		$data['mp_addr'] = areaEncode($_POST['area']);
 		//检查是否文件上传
 		$flag = false;
 		foreach($_FILES as $k=>$v){
@@ -183,6 +186,8 @@ class MemberAction extends BaseAction{
 			$this->error("无此权限！");
 		}
 		$data = M("membercompany")->create();
+		//保存地址
+		$data['mc_addr'] = areaEncode($_POST['area']);
 		// 检查是否有文件上传
 		$flag = false;
 		foreach($_FILES as $k=>$v){
@@ -229,6 +234,7 @@ class MemberAction extends BaseAction{
 			// 企业相关证件扫描附件
 			$info['legalscan'] = M("attachement")->where("att_id={$info['mc_legalscan']}")->getField("att_path");
 			$info['licencescan'] = M("attachement")->where("att_id={$info['mc_licencescan']}")->getField("att_path");
+			$info['mc_place'] = areaToSelect(areaDecode($info['mc_addr']));
 			// 企业审核状态
 			$this->assign("status", $this->status);
 		}else{
@@ -239,6 +245,7 @@ class MemberAction extends BaseAction{
 			}
 			// 个人证件扫描附件
 			$info['idscan'] = M("attachement")->where("att_id={$info['mp_idscan']}")->getField("att_path");
+			$info['mp_place'] = areaToSelect(areaDecode($info['mp_addr']));
 			// 性别枚举
 			$this->assign("sexes", $this->sexes);
 		}

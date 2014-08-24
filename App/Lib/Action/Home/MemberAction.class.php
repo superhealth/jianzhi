@@ -16,6 +16,7 @@ class MemberAction extends CommonAction{
 		if($member['mem_type']==0){
 			$memberinfo = M("memberperson")->where("mp_mid='{$_SESSION['member']}'")->find();
 			$status = $memberinfo['mp_status'];
+			$memberinfo['place'] = areaToSelect(areaDecode($info['mp_addr']));
 		}else{
 			$memberinfo = M("membercompany")->where("mc_mid='{$_SESSION['member']}'")->find();
 			$status = $memberinfo['mc_status'];
@@ -471,8 +472,10 @@ class MemberAction extends CommonAction{
 		$type = M("member")->where('mem_id="'.$_SESSION['member'].'"')->getField('mem_type');
 		if($type=='1'){
 			$info = M('member')->join('zt_membercompany ON mem_id=mc_mid')->where('mem_id="'.$_SESSION['member'].'"')->find();
+			$info['place'] = areaToSelect(areaDecode($info['mc_addr']));
 		}else{
 			$info = M('member')->join('zt_memberperson ON mem_id=mp_mid')->where('mem_id="'.$_SESSION['member'].'"')->find();
+			$info['place'] = areaToSelect(areaDecode($info['mp_addr']));
 		}
 		$this->assign('type', $type);
 		$this->assign('info', $info);
@@ -484,6 +487,7 @@ class MemberAction extends CommonAction{
 		$this->checkMember();
 		$this->leftInit();
 		$data = M('membercompany')->create();
+		$data['mc_addr'] = areaEncode($_POST['area']);
 		if(M('membercompany')->where('mc_mid="'.$_SESSION['member'].'"')->save($data)){
 			$this->success('修改成功！');
 		}else{
@@ -496,8 +500,8 @@ class MemberAction extends CommonAction{
 		$this->checkMember();
 		$this->leftInit();
 		$data = M('memberperson')->create();
+		$data['mp_addr'] = areaEncode($_POST['area']);
 		if(M('memberperson')->where('mp_mid="'.$_SESSION['member'].'"')->save($data)){
-			D('Notice')->
 			$this->success('修改成功！');
 		}else{
 			$this->error('修改失败！');
@@ -551,6 +555,7 @@ class MemberAction extends CommonAction{
 		$this->checkMember();
 		if($type=="person"){
 			$data = M("memberperson")->create();
+			$data['mp_addr'] = areaEncode($_POST['area']);
 			$upload = upload($_SESSION['member']);
 			if(!$upload[0]){
 				if(empty($_REQUEST['fileflag'])){
@@ -568,6 +573,7 @@ class MemberAction extends CommonAction{
 			}
 		}else if($type=="company"){
 			$data = M("membercompany")->create();
+			$data['mc_addr'] = areaEncode($_POST['area']);
 			$upload = upload($_SESSION['member']);
 			if(!$upload[0]){
 				if(empty($_REQUEST['fileflag'])){
@@ -587,12 +593,14 @@ class MemberAction extends CommonAction{
 			$type = M("member")->where("mem_id='{$_SESSION['member']}'")->getField("mem_type");
 			if($type==1){
 				$info = M('membercompany')->where('mc_mid="'.$_SESSION['member'].'"')->find();
+				$info['place'] = areaToSelect(areaDecode($info['mc_addr']));
 				$licencescan = M("attachement")->where("att_id={$info['mc_licencescan']}")->getField("att_path");
 				$this->assign('licencescan', $licencescan);
 				$this->assign('info', $info);
 				$this->display("Member:verifycompany");
 			}else{
 				$info = M('memberperson')->where('mp_mid="'.$_SESSION['member'].'"')->find();
+				$info['place'] = areaToSelect(areaDecode($info['mp_addr']));
 				$idscan = M("attachement")->where("att_id={$info['mp_idscan']}")->getField("att_path");
 				$this->assign('idscan', $idscan);
 				$this->assign('info', $info);

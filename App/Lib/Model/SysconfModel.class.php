@@ -12,7 +12,7 @@ class SysconfModel extends Model{
 	 */
 	public function sysConfs($flag=false){
 		// 检查缓存文件是否存在，或者超过10天更新文件，10*24*3600 = 864000
-		$flag = $flag==false ? (time()-filectime($this->cacheFile)>864000) : $flag;
+		$flag = $flag==false ? (time()-filemtime($this->cacheFile)>864000) : $flag;
 		if(!file_exists($this->cacheFile) || $flag){
 			$this->updateCache();
 		}

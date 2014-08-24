@@ -146,11 +146,6 @@ $(function(){
 			$("#mp_name").addClass("error");
 			$("#mp_name").next().addClass("error").html("请填写真实姓名！");
 		}
-		if($("#mp_addr").val()==""){
-			flag = false;
-			$("#mp_addr").addClass("error");
-			$("#mp_addr").next().addClass("error").html("请填写详细通讯地址！");
-		}
 		if(!cellExp.test($("#mp_tel").val())){
 			flag = false;
 			$("#mp_tel").addClass("error");
@@ -178,11 +173,6 @@ $(function(){
 			flag = false;
 			$("#mc_company").addClass("error");
 			$("#mc_company").next().addClass("error").html("请填写企业全称！");
-		}
-		if($("#mc_addr").val()==""){
-			flag = false;
-			$("#mc_addr").addClass("error");
-			$("#mc_addr").next().addClass("error").html("请填写企业注册地址！");
 		}
 		if(!cellExp.test($("#mc_tel").val())){
 			flag = false;
@@ -292,6 +282,29 @@ $(function(){
 		}
 	});
 	
+	$(".area").change(function(){
+				var n = $(this).attr("id").substr(4,1);
+				var name = $(this).val();
+				findSubArea(name, parseInt(n)+1);
+			});
+	//查询子区域
+	function findSubArea(name, n){
+		var url = "/Area/getSubArea";
+		var data = {"name":name};
+		$.post(url, data, function(msg){
+			var f = parseInt(n)-1;
+			$("#area"+f+"~.area").remove();
+			if(msg!=""){
+				$("<select name='area[]' id='area"+n+"' class='area'></select>").insertAfter($("#area"+f));
+				$("#area"+n).append(msg);
+				$("#area"+n).change(function(){
+					var name = $(this).val();
+					findSubArea(name, parseInt(n)+1);
+				});
+			}
+		},"text");
+	}
+		
 	// 链接按钮
 	$('.btn-link').click(function(){
 		location.href = $(this).data('href');

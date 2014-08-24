@@ -13,7 +13,7 @@ class BlockModel extends Model{
 	public function getBlocks($flag=false){
 		$cacheFile = SYSCONF_DIR.$this->cacheFile;
 		// 检查缓存文件是否存在，或者超过10天更新文件，10*24*3600 = 864000
-		$flag = $flag==false ? (time()-filectime($cacheFile)>864000) : $flag;
+		$flag = $flag==false ? (time()-filemtime($cacheFile)>864000) : $flag;
 		if(!file_exists($cacheFile) || $flag){
 			$this->updateCache();
 		}

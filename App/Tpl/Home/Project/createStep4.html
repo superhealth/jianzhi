@@ -2,9 +2,130 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
+<title>招标发单</title>
+<include file="public:css" />
+<link href="__PUBLIC__/Home/css/project.css" rel="stylesheet" />
 </head>
-
 <body>
+<include file="public:header" />
+<div class="container">
+  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">招标发单</a> /<a href="__GROUP__/Member/safety">填写招标内容</a></div>
+  <div class="content">
+  	<div class="pro_box right_box">
+      <div class="pro_title">标题图片</div>
+      <div class="pro_body">
+      	<img src="pro_cover_view" id="" />
+				<h3 class="pro_name_view"></h3>
+      </div>
+    </div>
+		<div class="pro_box right_box">
+      <div class="pro_title">项目附件</div>
+      <div class="pro_body">
+      	<ul class="pro_att_view">
+					<li>附件：XXXXXXXX.XXX <a class="red" href="javascript:void(0)"> 删除</a></li>
+					<li>附件：XXXXXXXX.XXX <a class="red" href="javascript:void(0)"> 删除</a></li>
+					<li>附件：XXXXXXXX.XXX <a class="red" href="javascript:void(0)"> 删除</a></li>
+				</ul>
+      </div>
+    </div>
+  	<div class="pro_box left_box">
+      <div class="pro_title">招标发单项目内容</div>
+      <div class="pro_body">
+				<form method="post" action="__URL__/createInfo1" enctype="multipart/form-data">
+					<div class="pro_groups">
+						<label for="pro_sn">项目编号：</label>
+						<div class="pro_control">
+							<strong class="red">{$newProject.pro_sn}</strong>
+						</div>
+					</div>
+					<div class="pro_groups">
+						<label for="pro_sort">项目类别：</label>
+						<div class="pro_control">
+							<div class="" id="pro_sort">
+								{$newProject.pro_sort}
+								<ul class="">
+									<volist name="newProject['pro_enum']" id="ei">
+										<li>{$ei}</li>
+									</volist>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="pro_groups">
+						<label for="pro_subject">项目名称：</label>
+						<div class="pro_control">
+							<input type="text" id="pro_subject" class="inp inp-mid" name="pro_subject" value="" />
+						</div>
+					</div>
+					<div class="pro_groups">
+						<label for="pro_subject">数量：</label>
+						<div class="pro_control">
+							<input type="text" id="pro_subject" class="inp inp-mini" name="pro_subject" value="" />
+						</div>
+					</div>
+					<div class="pro_groups">
+						<label for="pro_subject">单位：</label>
+						<div class="pro_control">
+							<input type="text" id="pro_subject" class="inp inp-mini" name="pro_subject" value="" />
+						</div>
+					</div>
+					<div class="pro_groups">
+						<label for="pro_desc">项目简介：</label>
+						<div class="pro_control">
+							<textarea name="pro_desc" id="pro_desc" >{$newProject.pro_desc}</textarea>
+						</div>
+					</div>
+					<div class="pro_groups">
+						<label for="pro_subject">标题图片：</label>
+						<div class="pro_control">
+							<input type="text" id="pro_subject" class="inp inp-mid" name="pro_subject" value="" />
+						</div>
+					</div>
+					<div class="pro_groups">
+						<label for="pro_subject">项目详情：</label>
+						<div class="pro_control">
+							<input type="text" id="pro_subject" class="inp inp-mid" name="pro_subject" value="" />
+						</div>
+					</div>
+					<div class="pro_groups">
+						<label for="pro_subject">开标日期：</label>
+						<div class="pro_control">
+							<input type="text" id="pro_subject" class="inp datepicker" name="pro_subject" value=""  />
+						</div>
+					</div>
+					<div class="pro_groups">
+						<label for="pro_subject">任务起始日期：</label>
+						<div class="pro_control">
+							<input type="text" id="pro_subject" class="inp datepicker" name="pro_subject" value=""  />
+						</div>
+					</div>
+					<div class="pro_groups">
+						<label for="pro_subject">任务交货日期：</label>
+						<div class="pro_control">
+							<input type="text" id="pro_subject" class="inp datepicker" name="pro_subject" value=""  />
+						</div>
+					</div>
+					<div class="pro_groups">
+						<label for="pro_subject">任务实施地：</label>
+						<div class="pro_control">
+							{$newProject.place}
+						</div>
+					</div>
+					<div class="pro_btn_groups">
+          	<button type="button" class="btn btn-href" data-href="__URL__/createStep1">上一步</button>
+             <button type="button" class="btn btn-sub" data-act="__URL__/createSort">下一步</button>
+          </div>
+				</form>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="public:footer" />
+<include file="public:js" />
+<script type="text/javascript">
+	$(function(){
+		
+	});
+</script>
 </body>
 </html>

@@ -74,7 +74,7 @@ class ProjectModel extends Model{
 			$where = array('pro_opentime'=>array('lt', $_SERVER['REQUEST_TIME']));
 			//$de_id = $this->where($where)->setField('pro_state', 2);
 			$pro = $this->where($where)->select();
-			dump($pro);
+			//dump($pro);
 		}
 	}	
 }
