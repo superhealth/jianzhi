@@ -49,9 +49,15 @@
 .pro_ca_s_sub li{list-style:none; float:left; width:50px; height:30px; text-align:center; font-size:12px;}
 
 /* createStep3 */
+.pro_att_view{width:200px;}
+.pro_att_view li{line-height:20px; height:20px; padding:5px 0; list-style-type: decimal;}
+.pro_att_view li span{width:150px; display:inline-block; text-overflow:ellipsis; white-space:nowrap;}
+.pro_att_view li button{float:right;}
+
 .pro_groups{padding:8px 10px;}
-.pro_groups label{width:110px; text-align:right;float:left; line-height:23px;}
-.pro_control{margin-left:120px;}
+.pro_groups label{width:110px; text-align:right;float:left; display:block; line-height:23px;}
+.pro_control{margin-left:120px; }
+.pro_control .inp{height:20px;}
 
 
 

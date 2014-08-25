@@ -183,7 +183,10 @@ $(function(){
 			$(this).parents("form").attr("action", $(this).data("act")).submit();
 		}
 	});
-	// 
+	// 模拟文件框
+	$('.btn_file').click(function(){
+		$(this).children('.inp-file')[0].click();
+	});
 	$(".inp-file").change(function(){
 		$(this).parent().next().removeClass("error");
 		$(this).parent().prev().val($(this).val());

@@ -8,6 +8,11 @@ class AttachAction extends EmptyAction{
 			echo json_encode_nonull($res_json);
 			exit;
 		}
+		if(empty($belong)||empty($id)){
+			$res_json['data'] = "无效参数！";
+			echo json_encode_nonull($res_json);
+			exit;
+		}
 		//上传
 		$uploadInfo = upload($name,false);
 		if($uploadInfo[0]){

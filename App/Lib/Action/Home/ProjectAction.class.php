@@ -57,8 +57,9 @@ class ProjectAction extends CommonAction{
 				'pro_sn'		=> createProjectSn($_SESSION['member'])
 		);
 		if(M('project')->add($data)){
-			cookie('newProject', serialize($data), time()+3600*24);
-			$_SESSION['newProject'] = $data;
+			$pro_id = M('project')->getLastInsID();
+			cookie('newProject', $pro_id, time()+3600*24);
+			$_SESSION['newProject'] = $pro_id;
 		}
 		redirect(__URL__.'/createStep3');
 	}
@@ -69,15 +70,18 @@ class ProjectAction extends CommonAction{
 	public function createStep3(){
 		$this->checkMember();
 		if(!empty($_SESSION['newProject'])){
-			$newProject = $_SESSION['newProject'];
+			$id = $_SESSION['newProject'];
 			unset($_SESSION['newProject']);
 		}else if(!empty($_COOKIE['newProject'])){
-			$newProject = unserialize($_COOKIE['newProject']);
+			$id = $_COOKIE['newProject'];
+		}else{
+			redirect(__URL__.'/createStep2');
 		}
-		$newProject['pro_sort'] = D('Sort')->getOneSort($newProject['pro_sort']);
-		$newProject['pro_enum'] = enumsDecode($newProject['pro_enum']);
-		$newProject['place'] = areaToSelect(array());
-		$this->assign('newProject', $newProject);dump($newProject);
+		$newProjectInfo = M('project')->join('zt_sort ON pro_sort=sort_id')->where('pro_id="'.$id.'"')->find();
+		$newProjectInfo['attachs'] = D('Attachement')->getAtt($newProjectInfo['pro_attachement']);
+		$newProjectInfo['pro_enum'] = enumsDecode($newProjectInfo['pro_enum']);
+		$newProjectInfo['place'] = areaToSelect(array());
+		$this->assign('newProject', $newProjectInfo);
 		$this->display();
 	}
 	
