@@ -127,7 +127,7 @@
 <include file="public:js" />
 <script type="text/javascript">
 	$(function(){
-			$(".datepicker").datepicker("option", {minDate: new Date()});
+			$(".datepicker").datepicker("option", {minDate: new Date(),dateFormat: "yy年mm月dd日"});
 			$("#pro_opentime").change(function(){
 				$("#pro_start").datepicker("option", {minDate: $("#pro_opentime").val()});
 				$("#pro_end").datepicker("option", {minDate: $("#pro_start").val()});

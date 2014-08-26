@@ -91,7 +91,8 @@ class ProjectAction extends CommonAction{
 	 * 保存项目资料 项目信息
 	 */
 	public function createInfo1(){
-		dump($_POST);
+		$data = M("project")->create();
+		$data['pro_startstop'] = $_POST['pro_start'].'-'.$_POST['pro_end'];
 	}
 	
 	/**
