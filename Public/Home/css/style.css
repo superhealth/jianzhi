@@ -129,7 +129,7 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .btn-recode{margin-left:20px;}
 
 /* login */
-.log_box{width:250px;margin-top:100px; margin-left:650px;}
+.log_box{width:250px;margin-top:100px; margin-left:650px; margin-bottom:100px;}
 .log_content{padding:25px;}
 .inp-login{width:169px;padding-left:25px;margin-top:20px;}
 #login_user{background:url(../image/login.png) 0 0 no-repeat;}

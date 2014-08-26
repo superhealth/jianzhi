@@ -48,19 +48,19 @@
 					<div class="pro_groups">
 						<label for="pro_subject"><span class="red">*</span>项目名称：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_subject" class="inp inp-mid" name="pro_subject" value="" />
+							<input type="text" id="pro_subject" class="inp inp-mid" name="pro_subject" value="{$newProject.pro_subject}" />
 						</div>
 					</div>
 					<div class="pro_groups">
-						<label for="pro_subject"><span class="red">*</span>数量：</label>
+						<label for="pro_amount"><span class="red">*</span>数量：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_amount" class="inp inp-mini" name="pro_subject" value="" />
+							<input type="text" id="pro_amount" class="inp inp-mini" name="pro_amount" value="{$newProject.pro_amount}" />
 						</div>
 					</div>
 					<div class="pro_groups">
-						<label for="pro_subject"><span class="red">*</span>单位：</label>
+						<label for="pro_unit"><span class="red">*</span>单位：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_unit" class="inp inp-mini" name="pro_subject" value="" />
+							<input type="text" id="pro_unit" class="inp inp-mini" name="pro_unit" value="{$newProject.pro_unit}" />
 						</div>
 					</div>
 					<div class="pro_groups">
@@ -115,7 +115,7 @@
 					</div>
 					<div class="pro_btn_groups">
           	 <button type="button" class="btn btn-href" data-href="__URL__/createStep1">上一步</button>
-             <button type="button" class="btn btn-sub" data-act="__URL__/createSort">下一步</button>
+             <button type="button" class="btn btn-sub" data-act="__URL__/createInfo1">下一步</button>
 						 
           </div>
 				</form>
@@ -127,8 +127,14 @@
 <include file="public:js" />
 <script type="text/javascript">
 	$(function(){
-			//$("#pro_createtime").datepicker("option", {maxDate: new Date()});
-		
+			$(".datepicker").datepicker("option", {minDate: new Date()});
+			$("#pro_opentime").change(function(){
+				$("#pro_start").datepicker("option", {minDate: $("#pro_opentime").val()});
+				$("#pro_end").datepicker("option", {minDate: $("#pro_start").val()});
+			});
+			$("#pro_start").change(function(){
+				$("#pro_end").datepicker("option", {minDate: $("#pro_start").val()});
+			});
 			$("#attach_add").uploadify({
 			'auto':false,
 			'queueID':'upfileLists',

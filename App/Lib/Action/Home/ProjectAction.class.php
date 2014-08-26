@@ -80,10 +80,9 @@ class ProjectAction extends CommonAction{
 		}
 		$newProjectInfo = M('project')->join('zt_sort ON pro_sort=sort_id')->where('pro_id="'.$id.'"')->find();
 		$newProjectInfo['attachs'] = D('Attachement')->getAtt($newProjectInfo['pro_attachement']);
-		dump($newProjectInfo['pro_emun']);
 		$newProjectInfo['pro_enum'] = enumsDecode($newProjectInfo['pro_enums']);
-		dump($newProjectInfo['pro_emun']);
 		$newProjectInfo['place'] = areaToSelect(array());
+		$newProjectInfo['startToEnd'] = explode('-', $newProjectInfo['pro_startstop']);
 		$this->assign('newProject', $newProjectInfo);
 		$this->display();
 	}
@@ -92,7 +91,7 @@ class ProjectAction extends CommonAction{
 	 * 保存项目资料 项目信息
 	 */
 	public function createInfo1(){
-		
+		dump($_POST);
 	}
 	
 	/**
