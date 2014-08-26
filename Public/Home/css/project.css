@@ -20,12 +20,12 @@
 .tips_right{list-style-position:inside; line-height:30px;}
 
 /* createStep2 */
-.pro_category_main{width:200px; background:#d3f0f0; padding:10px; float:left; min-height:460px; _height:460px;}
+.pro_category_main{width:200px; background:#d3f0f0; padding:10px; float:left; min-height:320px; _height:320px;}
 .pro_category_main h4{font-size:16px; font-weight:normal; text-align:center; padding:20px 0;}
 .pro_ca_main_list{padding:0; margin:0; list-style:none;}
 .pro_ca_main_item{display:block; float:left; width:46px; text-align:center; border:2px solid #d3f0f0; padding:3px 0px; cursor:pointer;}
 .pro_ca_main_item.cur, .pro_ca_main_item:hover{background:#fff; border-color:#fa6c0d; color:#e60012;}
-.pro_category_sub{width:460px; margin-left:240px; min-height:480px; _height:480px;}
+.pro_category_sub{width:460px; margin-left:240px; min-height:340px; _height:340px;}
 .pro_ca_sub_default{display:block;}
 .pro_ca_sub_default.hide{display:none;}
 .pro_ca_sub_default h4{font-size:16px; font-weight:normal; padding:20px 0;}
@@ -53,8 +53,14 @@
 .pro_att_view li{line-height:20px; height:20px; padding:5px 0; list-style-type: decimal;}
 .pro_att_view li span{width:150px; display:inline-block; text-overflow:ellipsis; white-space:nowrap;}
 .pro_att_view li button{float:right;}
-
-.pro_groups{padding:8px 10px;}
+.pro_info{padding:8px 10px; line-height:23px; background: #f9f9f9;}
+.info_label{display:inline-block; width:110px; text-align:right; margin-right: 10px;}
+.info_value{}
+.info_value center{display:inline-block; width:;}
+.info_value .info_sort{width:75px; height:24px; line-height:24px; font-size:12px; background:#d3f0f0; text-align:center; color:#e60012;}
+.info_value .info_sort:empty{display:none;}
+.info_value .info_enum{ width:50px; height:24px; line-height:24px; text-align:center; font-size:12px;}
+.pro_groups{padding:8px 10px; }
 .pro_groups label{width:110px; text-align:right;float:left; display:block; line-height:23px;}
 .pro_control{margin-left:120px; }
 .pro_control .inp{height:20px;}

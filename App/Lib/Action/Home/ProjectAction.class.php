@@ -53,8 +53,9 @@ class ProjectAction extends CommonAction{
 		}
 		$data = array(
 				'pro_sort'	=> $_POST['pro_type'],
-				'pro_enum'	=> str_replace(',', '|', $_POST['pro_enum']),
-				'pro_sn'		=> createProjectSn($_SESSION['member'])
+				'pro_enums'=> str_replace(',', '|', $_POST['pro_enum']),
+				'pro_sn'		=> createProjectSn($_SESSION['member']),
+				'pro_step'	=> 3
 		);
 		if(M('project')->add($data)){
 			$pro_id = M('project')->getLastInsID();
@@ -79,7 +80,9 @@ class ProjectAction extends CommonAction{
 		}
 		$newProjectInfo = M('project')->join('zt_sort ON pro_sort=sort_id')->where('pro_id="'.$id.'"')->find();
 		$newProjectInfo['attachs'] = D('Attachement')->getAtt($newProjectInfo['pro_attachement']);
-		$newProjectInfo['pro_enum'] = enumsDecode($newProjectInfo['pro_enum']);
+		dump($newProjectInfo['pro_emun']);
+		$newProjectInfo['pro_enum'] = enumsDecode($newProjectInfo['pro_enums']);
+		dump($newProjectInfo['pro_emun']);
 		$newProjectInfo['place'] = areaToSelect(array());
 		$this->assign('newProject', $newProjectInfo);
 		$this->display();
