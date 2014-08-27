@@ -21,6 +21,9 @@ class AttachAction extends EmptyAction{
 			if(!empty($att_data)){
 				//区分上传附件所属主体
 				switch($belong){
+					case 'pro_cover':
+						D('Project')->updateCover($id, $att_data);
+						break;
 					case "project":
 						D("Project")->addAtts($id, $att_data);
 						break;

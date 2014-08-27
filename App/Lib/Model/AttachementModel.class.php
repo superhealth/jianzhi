@@ -52,4 +52,8 @@ class AttachementModel extends Model{
 		return $this->where($map)->select();
 	}
 	
+	//获取单个附件地址
+	public function getAttSrc($id=""){
+		return $this->where('att_id="'. $id.'"')->getField('att_path');
+	}
 }

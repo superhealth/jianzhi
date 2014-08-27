@@ -50,6 +50,26 @@ class ProjectModel extends Model{
 	}
 	
 	/**
+	 * 更新$id的项目的封面
+	 * @param string $id
+	 * @param array $att
+	 *
+	 */
+	public function updateCover($id, $att){
+		$id = addslashes($id);
+		if(is_array($att)){
+			//字段名
+			//$field = implode(",",array_keys($att));
+			//$old = $this->field($field)->where("pro_id={$id}")->find();
+			$where['pro_id'] = $id;
+			return $this->where($where)->save($att);
+		}else{
+			$this->error = "尝试修改的附件字段为空！";
+			return false;
+		}
+	}
+	
+	/**
 	 * 删除$id的项目的附件
 	 * @param string $id
 	 * @param array $att

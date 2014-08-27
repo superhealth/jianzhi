@@ -55,6 +55,7 @@ class ProjectAction extends CommonAction{
 				'pro_sort'	=> $_POST['pro_type'],
 				'pro_enums'=> str_replace(',', '|', $_POST['pro_enum']),
 				'pro_sn'		=> createProjectSn($_SESSION['member']),
+				'pro_mid'	=> $_SESSION['member'],
 				'pro_step'	=> 3
 		);
 		if(M('project')->add($data)){
@@ -83,6 +84,7 @@ class ProjectAction extends CommonAction{
 		$newProjectInfo['pro_enum'] = enumsDecode($newProjectInfo['pro_enums']);
 		$newProjectInfo['place'] = areaToSelect(array());
 		$newProjectInfo['startToEnd'] = explode('-', $newProjectInfo['pro_startstop']);
+		$newProjectInfo['cover'] = D('Attachement')->getAttSrc($newProjectInfo['pro_cover']);
 		$this->assign('newProject', $newProjectInfo);
 		$this->display();
 	}
@@ -93,6 +95,16 @@ class ProjectAction extends CommonAction{
 	public function createInfo1(){
 		$data = M("project")->create();
 		$data['pro_startstop'] = $_POST['pro_start'].'-'.$_POST['pro_end'];
+		$data['pro_place'] = areaEncode($_POST['area']);
+		$data['pro_step'] = 4;
+		$map = array('pro_mid'=> $_SESSION['member'], 'pro_id'=> $_POST['id']);
+		if(M("project")->where($map)->save($data)){
+			cookie('newProject', $_POST['id'], time()+3600*24);
+			$_SESSION['newProject'] = $_POST['id'];
+			redirect(__URL__.'/createStep4');
+		}else{
+			
+		}
 	}
 	
 	/**
@@ -101,48 +113,48 @@ class ProjectAction extends CommonAction{
 	 */
 	public function createStep4(){
 		$this->checkMember();
-		if(empty($_COOKIE['newProject'])){
-			if(empty($_POST['pro_type'])){
-				$this->error('请选择类别！', __URL__.'/createStep2');
-			}
-			$data = array(
-					'pro_sort'	=> $_POST['pro_type'],
-					'pro_emun'	=> $_POST['pro_enum'],
-					
-					
-					
-					
-					
-					'pro_sn'		=> createProjectSn($_SESSION['member'])
-			);
-			if(M('project')->add($data)){
-				setcookie('newProject', $data, time()+3600*24);
-				$this->assign('newProject', $data);
-			}
-		}
-		$this->assign('newProject', $_COOKIE['newProject']);
-		$this->display();
-		if(!empty($_SESSION['newProject'])){
-			$newProject = $_SESSION['newProject'];
+	if(!empty($_SESSION['newProject'])){
+			$id = $_SESSION['newProject'];
 			unset($_SESSION['newProject']);
 		}else if(!empty($_COOKIE['newProject'])){
-			$newProject = unserialize($_COOKIE['newProject']);
+			$id = $_COOKIE['newProject'];
+		}else{
+			redirect(__URL__.'/createStep2');
 		}
-		$this->assign('newProject', $newProject);
+		$field = 'pro_id, pro_prop, pro_limit, pro_addition, pro_contact, con_id, con_name, con_email, con_tel,  con_im';
+		$newProjectInfo = M('project')->join('zt_contact ON pro_contact=con_id')->field($field)->where('pro_id="'.$id.'"')->find();
+		//$newProjectInfo['attachs'] = D('Attachement')->getAtt($newProjectInfo['pro_attachement']);
+		//$newProjectInfo['pro_enum'] = enumsDecode($newProjectInfo['pro_enums']);
+		//$newProjectInfo['place'] = areaToSelect(array());
+		//$newProjectInfo['startToEnd'] = explode('-', $newProjectInfo['pro_startstop']);
+		//$newProjectInfo['cover'] = D('Attachement')->getAttSrc($newProjectInfo['pro_cover']);
+		$this->assign('newProject', $newProjectInfo);
+		$this->display();
 	}
 	
 	/**
 	 * 保存项目资料 对投标要求
 	 */
 	public function createInfo2(){
-		
+		// 当前用户和项目ID
+		$where = array('pro_mid'=>$_SESSION['member'], 'pro_id'=>$_POST['id']);
+		//保存联系人
+		$con_data = M('contact')->create();
+		if(empty($con_data['con_id'])){
+			$con_id = M('contact')->add($con_data);
+			M('project')->where($where)->setField('pro_contact', $con_id);
+		}else{
+			M('contact')->save($con_data);
+		}
+		$data = M('project')->create();
 		M('project')->save($data);
+		$this->error('保存失败！请稍后再试或联系我们的客服');
 	}
 	
 	public function createEd(){
 		$this->checkMember();
 		
-		$this->error('保存失败！请稍后再试或联系我们的客服');
+		
 		
 	}
 	

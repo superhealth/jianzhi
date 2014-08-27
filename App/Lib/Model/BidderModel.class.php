@@ -68,8 +68,8 @@ class BidderModel extends Model{
 		$id = addslashes($id);
 		if(is_array($att)){
 			//字段名
-			$field = implode(",",array_keys($att));
-			$old = $this->field($field)->where("bid_id={$id}")->find();
+			//$field = implode(",",array_keys($att));
+			//$old = $this->field($field)->where("bid_id={$id}")->find();
 			$data['bid_id'] = $id;
 			foreach($att as $k=>$v){
 				$data[$k]	= $v;

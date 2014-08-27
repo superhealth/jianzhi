@@ -1,14 +1,16 @@
 /* CSS Document */
 
-.pro_box{padding:5px; border:1px solid #ececec; box-shadow:0 -1px 2px #eee;margin-left:10px; background:#fff;}
+.pro_box{padding:5px; border:1px solid #ececec; box-shadow:0 -1px 2px #eee;margin-left:10px; margin-bottom:60px; background:#fff;}
 
 .right_box{float:right; width:240px; clear:right;}
-.left_box{width:740px; position:relative;}
-.pro_title{height:30px; line-height:30px; font-size:14px; padding-left:20px; padding-top:5px; border-bottom:1px dashed #999;}
-.pro_body{padding:10px 20px; }
+.left_box{width:740px; float:left; position:relative;}
+.pro_title{height:30px; line-height:30px; font-size:14px; padding-left:10px; padding-top:5px; border-bottom:1px dashed #999;}
+.pro_body{padding:10px; }
+.pro_cover_view{max-width:100%; width:220px; height: 144px;}
+.pro_name_view{height:30px; line-height:30px; margin-bottom:20px; text-overflow:ellipsis; white-space:nowrap;}
 
 /* createStep1 */
-.big_box{width:745px; margin-top:50px; margin-left:auto; margin-right:auto;}
+.big_box{width:745px; float:none; margin:50px auto 100px auto;}
 .pro_step1_1{width:280px; height:160px; padding-left:385px; background:url(../image/bridge.jpg) no-repeat; margin-left:20px; margin-top:40px;}
 .pro_step1_11{font-size:19px; line-height:28px; padding:20px 0;}
 .pro_step1_12{font-size:14px; line-height:20px; padding:10px 20px; color:#707070;}
@@ -20,7 +22,7 @@
 .tips_right{list-style-position:inside; line-height:30px;}
 
 /* createStep2 */
-.pro_category_main{width:200px; background:#d3f0f0; padding:10px; float:left; min-height:320px; _height:320px;}
+.pro_category_main{width:200px; background:#d3f0f0; padding:10px; float:left; min-height:320px; _height:320px; }
 .pro_category_main h4{font-size:16px; font-weight:normal; text-align:center; padding:20px 0;}
 .pro_ca_main_list{padding:0; margin:0; list-style:none;}
 .pro_ca_main_item{display:block; float:left; width:46px; text-align:center; border:2px solid #d3f0f0; padding:3px 0px; cursor:pointer;}
@@ -49,8 +51,8 @@
 .pro_ca_s_sub li{list-style:none; float:left; width:50px; height:30px; text-align:center; font-size:12px;}
 
 /* createStep3 */
-.pro_att_view{width:200px;}
-.pro_att_view li{line-height:20px; height:20px; padding:5px 0; list-style-type: decimal;}
+.pro_att_view{width:220px;}
+.pro_att_view li{line-height:20px; height:20px; padding:5px 0; list-style-type: decimal; list-style-position:inside;}
 .pro_att_view li span{width:150px; display:inline-block; text-overflow:ellipsis; white-space:nowrap;}
 .pro_att_view li button{float:right;}
 .pro_info{padding:8px 10px; line-height:23px; background: #f9f9f9;}
@@ -61,7 +63,8 @@
 .info_value .info_sort:empty{display:none;}
 .info_value .info_enum{ width:50px; height:24px; line-height:24px; text-align:center; font-size:12px;}
 .pro_groups{padding:8px 10px; }
-.pro_groups label{width:110px; text-align:right;float:left; display:block; line-height:23px;}
+.pro_groups:after{content:' '; display:table; clear:both;}
+.pro_groups label{width:110px; text-align:right;float:left; clear:left; line-height:23px;}
 .pro_control{margin-left:120px; }
 .pro_control .inp{height:20px;}
 

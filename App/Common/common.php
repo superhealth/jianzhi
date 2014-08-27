@@ -578,7 +578,7 @@ function enumsToSelect($sortId, $enum=""){
 	$select = "";
 	$flag = is_array($enum) ? true : false;
 	foreach($enums as $k=>$v){
-		$select .= "<span class='label label-success'>{$k}</span>:<select id='{$k}' name='enums[]' class='enum'><option value='no'>不限</option>";
+		$select .= "<span class='label label-success'>{$k}</span>:<select id='{$k}' name='enums[]' class='enum'><option value='no'>--选择--</option>";
 		foreach($v as $val){
 			if($flag && in_array($val, $enum)){
 				$select .= "<option value='{$val}' selected >{$val}</option>";

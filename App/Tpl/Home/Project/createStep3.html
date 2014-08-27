@@ -14,11 +14,13 @@
   	<div class="pro_box right_box">
       <div class="pro_title">标题图片</div>
       <div class="pro_body">
-      	<img src="__PUBLIC__/Home/image/pro_cover_view.jpg" id="" />
-				<h3 class="pro_name_view"></h3>
+				<if condition="$newProject['cover'] neq ''">
+      	<img src="{$newProject['cover']}" id="pro_cover_view" class="pro_cover_view" />
+				<else />
+				<img src="__PUBLIC__/Home/image/pro_cover_view.jpg" id="pro_cover_view"  class="pro_cover_view" />
+				</if>
+				<h3 class="pro_name_view" id="pro_name_view">{$newProject.pro_subject}</h3>
       </div>
-    </div>
-		<div class="pro_box right_box">
       <div class="pro_title">项目附件</div>
       <div class="pro_body">
       	<ul class="pro_att_view" id="pro_att_view">
@@ -32,7 +34,7 @@
       <div class="pro_title">招标发单项目内容</div>
       <div class="pro_body">
 				<form method="post" action="__URL__/createInfo1" enctype="multipart/form-data">
-					<input type="hidden" name="pro_id" id="pro_id" value="{$newProject.pro_id}" />
+					<input type="hidden" name="id" id="pro_id" value="{$newProject.pro_id}" />
 					<div class="pro_info">
 						<span class="info_label">项目编号：</span>
 						<span class="info_value"><strong class="red">{$newProject.pro_sn}</strong></span>
@@ -52,9 +54,9 @@
 						</div>
 					</div>
 					<div class="pro_groups">
-						<label for="pro_amount"><span class="red">*</span>数量：</label>
+						<label for="pro_quantity"><span class="red">*</span>数量：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_amount" class="inp inp-mini" name="pro_amount" value="{$newProject.pro_amount}" />
+							<input type="text" id="pro_quantity" class="inp inp-mini" name="pro_quantity" value="{$newProject.pro_quantity}" />
 						</div>
 					</div>
 					<div class="pro_groups">
@@ -64,19 +66,19 @@
 						</div>
 					</div>
 					<div class="pro_groups">
-						<label for="pro_desc"><span class="red">*</span>项目简介：</label>
+						<label for="pro_description"><span class="red">*</span>项目简介：</label>
 						<div class="pro_control">
-							<textarea name="pro_desc" id="pro_desc" class="txt txt-block" rows="6">{$newProject.pro_desc}</textarea>
+							<textarea name="pro_description" id="pro_description" class="txt txt-block" rows="6">{$newProject.pro_description}</textarea>
 						</div>
 					</div>
 					<div class="pro_groups">
 						<label for="pro_cover">标题图片：</label>
 						<div class="pro_control">
-							<input type="text" class="inp inp-file-text" disabled="disabled" />
-							<button class="btn_file" type="button"><input type="file" class="inp inp-file" name="pro_cover" id="pro_cover"/>浏览</button>
-							<span class="helpline"></span>
-							<div class="clearfix"></div>
-							<span class="tips">(注：上传格式：JPG， GIF， PNG， BMP， JPEG；大小：55K-1M)</span>
+							<input data-no-uniform="true" type="file" name="pro_cover" id="pro_cover" />
+							<button type="button" class="btn btn-mini btn-primary" onclick="$('#pro_cover').uploadify('upload','*');">上传</button> 	
+							<button type="button" class="btn btn-mini btn-warning" onclick="$('#pro_cover').uploadify('cancel');">取消</button> 
+							<span class="tips">(图片格式：JPG, JPEG, PNG; 大小:55K-1M; 尺寸:260*170)</span>
+							<div id="upfile_cover"></div>
 						</div>
 					</div>
 					<div class="pro_groups">
@@ -92,19 +94,19 @@
 					<div class="pro_groups">
 						<label for="pro_opentime">开标日期：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_opentime" class="inp datepicker" name="pro_opentime" value=""  />
+							<input type="text" id="pro_opentime" class="inp datepicker" name="pro_opentime" value="{$newProject.place}"  />
 						</div>
 					</div>
 					<div class="pro_groups">
 						<label for="pro_start">任务起始日期：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_start" class="inp datepicker" name="pro_start" value=""  />
+							<input type="text" id="pro_start" class="inp datepicker" name="pro_start" value="{$newProject.place}"  />
 						</div>
 					</div>
 					<div class="pro_groups">
 						<label for="pro_end"><span class="red">*</span>任务交货日期：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_end" class="inp datepicker" name="pro_end" value=""  />
+							<input type="text" id="pro_end" class="inp datepicker" name="pro_end" value="{$newProject.place}"  />
 						</div>
 					</div>
 					<div class="pro_groups">
@@ -116,11 +118,11 @@
 					<div class="pro_btn_groups">
           	 <button type="button" class="btn btn-href" data-href="__URL__/createStep1">上一步</button>
              <button type="button" class="btn btn-sub" data-act="__URL__/createInfo1">下一步</button>
-						 
-          </div>
+					</div>
 				</form>
       </div>
     </div>
+		<div class="clearfix"></div>
   </div>
 </div>
 <include file="public:footer" />
@@ -182,6 +184,57 @@
 				}
 			}
 		});
+		
+		$("#pro_cover").uploadify({
+			'auto':false,
+			'queueID':'upfile_cover',
+			'fileObjName':'pro_cover',
+			'multi':true,
+			'uploader':'__APP__/Attach/upload',
+			'formData': {"belong":"pro_cover", "id":$("#pro_id").val()},
+			'fileTypeDesc':'支持的格式：',
+			'fileTypeExts':'*.jpg;*.jpge;*.png;',
+			'fileSizeLimit':'1MB',
+			'queueSizeLimit' : 1,
+			'onSelectError':function(file, errorCode, errorMsg){
+				switch(errorCode) {
+					case -100:
+						bootbox.alert("上传的文件数量已经超出系统限制的1个总数量！");
+						break;
+					case -110:
+						bootbox.alert("文件 ["+file.name+"] 大小超出系统限制的1M大小！");
+						break;
+					case -120:
+						bootbox.alert("文件 ["+file.name+"] 大小异常！");
+						break;
+					case -130:
+						bootbox.alert("文件 ["+file.name+"] 类型不正确！");
+						break;
+					default:
+						bootbox.alert(errorMsg);
+				}
+			},
+			'onFallback':function(){
+				bootbox.alert("您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
+			},
+			'onUploadSuccess':function(file, data, response){
+				if(!response){
+					bootbox.alert("连接服务器失败！请检查网络！");
+				}else{
+					try{
+						var data = eval("("+data+")");
+					}catch(e){
+							bootbox.alert('服务器出错，请联系网站客服！');
+					}
+					if(data.code==1){
+						$("#pro_cover_view").attr('src', data.data[0].att_path);
+					}else{
+						bootbox.alert(data.data);
+					}
+				}
+			}
+		});
+		
 	});	
 	function delAtt(obj,id){
 		try{$.get("/Attach/del", {"belong":"project", "id":$("#pro_id").val(), "attId":id}, function(res){
