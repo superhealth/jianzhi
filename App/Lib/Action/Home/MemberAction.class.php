@@ -16,10 +16,11 @@ class MemberAction extends CommonAction{
 		if($member['mem_type']==0){
 			$memberinfo = M("memberperson")->where("mp_mid='{$_SESSION['member']}'")->find();
 			$status = $memberinfo['mp_status'];
-			$memberinfo['place'] = areaToSelect(areaDecode($info['mp_addr']));
+			$memberinfo['place'] = areaToSelect(areaDecode($memberinfo['mp_addr']));
 		}else{
 			$memberinfo = M("membercompany")->where("mc_mid='{$_SESSION['member']}'")->find();
 			$status = $memberinfo['mc_status'];
+			$memberinfo['place'] = areaToSelect(areaDecode($memberinfo['mc_addr']));
 		}
 		$this->assign('member', $member);
 		$this->assign('memberinfo', $memberinfo);

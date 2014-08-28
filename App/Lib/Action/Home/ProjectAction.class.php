@@ -93,6 +93,7 @@ class ProjectAction extends CommonAction{
 	 * 保存项目资料 项目信息
 	 */
 	public function createInfo1(){
+		$this->checkMember();
 		$data = M("project")->create();
 		$data['pro_startstop'] = $_POST['pro_start'].'-'.$_POST['pro_end'];
 		$data['pro_place'] = areaEncode($_POST['area']);
@@ -102,8 +103,9 @@ class ProjectAction extends CommonAction{
 			cookie('newProject', $_POST['id'], time()+3600*24);
 			$_SESSION['newProject'] = $_POST['id'];
 			redirect(__URL__.'/createStep4');
-		}else{
-			
+		}
+		else{
+			$this->error('出错了~保存项目信息失败！' );
 		}
 	}
 	
@@ -113,21 +115,43 @@ class ProjectAction extends CommonAction{
 	 */
 	public function createStep4(){
 		$this->checkMember();
-	if(!empty($_SESSION['newProject'])){
+		if(!empty($_SESSION['newProject'])){
 			$id = $_SESSION['newProject'];
 			unset($_SESSION['newProject']);
-		}else if(!empty($_COOKIE['newProject'])){
+		}
+		else if(!empty($_COOKIE['newProject'])){
 			$id = $_COOKIE['newProject'];
-		}else{
+		}
+		else{
 			redirect(__URL__.'/createStep2');
 		}
 		$field = 'pro_id, pro_prop, pro_limit, pro_addition, pro_contact, con_id, con_name, con_email, con_tel,  con_im';
 		$newProjectInfo = M('project')->join('zt_contact ON pro_contact=con_id')->field($field)->where('pro_id="'.$id.'"')->find();
-		//$newProjectInfo['attachs'] = D('Attachement')->getAtt($newProjectInfo['pro_attachement']);
-		//$newProjectInfo['pro_enum'] = enumsDecode($newProjectInfo['pro_enums']);
-		//$newProjectInfo['place'] = areaToSelect(array());
-		//$newProjectInfo['startToEnd'] = explode('-', $newProjectInfo['pro_startstop']);
-		//$newProjectInfo['cover'] = D('Attachement')->getAttSrc($newProjectInfo['pro_cover']);
+		// 联系人为空，查找用户默认联系方式
+		if(empty($newProjectInfo['con_id'])){
+			$memberInfo = M('member')->where('mem_id="'.$_SESSION['member'].'"')->find();
+			// 用户邮箱
+			$newProjectInfo['con_email'] = $memberInfo['mem_email'];
+			// 通过验证
+			if($memberInfo['mem_state'] > 0){
+				// 企业用户
+				if($memberInfo['mem_type'] > 0){
+					$mcInfo = M('membercompany')->where('mc_mid="'.$_SESSION['member'].'"')->find();
+					$newProjectInfo['con_tel'] = $mcInfo['mc_tel'];
+					$newProjectInfo['con_name'] = $mcInfo['mc_legal'];
+					unset($mcInfo);
+				}
+				// 个人用户
+				else{
+					$mpInfo = M('memberperson')->where('mp_mid="'.$_SESSION['member'].'"')->find();
+					$newProjectInfo['con_tel'] = $mpInfo['mp_tel'];
+					$newProjectInfo['con_name'] = $mpInfo['mp_name'];
+				}
+			}
+			unset($memberInfo);
+		}
+		$this->assign('props', D('Property')->getProps());
+		$this->assign('limits', $this->limits);
 		$this->assign('newProject', $newProjectInfo);
 		$this->display();
 	}
@@ -136,26 +160,50 @@ class ProjectAction extends CommonAction{
 	 * 保存项目资料 对投标要求
 	 */
 	public function createInfo2(){
+		$this->checkMember();
+		
 		// 当前用户和项目ID
 		$where = array('pro_mid'=>$_SESSION['member'], 'pro_id'=>$_POST['id']);
 		//保存联系人
 		$con_data = M('contact')->create();
+		$con_id = M('project')->where($where)->getField('pro_contact');
 		if(empty($con_data['con_id'])){
 			$con_id = M('contact')->add($con_data);
 			M('project')->where($where)->setField('pro_contact', $con_id);
 		}else{
-			M('contact')->save($con_data);
+			M('contact')->where('con_id='.$con_id)->save($con_data);
 		}
 		$data = M('project')->create();
-		M('project')->save($data);
-		$this->error('保存失败！请稍后再试或联系我们的客服');
+		$data['pro_status'] = 1;
+		
+		if(M('project')->where($where)->save($data)){
+			$_SESSION['newProject'] = $_POST['id'];
+			redirect(__URL__.'/createEd');
+		}
+		else{
+			$this->error('保存失败！请稍后再试或联系我们的客服');
+		}
 	}
 	
 	public function createEd(){
+		$_SESSION['newProject'] = 41;
 		$this->checkMember();
-		
-		
-		
+		if(!empty($_SESSION['newProject'])){
+			$id = $_SESSION['newProject'];
+			
+		}
+		else{
+			redirect(__URL__.'/createStep2');
+		}
+		$field = 'pro_id, pro_sn, pro_subject, pro_prop, pro_limit, pro_quantity, pro_unit, pro_sort, pro_enums, pro_publishtime, pro_updatetime,  pro_opentime, pro_step, pro_status';
+		$newProjectInfo = M('project')->field($field)->where('pro_id="'.$id.'"')->find();
+		dump($newProjectInfo);
+		if($newProjectInfo['pro_status']<1){
+			redirect(__URL__.'/createStep'.$newProjectInfo['pro_step']);exit;
+		}
+		$this->assign('newProject', $newProjectInfo);
+		unset($_SESSION['newProject']);
+		$this->display();	
 	}
 	
 	/**

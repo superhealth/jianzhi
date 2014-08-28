@@ -9,7 +9,7 @@
 <body>
 <include file="public:header" />
 <div class="container">
-  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">招标发单</a> /<a href="__GROUP__/Member/safety">填写招标内容</a></div>
+  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Project">招标发单</a> /<a href="__GROUP__/Project/createStep4">对投方要求</a></div>
   <div class="content">
   	<div class="pro_box right_box">
       <div class="pro_title">温馨提示</div>
@@ -22,46 +22,54 @@
       </div>
     </div>
   	<div class="pro_box left_box">
-      <div class="pro_title">招标发单项目内容</div>
+      <div class="pro_title">对投方要求</div>
       <div class="pro_body">
 				<form method="post" action="__URL__/createInfo2" enctype="multipart/form-data">
 					<input type="hidden" name="id" id="pro_id" value="{$newProject.pro_id}" />
-					<!--<div class="pro_info">
-						<span class="info_label">项目编号：</span>
-						<span class="info_value"><strong class="red">{$newProject.pro_sn}</strong></span>
+					<div class="pro_info_box">
+						<div class="pro_info_name"><span class="red">*</span>请选择该项目/订单属性： </div>
+						<div class="pro_info_content">
+							{$props|getRadio='pro_prop', $newProject['pro_prop']}
+						</div>
 					</div>
-					<div class="pro_info">
-						<span class="info_label">项目类别：</span>
-						<span class="info_value"><center class="info_sort">{$newProject.sort_name}</center>
-								<volist name="newProject['pro_enum']" id="ei">
-									<center class="info_enum">{$ei}</center>
-								</volist>
-						</span>
-					</div>-->
-					
-					<div class="pro_contact">
-						<div class="pro_groups">
-							<label for="con_name"><span class="red">*</span>联&nbsp;系&nbsp;人：</label>
-							<div class="pro_control">
-								<input type="text" id="con_name" class="inp inp-mid" name="con_name" value=""  />
-							</div>
+					<div class="pro_info_box">
+						<div class="pro_info_name"><span class="red">*</span>请选择投方用户属性： </div>
+						<div class="pro_info_content">
+							{$limits|getRadio='pro_limit', $newProject['pro_limit']}
 						</div>
-						<div class="pro_groups">
-							<label for="con_tel"><span class="red">*</span>电话/手机：</label>
-							<div class="pro_control">
-								<input type="text" id="con_tel" class="inp inp-mid" name="con_tel" value=""  />
-							</div>
+					</div>
+					<div class="pro_info_box">
+						<div class="pro_info_name">对投方其他要求：</div>
+						<div class="pro_info_content">
+							<textarea name="pro_addition" id="pro_addition" class="txt txt-block" rows="8">{$newProject.pro_addition}</textarea>
 						</div>
-						<div class="pro_groups">
-							<label for="con_email"><span class="red">*</span>电子邮箱：</label>
-							<div class="pro_control">
-								<input type="text" id="con_email" class="inp inp-mid" name="con_email" value=""  />
+					</div>
+					<div class="pro_info_box">
+						<div class="pro_info_name"><span class="red">*</span>该项目联系方式：</div>
+						<div class="pro_info_content">
+							<div class="pro_groups">
+								<label for="con_name"><span class="red">*</span>&nbsp;联&nbsp;系&nbsp;人&nbsp;：</label>
+								<div class="pro_control">
+									<input type="text" id="con_name" class="inp inp-mid" name="con_name" value="{$newProject.con_name}"  />
+								</div>
 							</div>
-						</div>
-						<div class="pro_groups">
-							<label for="con_im"><span class="red">*</span>其 &nbsp;&nbsp;&nbsp;&nbsp; 他：</label>
-							<div class="pro_control">
-								<input type="text" id="con_im" class="inp inp-mid" name="con_im" value="" placeholder='134' />
+							<div class="pro_groups">
+								<label for="con_tel"><span class="red">*</span>电话/手机：</label>
+								<div class="pro_control">
+									<input type="text" id="con_tel" class="inp inp-mid" name="con_tel" value="{$newProject.con_tel}"  />
+								</div>
+							</div>
+							<div class="pro_groups">
+								<label for="con_email"><span class="red">*</span>电子邮箱：</label>
+								<div class="pro_control">
+									<input type="text" id="con_email" class="inp inp-mid" name="con_email" value="{$newProject.con_email}"  />
+								</div>
+							</div>
+							<div class="pro_groups">
+								<label for="con_im">其 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;他：</label>
+								<div class="pro_control">
+									<input type="text" id="con_im" class="inp inp-mid" name="con_im" value="{$newProject.con_im}" placeholder='QQ/MSN' />
+								</div>
 							</div>
 						</div>
 					</div>
@@ -73,6 +81,7 @@
 				</form>
       </div>
     </div>
+		<div class="clearfix"></div>
   </div>
 </div>
 <include file="public:footer" />

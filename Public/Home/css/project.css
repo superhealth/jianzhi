@@ -9,6 +9,7 @@
 .pro_cover_view{max-width:100%; width:220px; height: 144px;}
 .pro_name_view{height:30px; line-height:30px; margin-bottom:20px; text-overflow:ellipsis; white-space:nowrap;}
 
+
 /* createStep1 */
 .big_box{width:745px; float:none; margin:50px auto 100px auto;}
 .pro_step1_1{width:280px; height:160px; padding-left:385px; background:url(../image/bridge.jpg) no-repeat; margin-left:20px; margin-top:40px;}
@@ -68,8 +69,10 @@
 .pro_control{margin-left:120px; }
 .pro_control .inp{height:20px;}
 
-
-
+/* createStep4 */
+.pro_info_box{margin-bottom:20px;}
+.pro_info_name{line-height:45px; height:45px; ;}
+.pro_info_content{padding:10px;}
 
 
 
