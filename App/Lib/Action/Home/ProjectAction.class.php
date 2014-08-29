@@ -95,6 +95,7 @@ class ProjectAction extends CommonAction{
 	public function createInfo1(){
 		$this->checkMember();
 		$data = M("project")->create();
+		$data['pro_opentime'] = cnStrToTime($data['pro_opentime']);
 		$data['pro_startstop'] = $_POST['pro_start'].'-'.$_POST['pro_end'];
 		$data['pro_place'] = areaEncode($_POST['area']);
 		$data['pro_step'] = 4;
@@ -175,7 +176,7 @@ class ProjectAction extends CommonAction{
 		}
 		$data = M('project')->create();
 		$data['pro_status'] = 1;
-		
+		$data['pro_publishtime'] = $_SERVER['REQUEST_TIME'];
 		if(M('project')->where($where)->save($data)){
 			$_SESSION['newProject'] = $_POST['id'];
 			redirect(__URL__.'/createEd');
@@ -190,17 +191,17 @@ class ProjectAction extends CommonAction{
 		$this->checkMember();
 		if(!empty($_SESSION['newProject'])){
 			$id = $_SESSION['newProject'];
-			
 		}
 		else{
 			redirect(__URL__.'/createStep2');
 		}
-		$field = 'pro_id, pro_sn, pro_subject, pro_prop, pro_limit, pro_quantity, pro_unit, pro_sort, pro_enums, pro_publishtime, pro_updatetime,  pro_opentime, pro_step, pro_status';
-		$newProjectInfo = M('project')->field($field)->where('pro_id="'.$id.'"')->find();
-		dump($newProjectInfo);
+		$field = 'pro_id, pro_sn, pro_subject, pro_prop, pro_limit, pro_quantity, pro_unit, sort_name, pro_enums, pro_publishtime, pro_updatetime,  pro_opentime, pro_step, pro_status';
+		$newProjectInfo = M('project')->field($field)->join('`zt_sort` ON `zt_sort`.`sort_id`=`zt_project`.`pro_sort`')->where('pro_id="'.$id.'"')->find();
 		if($newProjectInfo['pro_status']<1){
 			redirect(__URL__.'/createStep'.$newProjectInfo['pro_step']);exit;
 		}
+		$this->assign('props', D('Property')->getProps());
+		$this->assign('limits', $this->limits);
 		$this->assign('newProject', $newProjectInfo);
 		unset($_SESSION['newProject']);
 		$this->display();	

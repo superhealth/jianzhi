@@ -71,10 +71,17 @@
 
 /* createStep4 */
 .pro_info_box{margin-bottom:20px;}
-.pro_info_name{line-height:45px; height:45px; ;}
+.pro_info_name{line-height:45px;}
 .pro_info_content{padding:10px;}
 
-
+/* createEd */
+.pro_complete{background:#E5E5E5; line-height:24px;padding:10px 5px;}
+.pro_comp_header{color:#959595;}
+.pro_comp_title{font-size:15px; line-height:50px; color:#00f; text-align:center; }
+.pro_comp_body{margin-left:60px;}
+.pro_comp_body span{margin-right:10px;}
+.pro_comp_info1{color:#707070;}
+.pro_comp_info2{}
 
 
 

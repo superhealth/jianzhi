@@ -39,6 +39,13 @@ function timeFormat($time="", $format="Y/m/d H:i:s"){
 	return date($format, $time);
 }
 
+function cnStrToTime($str){
+	$search = array('年', '月', '日', '时', '分', '秒');
+	$replace = array('/', '/', ' ', ':', ':', ' ');
+	$str = str_replace($search, $replace, $str);
+	return strtotime($str);
+}
+
 function switch_input($val){
 	if(mb_strlen($val, "utf-8")>64){
 		return "textarea";

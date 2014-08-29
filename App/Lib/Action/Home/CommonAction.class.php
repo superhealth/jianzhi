@@ -11,14 +11,14 @@ class CommonAction extends EmptyAction{
 	public function _initialize(){
 		if(!empty($_SESSION['member'])){
 			$notice = D("Notice")->noRead($_SESSION['member']);
-			$this->assign("notice", $notice);
+			$this->assign("memberNotice", $notice);
 			$type = M("member")->where("mem_id='{$_SESSION['member']}'")->getField("mem_type");
 			if($type==1){
 				$status = M("membercompany")->where("mc_mid='{$_SESSION['member']}'")->getField("mc_status");
 			}else{
 				$status = M("memberperson")->where("mp_mid='{$_SESSION['member']}'")->getField("mp_status");
 			}
-			$this->assign("status", $status);
+			$this->assign("memberStatus", $status);
 		}
 	}
 	

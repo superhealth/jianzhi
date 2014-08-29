@@ -25,7 +25,22 @@
       <div class="pro_title">招标发单完成</div>
       <div class="pro_body">
 				<div class="pro_complete">
-					<div class=""></div>
+					<div class="pro_comp_header"> 项目编号：{$newProject.pro_sn}XXXXXXXXXXXXXXXXXXXX</div>
+					<div class="pro_comp_title"><a href="__GROUP__/Details/project/id/{$newProject.pro_id}" >{$newProject.pro_subject}</a></div>
+					<div class="pro_comp_body">
+						<div calss="pro_comp_info1">
+							<p><span>项目属性：</span><span>{$props[$newProject['pro_prop']]}</span></p>
+							<p><span>投方用户：</span><span>{$limits[$newProject['pro_limit']]}</span></p>
+							<p><span>行业类别：</span><span>{$newProject.sort_name}</span><span>{$newProject.pro_enums}</span></p>
+						</div>
+						<div class="pro_comp_info2">
+							<p><span>数量(总数)：</span><span>{$newProject.pro_quantity}</span></p>
+							<p><span>单位：</span><span>{$newProject.pro_unit}</span></p>
+							<p><span>发方：</span><span>{$Think.session.member}<if condition="$memberStatus neq 2"><span class="red">(实名未验)</span></if></span></p>
+							<p><span>发出日期：</span><span>{$newProject.pro_publishtime|timeFormat='Y年m月d日 H时i分'} </span><if condition="$newProject['pro_updatetime'] gt 0">(更新于{$newProject.pro_updatetime|timeFormat='Y年m月d日 H时i分'})</if></p>
+							<p><span>开标时间：</span><span>{$newProject.pro_opentime|timeFormat='Y年m月d日 H时i分'}</span></p>
+						</div>
+					</div>
 				</div>
       </div>
     </div>
@@ -34,10 +49,5 @@
 </div>
 <include file="public:footer" />
 <include file="public:js" />
-<script type="text/javascript">
-	$(function(){
-			
-	});	
-</script>
 </body>
 </html>
