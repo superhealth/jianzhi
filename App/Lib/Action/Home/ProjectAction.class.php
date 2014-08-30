@@ -115,6 +115,7 @@ class ProjectAction extends CommonAction{
 	 *  步骤4
 	 */
 	public function createStep4(){
+		 $_SESSION['newProject'] = 30;
 		$this->checkMember();
 		if(!empty($_SESSION['newProject'])){
 			$id = $_SESSION['newProject'];

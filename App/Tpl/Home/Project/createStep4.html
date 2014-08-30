@@ -24,7 +24,7 @@
   	<div class="pro_box left_box">
       <div class="pro_title">对投方要求</div>
       <div class="pro_body">
-				<form method="post" action="__URL__/createInfo2" enctype="multipart/form-data">
+				<form method="post" action="__URL__/createInfo2" enctype="multipart/form-data" onsubmit="return createInfo2();">
 					<input type="hidden" name="id" id="pro_id" value="{$newProject.pro_id}" />
 					<div class="pro_info_box">
 						<div class="pro_info_name"><span class="red">*</span>请选择该项目/订单属性： </div>
@@ -87,9 +87,14 @@
 <include file="public:footer" />
 <include file="public:js" />
 <script type="text/javascript">
-	$(function(){
-			
-	});	
+		function createInfo2(){
+			if($('input[type="radio"][name="pro_prop"]:checked').length==0){
+				bootbox.alert('请选择生产属性！');
+				return false;
+			}
+			console.log('ok');
+			return false;
+		}
 </script>
 </body>
 </html>
