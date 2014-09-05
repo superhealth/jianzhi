@@ -5,29 +5,56 @@
  *
  */
 class BidAction extends CommonAction{
+	
 	/**
 	 * 投标中心，已投项目总览
 	 * 
 	 */
 	public function index(){
+		
+		
+	}
+	
+	/**
+	 * 项目列表
+	 * 
+	 */
+	public function proList(){
 		$project = M("project");
 		$map = array();
 		//筛选条件
 		$param = array();
-		//项目状态
+		// 项目状态
 		if(isset($_REQUEST['status']) && $_REQUEST['status']!="all"){
 			$map['pro_status']  = $_REQUEST['status'];
 			$param['status'] = $_REQUEST['status'];
 		}
-		//项目属性
+		// 项目属性
 		if(isset($_REQUEST['prop']) && $_REQUEST['prop']!="all"){
 			$map['pro_prop']  = $_REQUEST['prop'];
 			$param['prop'] = $_REQUEST['prop'];
 		}
-		//项目分类
+		// 项目分类
 		if(isset($_REQUEST['sort']) && $_REQUEST['sort']!="all"){
 			$map['pro_sort']  = $_REQUEST['sort'];
 			$param['sort'] = $_REQUEST['sort'];
+		}
+		// 项目子类
+		if(isset($_REQUEST['enums']) && $_REQUEST['enums']!=""){
+			$map['pro_enums']  = $_REQUEST['enums'];
+			$param['enums'] = $_REQUEST['enums'];
+		}
+		// 项目所在地
+		if(isset($_REQUEST['pro_place']) && $_REQUEST['pro_place']!=""){
+			
+			
+			$map['pro_place']  = array('like', '%'.areaEncode($_REQUEST['pro_place']).'%');
+			$param['pro_place'] = $_REQUEST['pro_place'];
+		}
+		// 公司所在地
+		if(isset($_REQUEST['mem_place']) && $_REQUEST['mem_place']!=""){
+			$map['pro_mid']  = D('Member')->getMemberInArea($_REQUEST['mem_place']);
+			$param['mem_place'] = $_REQUEST['mem_place'];
 		}
 		// 项目主题 or 发布作者
 		if(isset($_REQUEST['words'])){
@@ -66,57 +93,67 @@ class BidAction extends CommonAction{
 		// 项目状态
 		$this->assign("status", $this->status);
 		$this->assign("projects", $projects);
-		//所有分类
-		$sorts = D("Sort")->getSorts();
-		$this->assign("sorts", $sorts);
-		//所有属性
+		// 类别
+		$sorts = D('Sort')->getSorts();
+		$this->assign('sorts', $sorts);
+		// 子类
+		$enums = D('Enumsort')->enums();
+		$this->assign('enums', $enums);
+		// 所有属性
 		$props = D("Property")->getProps();
 		$this->assign("props", $props);
+		// 地区
+		//
+		$areas = areaToSelect(array());
 		$this->display();
+		
 	}
 	
 	/**
 	 * 新建应标
-	 * @param 创建步骤1
+	 * @paramstring $id 项目id
+	 * 
 	 */
-	public function createStep1(){
+	public function launch($id=""){
 		$this->checkMember();
+		
 	}
 	/**
-	 * 新建应标
-	 * @param 创建步骤2
+	 * 保存投标
 	 */
-	public function createStep2(){
+	public function save(){
+		
+		
+	}
+	
+	
+	/**
+	 * 新建应标成功
+	 * @param 
+	 */
+	public function launchEd(){
 		$this->checkMember();
 	}
 	/**
 	 * 新建应标
 	 * @param 创建步骤3
 	 */
-	public function createStep3(){
+	public function modify(){
 		$this->checkMember();
 	}
-	
-	
 	
 	/**
 	 * 查看投标信息
 	 * @param string $sn 投标序列号
 	 */
-	public function viewBidder($sn=""){
+	public function view($id=""){
 		
 	}
-	
-	/**
-	 * 修改投标信息
-	 */
-	public function modifyBidder(){
-		$this->checkMember();
-	}
+
 	/**
 	 * 取消投标信息
 	 */
-	public function cancleBidder(){
+	public function cancle(){
 		$this->checkMember();
 	}
 	

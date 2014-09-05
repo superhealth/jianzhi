@@ -324,7 +324,7 @@ $(function(){
 	});
 
 	
-	$('.datepicker').datepicker({ currentText: 'Now' ,dateFormat: "yy-mm-dd"});
+	$('.datepicker').datetimepicker();
 	//gallery colorbox
 	$('a.thumb').colorbox({transition:"elastic", maxWidth:"95%", maxHeight:"95%"});
 	
