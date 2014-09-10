@@ -10,27 +10,53 @@ class ProjectAction extends CommonAction{
 	private $limits = array(0=> "不限", 1=> "个人", 2=> "企业");	//项目投标限制
 	
 	/**
-	 * 所有项目浏览
+	 * 我的发布
+	 * @see EmptyAction::index()
 	 */
 	public function index(){
+		
+		$this->display();
+	}
+	
+	/**
+	 * 所有项目浏览
+	 */
+	public function all(){
 		$project = M("project");
 		$map = array();
 		//筛选条件
 		$param = array();
-		//项目状态
+		// 项目状态
 		if(isset($_REQUEST['status']) && $_REQUEST['status']!="all"){
 			$map['pro_status']  = $_REQUEST['status'];
 			$param['status'] = $_REQUEST['status'];
 		}
-		//项目属性
+		// 项目属性
 		if(isset($_REQUEST['prop']) && $_REQUEST['prop']!="all"){
 			$map['pro_prop']  = $_REQUEST['prop'];
 			$param['prop'] = $_REQUEST['prop'];
 		}
-		//项目分类
+		// 项目分类
 		if(isset($_REQUEST['sort']) && $_REQUEST['sort']!="all"){
 			$map['pro_sort']  = $_REQUEST['sort'];
 			$param['sort'] = $_REQUEST['sort'];
+		}
+		// 项目子类
+		if(isset($_REQUEST['enums']) && $_REQUEST['enums']!=""){
+			$map['pro_enums']  = $_REQUEST['enums'];
+			$param['enums'] = $_REQUEST['enums'];
+		}
+		// 项目所在地
+		if(isset($_REQUEST['pro_place']) && $_REQUEST['pro_place']!=""){
+				
+				
+			$map['pro_place']  = array('like', '%'.areaEncode($_REQUEST['pro_place']).'%');
+			$param['pro_place'] = $_REQUEST['pro_place'];
+		}
+		// 公司所在地
+		if(isset($_REQUEST['mem_place']) && $_REQUEST['mem_place']!=""){
+			$map['pro_mid']  = D('Member')->getMemberInArea($_REQUEST['mem_place']);
+			$param['mem_place'] = $_REQUEST['mem_place'];
 		}
 		// 项目主题 or 发布作者
 		if(isset($_REQUEST['words'])){
@@ -69,14 +95,23 @@ class ProjectAction extends CommonAction{
 		// 项目状态
 		$this->assign("status", $this->status);
 		$this->assign("projects", $projects);
-		//所有分类
-		$sorts = D("Sort")->getSorts();
-		$this->assign("sorts", $sorts);
-		//所有属性
+		// 类别
+		$sorts = D('Sort')->getSorts();
+		$this->assign('sorts', $sorts);
+		// 子类
+		$enums = D('Enumsort')->enums();
+		$this->assign('enums', $enums);
+		// 所有属性
 		$props = D("Property")->getProps();
 		$this->assign("props", $props);
+		// 地区
+		//
+		$areas = areaToSelect(array());
 		$this->display();
+		
+		
 	}
+	
 	
 	/**
 	 * 服务条款
