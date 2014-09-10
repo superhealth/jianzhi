@@ -76,7 +76,6 @@
 						<div class="pro_control">
 							<input data-no-uniform="true" type="file" name="pro_cover" id="pro_cover" />
 							<button type="button" class="btn btn-mini btn-primary" onclick="$('#pro_cover').uploadify('upload','*');">上传</button> 	
-							<button type="button" class="btn btn-mini btn-warning" onclick="$('#pro_cover').uploadify('cancel');">取消</button> 
 							<span class="tips">(图片格式：JPG, JPEG, PNG; 大小:55K-1M; 尺寸:260*170)</span>
 							<div id="upfile_cover"></div>
 						</div>
@@ -86,7 +85,6 @@
 						<div class="pro_control">
 							<input data-no-uniform="true" type="file" name="pro_attach" id="attach_add"  multiple="true" />
 							<button type="button" class="btn btn-mini btn-primary" onclick="$('#attach_add').uploadify('upload','*');">上传</button> 
-							<button type="button" class="btn btn-mini btn-warning" onclick="$('#attach_add').uploadify('cancel');">取消</button> 
 							<span class="tips"> (注：文件大小不超过3M，数量不超过3个)</span>
 							<div id="upfileLists"></div>
 						</div>
@@ -228,6 +226,7 @@
 					}
 					if(data.code==1){
 						$("#pro_cover_view").attr('src', data.data[0].att_path);
+						$('#pro_cover-button').text('修改');
 					}else{
 						bootbox.alert(data.data);
 					}
