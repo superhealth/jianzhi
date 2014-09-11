@@ -286,23 +286,24 @@ $(function(){
 	});
 	
 	$(".area").change(function(){
-				var n = $(this).attr("id").substr(4,1);
-				var name = $(this).val();
-				findSubArea(name, parseInt(n)+1);
+				var n = $(this).attr("id").substr(-1,1);
+				var name = $(this).val(),
+						formName = $(this).attr('name').replace('[]', '');
+				findSubArea(name, parseInt(n)+1, formName);
 			});
 	//查询子区域
-	function findSubArea(name, n){
+	function findSubArea(name, n, formName){
 		var url = "/Area/getSubArea";
 		var data = {"name":name};
 		$.post(url, data, function(msg){
 			var f = parseInt(n)-1;
-			$("#area"+f+"~.area").remove();
+			$("#"+formName+f+"~.area").remove();
 			if(msg!=""){
-				$("<select name='area[]' id='area"+n+"' class='area'></select>").insertAfter($("#area"+f));
-				$("#area"+n).append(msg);
-				$("#area"+n).change(function(){
+				$("<select name='"+formName+"[]' id='"+formName+n+"' class='area'></select>").insertAfter($("#"+formName+f));
+				$("#"+formName+n).append(msg);
+				$("#"+formName+n).change(function(){
 					var name = $(this).val();
-					findSubArea(name, parseInt(n)+1);
+					findSubArea(name, parseInt(n)+1, formName);
 				});
 			}
 		},"text");

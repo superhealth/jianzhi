@@ -27,9 +27,9 @@ class ProjectAction extends CommonAction{
 		//筛选条件
 		$param = array();
 		// 项目状态
-		if(isset($_REQUEST['status']) && $_REQUEST['status']!="all"){
-			$map['pro_status']  = $_REQUEST['status'];
-			$param['status'] = $_REQUEST['status'];
+		if(isset($_REQUEST['limit']) && $_REQUEST['limit']!="all"){
+			$map['pro_limit']  = $_REQUEST['limit'];
+			$param['limit'] = $_REQUEST['limit'];
 		}
 		// 项目属性
 		if(isset($_REQUEST['prop']) && $_REQUEST['prop']!="all"){
@@ -104,9 +104,12 @@ class ProjectAction extends CommonAction{
 		// 所有属性
 		$props = D("Property")->getProps();
 		$this->assign("props", $props);
+		// 用户投标限制
+		$this->assign("limits", $this->limits);
 		// 地区
-		//
-		$areas = areaToSelect(array());
+		
+		$this->assign('pro_place', areaToSelect(array(), 1, "", "pro_place"));
+		$this->assign('mem_place', areaToSelect(array(), 1, "", "mem_place"));
 		$this->display();
 		
 		
