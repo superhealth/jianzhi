@@ -4,7 +4,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>招标发单</title>
 <include file="public:css" />
-<link href="__PUBLIC__/Home/css/project.css" rel="stylesheet" />
 </head>
 <body>
 <include file="public:header" />
@@ -92,19 +91,19 @@
 					<div class="pro_groups">
 						<label for="pro_opentime">开标日期：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_opentime" class="inp datepicker" name="pro_opentime" value="{$newProject.place}"  />
+							<input type="text" id="pro_opentime" class="inp datepicker" name="pro_opentime" value="{$newProject.pro_opentime}"  />
 						</div>
 					</div>
 					<div class="pro_groups">
 						<label for="pro_start">任务起始日期：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_start" class="inp datepicker" name="pro_start" value="{$newProject.place}"  />
+							<input type="text" id="pro_start" class="inp datepicker" name="pro_start" value="{$newProject['startToEnd'][0]}"  />
 						</div>
 					</div>
 					<div class="pro_groups">
 						<label for="pro_end"><span class="red">*</span>任务交货日期：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_end" class="inp datepicker" name="pro_end" value="{$newProject.place}"  />
+							<input type="text" id="pro_end" class="inp datepicker" name="pro_end" value="{$newProject['startToEnd'][1]}"  />
 						</div>
 					</div>
 					<div class="pro_groups">
@@ -127,10 +126,10 @@
 <include file="public:js" />
 <script type="text/javascript">
 	$(function(){
-			$(".datepicker").datepicker("option", {minDate: new Date(),dateFormat: "yy年mm月dd日"});
+			$(".datepicker").datetimepicker("option", {minDate: new Date()});
 			$("#pro_opentime").change(function(){
-				$("#pro_start").datepicker("option", {minDate: $("#pro_opentime").val()});
-				$("#pro_end").datepicker("option", {minDate: $("#pro_start").val()});
+				$("#pro_start").datetimepicker("option", {minDate: $("#pro_opentime").val()});
+				$("#pro_end").datetimepicker("option", {minDate: $("#pro_start").val()});
 			});
 			$("#pro_start").change(function(){
 				$("#pro_end").datepicker("option", {minDate: $("#pro_start").val()});

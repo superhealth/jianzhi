@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>项目检索</title>
+<include file="public:css" />
+</head>
+<body>
+<include file="public:header" />
+<div class="container">
+	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Bid/index">投标接单</a> /<a href="__GROUP__/Project/all">项目列表</a></div>
+  <div class="content">
+  	<div class="pro_box all_box">
+  		<div class="pro_title">项目列表</div>
+			<div class="pro_body">
+				<div class="sort_box">
+					<div class="sorts_select">
+						<div class="sorts_selected"></div>
+						<ul class="sorts_options">
+							<li data-id="all">全部</li>
+							<volist name="sorts" id="sitem">
+							<li data-id="{$key}" <if condition="$key eq $param['sort']">data-role="selected"</if>>{$sitem}</li>
+							</volist>
+						</ul>
+					</div>
+					<div class="sort_enum_results"></div>
+				</div>
+				<volist name="enums" id="enum">
+				<div class="enum_container" id="enum_sort_{$key}">
+					<volist name="enum" id="bitem">
+					<div class="enum_box">
+						<div class="enum_base">{$key}</div>
+						<ul class="enums_list">
+							<volist name="bitem" id="eitem">
+							<li>{$eitem}</li>
+							</volist>
+						</ul>
+					</div>
+					</volist>
+				</div>
+				</volist>
+				<div class="prop_box">生产属性：
+					<ul class="prop_list">
+						<li data-id="all">全部</li><volist name="props" id="iprop">
+						<li data-id="{$key}"<if condition="$key eq $param['prop']">class="sel"</if>>{$iprop}</li>
+						</volist>
+					</ul>
+				</div>
+				<div class="prop_box">投标限制：
+					<ul class="limit_list">
+						<volist name="limits" id="ilimit">
+						<li data-id="{$key}" <if condition="$key eq $param['limit']">class="sel"</if>>{$ilimit}</li>
+						</volist>
+					</ul>
+				</div>
+				<div class="place_box">
+					<div class="pro_place">项目实施地：
+						{$pro_place}
+					</div>
+					<div class="mem_place">招方所在地：
+						{$mem_place}
+					</div>
+				</div>
+				<div class="search_box">
+					<div class="pro_search">搜索关键字： <input id="pro_search_inp" class="pro_search_inp" type="text" value="{$param.}" /><button id="pro_search_btn" class="btn pro_search_btn" type="button">开 &nbsp; 始</button></div>
+				</div>
+				<div class="pro_all_box">
+					<div class="pro_pagination">
+						<div ></div>
+					</div>
+					<div class="pro_caption">
+						<div class="td1">发表日期&darr;</div>
+						<div class="split"></div>
+						<div class="td2">项目名称</div>
+						<div class="split"></div>
+						<div class="td3">发单方</div>
+						<div class="split"></div>
+						<div class="td4">项目实施（交货）地</div>
+						<div class="split"></div>
+						<div class="td5">开标时间</div>
+						<div class="split"></div>
+						<div class="td6">参投方数</div>
+					</div>
+					<ul class="pro_list">
+						<li>
+							<div class="pro_item_sub">
+								<span>项目编号： {$pitem.pro_sn}</span>
+								<span>项目属性： {$pitem.pro_prop}</span>
+								<span>计划完成(交货)日期： {$pitem.pro_endtime}</span>
+								<span>对投方限制： {$pitem.pro_limit}</span>
+								<span>招方所在地： {$pitem.mem_place}</span>
+							</div>
+							<div class="pro_item_content">
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+    </div>
+  </div>
+</div>
+<include file="public:footer" />
+<include file="public:js" />
+<script type="text/javascript">
+$(function(){
+	function getSortAndEnumResult(){
+		var sortSelected = $(".sorts_options li[data-role='selected']"),
+						sortResult = [];
+		// sort
+		if(sortSelected.length == 0){
+			sortSelected = $(".sorts_options li:eq(0)").attr('data-role', 'selected');
+		}
+		$('.sorts_selected').text(sortSelected.text());
+		sortResult.push(sortSelected.text());
+		$('#sort').value = sortSelected.attr("data-id");
+		// enums
+		var enumSelected = $('.enums_list li.sel');
+		for(var i=0, len=enumSelected.length; i<len; i++){
+			sortResult.push(enumSelected[i].innerText);
+		}
+		// result
+		$(".sort_enum_results").text(sortResult.join(' / '));
+	}
+	function propAndLimitListInit(){
+		if($('.prop_list li.sel').length==0){
+			$('.prop_list li:first-child').addClass('sel');
+		}
+		if($('.limit_list li.sel').length==0){
+			$('.limit_list li:first-child').addClass('sel');
+		}
+	}
+	getSortAndEnumResult();
+	propAndLimitListInit();
+	/* sort select */
+	$('.sorts_select').click(function(){
+		$('.sorts_options').show();
+		$(".sorts_options li").click(function(e){
+			e.stopPropagation();
+			if($(this).attr('data-role')=='selected'){
+				return;
+			}
+			$(this).attr('data-role', "selected").siblings().attr('data-role', '');
+			$(".enum_container").hide();
+			$('#enum_sort_'+$(this).attr('data-id')).show();
+			$('.enums_list li').removeClass('sel');
+			$(".sorts_options").hide();
+			getSortAndEnumResult();
+		});
+		$(this).mouseleave(function(){
+			$(".sorts_options").hide();
+		});
+	});
+	/* enum select */
+	$('.enums_list li').click(function(){
+		if($(this).hasClass('sel')){
+			$(this).removeClass('sel');
+		}else{
+			$(this).addClass('sel').siblings().removeClass('sel');
+		}
+		getSortAndEnumResult();
+	});
+	
+	/* prop select */
+	$('.prop_list li').click(function(){
+		if($(this).hasClass('sel')){
+			return;
+		}
+		$(this).addClass('sel').siblings().removeClass('sel');
+	});
+	/* limit select */
+	$('.limit_list li').click(function(){
+		if($(this).hasClass('sel')){
+			return;
+		}
+		$(this).addClass('sel').siblings().removeClass('sel');
+	});
+});
+</script>
+</body>
+</html>

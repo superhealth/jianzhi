@@ -42,7 +42,7 @@ function timeFormat($time="", $format="Y/m/d H:i:s"){
 function cnStrToTime($str){
 	$search = array('年', '月', '日', '时', '分', '秒');
 	$replace = array('/', '/', ' ', ':', ':', ' ');
-	$str = str_replace($search, $replace, $str);
+	$str = str_replace($search, $replace, $str).'0';
 	return strtotime($str);
 }
 
@@ -533,8 +533,11 @@ function areaDecode($areaStr){
  * @param string $areas
  * @return string
  */
-function areaToSelect($areaArr, $n=1, $areas=""){
-	$select = "<select id='area{$n}' name='area[]' class='area' ><option value='no'>--选择--</option>";
+function areaToSelect($areaArr, $n=1, $areas="", $name=""){
+	if($name==""){
+		$name = 'area';
+	}
+	$select = "<select id='{$name}{$n}' name='{$name}[]' class='area' ><option value='no'>--选择--</option>";
 	if(empty($areas)){
 		$areas = D("Area")->Areas();
 	}
@@ -549,9 +552,9 @@ function areaToSelect($areaArr, $n=1, $areas=""){
 	}
 	$select .= "</select>";
 	if(!empty($subArea)){
-		$select .= areaToSelect($areaArr, ++$n, $subArea);
+		$select .= areaToSelect($areaArr, ++$n, $subArea, $name);
 	}elseif(isset($areas[0]['subArea'])){
-		$select .= areaToSelect(array(), ++$n, $areas[0]['subArea']);
+		$select .= areaToSelect(array(), ++$n, $areas[0]['subArea'], $name);
 	}
 	unset($areas);
 	return $select;
