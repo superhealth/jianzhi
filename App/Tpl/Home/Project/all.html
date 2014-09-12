@@ -62,7 +62,44 @@
 					</div>
 				</div>
 				<div class="search_box">
-				
+					<div class="pro_search">搜索关键字： <input id="pro_search_inp" class="pro_search_inp" type="text" value="{$param.}" /><button id="pro_search_btn" class="btn pro_search_btn" type="button">开 &nbsp; 始</button></div>
+				</div>
+				<div class="pro_all_box">
+					<div class="pro_pagination">
+						<div ></div>
+					</div>
+					<div class="pro_caption">
+						<div class="td1">发表日期&darr;</div>
+						<div class="split"></div>
+						<div class="td2">项目名称</div>
+						<div class="split"></div>
+						<div class="td3">发单方</div>
+						<div class="split"></div>
+						<div class="td4">项目实施（交货）地</div>
+						<div class="split"></div>
+						<div class="td5">开标时间</div>
+						<div class="split"></div>
+						<div class="td6">参投方数</div>
+					</div>
+					<ul class="pro_list">
+						<li>
+							<div class="pro_item_sub">
+								<span>项目编号： {$pitem.pro_sn}</span>
+								<span>项目属性： {$pitem.pro_prop}</span>
+								<span>计划完成(交货)日期： {$pitem.pro_endtime}</span>
+								<span>对投方限制： {$pitem.pro_limit}</span>
+								<span>招方所在地： {$pitem.mem_place}</span>
+							</div>
+							<div class="pro_item_content">
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+							</div>
+						</li>
+					</ul>
 				</div>
 			</div>
     </div>
@@ -130,14 +167,19 @@ $(function(){
 	});
 	
 	/* prop select */
-	/* limit select */
 	$('.prop_list li').click(function(){
 		if($(this).hasClass('sel')){
 			return;
 		}
-		$(this).addClass('sel');
+		$(this).addClass('sel').siblings().removeClass('sel');
 	});
-	
+	/* limit select */
+	$('.limit_list li').click(function(){
+		if($(this).hasClass('sel')){
+			return;
+		}
+		$(this).addClass('sel').siblings().removeClass('sel');
+	});
 });
 </script>
 </body>

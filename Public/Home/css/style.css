@@ -381,8 +381,18 @@ a.p_prev{background:url(../image/page_bg.png) 0 0 no-repeat;}
 .pro_place{width:50%; float:left;}
 .mem_place{width:50%; float:left;}
 .prop_box:after, .place_box:after{content:""; display:block; clear:both; overflow:hidden;}
-
-
+.pro_search{margin:4px 0;}
+.pro_search_inp{border: 1px solid #c2c2c2; height: 20px;line-height: 20px;padding: 2px 5px;width: 240px;}
+.pro_search_btn{width:60px; margin-left:50px; height:26px;}
+.pro_pagination{height:26px; line-height:26px; padding:0 36px; text-align:right; background:#DFEDF9;}
+.pro_caption{height:22px; line-height:22px; backgorund:#959595; }
+.pro_caption .split{ height:22px; width:1px;  float:left; background:;}
+.td1{width:110px;}
+.td2{width:310px;}
+.td3{width:200px;}
+.td4{width:120px;}
+.td5{width:140px;}
+.td6{width:100px;}
 /* bid launch */
 
 
