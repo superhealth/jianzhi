@@ -248,10 +248,10 @@ function per_check( $per, $user=""){
  * @return string
  */
 
-function get_summary($str){
+function get_summary($str, $len=48){
 	$summary = strip_tags($str);
-	if(mb_strlen($summary, "utf-8")>48){
-		$summary = mb_substr($summary, 0, 48, "utf-8")."...";
+	if(mb_strlen($summary, "utf-8")>$len){
+		$summary = mb_substr($summary, 0, $len, "utf-8")."...";
 	}
 	return $summary;
 }

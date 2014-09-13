@@ -111,10 +111,41 @@ class ProjectAction extends CommonAction{
 		$this->assign('pro_place', areaToSelect(array(), 1, "", "pro_place"));
 		$this->assign('mem_place', areaToSelect(array(), 1, "", "mem_place"));
 		$this->display();
-		
+	}
+	/**
+	 * 项目详情
+	 * @param string $id
+	 */
+	public function detail($id=""){
+		if(empty($id)){
+			$this->_empty();
+		}else{
+			$info = M("project")->join("zt_contact ON pro_contact=con_id")->where("pro_id='{$_REQUEST['id']}'")->find();
+			if($info['pro_mid']==$_SESSION['member']){
+				redirect(__URL__.'/myProject/id'.$id);exit;
+			}
+			$info['place'] = areaToSelect(areaDecode($info['pro_place']));
+			$info['enums'] = enumsToSelect($info['pro_sort'], enumsDecode($info['pro_enums']));
+			$atts = D("Attachement")->getAtt($info['pro_attachement']);
+			$this->assign("atts", $atts);
+			$this->assign("info", $info);
+			//项目状态
+			$this->assign("status", $this->status);
+			//投标限制
+			$this->assign("limits", $this->limits);
+			//所有主分类
+			$sorts = D("Sort")->getSorts();
+			$this->assign("sorts", $sorts);
+			//所有属性
+			$props = D("Property")->getProps();
+			$this->assign("props", $props);
+			// 应标单
+			$bidders = D("Bidder")->getProBids($info['pro_id']);
+			$this->assign("bidders", $bidders);
+			$this->display();
+		}
 		
 	}
-	
 	
 	/**
 	 * 服务条款

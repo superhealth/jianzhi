@@ -69,7 +69,7 @@
 						<div ></div>
 					</div>
 					<div class="pro_caption">
-						<div class="td1">发表日期&darr;</div>
+						<div class="td1">发布日期&darr;</div>
 						<div class="split"></div>
 						<div class="td2">项目名称</div>
 						<div class="split"></div>
@@ -91,12 +91,12 @@
 								<span>招方所在地： {$pitem.mem_place}</span>
 							</div>
 							<div class="pro_item_content">
-								<div></div>
-								<div></div>
-								<div></div>
-								<div></div>
-								<div></div>
-								<div></div>
+								<div>{$pitem.pro_publishtime|timeFormat='Y/m/d'}</div>
+								<div>{$pitem.pro_subject|get_summary=48}</div>
+								<div>{$pitem.pro_member}</div>
+								<div>{$pitem.pro_place}</div>
+								<div>{$pitem.pro_opentime}</div>
+								<div>{$pitem.pro_bids}</div>
 							</div>
 						</li>
 					</ul>
@@ -127,6 +127,7 @@ $(function(){
 		// result
 		$(".sort_enum_results").text(sortResult.join(' / '));
 	}
+	
 	function propAndLimitListInit(){
 		if($('.prop_list li.sel').length==0){
 			$('.prop_list li:first-child').addClass('sel');
