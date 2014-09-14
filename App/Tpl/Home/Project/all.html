@@ -65,11 +65,9 @@
 					<div class="pro_search">搜索关键字： <input id="pro_search_inp" class="pro_search_inp" type="text" value="{$param.}" /><button id="pro_search_btn" class="btn pro_search_btn" type="button">开 &nbsp; 始</button></div>
 				</div>
 				<div class="pro_all_box">
-					<div class="pro_pagination">
-						<div ></div>
-					</div>
+					<div class="pro_pagination">{$pager.show}{$pager.header}</div>
 					<div class="pro_caption">
-						<div class="td1">发布日期&darr;</div>
+						<div class="td1"><span class="order-links" data-order="publish">发布日期</span></div>
 						<div class="split"></div>
 						<div class="td2">项目名称</div>
 						<div class="split"></div>
@@ -77,29 +75,36 @@
 						<div class="split"></div>
 						<div class="td4">项目实施（交货）地</div>
 						<div class="split"></div>
-						<div class="td5">开标时间</div>
+						<div class="td5"><span class="order-links" data-order="open">开标时间</span></div>
 						<div class="split"></div>
-						<div class="td6">参投方数</div>
+						<div class="td6"><span class="order-links" data-order="bids">参投方数</span></div>
 					</div>
-					<ul class="pro_list">
-						<li>
-							<div class="pro_item_sub">
-								<span>项目编号： {$pitem.pro_sn}</span>
-								<span>项目属性： {$pitem.pro_prop}</span>
-								<span>计划完成(交货)日期： {$pitem.pro_endtime}</span>
-								<span>对投方限制： {$pitem.pro_limit}</span>
-								<span>招方所在地： {$pitem.mem_place}</span>
-							</div>
-							<div class="pro_item_content">
-								<div>{$pitem.pro_publishtime|timeFormat='Y/m/d'}</div>
-								<div>{$pitem.pro_subject|get_summary=48}</div>
-								<div>{$pitem.pro_member}</div>
-								<div>{$pitem.pro_place}</div>
-								<div>{$pitem.pro_opentime}</div>
-								<div>{$pitem.pro_bids}</div>
-							</div>
-						</li>
-					</ul>
+					<table class="pro_list" cellpadding="0" cellspacing="0" border="0">
+						<volist name="projects" id="pitem">
+						<tr class="pro_item_sub">
+							<td colspan="11">
+								<span class="sub_td1">项目编号： <strong>{$pitem.pro_sn}</strong></span>
+								<span class="sub_td2">项目属性： {$props[$pitem['pro_prop']]}</span>
+								<span class="sub_td3">计划完成(交货)日期： {$pitem.pro_endtime}</span>
+								<span class="sub_td4">对投方限制： {$limits[$pitem['pro_limit']]}</span>
+								<span class="sub_td5">招方所在地： {$pitem.mem_place}</span>
+							</td>
+							</tr>
+							<tr class="pro_item_content">
+								<td class="td1"><span>{$pitem.pro_publishtime|timeFormat='Y/m/d'}</span></td>
+								<td class="split"></td>
+								<td class="td2"><span>{$pitem.pro_subject|get_summary=40}</span></td>
+								<td class="split"></td>
+								<td class="td3"><span>{$pitem.pro_member}</span></td>
+								<td class="split"></td>
+								<td class="td4"><span>{$pitem.pro_place}</span></td>
+								<td class="split"></td>
+								<td class="td5"><span>{$pitem.pro_opentime}</span></td>
+								<td class="split"></td>
+								<td class="td6"><span>{$pitem.pro_bids}</span></td>
+						</tr>
+						</volist>
+					</table>
 				</div>
 			</div>
     </div>
@@ -181,6 +186,36 @@ $(function(){
 		}
 		$(this).addClass('sel').siblings().removeClass('sel');
 	});
+	/* search */
+	$("#pro_search_btn").click(function(){
+		
+	});
+	/* order */
+	//init
+	(function(){
+		var order =  '{$param.order}', asc = '{$param.asc}';
+		var orderObj = $(".order-links[data-order='"+order+"']");
+		orderObj.data("origin", asc);
+		if(asc=="0"){
+			orderObj.html(orderObj.text()+" &darr;");
+		}else if(asc=="1"){
+			orderObj.html(orderObj.text()+" &uarr;");
+		}
+	}());
+	//query
+	$(".order-links").click(function(){
+		var _query = window.location.search;
+		_query = substr(_query, 1).split('&');
+		
+		var queryString = 'order='+ $(this).data("order");
+		if($(this).data('origin')=='0'){
+			queryString += '&asc='+'1';
+		}else{
+			queryString += '&asc='+'0';
+		}
+		window.location.href = _local.indexOf('?')>0 ? (_local+'&'+queryString) : (_local+'?'+queryString);
+	});
+	
 });
 </script>
 </body>

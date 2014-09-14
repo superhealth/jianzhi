@@ -74,7 +74,11 @@ class ProjectAction extends CommonAction{
 		//按详细分类查询
 		
 		
+		// 排序
+		$order = "pro_publishtime DESC";
+		$param['order'] = 'publish'; $param['asc'] = '1';
 		$this->assign("param", $param);
+		
 		// 分页
 		$total = $project->where($map)->count();
 		import("Org.Util.Page");
@@ -85,13 +89,19 @@ class ProjectAction extends CommonAction{
 		$this->assign("pager", $pager);
 		// 连接查询
 		$join = array(
-				"(SELECT bid_proid,count(*) bidders FROM zt_bidder GROUP BY bid_proid) b ON pro_id=b.bid_proid",
+				"(SELECT bid_proid,count(*) bidders FROM zt_bidder GROUP BY bid_proid) b ON pro_id=b.bid_proid"
 		);
 		// 查询字段
-		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_publishtime, pro_status, IFNULL(bidders, 0) bidders";
-		// 排序
-		$order = "pro_publishtime DESC";
+		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_publishtime, pro_limit, pro_startstop, pro_status, IFNULL(bidders, 0) bidders";
+		
 		$projects = $project->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
+		foreach ($projects as &$v){
+			$starstop = explode("-", $v['pro_startstop']);
+			$v['pro_endtime'] = mb_substr($starstop[1], 0, strpos($starstop[1], '日')+1, 'utf-8');
+			$v['mem_place'] = D('Member')->getMemberPlace($v['pro_mid']);
+			$v['mem_place'] = str_replace(array('|','中国','省','市'),array('','','',''), $v['mem_place']);
+		}
+		
 		// 项目状态
 		$this->assign("status", $this->status);
 		$this->assign("projects", $projects);
