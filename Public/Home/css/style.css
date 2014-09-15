@@ -398,9 +398,20 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .td3{width:180px;}
 .td4{width:160px;}
 .td5{width:140px;}
-<<<<<<< HEAD
 .td6{width:100px;}
 
+.pro_list li{margin-bottom:10px;}
+.pro_item_sub{line-height:20px; background:#f3f3f3; font-size:10px; height:20px;}
+.pro_item_sub span{display:block; float:left;padding-left:20px; color:#7a7b7b;}
+.sub_td1{width:180px;}
+.sub_td2{width:150px;}
+.sub_td3{width:230px;}
+.sub_td4{width:130px;}
+.sub_td5{width:200px;}
+.sub_td1 strong{color:#000; font-weight:normal;}
+.pro_list{width:100%;}
+.pro_item_content{height:46px; font-size:13px;}
+.pro_item_content td span{margin-left:20px;vertical-align: middle;}
 
 
 /* pro detail */
@@ -425,22 +436,8 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .proInfo_open_left_day{font-size:18px; color:#ed605; line-height:24px;}
 .proInfo_open_left_time{}
 .proInfo_left_sec_3_delimiter{float:left; width:1px;height:30px; margin-top:15px; background:#d0d0d0;}
-=======
-.td6{width:85px;}
-.pro_list li{margin-bottom:10px;}
-.pro_item_sub{line-height:20px; background:#f3f3f3; font-size:10px; height:20px;}
-.pro_item_sub span{display:block; float:left;padding-left:20px; color:#7a7b7b;}
-.sub_td1{width:180px;}
-.sub_td2{width:150px;}
-.sub_td3{width:230px;}
-.sub_td4{width:130px;}
-.sub_td5{width:200px;}
-.sub_td1 strong{color:#000; font-weight:normal;}
-.pro_list{width:100%;}
-.pro_item_content{height:46px; font-size:13px;}
-.pro_item_content td span{margin-left:20px;vertical-align: middle;}
 
->>>>>>> origin/master
+
 /* bid launch */
 
 
