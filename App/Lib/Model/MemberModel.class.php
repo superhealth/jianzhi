@@ -88,6 +88,15 @@ class MemberModel extends Model{
 		return array_merge($memp, $memc);
 	}
 	
+	public function getMemberPlace($mid){
+		$type = $this->where('mem_id="'.$mid.'"')->getField('mem_type');
+		if($type==0){
+			$place = M('memberperson')->where('mp_mid = "'.$mid.'"')->getField('mp_addr');
+		}else{
+			$place = M('membercompany')->where('mc_mid = "'.$mid.'"')->getField('mc_addr');
+		}
+		return $place;
+	}
 	
 	/*public function getVerifyCode($user=''){
 		$verify = M("member")->where("mem_id='{$user}'")->getField("mem_verifycode");

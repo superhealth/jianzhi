@@ -158,7 +158,7 @@ class Page {
     	$start = $this->firstRow+1;
     	$end = $this->firstRow+$this->listRows>$this->totalRows ? $this->totalRows : $this->firstRow+$this->listRows;
     	return array(
-    		'header'	=> $end==0 ? '' : "显示第{$start}-{$end}行，共{$this->totalRows}行.",
+    		'header'	=> $end==0 ? '' : "显示第{$start}-{$end}项，共{$this->totalRows}项.",
     		'show'	=> $this->show()
     	);
     }
