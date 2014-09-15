@@ -278,7 +278,7 @@ a.p_prev{background:url(../image/page_bg.png) 0 0 no-repeat;}
 .left_box{width:740px; float:left; position:relative;}
 .pro_title{height:30px; line-height:30px; font-size:14px; padding-left:10px; padding-top:5px; border-bottom:1px dashed #999;}
 .pro_body{padding:10px; }
-.pro_cover_view{max-width:100%; width:220px; height: 144px;}
+.pro_cover_view{max-width:100%; width:220px; height: /*144px;*/}
 .pro_name_view{height:30px; line-height:30px; margin-bottom:20px; text-overflow:ellipsis; white-space:nowrap;}
 
 
@@ -393,6 +393,31 @@ a.p_prev{background:url(../image/page_bg.png) 0 0 no-repeat;}
 .td4{width:120px;}
 .td5{width:140px;}
 .td6{width:100px;}
+
+
+
+/* pro detail */
+.proInfo_block{background:#eee; margin:12px; }
+.proInfo_label{display:block; float:left; width:100px; text-align:center; font-weight:bold; line-height:32px;}
+.proInfo_content{margin-left:110px;}
+.proInfo_content p{line-height:20px; padding:6px; }
+.proInfo_attchList{width:100%; margin:0; padding:0;}
+.proInfo_attchList li{width:50%; height:32px; float:left; line-height:32px; }
+.proInfo_attchName{width:220px; height:32px; line-height:32px; display:block; float:left; word-break:break-all; overflow:hidden; word-wrap:break-word; white-space: nowrap; text-overflow: ellipsis; -o-text-overflow:ellipsis; }
+.proInfo_attchLink{width:50px; height:32px; line-height:32px; float:left; margin-left:20px;}
+.ml_50{margin-left:50px;}
+.ml_100{margin-left:100px;}
+.proInfo_left_sec_1{padding:10px 0; border-bottom:#d0d0d0 solid 1px; position:relative; text-align:center; margin-top:20px; line-height:;20px;}
+.proInfo_status_label{position:absolute; right:0; top:10px; display:block; width:64px; text-align:center; line-height: 26px; color:#fff; font-weight:bold; font-size:12px; -moz-border-radius:}
+.proInfo_status_label.label_active{background:#ed605;}
+.proInfo_status_label.label_grey{background:#bfbfbf;}
+.proInfo_bids_num{color:#e60012; line-height:40px; font-size:20px;}
+.proInfo_left_sec_2{padding:10px 20px; border-bottom:#d0d0d0 solid 1px; margin-top:15px; line-height: 20px; font-size:13px; text-align:center;}
+.proInfo_left_sec_3{}
+.proInfo_left_sec_3_left{width:100px; padding:4px; height:60px;}
+.proInfo_open_left_day{font-size:18px; color:#ed605; line-height:24px;}
+.proInfo_open_left_time{}
+.proInfo_left_sec_3_delimiter{float:left; width:1px;height:30px; margin-top:15px; background:#d0d0d0;}
 /* bid launch */
 
 

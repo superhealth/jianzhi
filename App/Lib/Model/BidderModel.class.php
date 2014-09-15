@@ -57,6 +57,16 @@ class BidderModel extends Model{
 		}
 		return $this->where($where)->count();
 	}
+
+	/**
+	 * 用户$mid 的投标数
+	 * @param string $mid 用户名
+	 * @param boolen $all 是否包含未发布
+	 */
+	public function getProBidersCount($pid="", $all=FALSE){
+		$where = array("bid_proid"=>$pid);
+		return $this->where($where)->count();
+	}
 	
 	/**
 	 * 更新投标单附件

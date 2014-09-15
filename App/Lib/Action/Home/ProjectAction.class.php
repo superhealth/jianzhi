@@ -120,31 +120,68 @@ class ProjectAction extends CommonAction{
 		if(empty($id)){
 			$this->_empty();
 		}else{
-			$info = M("project")->join("zt_contact ON pro_contact=con_id")->where("pro_id='{$_REQUEST['id']}'")->find();
+			$join = array(
+				'zt_sort ON pro_sort=sort_id',
+				'zt_property ON pro_prop=pp_id'
+			);
+			$info = M("project")->join($join)->where("pro_id='{$_REQUEST['id']}'")->find();
 			if($info['pro_mid']==$_SESSION['member']){
-				redirect(__URL__.'/myProject/id'.$id);exit;
+				redirect(__URL__.'/myProject/id/'.$id);exit;
 			}
-			$info['place'] = areaToSelect(areaDecode($info['pro_place']));
-			$info['enums'] = enumsToSelect($info['pro_sort'], enumsDecode($info['pro_enums']));
-			$atts = D("Attachement")->getAtt($info['pro_attachement']);
-			$this->assign("atts", $atts);
-			$this->assign("info", $info);
+			//项目所在地
+			$info['pro_place'] = str_replace(array('中国','|','市','省'), array(' ',' ',' ',' '), $info['pro_place']);
+			//项目分类
+			$info['sorts'] = enumsDecode($info['pro_enums']);
+			array_unshift($info['sorts'], $info['sort_name']);
+			$info['sorts'] = implode(' / ', $info['sorts']);
+			//项目附件
+			$info['atts'] = D("Attachement")->getAtt($info['pro_attachement']);
+			// 应标单
+			$info['bids'] = D("Bidder")->getProBidersCount($info['pro_id']);
+			//项目信息
+			$this->assign("proInfo", $info);
+			//项目发布者信息
+			$member = M("member")->where("mem_id='{$_SESSION['member']}'")->find();
+			if($member['mem_type']==0){
+				$memberinfo = M("memberperson")->where("mp_mid='{$_SESSION['member']}'")->find();
+				$status = $memberinfo['mp_status'];
+				$member['place'] = str_replace(array('中国','|','市','省'), array(' ',' ',' ',' '), $memberinfo['mp_addr']);
+			}else{
+				$memberinfo = M("membercompany")->where("mc_mid='{$_SESSION['member']}'")->find();
+				$status = $memberinfo['mc_status'];
+				$member['place'] = str_replace(array('中国','|','市','省'), array(' ',' ',' ',' '), $memberinfo['mc_addr']);
+			}
+			$this->assign('memInfo', $member);
 			//项目状态
 			$this->assign("status", $this->status);
 			//投标限制
 			$this->assign("limits", $this->limits);
-			//所有主分类
-			$sorts = D("Sort")->getSorts();
-			$this->assign("sorts", $sorts);
-			//所有属性
-			$props = D("Property")->getProps();
-			$this->assign("props", $props);
-			// 应标单
-			$bidders = D("Bidder")->getProBids($info['pro_id']);
-			$this->assign("bidders", $bidders);
+			
 			$this->display();
 		}
 		
+	}
+	
+	/* 下载附件 */
+	public function attachDownload($id=0, $aid=0){
+		$this->checkMember();
+		if(empty($id)||empty($aid)){
+			$this->error('Sorry~ 您所下载文件不存在！');
+		}else{
+			$proInfo = M('project')->field('pro_limit, pro_attachement')->where("pro_id={$id}")->find();
+			$atts = explode(',', $proInfo['pro_attachement']);
+			if(in_array($aid, $atts)){
+				$mem_type = M('member')->where('mem_id="'.$_SESSION['member'].'"')->getField('mem_type');
+				if($proInfo['pro_limit'] == $mem_type+1 || $proInfo['pro_limit']==0){
+					$att = new AttachAction();
+					$att->download($aid);
+				}else{
+					$this->error('对不起，该文件限制为 <strong>'.$this->limits[$proInfo['pro_limit']].'</strong> 用户才能下载');
+				}
+			}else{
+				$this->error('Sorry~ 您所下载文件不存在！');
+			}
+		}
 	}
 	
 	/**

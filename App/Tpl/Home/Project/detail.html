@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>招标发单</title>
+<include file="public:css" />
+</head>
+<body>
+<include file="public:header" />
+<div class="container">
+  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">招标发单</a> /<a href="__GROUP__/Member/safety">填写招标内容</a></div>
+  <div class="content">
+  	<div class="pro_box right_box">
+      <div class="pro_title">标题图片</div>
+      <div class="pro_body">
+				<if condition="$newProject['cover'] neq ''">
+      	<img src="{$proInfo['cover']}" id="pro_cover_view" class="pro_cover_view" />
+				<else />
+				<img src="__PUBLIC__/Home/image/pro_cover_view.png" id="pro_cover_view"  class="pro_cover_view" />
+				</if>
+				<div class="proInfo_left_sec_1">
+					<if condition="$proInfo['pro_status'] eq 1"><label class="proInfo_status_label label_active">招标中</label><else/><label class="proInfo_status_label label_grey">招标结束</label></if>
+					<span class="proInfo_bids_num">{$proInfo.bids}365</span><br />当前已有投标数
+				</div>
+				<div class="proInfo_left_sec_2">{$proInfo.pro_subject}项目名称</div>
+				<div class="proInfo_left_sec_3">
+					<div class="proInfo_left_sec_3_left">
+						<span class="proInfo_open_left_day">{$proInfo.openLeft.days}</span>天 <span class="proInfo_open_left_time">{$proInfo.openLeft.time}</span><br /> 距开标
+					</div>
+					<div class="proInfo_left_sec_3_delimiter"></div>
+					<div class="proInfo_left_sec_3_right">
+						<span class="proInfo_browse">{$proInfo.pro_view}</span><br />浏览次数
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="proInfo_left_sec_4">
+					<label class="proInfo_status_label"></label>
+					<span class="proInfo_mem_name">{$proInfo.bids}公司名称</span><br /><a href="__URL__/all?words={$proInfo.pro_mid}">查看所有 <span class="proInfo_mem_own">{$memInfo.pros}10</span> 个已发项目</a>
+				</div>
+				<div class="proInfo_left_sec_5_left">
+					<div class="proInfo_left_sec_5">
+						<span class="proInfo_mem_place">{$memInfo.place}</span><br /> 发方所在地
+					</div>
+					<div class="proInfo_left_sec_5_delimiter"></div>
+					<div class="proInfo_left_sec_5_right">
+						<span class="proInfo_browse">{$memInfo.regdays}</span><br />注册天数
+					</div>
+				</div>
+      </div>
+    </div>
+  	<div class="pro_box left_box">
+      <div class="pro_title">项目 / 订单</div>
+      <div class="pro_body">
+				<div class="proInfo_block">
+					<span class="proInfo_label">标 题：</span>
+					<div class="proInfo_content">
+						<p>项目名称：{$proInfo.pro_subject}</p>
+						<p>项目编号：{$proInfo.pro_sn}<span class="ml_50">项目属性：{$proInfo.pp_name}</span></p>
+						<p>发&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 方：<a class="" href="" >{$memInfo['name']}<if condition="$memInfo['mem_status'] neq 2"><span class="red">(实名未验)</span></if></a></p>
+						<p>发布日期：{$proInfo.pro_createtime|timeFormat='Y年m月d日'}<if condition="$proInfo['pro_updatetime'] gt 0">（最后修改于{$proInfo.pro_updatetime|timeFormat='Y年m月d日 H时i分 A'}）</if></p>
+					</div>
+				</div>
+				<div class="proInfo_block">
+					<span class="proInfo_label">内 容</span>
+					<div class="proInfo_content">
+						<p>{$proInfo.sorts} </p>
+						<p>数量：{$proInfo.pro_quantity}<span class="ml_100">单位：{$proInfo.pro_unit}</span></p>
+						<p>项目实施(交货)地点：{$proInfo.pro_place}</p>
+						<p>预计项目起止时间：{$proInfo.pro_startstop}</p>
+					</div>
+				</div>
+				<div class="proInfo_block">
+					<span class="proInfo_label">简 介</span>
+					<div class="proInfo_content">
+						<p>{$proInfo.pro_description}</p>
+					</div>
+				</div>
+				<div class="proInfo_block">
+					<span class="proInfo_label">附 件</span>
+					<div class="proInfo_content">
+						<ul class="proInfo_attchList">
+							<volist name="atts" id="aitem">
+							<li><span class="proInfo_attchName">附件{$i}：{$aitem.att_name}</span><a href="__URL__/attachDownload?id={$proInfo.pro_id}&aid={$aitem.att_id}" class="proInfo_attchLink">下载</a></li>
+							</volist>
+							<empty name="atts"><li>（暂无任何附件）</li></empty>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+				<div class="proInfo_block">
+					<span class="proInfo_label">要 求</span>
+					<div class="proInfo_content">
+						<p>开标时间：{$proInfo.pro_opentime|timeFormat='Y年m月d日 H:i A'}</p>
+						<p>投标方限制：{$limits[$proInfo['pro_limit']]}</p>
+						<p>内容：</p>
+						<p><empty name="proInfo['pro_addition']">（暂无）</empty>{$proInfo.pro_addition}</p>
+					</div>
+				</div>
+				<div class="pro_btn_groups">
+					<if condition="1">
+						<button type="button" class="btn" data-href="__URL__/createStep1">收藏该项目</button>
+					<else/>
+						<button type="button" class="btn" data-act="__URL__/createInfo1">取消项目</button>
+					</if>
+						<button type="button" class="btn" data-act="__URL__/createInfo1">我要投标</button>
+				</div>
+      </div>
+    </div>
+		<div class="clearfix"></div>
+  </div>
+</div>
+<include file="public:footer" />
+<include file="public:js" />
+<script type="text/javascript">
+	$(function(){
+		
+	});	
+	function delAtt(obj,id){
+		try{$.get("/Attach/del", {"belong":"project", "id":$("#pro_id").val(), "attId":id}, function(res){
+			if(res=="success"){
+				$(obj).parent().parent().remove();
+			}else{
+				bootbox.alert(res);
+			}
+		}, "text");
+		}catch(e){
+			bootbox.alert("网络连接失败！");
+		}
+	}
+</script>
+</body>
+</html>

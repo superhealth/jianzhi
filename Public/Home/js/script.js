@@ -325,7 +325,7 @@ $(function(){
 	});
 
 	
-	$('.datepicker').datetimepicker();
+	$('.datepicker').datepicker("option", {minDate: new Date()});
 	//gallery colorbox
 	$('a.thumb').colorbox({transition:"elastic", maxWidth:"95%", maxHeight:"95%"});
 	
