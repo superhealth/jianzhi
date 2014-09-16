@@ -67,7 +67,7 @@
 				<div class="pro_all_box">
 					<div class="pro_pagination">{$pager.show}{$pager.header}</div>
 					<div class="pro_caption">
-						<div class="td1"><span class="order-links" data-order="publish">发布日期</span></div>
+						<div class="td1"><span class="order-links" data-order="publish" data-asc='0'>发布日期</span></div>
 						<div class="split"></div>
 						<div class="td2">项目名称</div>
 						<div class="split"></div>
@@ -75,9 +75,9 @@
 						<div class="split"></div>
 						<div class="td4">项目实施（交货）地</div>
 						<div class="split"></div>
-						<div class="td5"><span class="order-links" data-order="open">开标时间</span></div>
+						<div class="td5"><span class="order-links" data-order="open" data-asc='0'>开标时间</span></div>
 						<div class="split"></div>
-						<div class="td6"><span class="order-links" data-order="bids">参投方数</span></div>
+						<div class="td6"><span class="order-links" data-order="bids" data-asc='0'>参投方数</span></div>
 					</div>
 					<table class="pro_list" cellpadding="0" cellspacing="0" border="0">
 						<volist name="projects" id="pitem">
@@ -95,13 +95,13 @@
 								<td class="split"></td>
 								<td class="td2"><span>{$pitem.pro_subject|get_summary=40}</span></td>
 								<td class="split"></td>
-								<td class="td3"><span>{$pitem.pro_member}</span></td>
+								<td class="td3"><span>{$pitem.pro_mid}</span></td>
 								<td class="split"></td>
 								<td class="td4"><span>{$pitem.pro_place}</span></td>
 								<td class="split"></td>
-								<td class="td5"><span>{$pitem.pro_opentime}</span></td>
+								<td class="td5"><span>{$pitem.pro_opentime|timeFormat='Y/m/d H:i'}</span></td>
 								<td class="split"></td>
-								<td class="td6"><span>{$pitem.pro_bids}</span></td>
+								<td class="td6"><span>{$pitem.bidders}</span></td>
 						</tr>
 						</volist>
 					</table>
@@ -195,7 +195,7 @@ $(function(){
 	(function(){
 		var order =  '{$param.order}', asc = '{$param.asc}';
 		var orderObj = $(".order-links[data-order='"+order+"']");
-		orderObj.data("origin", asc);
+		orderObj.data("asc", asc);
 		if(asc=="0"){
 			orderObj.html(orderObj.text()+" &darr;");
 		}else if(asc=="1"){
@@ -204,16 +204,28 @@ $(function(){
 	}());
 	//query
 	$(".order-links").click(function(){
-		var _query = window.location.search;
-		_query = substr(_query, 1).split('&');
-		
-		var queryString = 'order='+ $(this).data("order");
-		if($(this).data('origin')=='0'){
-			queryString += '&asc='+'1';
-		}else{
-			queryString += '&asc='+'0';
+		var _query = window.location.search,
+		_query = _query.substr(1).split('&');
+		var flagName = false;
+		for(var i in _query){
+			_query[i] = _query[i].split('=');
+			if(_query[i][0]=='order'){
+				_query[i][1] = $(this).data("order");
+				flagName = true;
+			}else if(_query[i][0]=='asc'){
+				_query[i][1] = ($(this).data("asc")=='0') ? '1' : '0';
+				flagName = true;
+			}
 		}
-		window.location.href = _local.indexOf('?')>0 ? (_local+'&'+queryString) : (_local+'?'+queryString);
+		if(!flagName){
+			_query.push(['order', $(this).data("order")]);
+			_query.push(['asc', (($(this).data("asc")=='0') ? '1' : '0')]);
+		}
+		for(var i in _query){
+			_query[i] = _query[i].join('=');
+		}
+		_query = _query.join('&');
+		window.location.href = window.location.pathname +'?'+ _query;
 	});
 	
 });

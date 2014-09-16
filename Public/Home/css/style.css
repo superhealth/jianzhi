@@ -399,7 +399,7 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .td4{width:150px;}
 .td5{width:140px;}
 .td6{width:100px;}
-
+.order-links{cursor:pointer;}
 .pro_list li{margin-bottom:10px;}
 .pro_item_sub{line-height:20px; background:#f3f3f3; font-size:10px; height:20px;}
 .pro_item_sub span{display:block; float:left;padding-left:20px; color:#7a7b7b;}
