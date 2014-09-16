@@ -14,14 +14,7 @@ class BidAction extends CommonAction{
 		
 		
 	}
-	
-	/**
-	 * 项目列表
-	 * 
-	 */
-	public function proList(){
-		
-	}
+
 	
 	/**
 	 * 新建应标
@@ -30,7 +23,9 @@ class BidAction extends CommonAction{
 	 */
 	public function launch($id=""){
 		$this->checkMember();
-		
+		$proInfo = M('project')->where("pro_id={$id}")->find();
+		$this->assign('project'', $proInfo);
+		$this->display();
 	}
 	/**
 	 * 保存投标

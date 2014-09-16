@@ -317,7 +317,14 @@ $(function(){
 	$('.btn-sub').click(function(){
 		$(this).parents('form').attr('action', $(this).data('act')).submit();
 	});
-	
+	//colorbox
+	$('.colorbox').click(function(e){
+		e.preventDefault();
+		var url = $(this).attr('href');
+		$.get(url, null, function(html){
+			bootbox.alert(html);
+		}, 'html');
+	});
 	
 	// 刷新验证码	
 	$('.authcode').click(function(){

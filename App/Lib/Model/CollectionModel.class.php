@@ -24,17 +24,32 @@ class CollectionModel extends Model{
 	public function addCollection($pid, $mid){
 		$data = array(
 			"co_proid"	=> $pid,
-			"co_mid"	=> $mid,
-			"co_time"	=> time()	
+			"co_mid"	=> $mid
 		);
-		return $this->add($data);
+		if($this->where($data)->count()){
+			$this->error = '已收藏的项目！';
+			return false;
+		}else{
+			$data['co_time'] = time();
+			return $this->add($data);
+		}
+		
 	}
 	
 	/**
 	 * 
 	 * @param string $coid
 	 */
-	public function cancelCollection($coid){
-		return $this->where("co_id='{$coid}'")->delete();
+	public function cancelCollection($coid, $mid){
+		return $this->where("co_id='{$coid}' AND co_mid='{$mid}'")->delete();
 	}
+	
+	public function isCollected($pid, $mid){
+		$where = array(
+				"co_proid"	=> $pid,
+				"co_mid"	=> $mid
+		);
+		return $this->where($where)->getField('co_id');
+	}
+	
 }

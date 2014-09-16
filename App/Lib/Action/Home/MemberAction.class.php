@@ -610,6 +610,18 @@ class MemberAction extends CommonAction{
 		}
 	}
 	
-	
-	
+	public function view($id){
+		$member = M("member")->where('mem_id="'.$id.'"')->find();
+		if($member['mem_type']=='1'){
+			$info = M('member')->join('zt_membercompany ON mem_id=mc_mid')->where('mem_id="'.$id.'"')->find();
+			$member['place'] = $info['mc_addr'];
+		}else{
+			$info = M('member')->join('zt_memberperson ON mem_id=mp_mid')->where('mem_id="'.$id.'"')->find();
+			$member['place'] = $info['mp_addr'];
+		}
+		$this->assign('info', $member);
+		unset($info);
+		$this->assign('types', $this->types);
+		$this->display();
+	}
 }

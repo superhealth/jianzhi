@@ -20,12 +20,12 @@
 				</if>
 				<div class="proInfo_left_sec_1">
 					<if condition="$proInfo['pro_status'] eq 1"><label class="proInfo_status_label label_active">招标中</label><else/><label class="proInfo_status_label label_grey">招标结束</label></if>
-					<span class="proInfo_bids_num">{$proInfo.bids}365</span><br />当前已有投标数
+					<span class="proInfo_bids_num">{$proInfo.bids}</span><br />当前已有投标数
 				</div>
-				<div class="proInfo_left_sec_2">{$proInfo.pro_subject}项目名称</div>
+				<div class="proInfo_left_sec_2">{$proInfo.pro_subject}</div>
 				<div class="proInfo_left_sec_3">
 					<div class="proInfo_left_sec_3_left">
-						<span class="proInfo_open_left_day">{$proInfo.openLeft.days}</span>天 <span class="proInfo_open_left_time">{$proInfo.openLeft.time}</span><br /> 距开标
+						<span class="proInfo_open_left_day">{$proInfo.openLeft.day}</span> 天 <span class="proInfo_open_left_time">{$proInfo.openLeft.hour}:{$proInfo.openLeft.minute}</span><br /> 距开标
 					</div>
 					<div class="proInfo_left_sec_3_delimiter"></div>
 					<div class="proInfo_left_sec_3_right">
@@ -34,17 +34,18 @@
 					<div class="clearfix"></div>
 				</div>
 				<div class="proInfo_left_sec_4">
-					<label class="proInfo_status_label"></label>
-					<span class="proInfo_mem_name">{$proInfo.bids}公司名称</span><br /><a href="__URL__/all?words={$proInfo.pro_mid}">查看所有 <span class="proInfo_mem_own">{$memInfo.pros}10</span> 个已发项目</a>
+					<if condition="$memInfo['status'] eq 1"><label class="proInfo_status_label label_active">实名认证</label><else/><label class="proInfo_status_label label_grey">未认证</label></if>
+					<span class="proInfo_mem_name">{$memInfo.mem_id}</span><br /><a href="__URL__/all?words={$proInfo.pro_mid}">所有招标项目 <span class="proInfo_mem_own">{$memInfo.pros}</span> </a>
 				</div>
-				<div class="proInfo_left_sec_5_left">
-					<div class="proInfo_left_sec_5">
+				<div class="proInfo_left_sec_5">
+					<div class="proInfo_left_sec_5_left">
 						<span class="proInfo_mem_place">{$memInfo.place}</span><br /> 发方所在地
 					</div>
 					<div class="proInfo_left_sec_5_delimiter"></div>
 					<div class="proInfo_left_sec_5_right">
-						<span class="proInfo_browse">{$memInfo.regdays}</span><br />注册天数
+						<span class="proInfo_regday">{$memInfo.regdays}</span><br />注册天数
 					</div>
+					<div class="clearfix"></div>
 				</div>
       </div>
     </div>
@@ -56,7 +57,7 @@
 					<div class="proInfo_content">
 						<p>项目名称：{$proInfo.pro_subject}</p>
 						<p>项目编号：{$proInfo.pro_sn}<span class="ml_50">项目属性：{$proInfo.pp_name}</span></p>
-						<p>发&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 方：<a class="" href="" >{$memInfo['name']}<if condition="$memInfo['mem_status'] neq 2"><span class="red">(实名未验)</span></if></a></p>
+						<p>发&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 方：<a class="colorbox" href="__GROUP__/Member/view/id/{$memInfo['mem_id']}" >{$memInfo['mem_id']}<if condition="$memInfo['mem_status'] neq 2"><span class="red">(实名未验)</span></if></a></p>
 						<p>发布日期：{$proInfo.pro_createtime|timeFormat='Y年m月d日'}<if condition="$proInfo['pro_updatetime'] gt 0">（最后修改于{$proInfo.pro_updatetime|timeFormat='Y年m月d日 H时i分 A'}）</if></p>
 					</div>
 				</div>
@@ -96,13 +97,22 @@
 						<p><empty name="proInfo['pro_addition']">（暂无）</empty>{$proInfo.pro_addition}</p>
 					</div>
 				</div>
+				<div class="proInfo_block">
+					<span class="proInfo_label">通 讯</span>
+					<div class="proInfo_content">
+						<p>联 &nbsp; 系 &nbsp; 人：{$proInfo.con_name}</p>
+						<p>电话/手机 ：{$proInfo.con_tel}</p>
+						<p>电子邮件&nbsp; ：{$proInfo.con_email}</p>
+						<p>其 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 他 ：{$proInfo.con_im}</p>
+					</div>
+				</div>
 				<div class="pro_btn_groups">
-					<if condition="1">
-						<button type="button" class="btn" data-href="__URL__/createStep1">收藏该项目</button>
+					<empty name="collected">
+						<button type="button" class="btn btn-collect" data-id="{$proInfo.pro_id}" data-url="__URL__/proCollect">收藏项目</button>
 					<else/>
-						<button type="button" class="btn" data-act="__URL__/createInfo1">取消项目</button>
-					</if>
-						<button type="button" class="btn" data-act="__URL__/createInfo1">我要投标</button>
+						<button type="button" class="btn btn-collect" data-id="{$collected}" data-url="__URL__/cancelCollect">取消收藏</button>
+					</empty>
+						<button type="button" class="btn btn-link" data-href="__GROUP__/Bid/launch">我要投标</button>
 				</div>
       </div>
     </div>
@@ -113,7 +123,24 @@
 <include file="public:js" />
 <script type="text/javascript">
 	$(function(){
-		
+		$('.btn-collect').click(function(){
+			var self	= $(this),
+							url 	= self.attr('data-url'),
+							id		= self.attr('data-id');
+			$.post(url, 'id='+id, function(data){
+				if(data.code==1){
+					self.attr('data-id', data.id).attr('data-url', data.url);
+					self.text(data.data);
+					bootbox.alert('OK');
+				}else if(data.code==100){
+					bootbox.alert('<h3 class="red">请先登录！</h3>', function(){
+						location.href = data.data;
+					});
+				}else{
+					bootbox.alert('<h3 class="red">'+data.data+'</h3>');
+				}
+			}, 'json');
+		});
 	});	
 	function delAtt(obj,id){
 		try{$.get("/Attach/del", {"belong":"project", "id":$("#pro_id").val(), "attId":id}, function(res){

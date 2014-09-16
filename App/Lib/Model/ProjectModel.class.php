@@ -96,5 +96,12 @@ class ProjectModel extends Model{
 			$pro = $this->where($where)->select();
 			//dump($pro);
 		}
-	}	
+	}
+	
+	/**
+	 * 
+	 */
+	public function browser($id){
+		return $this->where('pro_id='.$id)->setInc('pro_view');
+	}
 }

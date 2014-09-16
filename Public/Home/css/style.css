@@ -394,9 +394,9 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .pro_caption .split{ height:22px; width:1px;  float:left; background:#fff;}
 .pro_caption div{float:left; text-align:center;}
 .td1{width:110px;}
-.td2{width:310px;}
+.td2{width:305px;}
 .td3{width:180px;}
-.td4{width:160px;}
+.td4{width:150px;}
 .td5{width:140px;}
 .td6{width:100px;}
 
@@ -409,9 +409,13 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .sub_td4{width:130px;}
 .sub_td5{width:200px;}
 .sub_td1 strong{color:#000; font-weight:normal;}
-.pro_list{width:100%;}
-.pro_item_content{height:46px; font-size:13px;}
-.pro_item_content td span{margin-left:20px;vertical-align: middle;}
+.pro_list{width:995px;}
+.pro_list td{border:none;padding:0; margin:0;}
+.pro_item_content{height:46px; font-size:14px;}
+.pro_item_content .split{width:1px; display:block; margin-top:12px; height:22px; background:#bbbcbc;}
+.pro_item_content td{vertical-align: middle;}
+.pro_item_content td.td1,.pro_item_content td.td6,.pro_item_content td.td4,.pro_item_content td.td5{text-align:center;}
+.pro_item_content td.td2 span,.pro_item_content td.td3 span{margin-left:20px;}
 
 
 /* pro detail */
@@ -427,15 +431,26 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .ml_100{margin-left:100px;}
 .proInfo_left_sec_1{padding:10px 0; border-bottom:#d0d0d0 solid 1px; position:relative; text-align:center; margin-top:20px; line-height:;20px;}
 .proInfo_status_label{position:absolute; right:0; top:10px; display:block; width:64px; text-align:center; line-height: 26px; color:#fff; font-weight:bold; font-size:12px; -moz-border-radius:}
-.proInfo_status_label.label_active{background:#ed605;}
+.proInfo_status_label.label_active{background:#e60012;}
 .proInfo_status_label.label_grey{background:#bfbfbf;}
 .proInfo_bids_num{color:#e60012; line-height:40px; font-size:20px;}
-.proInfo_left_sec_2{padding:10px 20px; border-bottom:#d0d0d0 solid 1px; margin-top:15px; line-height: 20px; font-size:13px; text-align:center;}
-.proInfo_left_sec_3{}
-.proInfo_left_sec_3_left{width:100px; padding:4px; height:60px;}
-.proInfo_open_left_day{font-size:18px; color:#ed605; line-height:24px;}
-.proInfo_open_left_time{}
-.proInfo_left_sec_3_delimiter{float:left; width:1px;height:30px; margin-top:15px; background:#d0d0d0;}
+.proInfo_left_sec_2{padding:10px 20px; border-bottom:#d0d0d0 solid 1px; margin-top:10px; line-height: 32px; font-size:18px; text-align:center;}
+.proInfo_left_sec_3{padding:10px 0; border-bottom:#d0d0d0 solid 1px;}
+.proInfo_left_sec_3_left{width:120px; padding:4px; height:50px; float:left; text-align:center; line-height:24px; font-size:11px;}
+.proInfo_left_sec_3_right{width:80px; padding:4px; height:50px; float:left; text-align:center; line-height:24px; font-size:11px;}
+.proInfo_open_left_day{font-size:18px; color:#e60012;}
+.proInfo_open_left_time{color:#898989; font-size:13px;}
+.proInfo_browse{font-size:18px; color:#e60012;}
+.proInfo_left_sec_3_delimiter{float:left; width:1px;height:30px; margin-top:14px; background:#d0d0d0;}
+.proInfo_left_sec_4{padding:10px 0; margin-top:20px; border-bottom:#d0d0d0 solid 1px; text-align:center;line-height:24px; position:relative;}
+.proInfo_mem_name{text-align:center; font-size:15px; line-height:40px;}
+.proInfo_mem_own{font-size:18px; color:#00f;}
+.proInfo_left_sec_5{padding:10px 0; border-bottom:#d0d0d0 solid 1px;}
+.proInfo_left_sec_5_left{width:120px; padding:4px; height:50px; float:left; text-align:center; line-height:24px; font-size:11px;}
+.proInfo_left_sec_5_right{width:80px; padding:4px; height:50px; float:left; text-align:center; line-height:24px; font-size:11px;}
+.proInfo_left_sec_5_delimiter{float:left; width:1px;height:30px; margin-top:14px; background:#d0d0d0;}
+.proInfo_mem_place{font-weight:bold;}
+.proInfo_regday{font-size:18px;}
 
 
 /* bid launch */

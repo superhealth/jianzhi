@@ -99,7 +99,7 @@ class ProjectAction extends CommonAction{
 			$starstop = explode("-", $v['pro_startstop']);
 			$v['pro_endtime'] = mb_substr($starstop[1], 0, strpos($starstop[1], '日')+1, 'utf-8');
 			$v['mem_place'] = D('Member')->getMemberPlace($v['pro_mid']);
-			$v['mem_place'] = str_replace(array('|','中国','省','市'),array('','','',''), $v['mem_place']);
+			$v['mem_place'] = str_replace(array('|','中国','省','市'),array('','',' ',''), $v['mem_place']);
 		}
 		
 		// 项目状态
@@ -132,9 +132,13 @@ class ProjectAction extends CommonAction{
 		}else{
 			$join = array(
 				'zt_sort ON pro_sort=sort_id',
-				'zt_property ON pro_prop=pp_id'
+				'zt_property ON pro_prop=pp_id',
+				'zt_contact ON pro_contact=con_id'
 			);
-			$info = M("project")->join($join)->where("pro_id='{$_REQUEST['id']}'")->find();
+			$info = M("project")->join($join)->where("pro_id='{$id}'")->find();
+			if(empty($info)){
+				$this->_empty();
+			}
 			if($info['pro_mid']==$_SESSION['member']){
 				redirect(__URL__.'/myProject/id/'.$id);exit;
 			}
@@ -144,35 +148,90 @@ class ProjectAction extends CommonAction{
 			$info['sorts'] = enumsDecode($info['pro_enums']);
 			array_unshift($info['sorts'], $info['sort_name']);
 			$info['sorts'] = implode(' / ', $info['sorts']);
+			//项目开标剩余时间
+			
+			$info['openLeft'] = getTimeLeft($info['pro_opentime']);
 			//项目附件
 			$info['atts'] = D("Attachement")->getAtt($info['pro_attachement']);
-			// 应标单
+			//应标数量
 			$info['bids'] = D("Bidder")->getProBidersCount($info['pro_id']);
 			//项目信息
 			$this->assign("proInfo", $info);
 			//项目发布者信息
-			$member = M("member")->where("mem_id='{$_SESSION['member']}'")->find();
+			$member = M("member")->where("mem_id='{$info['pro_mid']}'")->find();
+			$member['regdays'] = getTimePass($member['mem_regtime'], 'd');
 			if($member['mem_type']==0){
-				$memberinfo = M("memberperson")->where("mp_mid='{$_SESSION['member']}'")->find();
-				$status = $memberinfo['mp_status'];
+				$memberinfo = M("memberperson")->where("mp_mid='{$info['pro_mid']}'")->find();
 				$member['place'] = str_replace(array('中国','|','市','省'), array(' ',' ',' ',' '), $memberinfo['mp_addr']);
+				$member['status'] = $memberinfo['mp_status'];
 			}else{
-				$memberinfo = M("membercompany")->where("mc_mid='{$_SESSION['member']}'")->find();
-				$status = $memberinfo['mc_status'];
+				$memberinfo = M("membercompany")->where("mc_mid='{$info['pro_mid']}'")->find();
 				$member['place'] = str_replace(array('中国','|','市','省'), array(' ',' ',' ',' '), $memberinfo['mc_addr']);
+				$member['status'] = $memberinfo['mc_status'];
 			}
+			$member['pros'] = D('Project')->getBidersCount($member['mem_id']);
 			$this->assign('memInfo', $member);
 			//项目状态
 			$this->assign("status", $this->status);
 			//投标限制
 			$this->assign("limits", $this->limits);
-			
+			//项目收藏状态
+			$isCollect = D('Collection')->isCollected($id, $_SESSION['member']);
+			$this->assign('collected', $isCollect);
+			//项目浏览+1
+			D('Project')->browser($id);
 			$this->display();
 		}
-		
+	}
+	/**
+	 * 收藏项目
+	 * @param int $id
+	 */
+	public function proCollect($id){
+		$ajaxData = array('code'=>0, 'data'=>'');
+		if(empty($_SESSION['member'])){
+			$ajaxData['code'] = 100;
+			$ajaxData['data'] = __GROUP__."/Member/login/flag/true";
+		}else{
+			if(D('Collection')->addCollection($id, $_SESSION['member'])){
+				$ajaxData['data'] = '取消收藏';
+				$ajaxData['id'] 		= D('Collection')->getLastInsID();
+				$ajaxData['url'] 	= __URL__.'/cancelCollect';
+				$ajaxData['code'] = 1;
+			}else{
+				$ajaxData['data'] = '添加收藏失败！'.D('Collection')->getError();
+			}
+		}
+		echo json_encode_nonull($ajaxData);exit;
+	}
+	/**
+	 * 取消收藏
+	 * @param int $id
+	 */
+	public function cancelCollect($id){
+		$ajaxData = array('code'=>0, 'data'=>'');
+		if(empty($_SESSION['member'])){
+			$ajaxData['code'] = 100;
+			$ajaxData['data'] = __GROUP__."/Member/login/flag/true";
+		}else{
+			$pid = M('Collection')->where("co_id={$id}")->getField('co_proid');
+			if(D('Collection')->cancelCollection($id, $_SESSION['member'])){
+				$ajaxData['data'] = '添加收藏';
+				$ajaxData['id'] 		= $pid;
+				$ajaxData['url']	= __URL__.'/proCollect';
+				$ajaxData['code'] = 1;
+			}else{
+				$ajaxData['data'] = '取消收藏失败！请稍后再试~';
+			}
+		}
+		echo json_encode_nonull($ajaxData);exit;
 	}
 	
-	/* 下载附件 */
+	/**
+	 * 下载项目附件
+	 * @param number $id
+	 * @param number $aid
+	 */
 	public function attachDownload($id=0, $aid=0){
 		$this->checkMember();
 		if(empty($id)||empty($aid)){
@@ -182,6 +241,7 @@ class ProjectAction extends CommonAction{
 			$atts = explode(',', $proInfo['pro_attachement']);
 			if(in_array($aid, $atts)){
 				$mem_type = M('member')->where('mem_id="'.$_SESSION['member'].'"')->getField('mem_type');
+				// 检查对用户的下载限制
 				if($proInfo['pro_limit'] == $mem_type+1 || $proInfo['pro_limit']==0){
 					$att = new AttachAction();
 					$att->download($aid);

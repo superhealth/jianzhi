@@ -1158,8 +1158,53 @@ function getExpireStatus($time){
 	}
 }
 
+/**
+ * 返回距目标时间的天数和时间
+ * @param string $opentime
+ * @return array $openLeft 
+ */
+function getTimeLeft($time){
+	$now = time();
+	$leftTime = $time>$now ? $time-$now : 0;
+	$openLeft = array();
+	$openLeft['day'] = floor($leftTime/86400);
+	$leftTime = $leftTime%86400;
+	$openLeft['hour'] = floor($leftTime/3600);
+	$leftTime = $leftTime%3600;
+	$openLeft['minute'] = floor($leftTime/60);
+	$openLeft['second'] = $leftTime%60;
+	return $openLeft;
+}
 
-
+/**
+ * 返回从目标时间起经过的天数和时间
+ * @param string $opentime
+ * @return array $openLeft 
+ */
+function getTimePass($time, $tag=''){
+	$now = time();
+	$passTime = $now>$time ? $now-$time : 0;
+	$pass = array();
+	$pass['day'] = floor($passTime/86400);
+	$passTime = $passTime%86400;
+	$pass['hour'] = floor($passTime/3600);
+	$passTime = $passTime%3600;
+	$pass['minute'] = floor($passTime/60);
+	$pass['second'] = $passTime%60;
+	switch($tag){
+		case 'd':
+			return $pass['day'];
+			break;
+		case 'h':
+			return $pass['hour'];
+			break;
+		case 'm':
+			return $pass['minute'];
+			break;
+		default:
+			return $pass;
+	}
+}
 
 
 
