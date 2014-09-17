@@ -156,7 +156,7 @@ function layout($layout) {
  * @param boolean $domain 是否显示域名
  * @return string
  */
-function U($url='',$vars='',$suffix=true,$redirect=false,$domain=false) {
+function U($url='',$vars='',$suffix=true,$redirect=false,$domain=false, $normal=false) {
     // 解析URL
     $info   =  parse_url($url);
     $url    =  !empty($info['path'])?$info['path']:ACTION_NAME;
@@ -251,7 +251,7 @@ function U($url='',$vars='',$suffix=true,$redirect=false,$domain=false) {
         }
     }
 
-    if(C('URL_MODEL') == 0) { // 普通模式URL转换
+    if(C('URL_MODEL') == 0||$normal) { // 普通模式URL转换
         $url        =   __APP__.'?'.http_build_query(array_reverse($var));
         if(!empty($vars)) {
             $vars   =   urldecode(http_build_query($vars));

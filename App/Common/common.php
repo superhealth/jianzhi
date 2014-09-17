@@ -553,8 +553,6 @@ function areaToSelect($areaArr, $n=1, $areas="", $name=""){
 	$select .= "</select>";
 	if(!empty($subArea)){
 		$select .= areaToSelect($areaArr, ++$n, $subArea, $name);
-	}elseif(isset($areas[0]['subArea'])){
-		$select .= areaToSelect(array(), ++$n, $areas[0]['subArea'], $name);
 	}
 	unset($areas);
 	return $select;

@@ -27,36 +27,41 @@ class ProjectAction extends CommonAction{
 		//筛选条件
 		$param = array();
 		// 项目状态
-		if(isset($_REQUEST['limit']) && $_REQUEST['limit']!="all"){
-			$map['pro_limit']  = $_REQUEST['limit'];
-			$param['limit'] = $_REQUEST['limit'];
+		if(isset($_REQUEST['limitid']) && $_REQUEST['propid']!="all"){
+			$map['pro_limit']  = $_REQUEST['limitid'];
+			$param['limitid'] = $_REQUEST['limitid'];
 		}
 		// 项目属性
-		if(isset($_REQUEST['prop']) && $_REQUEST['prop']!="all"){
-			$map['pro_prop']  = $_REQUEST['prop'];
-			$param['prop'] = $_REQUEST['prop'];
+		if(isset($_REQUEST['propid']) && $_REQUEST['propid']!="all"){
+			$map['pro_prop']  = $_REQUEST['propid'];
+			$param['propid'] = $_REQUEST['propid'];
 		}
 		// 项目分类
-		if(isset($_REQUEST['sort']) && $_REQUEST['sort']!="all"){
-			$map['pro_sort']  = $_REQUEST['sort'];
-			$param['sort'] = $_REQUEST['sort'];
+		if(isset($_REQUEST['sortid']) && $_REQUEST['sortid']!="all"){
+			$map['pro_sort']  = $_REQUEST['sortid'];
+			$param['sortid'] = $_REQUEST['sortid'];
 		}
 		// 项目子类
 		if(isset($_REQUEST['enums']) && $_REQUEST['enums']!=""){
-			$map['pro_enums']  = $_REQUEST['enums'];
+			$map['pro_enums']  = array('like', "%{$_REQUEST['enums']}%");
 			$param['enums'] = $_REQUEST['enums'];
+			$queryEnums = explode('|', $_REQUEST['enums']);
+			
+			$this->assign('queryEnums', $queryEnums);
 		}
+		$memArea = array();
+		$proArea = array();
 		// 项目所在地
 		if(isset($_REQUEST['pro_place']) && $_REQUEST['pro_place']!=""){
-				
-				
-			$map['pro_place']  = array('like', '%'.areaEncode($_REQUEST['pro_place']).'%');
+			$map['pro_place']  = array('like', '%'.$_REQUEST['pro_place'].'%');
 			$param['pro_place'] = $_REQUEST['pro_place'];
+			$proArea = areaDecode($_REQUEST['pro_place']);
 		}
 		// 公司所在地
 		if(isset($_REQUEST['mem_place']) && $_REQUEST['mem_place']!=""){
-			$map['pro_mid']  = D('Member')->getMemberInArea($_REQUEST['mem_place']);
+			$map['pro_mid']  = array('in', D('Member')->getMemberInArea($_REQUEST['mem_place']));
 			$param['mem_place'] = $_REQUEST['mem_place'];
+			$memArea = areaDecode($_REQUEST['mem_place']);
 		}
 		// 项目主题 or 发布作者
 		if(isset($_REQUEST['words'])){
@@ -114,14 +119,13 @@ class ProjectAction extends CommonAction{
 		);
 		// 查询字段
 		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_publishtime, pro_limit, pro_place, pro_opentime, pro_startstop, pro_status, IFNULL(bidders, 0) bidders";
-		
 		$projects = $project->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		foreach ($projects as &$v){
 			$starstop = explode("-", $v['pro_startstop']);
 			$v['pro_endtime'] = mb_substr($starstop[1], 0, strpos($starstop[1], '日')+1, 'utf-8');
 			$v['pro_place']	= str_replace(array('|','中国','省','市'),array('','',' ',''), $v['pro_place']);
 			$v['mem_place'] = D('Member')->getMemberPlace($v['pro_mid']);
-			$v['mem_place'] = str_replace(array('|','中国','省','市'),array('','',' ',''), $v['mem_place']);
+			$v['mem_place'] = str_replace(array('|','中国','省','市'),array(' ','',' ',''), $v['mem_place']);
 		}
 		
 		// 项目状态
@@ -140,8 +144,8 @@ class ProjectAction extends CommonAction{
 		$this->assign("limits", $this->limits);
 		// 地区
 		
-		$this->assign('pro_place', areaToSelect(array(), 1, "", "pro_place"));
-		$this->assign('mem_place', areaToSelect(array(), 1, "", "mem_place"));
+		$this->assign('pro_place', areaToSelect($proArea, 1, "", "pro_place"));
+		$this->assign('mem_place', areaToSelect($memArea, 1, "", "mem_place"));
 		$this->display();
 	}
 	/**

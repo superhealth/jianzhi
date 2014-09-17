@@ -95,7 +95,7 @@ class Page {
                 }
             }
             $parameter[$p]  =   '__PAGE__';
-            $url            =   U('',$parameter);
+            $url            =   U('',$parameter,true,false,false,true);
         }
         //上下翻页字符串
         $upRow          =   $this->nowPage-1;
