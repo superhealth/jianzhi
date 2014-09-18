@@ -1,10 +1,50 @@
-<!doctype html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta charset="utf-8">
-<title>无标题文档</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>发起投标</title>
+<include file="public:css" />
 </head>
-
 <body>
+<include file="public:header" />
+<div class="container">
+  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Bid">投标接单</a> /<a href="#">填写投标内容</a></div>
+  <div class="content">
+  	<div class="pro_box right_box">
+      <div class="pro_title">标题图片</div>
+      <div class="pro_body">
+				<if condition="$newProject['cover'] neq ''">
+      	<img src="{$project['cover']}" id="pro_cover_view" class="pro_cover_view" />
+				<else />
+				<img src="__PUBLIC__/Home/image/pro_cover_view.png" id="pro_cover_view"  class="pro_cover_view" />
+				</if>
+			</div>
+		</div>
+  	<div class="pro_box left_box">
+      <div class="pro_title">填写投标内容</div>
+      <div class="pro_body">
+				<div class="pro_complete">
+					<div class="pro_comp_header"> 项目编号：{$project.pro_sn}XXXXXXXXXXXXXXXXXXXX</div>
+					<div class="pro_comp_title"><a href="__GROUP__/Project/detail/id/{$project.pro_id}" >{$project.pro_subject}</a></div>
+					<div class="pro_comp_body">
+						<div calss="pro_comp_info1">
+							<p><span>项目属性：</span><span>{$props[$project['pro_prop']]}</span></p>
+							<p><span>投方用户：</span><span>{$limits[$project['pro_limit']]}</span></p>
+							<p><span>行业类别：</span><span>{$project.sort_name}</span><span>{$project.pro_enums}</span></p>
+						</div>
+						<div class="pro_comp_info2">
+							<p><span>发方：</span><span>{$Think.session.member}<if condition="$memberStatus neq 2"><span class="red">(实名未验)</span></if></span></p>
+							<p><span>发出日期：</span><span>{$project.pro_publishtime|timeFormat='Y年m月d日 H时i分'} </span><if condition="$newProject['pro_updatetime'] gt 0">(更新于{$project.pro_updatetime|timeFormat='Y年m月d日 H时i分'})</if></p>
+							<p><span>开标时间：</span><span>{$project.pro_opentime|timeFormat='Y年m月d日 H时i分'}</span></p>
+						</div>
+					</div>
+				</div>
+      </div>
+    </div>
+		<div class="clearfix"></div>
+  </div>
+</div>
+<include file="public:footer" />
+<include file="public:js" />
 </body>
 </html>
