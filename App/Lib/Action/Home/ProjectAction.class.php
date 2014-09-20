@@ -442,7 +442,7 @@ class ProjectAction extends CommonAction{
 			M('contact')->where('con_id='.$con_id)->save($con_data);
 		}
 		$data = M('project')->create();
-		$data['pro_status'] = 1;
+		$data['pro_status'] = 1;	//项目状态已发布
 		$data['pro_publishtime'] = $_SERVER['REQUEST_TIME'];
 		if(M('project')->where($where)->save($data)){
 			$_SESSION['newProject'] = $_POST['id'];
@@ -461,8 +461,9 @@ class ProjectAction extends CommonAction{
 		else{
 			redirect(__URL__.'/createStep2');
 		}
-		$field = 'pro_id, pro_sn, pro_subject, pro_prop, pro_limit, pro_quantity, pro_unit, sort_name, pro_enums, pro_publishtime, pro_updatetime,  pro_opentime, pro_step, pro_status';
+		$field = 'pro_id, pro_sn, pro_subject, pro_mid, pro_prop, pro_limit, pro_quantity, pro_unit, sort_name, pro_enums, pro_publishtime, pro_updatetime,  pro_opentime, pro_step, pro_status';
 		$newProjectInfo = M('project')->field($field)->join('`zt_sort` ON `zt_sort`.`sort_id`=`zt_project`.`pro_sort`')->where('pro_id="'.$id.'"')->find();
+		// 未发布项目 项目草稿
 		if($newProjectInfo['pro_status']<1){
 			redirect(__URL__.'/createStep'.$newProjectInfo['pro_step']);exit;
 		}

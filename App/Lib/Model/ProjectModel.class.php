@@ -6,20 +6,14 @@
  */
 class ProjectModel extends Model{
 	/**
-	 * 获取用户$mid的招标单
-	 * @param string $mid 用户名
-	 * @param boolen $all 是否包含未发布
+	 * 获取项目已投标用户列表
+	 * @param string $id 项目id
+	 * @param boolen 
 	 */
-	public function getProjects($mid="", $row="", $all=FALSE){
-		$join = "";
-		$field = "";
-		$order = "";
-		$where = array("pro_mid"=>$mid);
-		if(!$all){
-			$where['pro_state'] = array("gt", 0);
-		}
-		$limit = empty($row) ? "" : $row;
-		return $this->field()->join()->where($where)->order()->limit()->select();
+	public function getProjectMembers($id=""){
+		$join = 'zt_bidder ON pro_id=bid_proid';
+		$where = array("pro_id"=>$id);
+		return $this->join($join)->where($where)->getField('bid_mid', true);
 	}
 	
 	/**

@@ -188,8 +188,8 @@ $(function(){
 		$(this).children('.inp-file')[0].click();
 	});
 	$(".inp-file").change(function(){
-		$(this).parent().next().removeClass("error");
-		$(this).parent().prev().val($(this).val());
+		$(this).parent().next('.helpline').removeClass("error");
+		$(this).parent().siblings('.inp-file-text').val($(this).val());
 	});
 	
 	/* 找回密码 */

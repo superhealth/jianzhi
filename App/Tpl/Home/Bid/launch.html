@@ -18,27 +18,70 @@
 				<else />
 				<img src="__PUBLIC__/Home/image/pro_cover_view.png" id="pro_cover_view"  class="pro_cover_view" />
 				</if>
+				<h3 class="pro_name_view" id="pro_name_view">{$project.pro_subject}</h3>
 			</div>
 		</div>
   	<div class="pro_box left_box">
       <div class="pro_title">填写投标内容</div>
       <div class="pro_body">
 				<div class="pro_complete">
-					<div class="pro_comp_header"> 项目编号：{$project.pro_sn}XXXXXXXXXXXXXXXXXXXX</div>
-					<div class="pro_comp_title"><a href="__GROUP__/Project/detail/id/{$project.pro_id}" >{$project.pro_subject}</a></div>
 					<div class="pro_comp_body">
 						<div calss="pro_comp_info1">
-							<p><span>项目属性：</span><span>{$props[$project['pro_prop']]}</span></p>
-							<p><span>投方用户：</span><span>{$limits[$project['pro_limit']]}</span></p>
-							<p><span>行业类别：</span><span>{$project.sort_name}</span><span>{$project.pro_enums}</span></p>
-						</div>
-						<div class="pro_comp_info2">
-							<p><span>发方：</span><span>{$Think.session.member}<if condition="$memberStatus neq 2"><span class="red">(实名未验)</span></if></span></p>
-							<p><span>发出日期：</span><span>{$project.pro_publishtime|timeFormat='Y年m月d日 H时i分'} </span><if condition="$newProject['pro_updatetime'] gt 0">(更新于{$project.pro_updatetime|timeFormat='Y年m月d日 H时i分'})</if></p>
-							<p><span>开标时间：</span><span>{$project.pro_opentime|timeFormat='Y年m月d日 H时i分'}</span></p>
+							<p><span class="pro_comp_info_left">项目名称：{$project.pro_subject}</span></p>
+							<p><span class="pro_comp_info_left">发 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 方：<a class="colorbox" href="__GROUP__/Member/view/id/{$project.pro_mid}">{$project.pro_mid}<if condition="$memberStatus neq 2"><span class="red">(实名未验)</span></if></a></span></p>
+							<p><span class="pro_comp_info_left">项目编号：{$project.pro_sn}</span><span  class="pro_comp_info_right">类别：{$project.sort_name} {$project.pro_enums}</span></p>
+							<p><span class="pro_comp_info_left">项目属性：{$props[$project['pro_prop']]}</span><span class="pro_comp_info_right">要求投方用户属性：{$limits[$project['pro_limit']]}</span></p>
+							<p><span class="pro_comp_info_left">发出日期：{$project.pro_publishtime|timeFormat='Y年m月d日'} <if condition="$project['pro_updatetime'] gt 0">(更新于{$project.pro_updatetime|timeFormat='Y年m月d日 H时i分 a'})</if></span><span class="pro_comp_info_right">开标时间：<span <if condition="$project['pro_opentime'] lt $_SERVER['REQUEST_TIME']"> class="red"</if>>{$project.pro_opentime|timeFormat='Y年m月d日 H时i分 a'}</span></span></p>
 						</div>
 					</div>
 				</div>
+				<form method="post" enctype="multipart/form-data" onsubmit='return launchCheck();'>
+				<div class="bid_info_block">
+					<div class="bid_info_title"><span class="red">*</span>投标概要<span data-for="bid_description" class="helpline"></span></div>
+					<div class="bid_info_body"><textarea name="bid_description" id="bid_description" class="txt txt-block" rows="8" placeholder="你对该项目/订单的 完成优势， 即 技术背景、项目经历、应力保障等。 200字以内。" ></textarea>
+						<button class="btn_file btn_file_ex" type="button"><input type="file" class="inp inp-file" name="bid_quoted" id="bid_quoted"/>上传《投标书》</button><input type="text" class="inp inp-file-text inp-file-text_ex" disabled="disabled" /><span class="helpline" data-for="bid_quoted"></span>
+						<div class="clearfix"></div>
+						<span class="tips">(注：文件大小小于3M)</span>
+					</div>
+				</div>
+				<div class="bid_info_block">
+					<div class="bid_info_title">投标报价</div>
+					<div class="bid_info_body">
+						<p><span class="red">*</span>投 标 总 价：
+							<input type="text" class="inp inp-mini" style="text-align:right;" id="bid_price" name="bid_price" />
+							<select name="bid_unit" id="pro_unit">{$units|getOptions}</select>
+							<select name="bid_currency" id="pro_currency">{$currencys|getOptions}</select>
+							<span class="tips">( 注：如有分项报价 、单价 等，请以附件方式上传)</span>
+						</p>
+						<p><span class="red">*</span>报 价 内 容：
+							<select name="bid_taxes" id="bid_taxes">{$taxes|getOptions}</select>
+							<label for="bid_transport"><input type="checkbox" value="1" id="bid_transport" name="bid_transport" />运费</label>
+							<label for="bid_insurance"><input type="checkbox" value="1" id="bid_insurance" name="bid_insurance" />保险</label>
+						</p>
+						<p>&nbsp;是 否 可 见：
+							<label class="ml_50" for="bid_price_flag"><input type="checkbox" value="1" id="bid_price_flag"  name="bid_price_flag" />总报价</label>
+							<label class="ml_50" for="bid_quoted_flag"><input type="checkbox" value="1" id="bid_quoted_flag" name="bid_quoted_flag" />《报价单》</label>
+							<label class="ml_50" for="bid_tenders_flag"><input type="checkbox" value="1" id="bid_tenders_flag" name="bid_tenders_flag" />《投标书》</label>
+						</p>
+						<button class="btn_file btn_file_ex" type="button"><input type="file" class="inp inp-file" name="bid_tenders" id="bid_tenders"/>上传《报价单》</button><input type="text" class="inp inp-file-text inp-file-text_ex" disabled="disabled" /><span class="helpline" data-for="bid_tenders"></span>
+						<div class="clearfix"></div>
+						<span class="tips">(注：文件大小小于3M)</span>
+					</div>
+				</div>
+				<div class="bid_info_block">
+					<div class="bid_info_title">项目联系方式</div>
+					<div class="bid_info_body">
+						<p><span class="red">*</span>联 &nbsp; 系 &nbsp; 人：<input type="text" id="con_name" class="inp inp-mid" name="con_name" maxlength="20" value="{$project.con_name}" /><span class="helpline" data-for="con_name"></span></p>
+						<p><span class="red">*</span>电 话/手 机：<input type="text" id="con_tel" class="inp inp-mid" name="con_tel" maxlength="20" value="{$project.con_tel}" /><span class="helpline" data-for="con_tel"></span></p>
+						<p><span class="red">*</span>电 子 邮 箱：<input type="email" id="con_email" class="inp inp-mid" name="con_email" maxlength="40" value="{$project.con_email}" /><span class="helpline" data-for="con_email"></span></p>
+						<p>&nbsp;其 他 信 息：<input type="text" id="con_im" class="inp inp-mid" name="con_im" placeholder='QQ/MSN' /></p>
+					</div>
+				</div>
+				<div class="pro_btn_groups">
+					<button type="button" class="btn btn-link" data-href="__GROUP__/Project/detail/id/{$project.pro_id}">放弃投标</button>
+					<button type="button" class="btn btn-sub" data-act="__GROUP__/Bid/launchEd/id/{$project.pro_id}">提交投标</button>
+				</div>
+				</form>
       </div>
     </div>
 		<div class="clearfix"></div>
@@ -46,5 +89,55 @@
 </div>
 <include file="public:footer" />
 <include file="public:js" />
+<script type="text/javascript">
+	function launchCheck(){
+		if($('#bid_description').val()==""){
+			$('.helpline[data-for="bid_description"]').addClass('error').html('投标概述不能为空！');
+			$('#bid_description')[0].focus();
+			return false;
+		}
+		if($('#bid_description').val().length>200){
+			$('.helpline[data-for="bid_description"]').addClass('error').html('投标概述字数超限！');
+			$('#bid_description')[0].focus();
+			return false;
+		}
+		if($('#bid_price').val()==""){
+			$('#bid_price').addClass('error');
+			bootbox.alert('投标报价不能为空！');
+			return false;
+		}
+		if($('#con_name').val()==""){
+			$('#con_name').addClass('error');
+			$('.helpline[data-for="con_name"]').addClass('error').html('联系人不能为空！');
+			return false;
+		}
+		if($('#con_tel').val()==""){
+			$('#con_tel').addClass('error');
+			$('.helpline[data-for="con_tel"]').addClass('error').html('联系电话不能为空！');
+			return false;
+		}
+		if($('#con_email').val()==""){
+			$('#con_email').addClass('error');
+			$('.helpline[data-for="con_email"]').addClass('error').html('邮箱不能为空！');
+			return false;
+		}	
+	}
+	$(function(){
+		$('#bid_price').on('keydown', function(e){
+			if(e.keyCode<91&&e.keyCode>64 || e.keyCode==229){
+				e.preventDefault();
+			}
+		}).on('change', function(){
+			var _val = $(this).val();
+			_val = _val.match(/[0-9]+([.]{1}[0-9]{1,2})?/);
+			if(_val!=null){
+				_val = _val[0];
+			}else{
+				_val = 0;
+			}
+			$(this).val((_val-0).toFixed(2));
+		})
+	});
+</script>
 </body>
 </html>

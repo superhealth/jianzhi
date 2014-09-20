@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>投标成功</title>
+<include file="public:css" />
+</head>
+<body>
+<include file="public:header" />
+<div class="container">
+  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Bid">投标接单</a> /<a href="#">投标成功</a></div>
+  <div class="content">
+  	<div class="pro_box right_box">
+      <div class="pro_title">标题图片</div>
+      <div class="pro_body">
+				<if condition="$newProject['cover'] neq ''">
+      	<img src="{$project['cover']}" id="pro_cover_view" class="pro_cover_view" />
+				<else />
+				<img src="__PUBLIC__/Home/image/pro_cover_view.png" id="pro_cover_view"  class="pro_cover_view" />
+				</if>
+				<h3 class="pro_name_view" id="pro_name_view">{$project.pro_subject}</h3>
+			</div>
+		</div>
+  	<div class="pro_box left_box">
+      <div class="pro_title">投标成功</div>
+      <div class="pro_body">
+				<div class="bid_complete">
+					<h3 class="pro_name_view" id="pro_name_view">{$project.pro_subject}</h3>
+					<p><span class="pro_comp_info_left">投标编号：{$bid.bid_sn}</span><span class="pro_comp_info_right">投标时间：{$bid.bid_publishtime|timeFormat='Y年m月d日 H时i分 a'}</span></p>
+				</div>
+				<div class="pro_complete">
+					<div class="pro_comp_body">
+						<div calss="pro_comp_info1">
+							<p><span class="pro_comp_info_left">项目名称：{$project.pro_subject}</span></p>
+							<p><span class="pro_comp_info_left">发 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 方：<a class="colorbox" href="__GROUP__/Member/view/id/{$project.pro_mid}">{$project.pro_mid}<if condition="$memberStatus neq 2"><span class="red">(实名未验)</span></if></a></span></p>
+							<p><span class="pro_comp_info_left">项目编号：{$project.pro_sn}</span><span class="pro_comp_info_right">类别：{$project.sort_name} {$project.pro_enums}</span></p>
+							<p><span class="pro_comp_info_left">项目属性：{$props[$project['pro_prop']]}</span><span class="pro_comp_info_right">要求投方用户属性：{$limits[$project['pro_limit']]}</span></p>
+							<p><span class="pro_comp_info_left">发出日期：{$project.pro_publishtime|timeFormat='Y年m月d日'} <if condition="$project['pro_updatetime'] gt 0">(更新于{$project.pro_updatetime|timeFormat='Y年m月d日 H时i分 a'})</if></span><span class="pro_comp_info_right">开标时间：<span <if condition="$project['pro_opentime'] lt $_SERVER['REQUEST_TIME']"> class="red"</if>>{$project.pro_opentime|timeFormat='Y年m月d日 H时i分 a'}</span></span></p>
+						</div>
+					</div>
+				</div>
+      </div>
+    </div>
+		<div class="clearfix"></div>
+  </div>
+</div>
+<include file="public:footer" />
+<include file="public:js" />
+</body>
+</html>

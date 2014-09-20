@@ -19,19 +19,21 @@ class CurrencyModel extends Model{
 		}
 		return require($cacheFile);
 	}
-
 	/**
-	 * 获取币值名称为$name的币值
-	 * @param string $name 币值名称
+	 * 获取货币种类的中文名字
+	 * @return array
 	 */
-	public function getCurrency($name=""){
-		$currs = $this->getCurrencys();
-		foreach($currs as $k=>$v){
-			if($v==$name){
-				return $k;
-			}
-		}
-		return false;
+	public function getCurrencysByName(){
+		$currencys = $this->getCurrencys();
+		return $currencys['name'];
+	}
+	/**
+	 * 获取货币种类的币种标志 如HKD， RMB，USD
+	 * @return array
+	 */
+	public function getCurrencyBySign(){
+		$currencys = $this->getCurrencys(true);
+		return $currencys['sign'];
 	}
 	
 	/**
@@ -41,10 +43,13 @@ class CurrencyModel extends Model{
 		$cacheFile = SYSCONF_DIR.$this->cacheFile;
 		$str = "<?php \nreturn array( \n";
 		$units = $this->select();
+		$str .= "'sign'=> array( \n";
 		foreach($units as $v){
-			$str .= "'".$v['cur_sign']."'=>'".$v['cur_name']."', \n";
+			$str .= "'".$v['cur_id']."'=>'".$v['cur_sign']."', \n";
 		}
-		$str .= "\n); \n?>";
+		$str .= "\n), \n'name'=>array( \n";
+		
+		$str .= "\n)\n); \n?>";
 		@chmod(SYSCONF_DIR, 0777);
 		$f = fopen($cacheFile, "w") or die('<script>alert("写入配置失败，请检查./cache目录是否可写入！"); history.go(-1);</script>');
 		$rs = fwrite($f,$str);

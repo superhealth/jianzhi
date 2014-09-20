@@ -35,7 +35,7 @@
 						<div class="pro_comp_info2">
 							<p><span>数量(总数)：</span><span>{$newProject.pro_quantity}</span></p>
 							<p><span>单位：</span><span>{$newProject.pro_unit}</span></p>
-							<p><span>发方：</span><span>{$Think.session.member}<if condition="$memberStatus neq 2"><span class="red">(实名未验)</span></if></span></p>
+							<p><span>发方：</span><span><a class="colorbox" href="__GROUP__/Member/view/id/{$newProject.pro_mid}">{$newProject.pro_mid}<if condition="$memberStatus neq 2"><span class="red">(实名未验)</span></if></span></p>
 							<p><span>发出日期：</span><span>{$newProject.pro_publishtime|timeFormat='Y年m月d日 H时i分'} </span><if condition="$newProject['pro_updatetime'] gt 0">(更新于{$newProject.pro_updatetime|timeFormat='Y年m月d日 H时i分'})</if></p>
 							<p><span>开标时间：</span><span>{$newProject.pro_opentime|timeFormat='Y年m月d日 H时i分'}</span></p>
 						</div>
