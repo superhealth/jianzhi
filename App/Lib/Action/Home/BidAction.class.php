@@ -309,21 +309,16 @@ class BidAction extends CommonAction{
 	 * @param string $sn 投标序列号
 	 */
 	public function detail($id=0){
-		$this->checkMember();
 		$join = array(
 				'zt_project ON pro_id=bid_proid',
 				'zt_sort ON zt_sort.sort_id = zt_project.pro_sort',
 				'zt_contact ON bid_contact = con_id'
 		);
-		$bidInfo = M('Bidder')->join($join)->where('bid_id="'.$id.'" AND bid_mid="'.$_SESSION['member'].'"')->find();
+		$bidInfo = M('Bidder')->join($join)->where('bid_id="'.$id.'"')->find();
 		if(empty($bidInfo)){
 			$this->_empty();
 		}
 		
-		//检查是否开标
-		if($_SERVER['REQUEST_TIME']>$bidInfo['pro_opentime']){
-			$this->error('Sorry~ 所投项目已开标，无法修改！');
-		}
 		//项目封面
 		$bidInfo['cover'] 		= D('Attachement')->getAttSrc($bidInfo['pro_cover']);
 		//报价单
@@ -344,7 +339,6 @@ class BidAction extends CommonAction{
 		$memInfo = D('Member')->getMemberInfo($bidInfo['pro_mid']);
 		// 投标用户信息
 		$userInfo = D('Member')->getMemberInfo($bidInfo['bid_mid']);
-		dump($userInfo);
 		if(empty($bidInfo['con_name'])){
 			$bidInfo['con_name'] = $userInfo['name'];
 		}

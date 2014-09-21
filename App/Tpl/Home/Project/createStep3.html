@@ -126,14 +126,14 @@
 <include file="public:js" />
 <script type="text/javascript">
 	$(function(){
-			$("#pro_opentime").datetimepicker("option", {minDate: new Date()});
-			$("#pro_opentime").change(function(){
+			$("#pro_opentime").datepicker("option", {minDate: new Date()});
+			/*$("#pro_opentime").change(function(){
 				$("#pro_start").datetimepicker("option", {minDate: $("#pro_opentime").val()});
 				$("#pro_end").datetimepicker("option", {minDate: $("#pro_start").val()});
 			});
 			$("#pro_start").change(function(){
 				$("#pro_end").datepicker("option", {minDate: $("#pro_start").val()});
-			});
+			});*/
 			$("#attach_add").uploadify({
 			'auto':false,
 			'queueID':'upfileLists',

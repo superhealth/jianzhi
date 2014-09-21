@@ -42,10 +42,10 @@
 				<div class="bid_info_block">
 					<div class="bid_info_title"><span class="red">*</span>投标概要<span data-for="bid_description" class="helpline"></span></div>
 					<div class="bid_info_body">
-						<p>{$bidInfo.bid_description}</p>
+						<p style="margin-bottom:20px;">{$bidInfo.bid_description}</p>
 						<if condition="$bidInfo['tenders'] neq 0">
-						投标书：<ul class="pro_att_view" id="pro_att_view">
-							<li><span>{$bidInfo.tenders.att_name}</span><button type="button" class="btn" onclick="delAtt(this,'bid_tenders');">删除</button></li>
+						《投标书》：<ul class="pro_att_view" id="pro_att_view">
+							<li><span title="{$bidInfo.tenders.att_name} 大小{$bidInfo.tenders.att_size}">{$bidInfo.tenders.att_name}</span><button type="button" class="btn" onclick="delAtt(this,'bid_tenders');">下载</button></li>
 						</ul>
 						</if>
 					</div>
@@ -63,8 +63,8 @@
 							<label class="ml_50" for="bid_tenders_flag"><input type="checkbox"<if condition="$bidInfo['bid_tenders_flag'] eq 1">checked</if> value="1" id="bid_tenders_flag" name="bid_tenders_flag" />《投标书》</label>
 						</p>
 						<if condition="$bidInfo['quoted'] neq 0">
-						<ul class="pro_att_view" id="pro_att_view">
-							<li><span>{$bidInfo.quoted.att_name}</span><button type="button" class="btn" onclick="delAtt(this,'bid_quoted');">删除</button></li>
+						《报价单》：<ul class="pro_att_view" id="pro_att_view">
+							<li><span title="{$bidInfo.quoted.att_name} 大小{$bidInfo.quoted.att_size}">{$bidInfo.quoted.att_name}</span><button type="button" class="btn" onclick="delAtt(this,'bid_quoted');">下载</button></li>
 						</ul>
 						</if>
 					</div>

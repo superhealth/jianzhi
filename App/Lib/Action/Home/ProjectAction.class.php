@@ -63,20 +63,19 @@ class ProjectAction extends CommonAction{
 			$param['mem_place'] = $_REQUEST['mem_place'];
 			$memArea = areaDecode($_REQUEST['mem_place']);
 		}
-		// 项目主题 or 发布作者
+		// 项目主题 or 发布作者 or 项目编号
 		if(isset($_REQUEST['words'])){
 			$words = addslashes($_REQUEST['words']);
 			if(strlen($words)>=3){
 				$where['pro_subject']  = array('like', "%{$words}%");
 				$where['pro_mid'] = array('like', "%{$words}%");
+				$where['pro_sn'] = array('like', "%{$words}%");
 				$where['_logic'] = "or";
 				$map['_complex'] = $where;
 				$param['words'] = $_REQUEST['words'];
 			}
 		}
-		//起止时间
 		
-
 		// 排序
 		$order = "pro_publishtime DESC";
 		if(isset($_REQUEST['order'])){
