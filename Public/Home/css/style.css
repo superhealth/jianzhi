@@ -317,7 +317,7 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .pro_ca_sub_item.border_right{border-right:none; }
 .pro_ca_sub_item.cur, .pro_ca_sub_item:hover{color:#e60012; }
 .pro_btn_groups{width:100%; height:30px; text-align:center; clear:right; padding:20px 0;}
-.pro_btn_groups .btn{display:inline-block; width:80px; height:24px; font-size:14px; text-align:center; margin:0 35px;}
+.pro_btn_groups .btn{display:inline-block; min-width:80px; height:24px; font-size:14px; text-align:center; margin:0 35px;}
 .pro_ca_sel{width:575px; float:right;}
 .pro_ca_s_main{float:left; width:75px; height:30px; font-size:12px; background:#d3f0f0; text-align:center; color:#e60012;}
 .pro_ca_s_main:empty{display:none;}
@@ -326,8 +326,8 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 
 /* createStep3 */
 .pro_att_view{width:220px;}
-.pro_att_view li{line-height:20px; height:20px; padding:5px 0; list-style-type: decimal; list-style-position:inside;}
-.pro_att_view li span{width:150px; display:inline-block; text-overflow:ellipsis; white-space:nowrap;}
+.pro_att_view li{line-height:20px; height:20px; padding:5px 0; list-style:none;}
+.pro_att_view li span{width:150px; display:inline-block; text-overflow:ellipsis; white-space:nowrap;overflow: hidden;color:#0000ff;} 
 .pro_att_view li button{float:right;}
 .pro_info{padding:8px 10px; line-height:23px; background: #f9f9f9;}
 .info_label{display:inline-block; width:110px; text-align:right; margin-right: 10px;}
@@ -465,6 +465,9 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .inp-file-text_ex{display:block; float:left; width:220px; border:1px solid #fff; background:#fff;height:16px;}
 .btn_file_ex{display:block; float:left; width:auto; height:24px; border:1px solid #fff; background:#ED6059; padding:0 10px; position:relative;cursor:pointer; outline:none;}
 
+/* bid launched */
+.bid_complete{width:; border:1px solid #D3F0F0; padding:10px; margin-bottom:15px;}
+.bid_complete h3{margin:10px 20px; font-size:14px;}
 /* bid modify */
 
 

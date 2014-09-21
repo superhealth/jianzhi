@@ -10,7 +10,7 @@ class ProjectModel extends Model{
 	 * @param string $id 项目id
 	 * @param boolen 
 	 */
-	public function getProjectMembers($id=""){
+	public function getProjectMembers($id=0){
 		$join = 'zt_bidder ON pro_id=bid_proid';
 		$where = array("pro_id"=>$id);
 		return $this->join($join)->where($where)->getField('bid_mid', true);
@@ -21,7 +21,7 @@ class ProjectModel extends Model{
 	 * @param string $mid 用户名
 	 * @param boolen $all 是否包含未发布
 	 */
-	public function getBidersCount($mid="", $all=FALSE){
+	public function getBidersCount($mid=0, $all=FALSE){
 		$where = array("bid_mid"=>$mid);
 		if(!$all){
 			$where['bid_state'] = array("gt", 0);

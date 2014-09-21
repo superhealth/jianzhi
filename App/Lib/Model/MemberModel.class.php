@@ -97,13 +97,43 @@ class MemberModel extends Model{
 	public function getMemberPlace($mid){
 		$type = $this->where('mem_id="'.$mid.'"')->getField('mem_type');
 		if($type==0){
-			$place = M('memberperson')->where('mp_mid = "'.$mid.'"')->getField('mp_addr');
+			$place 	= M('memberperson')->where('mp_mid = "'.$mid.'"')->getField('mp_addr');
 		}else{
-			$place = M('membercompany')->where('mc_mid = "'.$mid.'"')->getField('mc_addr');
+			$place 	= M('membercompany')->where('mc_mid = "'.$mid.'"')->getField('mc_addr');
 		}
 		return $place;
 	}
 	
+	public function getMemberStatus($mid){
+		$type = M("member")->where("mem_id='{$mid}'")->getField("mem_type");
+		if($type==1){
+			$status 	= M("membercompany")->where("mc_mid='{$mid}'")->getField("mc_status");
+		}else{
+			$status 	= M("memberperson")->where("mp_mid='{$mid}'")->getField("mp_status");
+		}
+		return $status;
+	}
+
+	public function getMemberInfo($mid){
+		$member = $this->where("mem_id='{$mid}'")->find();
+		if($member['mem_type']==0){
+			$memberinfo = M("memberperson")->where("mp_mid='{$mid}'")->find();
+			$member['name'] 		= $memberinfo['mp_name'];
+			$member['place'] 		= str_replace(array('中国','|','市','省'), array(' ',' ',' ',' '), $memberinfo['mp_addr']);
+			$member['status'] 		= $memberinfo['mp_status'];
+			$member['contact'] 	= $memberinfo['mp_name'];
+			$member['tel'] 			= $memberinfo['mp_tel'];
+		}else{
+			$memberinfo = M("membercompany")->where("mc_mid='{$mid}'")->find();
+			$member['name'] 		= $memberinfo['mc_company'];
+			$member['place'] 		= str_replace(array('中国','|','市','省'), array(' ',' ',' ',' '), $memberinfo['mc_addr']);
+			$member['status'] 		= $memberinfo['mc_status'];
+			$member['contact'] 	= $memberinfo['mc_legal'];
+			$member['tel'] 			= $memberinfo['mc_tel'];
+		}
+		unset($memberinfo);
+		return $member;
+	}
 	/*public function getVerifyCode($user=''){
 		$verify = M("member")->where("mem_id='{$user}'")->getField("mem_verifycode");
 		if(!empty($verify)){

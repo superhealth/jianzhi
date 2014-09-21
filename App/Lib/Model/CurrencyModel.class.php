@@ -32,7 +32,7 @@ class CurrencyModel extends Model{
 	 * @return array
 	 */
 	public function getCurrencyBySign(){
-		$currencys = $this->getCurrencys(true);
+		$currencys = $this->getCurrencys();
 		return $currencys['sign'];
 	}
 	
@@ -48,7 +48,9 @@ class CurrencyModel extends Model{
 			$str .= "'".$v['cur_id']."'=>'".$v['cur_sign']."', \n";
 		}
 		$str .= "\n), \n'name'=>array( \n";
-		
+		foreach($units as $v){
+			$str .= "'".$v['cur_id']."'=>'".$v['cur_name']."', \n";
+		}
 		$str .= "\n)\n); \n?>";
 		@chmod(SYSCONF_DIR, 0777);
 		$f = fopen($cacheFile, "w") or die('<script>alert("写入配置失败，请检查./cache目录是否可写入！"); history.go(-1);</script>');

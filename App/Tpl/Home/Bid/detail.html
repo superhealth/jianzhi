@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>修改投标</title>
+<include file="public:css" />
+</head>
+<body>
+<include file="public:header" />
+<div class="container">
+  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Bid">投标接单</a> /<a href="#">修改投标内容</a></div>
+  <div class="content">
+  	<div class="pro_box right_box">
+      <div class="pro_title">标题图片</div>
+      <div class="pro_body">
+				<if condition="$bidInfo['cover'] neq ''">
+      	<img src="{$bidInfo['cover']}" id="pro_cover_view" class="pro_cover_view" />
+				<else />
+				<img src="__PUBLIC__/Home/image/pro_cover_view.png" id="pro_cover_view"  class="pro_cover_view" />
+				</if>
+				<h3 class="pro_name_view" id="pro_name_view">{$bidInfo.pro_subject}</h3>
+			</div>
+		</div>
+  	<div class="pro_box left_box">
+      <div class="pro_title">修改投标内容</div>
+      <div class="pro_body">
+				<div class="bid_complete">
+					<h3>{$userInfo.name}</h3>
+					<p><span class="pro_comp_info_left">投标编号：<strong style="color:#0000ff;">{$bidInfo.bid_sn}</strong></span><span class="pro_comp_info_right">投标时间：{$bidInfo.bid_publishtime|timeFormat='Y年m月d日 H时i分 a'}</span></p>
+				</div>
+				<div class="pro_complete">
+					<div class="pro_comp_body">
+						<div calss="pro_comp_info1">
+							<p><span class="pro_comp_info_left">项目名称：{$bidInfo.pro_subject}</span></p>
+							<p><span class="pro_comp_info_left">发 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 方：<a class="colorbox" href="__GROUP__/Member/view/id/{$bidInfo.pro_mid}">{$bidInfo.pro_mid}<if condition="$member['status'] neq 2"><span class="red">(实名未验)</span></if></a></span></p>
+							<p><span class="pro_comp_info_left">项目编号：{$bidInfo.pro_sn}</span><span  class="pro_comp_info_right">类别：{$bidInfo.sort_name} {$bidInfo.pro_enums}</span></p>
+							<p><span class="pro_comp_info_left">项目属性：{$props[$bidInfo['pro_prop']]}</span><span class="pro_comp_info_right">要求投方用户属性：{$limits[$bidInfo['pro_limit']]}</span></p>
+							<p><span class="pro_comp_info_left">发出日期：{$bidInfo.pro_publishtime|timeFormat='Y年m月d日'} <if condition="$bidInfo['pro_updatetime'] gt 0">(更新于{$bidInfo.pro_updatetime|timeFormat='Y年m月d日 H时i分 a'})</if></span><span class="pro_comp_info_right">开标时间：<span <if condition="$bidInfo['pro_opentime'] lt $_SERVER['REQUEST_TIME']"> class="red"</if>>{$bidInfo.pro_opentime|timeFormat='Y年m月d日 H时i分 a'}</span></span></p>
+						</div>
+					</div>
+				</div>
+				<div class="bid_info_block">
+					<div class="bid_info_title"><span class="red">*</span>投标概要<span data-for="bid_description" class="helpline"></span></div>
+					<div class="bid_info_body">
+						<p>{$bidInfo.bid_description}</p>
+						<if condition="$bidInfo['tenders'] neq 0">
+						投标书：<ul class="pro_att_view" id="pro_att_view">
+							<li><span>{$bidInfo.tenders.att_name}</span><button type="button" class="btn" onclick="delAtt(this,'bid_tenders');">删除</button></li>
+						</ul>
+						</if>
+					</div>
+				</div>
+				<div class="bid_info_block">
+					<div class="bid_info_title">投标报价</div>
+					<div class="bid_info_body">
+						<p><span class="red">*</span>投 标 总 价：{$bidInfo['bid_price']}{$bidInfo['bid_unit']}{$bidInfo['bid_currency']}
+						</p>
+						<p><span class="red">*</span>报 价 内 容：{$bidInfo['bid_taxes']}{$bidInfo['bid_transport']}运费{$bidInfo['bid_insurance']}保险
+						</p>
+						<p>&nbsp;是 否 可 见：
+							<label class="ml_50" for="bid_price_flag"><input type="checkbox"<if condition="$bidInfo['bid_price_flag'] eq 1">checked</if> value="1" id="bid_price_flag"  name="bid_price_flag" />总报价</label>
+							<label class="ml_50" for="bid_quoted_flag"><input type="checkbox"<if condition="$bidInfo['bid_quoted_flag'] eq 1">checked</if> value="1" id="bid_quoted_flag" name="bid_quoted_flag" />《报价单》</label>
+							<label class="ml_50" for="bid_tenders_flag"><input type="checkbox"<if condition="$bidInfo['bid_tenders_flag'] eq 1">checked</if> value="1" id="bid_tenders_flag" name="bid_tenders_flag" />《投标书》</label>
+						</p>
+						<if condition="$bidInfo['quoted'] neq 0">
+						<ul class="pro_att_view" id="pro_att_view">
+							<li><span>{$bidInfo.quoted.att_name}</span><button type="button" class="btn" onclick="delAtt(this,'bid_quoted');">删除</button></li>
+						</ul>
+						</if>
+					</div>
+				</div>
+				<div class="bid_info_block">
+					<div class="bid_info_title">项目联系方式</div>
+					<div class="bid_info_body">
+						<p><span class="red">*</span>联 &nbsp; 系 &nbsp; 人：{$bidInfo.con_name}"</p>
+						<p><span class="red">*</span>电 话/手 机：{$bidInfo.con_tel}</p>
+						<p><span class="red">*</span>电 子 邮 箱：{$bidInfo.con_email}</p>
+						<p>&nbsp;其 他 信 息：{$bidInfo.con_im}</p>
+					</div>
+				</div>
+      </div>
+    </div>
+		<div class="clearfix"></div>
+  </div>
+</div>
+<include file="public:footer" />
+<include file="public:js" />
+<script type="text/javascript">
+
+	$(function(){
+		
+	});
+
+</script>
+</body>
+</html>

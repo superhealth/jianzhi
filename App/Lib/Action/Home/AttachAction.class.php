@@ -56,26 +56,30 @@ class AttachAction extends EmptyAction{
 	 * @param unknown $attId
 	 */
 	public function del($belong, $id, $attId){
-		if(true!==D("Attachement")->delAtt($attId)){
-			echo "删除失败！";
-		}else{
-			//区分上传附件所属主体
-			switch($belong){
-				case "project":
+		
+		//区分上传附件所属主体
+		switch($belong){
+			case "project":
+				if(true==D("Attachement")->delAtt($attId)){
 					D("Project")->delAtts($id, $attId);
-					break;
-				case "bid":
+					echo "success";exit;
+				}
+				break;
+			case "bid":
+				$att = D('Bidder')->where('bid_id='.$id)->getField($attId);
+				if(true==D("Attachement")->delAtt($att)){
 					D("Bidder")->delAtts($id, $attId);
-					break;
-				case "company":
-					D("Membercompany")->delAtts($id, $attId);
-					break;
-				case "person":
-					D("Memberperson")->delAtts($id, $attId);
-					break;
-			}
-			echo "success";
+					echo 'success';exit;
+				}
+				break;
+			case "company":
+				//D("Membercompany")->delAtts($id, $attId);
+				break;
+			case "person":
+				//D("Memberperson")->delAtts($id, $attId);
+				break;
 		}
+		echo '删除失败！';
 		exit;	
 	}
 	

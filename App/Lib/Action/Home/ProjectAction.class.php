@@ -168,6 +168,8 @@ class ProjectAction extends CommonAction{
 			if($info['pro_mid']==$_SESSION['member']){
 				redirect(__URL__.'/myProject/id/'.$id);exit;
 			}
+			//项目封面
+			$info['cover'] = D('Attachement')->getAttSrc($info['pro_cover']);
 			//项目所在地
 			$info['pro_place'] = str_replace(array('中国','|','市','省'), array(' ',' ',' ',' '), $info['pro_place']);
 			//项目分类

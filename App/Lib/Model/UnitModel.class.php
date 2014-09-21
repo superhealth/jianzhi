@@ -42,7 +42,7 @@ class UnitModel extends Model{
 		$str = "<?php \nreturn array( \n";
 		$units = $this->select();
 		foreach($units as $v){
-			$str .= "'".$v['unit_multiple']."'=>'".$v['unit_name']."', \n";
+			$str .= "'".$v['unit_id']."'=>'".$v['unit_name']."', \n";
 		}
 		$str .= "\n); \n?>";
 		@chmod(SYSCONF_DIR, 0777);

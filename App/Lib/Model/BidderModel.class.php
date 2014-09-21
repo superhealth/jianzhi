@@ -92,10 +92,10 @@ class BidderModel extends Model{
 	}
 	
 	public function delAtts($id, $att){
-		
+		return $this->where('bid_id='.$id)->setField($att, 0);
 	}
 	
 	public function addAtts($id, $att){
-		
+		return $this->updateAtts($id, $att);
 	}
 }
