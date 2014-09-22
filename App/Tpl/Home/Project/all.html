@@ -216,14 +216,12 @@ $(function(){
 		//place
 		var proArea = $('.area[name="pro_place[]"] option:selected'), proAreaRes=[];
 		for(var i=0, len=proArea.length; i<len; i++){
-			if(proArea[i].value=='no'){continue;}
 			proAreaRes.push(proArea[i].value);
 		}
 		data.push("pro_place="+proAreaRes.join('|'));
 		//place
 		var memArea = $('.area[name="mem_place[]"] option:selected'), memAreaRes=[];
 		for(var i=0, len=memArea.length; i<len; i++){
-			if(memArea[i].value=='no'){continue;}
 			memAreaRes.push(memArea[i].value);
 		}
 		data.push("mem_place="+memAreaRes.join('|'));
@@ -267,6 +265,13 @@ $(function(){
 		}
 		_query = _query.join('&');
 		window.location.href = window.location.pathname +'?'+ _query;
+	});
+	//搜索
+	$('.pro_search_go').click(function(){
+		var words = $('.pro_search_inp').val();
+		if(words.length>1){
+			location.href = '/Project/all?words='+words;
+		}
 	});
 });
 </script>

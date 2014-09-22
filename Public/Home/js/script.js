@@ -260,7 +260,7 @@ $(function(){
 			var p = $(this);
 			$(".filter_type li").click(function(){
 				$("#filter_val").text($(this).text());
-				$('#filter_inp').val($(this).data('id'));
+				$('#head_filter_sort').val($(this).data('id'));
 				p.removeClass('off').addClass('on');
 			});
 		}
@@ -318,8 +318,11 @@ $(function(){
 		$(this).parents('form').attr('action', $(this).data('act')).submit();
 	});
 	// 搜索
-	$('#head_search_btn').click(function(){
-		$('#head_filter_inp').val();
+	$('#head_filter_btn').click(function(){
+		var words = $('#head_filter_inp').val();
+		if(words.length>1){
+			location.href = '/Project/all?words='+words+'&sortid='+$('#head_filter_sort').val();
+		}
 	});
 	//colorbox
 	$('.colorbox').click(function(e){
@@ -335,8 +338,7 @@ $(function(){
 		$(this).attr('src', '/Home/Retrieve/getAuthcode?'+new Date().getTime());
 	});
 
-	
-	$('.datepicker').datepicker("option", {minDate: new Date()});
+	$('.datepicker').datepicker({minDate: new Date()});
 	//gallery colorbox
 	$('a.thumb').colorbox({transition:"elastic", maxWidth:"95%", maxHeight:"95%"});
 	

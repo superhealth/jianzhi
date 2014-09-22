@@ -570,3 +570,4 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-timepicker-div td { font-size: 90%; }  
 .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
 input.datepicker{padding-right:26px; background-image: url(../img/datepicker.gif); background-position: right 2px; background-repeat: no-repeat; }
+input.datetimepicker{padding-right:26px; background-image: url(../img/datepicker.gif); background-position: right 2px; background-repeat: no-repeat; }

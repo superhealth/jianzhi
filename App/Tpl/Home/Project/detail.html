@@ -18,6 +18,8 @@
 				<else />
 				<img src="__PUBLIC__/Home/image/pro_cover_view.png" id="pro_cover_view"  class="pro_cover_view" />
 				</if>
+			</div>
+			<div class="pro_body">
 				<div class="proInfo_left_sec_1">
 					<if condition="$proInfo['pro_status'] eq 1"><label class="proInfo_status_label label_active">招标中</label><else/><label class="proInfo_status_label label_grey">招标结束</label></if>
 					<span class="proInfo_bids_num">{$proInfo.bids}</span><br />当前已有投标数
@@ -33,6 +35,8 @@
 					</div>
 					<div class="clearfix"></div>
 				</div>
+			</div>
+			<div class="pro_body" style="margin-bottom:0;">
 				<div class="proInfo_left_sec_4">
 					<if condition="$memInfo['status'] eq 1"><label class="proInfo_status_label label_active">实名认证</label><else/><label class="proInfo_status_label label_grey">未认证</label></if>
 					<span class="proInfo_mem_name">{$memInfo.mem_id}</span><br /><a href="__URL__/all?words={$proInfo.pro_mid}">所有招标项目 <span class="proInfo_mem_own">{$memInfo.pros}</span> </a>
@@ -133,27 +137,13 @@
 					self.text(data.data);
 					bootbox.alert('OK');
 				}else if(data.code==100){
-					bootbox.alert('<h3 class="red">请先登录！</h3>', function(){
-						location.href = data.data;
-					});
+					location.href = data.data;
 				}else{
 					bootbox.alert('<h3 class="red">'+data.data+'</h3>');
 				}
 			}, 'json');
 		});
-	});	
-	function delAtt(obj,id){
-		try{$.get("/Attach/del", {"belong":"project", "id":$("#pro_id").val(), "attId":id}, function(res){
-			if(res=="success"){
-				$(obj).parent().parent().remove();
-			}else{
-				bootbox.alert(res);
-			}
-		}, "text");
-		}catch(e){
-			bootbox.alert("网络连接失败！");
-		}
-	}
+	});
 </script>
 <body>
 </html>

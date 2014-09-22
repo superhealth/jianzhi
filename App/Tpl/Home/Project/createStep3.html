@@ -16,7 +16,7 @@
 				<if condition="$newProject['cover'] neq ''">
       	<img src="{$newProject['cover']}" id="pro_cover_view" class="pro_cover_view" />
 				<else />
-				<img src="__PUBLIC__/Home/image/pro_cover_view.jpg" id="pro_cover_view"  class="pro_cover_view" />
+				<img src="__PUBLIC__/Home/image/pro_cover_view.png" id="pro_cover_view"  class="pro_cover_view" />
 				</if>
 				<h3 class="pro_name_view" id="pro_name_view">{$newProject.pro_subject}</h3>
       </div>
@@ -91,7 +91,7 @@
 					<div class="pro_groups">
 						<label for="pro_opentime">开标日期：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_opentime" class="inp datepicker" name="pro_opentime" value="{$newProject.pro_opentime}"  />
+							<input type="text" id="pro_opentime" class="inp datetimepicker" name="pro_opentime" value="{$newProject.pro_opentime}"  />
 						</div>
 					</div>
 					<div class="pro_groups">
@@ -126,14 +126,14 @@
 <include file="public:js" />
 <script type="text/javascript">
 	$(function(){
-			$("#pro_opentime").datepicker("option", {minDate: new Date()});
-			/*$("#pro_opentime").change(function(){
-				$("#pro_start").datetimepicker("option", {minDate: $("#pro_opentime").val()});
-				$("#pro_end").datetimepicker("option", {minDate: $("#pro_start").val()});
+			$("#pro_opentime").datetimepicker({minDate: new Date()});
+			$("#pro_opentime").change(function(){
+				$("#pro_start").datepicker("option", {minDate: $("#pro_opentime").val()});
+				$("#pro_end").datepicker("option", {minDate: $("#pro_start").val()});
 			});
 			$("#pro_start").change(function(){
 				$("#pro_end").datepicker("option", {minDate: $("#pro_start").val()});
-			});*/
+			});
 			$("#attach_add").uploadify({
 			'auto':false,
 			'queueID':'upfileLists',
@@ -237,7 +237,7 @@
 	function delAtt(obj,id){
 		try{$.get("/Attach/del", {"belong":"project", "id":$("#pro_id").val(), "attId":id}, function(res){
 			if(res=="success"){
-				$(obj).parent().parent().remove();
+				$(obj).parent().remove();
 			}else{
 				bootbox.alert(res);
 			}

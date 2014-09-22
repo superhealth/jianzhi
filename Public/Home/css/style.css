@@ -275,11 +275,11 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .tips_list li{line-height:24px; margin-top:10px;}
 
 /* project */
-.pro_box{padding:5px; border:1px solid #ececec; box-shadow:0 -1px 2px #eee;margin-left:10px; margin-bottom:60px; background:#fff;}
-.right_box{float:right; width:240px; clear:right;}
-.left_box{width:740px; float:left; position:relative;}
-.pro_title{height:30px; line-height:30px; font-size:14px; padding-left:10px; padding-top:5px; border-bottom:1px dashed #999;}
-.pro_body{padding:10px; }
+.pro_box{border:1px solid #ececec; box-shadow:0 -1px 2px #eee;margin-left:10px; margin-bottom:60px;}
+.right_box{float:right; width:250px; clear:right;}
+.left_box{width:750px; float:left; position:relative; background:#fff;}
+.pro_title{height:30px; line-height:30px; font-size:14px; padding-left:10px; padding-top:5px; border-bottom:1px dashed #999; background:#fff;}
+.pro_body{padding:10px;  background:#fff; margin-bottom:15px;}
 .pro_cover_view{max-width:100%; width:220px; height: /*144px;*/}
 .pro_name_view{height:30px; line-height:30px; margin-bottom:20px; text-overflow:ellipsis; white-space:nowrap;}
 
@@ -441,8 +441,8 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .proInfo_attchLink{width:50px; height:32px; line-height:32px; float:left; margin-left:20px;}
 .ml_50{margin-left:50px;}
 .ml_100{margin-left:100px;}
-.proInfo_left_sec_1{padding:10px 0; border-bottom:#d0d0d0 solid 1px; position:relative; text-align:center; margin-top:20px; line-height:;20px;}
-.proInfo_status_label{position:absolute; right:0; top:10px; display:block; width:64px; text-align:center; line-height: 26px; color:#fff; font-weight:bold; font-size:12px; -moz-border-radius:}
+.proInfo_left_sec_1{padding-bottom:10px; border-bottom:#d0d0d0 solid 1px; position:relative; text-align:center; line-height:20px;}
+.proInfo_status_label{position:absolute; right:-10px; top:-10px; display:block; width:64px; text-align:center; line-height: 26px; color:#fff; font-weight:bold; font-size:12px; -moz-border-radius:}
 .proInfo_status_label.label_active{background:#e60012;}
 .proInfo_status_label.label_grey{background:#bfbfbf;}
 .proInfo_bids_num{color:#e60012; line-height:40px; font-size:20px;}
@@ -454,7 +454,7 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .proInfo_open_left_time{color:#898989; font-size:13px;}
 .proInfo_browse{font-size:18px; color:#e60012;}
 .proInfo_left_sec_3_delimiter{float:left; width:1px;height:30px; margin-top:14px; background:#d0d0d0;}
-.proInfo_left_sec_4{padding:10px 0; margin-top:20px; border-bottom:#d0d0d0 solid 1px; text-align:center;line-height:24px; position:relative;}
+.proInfo_left_sec_4{padding-bottom:10px; border-bottom:#d0d0d0 solid 1px; text-align:center;line-height:24px; position:relative;}
 .proInfo_mem_name{text-align:center; font-size:15px; line-height:40px;}
 .proInfo_mem_own{font-size:18px; color:#00f;}
 .proInfo_left_sec_5{padding:10px 0; border-bottom:#d0d0d0 solid 1px;}

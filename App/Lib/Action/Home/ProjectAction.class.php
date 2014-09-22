@@ -53,13 +53,14 @@ class ProjectAction extends CommonAction{
 		$proArea = array();
 		// 项目所在地
 		if(isset($_REQUEST['pro_place']) && $_REQUEST['pro_place']!=""){
-			$map['pro_place']  = array('like', '%'.$_REQUEST['pro_place'].'%');
+			
+			$map['pro_place']  = array('like', '%'.str_replace('no','',$_REQUEST['pro_place']).'%');
 			$param['pro_place'] = $_REQUEST['pro_place'];
 			$proArea = areaDecode($_REQUEST['pro_place']);
 		}
 		// 公司所在地
 		if(isset($_REQUEST['mem_place']) && $_REQUEST['mem_place']!=""){
-			$map['pro_mid']  = array('in', D('Member')->getMemberInArea($_REQUEST['mem_place']));
+			$map['pro_mid']  = array('in', D('Member')->getMemberInArea(str_replace('no','',$_REQUEST['mem_place'])));
 			$param['mem_place'] = $_REQUEST['mem_place'];
 			$memArea = areaDecode($_REQUEST['mem_place']);
 		}
@@ -349,6 +350,9 @@ class ProjectAction extends CommonAction{
 			redirect(__URL__.'/createStep2');
 		}
 		$newProjectInfo = M('project')->join('zt_sort ON pro_sort=sort_id')->where('pro_id="'.$id.'"')->find();
+		if(0==$newProjectInfo['pro_opentime']){
+			$newProjectInfo['pro_opentime'] = '';
+		}
 		$newProjectInfo['attachs'] = D('Attachement')->getAtt($newProjectInfo['pro_attachement']);
 		$newProjectInfo['pro_enum'] = enumsDecode($newProjectInfo['pro_enums']);
 		$newProjectInfo['place'] = areaToSelect(array());

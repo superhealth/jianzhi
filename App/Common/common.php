@@ -516,7 +516,7 @@ function attDownload($file, $showname){
  */
 function areaEncode($areaArr){
 	$areaArr = array_map("addslashes", $areaArr);
-	return implode("|", $areaArr);
+	return str_replace('no','',implode("|", $areaArr));
 }
 /**
  * 将地区字符串转为数组

@@ -29,7 +29,8 @@ class CommonAction extends EmptyAction{
 	 */
 	public function checkMember(){
 		if(empty($_SESSION['member'])){
-			$this->error("请先登录！", __GROUP__."/Member/login/flag/true", 1);exit;
+			$this->assign("url",'1');
+			$this->display("Member:login");exit;
 		}
 	}
 	

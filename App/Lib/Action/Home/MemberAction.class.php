@@ -35,8 +35,8 @@ class MemberAction extends CommonAction{
 		//来源
 		if($flag){
 			$referer = urlencode($_SERVER['HTTP_REFERER']);
+			$this->assign("ref",$referer);
 		}
-		$this->assign("url",$referer);
 		$this->display();
 	}
 	/**
@@ -55,8 +55,14 @@ class MemberAction extends CommonAction{
 				$_SESSION['member'] = $_POST['user'];
 				M("member")->where($map)->setInc('mem_logincount');
 				$this->memberInit();
-				$url = empty($_REQUEST['ref']) ? __URL__."/index" : urldecode($_REQUEST['ref']);
-				$this->success("登录成功！", $url);
+				if($_REQUEST['url']=='1'){
+					$url = '';
+				}else if (!empty($_REQUEST['ref'])){
+					$url = $_REQUEST['ref'];
+				}else{
+					$url = __URL__."/index";
+				}
+				$this->success("登录成功！", urldecode($url));
 			}
 		}else{
 			$this->error("用户名或密码错误！");
@@ -68,7 +74,7 @@ class MemberAction extends CommonAction{
 	 */
 	public function logout(){
 		unset($_SESSION['member']);
-		redirect(__URL__."/login");
+		$this->success('注销成功！', '', 1);
 	}
 	
 	/**
