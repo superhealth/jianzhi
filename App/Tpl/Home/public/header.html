@@ -30,13 +30,15 @@
       </ul>
       <div class="nav_search right">
       	<input type="text" name="key" class="search_inp" />
-        <div class="search_filter off"><span id="filter_val">全部分类</span><input type="hidden" name="type" id="filter_inp" value="" />
-        	<ul class="filter_type">
-          	<li data-id="1">服装</li>
-            <li data-id="2">建材</li>
+        <div class="search_filter off"><span id="filter_val">全部分类</span><input type="hidden" name="type" id="head_filter_inp" value="" />
+        	<ul class="filter_type" id="head_filter_type">
+						<li data-id="all">全部分类</li>
+						<volist name="headerSorts" id="ihs">
+          	<li data-id="{$key}" >{$ihs}</li>
+						</volist>
           </ul>
         </div>
-        <div class="search_btn">搜索</div>
+        <div class="search_btn" id="head_filter_btn">搜索</div>
       </div>
     </div>
 	</div>

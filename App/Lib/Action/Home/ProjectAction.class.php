@@ -66,6 +66,7 @@ class ProjectAction extends CommonAction{
 		// 项目主题 or 发布作者 or 项目编号
 		if(isset($_REQUEST['words'])){
 			$words = addslashes($_REQUEST['words']);
+			//大于3个字符
 			if(strlen($words)>=3){
 				$where['pro_subject']  = array('like', "%{$words}%");
 				$where['pro_mid'] = array('like', "%{$words}%");

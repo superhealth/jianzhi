@@ -14,6 +14,7 @@ class CommonAction extends EmptyAction{
 			$this->assign("memberNotice", $notice);
 			$this->assign("memberStatus", D('Member')->getMemberStatus($_SESSION['member']));
 		}
+		$this->assign('headerSorts', D('Sort')->getSorts()); 
 	}
 	
 	public function leftInit(){

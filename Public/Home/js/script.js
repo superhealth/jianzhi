@@ -317,6 +317,10 @@ $(function(){
 	$('.btn-sub').click(function(){
 		$(this).parents('form').attr('action', $(this).data('act')).submit();
 	});
+	// 搜索
+	$('#head_search_btn').click(function(){
+		$('#head_filter_inp').val();
+	});
 	//colorbox
 	$('.colorbox').click(function(e){
 		e.preventDefault();

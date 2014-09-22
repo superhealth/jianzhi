@@ -65,6 +65,7 @@ ul li{list-style:none;}
 .helpline.error{display:inline; background-position:0 0; color:#c33;}
 .helpline.success{display:inline; background-position:0 -16px; color:#090;}
 .btn{background:#ED6059; color:#fff !important; box-shadow:inset rgba(0,0,0,0.1) 4px 4px 6px;border-radius: 5px; -webkit-border-radius:5px; -moz-border-radius:5px; text-align:center; padding:3px 10px; cursor:pointer;}
+.btn-grey{background:#c2c2c2;}
 .input_group{padding:8px 10px;}
 .input_group label{width:60px; text-align:right;float:left;padding:4px 0;}
 .input_control{margin-left:65px;}
@@ -299,7 +300,7 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .pro_category_main{width:200px; background:#d3f0f0; padding:10px; float:left; min-height:320px; _height:320px; }
 .pro_category_main h4{font-size:16px; font-weight:normal; text-align:center; padding:20px 0;}
 .pro_ca_main_list{padding:0; margin:0; list-style:none;}
-.pro_ca_main_item{display:block; float:left; width:46px; text-align:center; border:2px solid #d3f0f0; padding:3px 0px; cursor:pointer;}
+.pro_ca_main_item{display:block; float:left; width:48px; text-align:center; border:1px solid #d3f0f0; padding:3px 0px; cursor:pointer;}
 .pro_ca_main_item.cur, .pro_ca_main_item:hover{background:#fff; border-color:#fa6c0d; color:#e60012;}
 .pro_category_sub{width:460px; margin-left:240px; min-height:340px; _height:340px;}
 .pro_ca_sub_default{display:block;}
@@ -361,7 +362,8 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 
 /* projects all */
 .all_box{width:1012px; margin-left:0;}
-.sort_box{margin: 4px 0; height: 32px;}
+.filter_box{padding:10px; border:1px solid #c2c2c2;margin-bottom:10px;}
+.sort_box{margin: 8px 0; height: 32px;}
 .sorts_select{ float:left; width:200px; text-align:center; position:relative; cursor:pointer;}
 .sorts_selected, .sorts_selected:empty{width:100%; background:#E8F2FF; height:32px; font-size:18px; line-height: 32px;}
 .sorts_options{position:absolute; top:32px; left:0; width:100%; display:none; margin:0; padding:0; list-style:none; transition:all ease-out .5s; overflow:hidden; z-index:999; background: #fff; }
@@ -371,23 +373,29 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .sort_enum_results{background:#eee; margin-left:210px; height:32px; line-height: 32px;  padding-left:20px;}
 .enum_container{display:none;}
 .enum_container.cur{display:block;}
-.enum_box{background: #E8F2FF; margin-top: 4px; position:relative; }
+.enum_box{background: #E8F2FF; margin-top: 8px; position:relative; }
 .enum_base{width:110px; height:25px; line-height:25px; position:absolute; margin-top: -12px; top:50%; padding-left:40px;}
 .enums_list{margin-left:150px; list-style:none;}
 .enums_list:after{content:""; display:block; clear:both; overflow:hidden;}
 .enums_list li{float:left; padding:0 25px; height:25px; line-height:25px; display:block; cursor:pointer;}
 .enums_list li.sel{background:#aaa; color:#fff;}
-
 .prop_list, .limit_list{border:1px solid #eee; height:24px; margin-top: 4px; display:inline-block;}
 .prop_list li, .limit_list li{width:64px; display:inline-block; line-height:24px; text-align:center; cursor:pointer;}
 .prop_list li:hover, .limit_list li:hover, .prop_list li.sel, .limit_list li.sel{background:#aaa; color:#fff;}
-.place_box{margin-top:4px;}
-.pro_place{width:50%; float:left;}
-.mem_place{width:50%; float:left;}
+.place_box{margin-top:8px;}
+.pro_place{width:360px; float:left;}
+.mem_place{width:360px; float:left;}
 .prop_box:after, .place_box:after{content:""; display:block; clear:both; overflow:hidden;}
-.pro_search{margin:4px 0;}
-.pro_search_inp{border: 1px solid #c2c2c2; height: 20px;line-height: 20px;padding: 2px 5px;width: 240px;}
-.pro_search_btn{width:60px; margin-left:50px; height:26px;}
+.pro_prop{float:left; width:560px;}
+.pro_limit{float:left;}
+.search_box{margin-top:8px;}
+.pro_search_btn{min-width:60px; line-height: 20px;}
+.pro_search{margin:8px 0;}
+.pro_search:after{content:""; display:block; clear:both; overflow:hidden;}
+.pro_search_label{display:block; line-height:26px; float:left;}
+.pro_search_box{float:left; line-height:24px;}
+.pro_search_inp{border: 1px solid #c2c2c2; height: 20px;line-height: 20px;padding: 2px 5px;width: 240px; display:block; float:left;}
+.pro_search_go{width:60px; text-align:center; height:24px;display:block; float:left;border:1px solid #c2c2c2; border-left:none; background:#eee; cursor:pointer;}
 .pro_pagination{height:26px; margin-top:20px; line-height:26px; padding:0 36px; text-align:right; background:#DFEDF9;}
 .pro_pagination ul{ display:inline-block; margin-right:50px;}
 .pro_pagination li{display:inline-block; margin:0 5px;}

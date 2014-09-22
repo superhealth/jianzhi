@@ -13,56 +13,66 @@
   	<div class="pro_box all_box">
   		<div class="pro_title">项目列表</div>
 			<div class="pro_body">
-				<div class="sort_box">
-					<div class="sorts_select">
-						<div class="sorts_selected"></div>
-						<ul class="sorts_options">
-							<li data-id="all">全部</li>
-							<volist name="sorts" id="sitem">
-							<li data-id="{$key}" <if condition="$key eq $param['sortid']">data-role="selected"</if>>{$sitem}</li>
-							</volist>
-						</ul>
+				<div class="filter_box">
+					<div class="sort_box">
+						<div class="sorts_select">
+							<div class="sorts_selected"></div>
+							<ul class="sorts_options">
+								<li data-id="all">全部</li>
+								<volist name="sorts" id="sitem">
+								<li data-id="{$key}" <if condition="$key eq $param['sortid']">data-role="selected"</if>>{$sitem}</li>
+								</volist>
+							</ul>
+						</div>
+						<div class="sort_enum_results">已选分类：<span></span></div>
 					</div>
-					<div class="sort_enum_results"></div>
-				</div>
-				<volist name="enums" id="enum">
-				<div class="enum_container" id="enum_sort_{$key}">
-					<volist name="enum" id="bitem">
-					<div class="enum_box">
-						<div class="enum_base">{$key}</div>
-						<ul class="enums_list">
-							<volist name="bitem" id="eitem">
-							<li <if condition="in_array($eitem,$queryEnums)">class="sel"</if>>{$eitem}</li>
-							</volist>
-						</ul>
+					<volist name="enums" id="enum">
+					<div class="enum_container" id="enum_sort_{$key}">
+						<volist name="enum" id="bitem">
+						<div class="enum_box">
+							<div class="enum_base">{$key}</div>
+							<ul class="enums_list">
+								<volist name="bitem" id="eitem">
+								<li <if condition="in_array($eitem,$queryEnums)">class="sel"</if>>{$eitem}</li>
+								</volist>
+							</ul>
+						</div>
+						</volist>
 					</div>
 					</volist>
+					<div class="prop_box">
+						<div class="pro_prop">生 产 属 性：
+							<ul class="prop_list">
+								<li data-id="all">全部</li>
+								<volist name="props" id="iprop">
+								<li data-id="{$key}"<if condition="$key eq $param['propid']">class="sel"</if>>{$iprop}</li>
+								</volist>
+							</ul>
+						</div>
+						<div class="pro_limit">投 标 限 制：
+							<ul class="limit_list">
+								<li data-id="all">全部</li>
+								<volist name="limits" id="ilimit">
+								<li data-id="{$key}" <if condition="($param['limitid'] neq 0) AND ($key eq $param['limitid'])">class="sel"</if>>{$ilimit}</li>
+								</volist>
+							</ul>
+						</div>
+					</div>
+					<div class="place_box">
+						<div class="pro_place">项目实施地：
+							{$pro_place}
+						</div>
+						<div class="pro_place">招方所在地：
+							{$mem_place}
+						</div>
+					</div>
+					<div class="search_box">
+						<button id="pro_search_btn" class="btn btn-grey pro_search_btn" type="button">清空条件</button>
+						<button id="pro_search_btn" class="btn pro_search_btn" type="button">开始筛选</button>
+					</div>
 				</div>
-				</volist>
-				<div class="prop_box">生产属性：
-					<ul class="prop_list">
-						<li data-id="all">全部</li>
-						<volist name="props" id="iprop">
-						<li data-id="{$key}"<if condition="$key eq $param['propid']">class="sel"</if>>{$iprop}</li>
-						</volist>
-					</ul>
-				</div>
-				<div class="prop_box">投标限制：
-					<ul class="limit_list">
-						<li data-id="all">全部</li>
-						<volist name="limits" id="ilimit">
-						<li data-id="{$key}" <if condition="($param['limitid'] neq 0) AND ($key eq $param['limitid'])">class="sel"</if>>{$ilimit}</li>
-						</volist>
-					</ul>
-				</div>
-				<div class="prop_box">项目实施地：
-						{$pro_place}
-				</div>
-				<div class="prop_box">招方所在地：
-						{$mem_place}
-				</div>
-				<div class="search_box">
-					<div class="pro_search">搜索关键字： <input id="pro_search_inp" class="pro_search_inp" type="text" value="{$param.words}" /><button id="pro_search_btn" class="btn pro_search_btn" type="button">开 &nbsp; 始</button></div>
+				<div class="filter_box">
+					<div class="pro_search"><span class="pro_search_label">搜 索 项 目： </span><div class="pro_search_box"><input id="pro_search_inp" class="pro_search_inp" type="text" value="{$param.words}" placeholder="项目ID、项目名称、发布者" /><div class="pro_search_go">查找</div></div></div>
 				</div>
 				<div class="pro_all_box">
 					<div class="pro_pagination">{$pager.show}{$pager.header}</div>
@@ -130,7 +140,7 @@ $(function(){
 			sortResult.push(enumSelected[i].innerText);
 		}
 		// result
-		$(".sort_enum_results").text(sortResult.join(' / '));
+		$(".sort_enum_results span").text(sortResult.join(' / '));
 	}
 	
 	function propAndLimitListInit(){
