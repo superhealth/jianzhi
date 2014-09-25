@@ -11,8 +11,8 @@ class BidAction extends CommonAction{
 	 * 
 	 */
 	public function index(){
-		
-		
+		$this->checkMember();
+		$where = array();
 	}
 
 	
@@ -110,6 +110,7 @@ class BidAction extends CommonAction{
 		$bid_data['bid_publishtime'] = $_SERVER['REQUEST_TIME'];
 		$bid_data['bid_mid'] = $_SESSION['member'];
 		$bid_data['bid_sn'] = createBidderSn($_SESSION['member']);
+		$bid_data['bid_state']	= 1;
 		// 上传投标附件
 		foreach ($_FILES as $f){
 			if(!empty($f['name'])){

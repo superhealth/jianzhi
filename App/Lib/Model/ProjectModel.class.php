@@ -17,6 +17,24 @@ class ProjectModel extends Model{
 	}
 	
 	/**
+	 * 查询用户$mid的招标项目id
+	 * @param string $mid
+	 * @return Ambigous <mixed, NULL, multitype:Ambigous <unknown, string> unknown , unknown, multitype:Ambigous <unknown, string> Ambigous <multitype:> >
+	 */
+	public function getProjectIdOfMember($mid=""){
+		return $this->where("pro_mid=$mid")->getField('pro_id', true);
+	}
+	
+	/**
+	 * 查询用户$mid的招标项目信息
+	 * @param string $mid
+	 * @return Ambigous <mixed, boolean, NULL, string, unknown, multitype:, multitype:multitype: , void>
+	 */
+	public function getProjectsInfoOfMember($mid=""){
+		return $this->where("pro_mid=$mid")->select();
+	}
+	
+	/**
 	 * 用户$mid 的招标数
 	 * @param string $mid 用户名
 	 * @param boolen $all 是否包含未发布

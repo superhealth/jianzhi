@@ -10,12 +10,100 @@ class ProjectAction extends CommonAction{
 	private $limits = array(0=> "不限", 1=> "个人", 2=> "企业");	//项目投标限制
 	
 	/**
-	 * 我的发布
-	 * @see EmptyAction::index()
+	 * 我发布的项目/ 我的发单
+	 * 
 	 */
 	public function index(){
+		$this->checkMember();
+		$this->leftInit();
+		$project = M('Project');
+		$map = array(
+				'pro_status'	=> array('in', '1,2')
+			);
+		// 匹配开标条件
+		if( isset($_REQUEST['status']) && $_REQUEST['status']!='all' ){
+			$map['pro_status']	= $_REQUEST['status'];
+		}
+		// 查询
+		if( isset($_REQUEST['filter']) && strlen($_REQUEST['filter'] )>2){
+			$filter = addslashes($_REQUEST['filter']);
+			$map['_complex'] = array(
+				'pro_subject'	=> array('like', '%'.$filter.'%'),
+				'pro_sn'				=> array('like', '%'.$filter.'%'),
+				'_logic'				=> 'or'
+			);
+		}
+
+		$order = "pro_publishtime DESC";	//默认排序
+		if(isset($_REQUEST['order'])){
+			if(isset($_REQUEST['asc'])){
+				$asc = $_REQUEST['asc']=='1' ? 'ASC' : 'DESC';
+				$param['asc'] = $_REQUEST['asc'];
+			}else{
+				$asc = 'DESC';
+			}
+			switch($_REQUEST['order']){
+				case 'publish':
+					$order = "pro_publishtime ".$asc;
+					break;
+				case 'open':
+					$order = "pro_opentime ".$asc;
+					break;
+				case 'bids':
+					$order = "bidders ".$asc;
+					break;
+				default:
+					$order = "pro_publishtime DESC";
+			}
+			$param['order'] = $_REQUEST['order'];
+		}else{
+			$order = "pro_publishtime DESC";
+		}
+
+		// 分页
+		$total = $project->where($map)->count();
+		import("Org.Util.Page");
+		$page = new Page($total, 12, $param);
+		$this->assign('param', $param);
+		// 分页查询
+		$limit = $page->firstRow.",".$page->listRows;
+		$pager = $page->shown();
+		$this->assign("pager", $pager);
+		// 连接查询
+		$join = array(
+				"(SELECT bid_proid,count(*) bidders FROM zt_bidder GROUP BY bid_proid) b ON pro_id=b.bid_proid"
+		);
+		// 查询字段
+		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_publishtime, pro_limit, pro_place, pro_opentime, pro_startstop, pro_status, IFNULL(bidders, 0) bidders";
+		$projects = $project->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
+		foreach ($projects as &$v){
+			$starstop = explode("-", $v['pro_startstop']);
+			$v['pro_endtime'] = mb_substr($starstop[1], 0, strpos($starstop[1], '日')+1, 'utf-8');
+			$v['pro_place']	= str_replace(array('|','中国','省','市'),array('','',' ',''), $v['pro_place']);
+			$v['mem_place'] = D('Member')->getMemberPlace($v['pro_mid']);
+			$v['mem_place'] = str_replace(array('|','中国','省','市'),array(' ','',' ',''), $v['mem_place']);
+		}
 		
+		// 项目状态
+		$this->assign("status", $this->status);
+		$this->assign("projects", $projects);
+		// 类别
+		$sorts = D('Sort')->getSorts();
+		$this->assign('sorts', $sorts);
+		// 子类
+		$enums = D('Enumsort')->enums();
+		$this->assign('enums', $enums);
+		// 所有属性
+		$props = D("Property")->getProps();
+		$this->assign("props", $props);
+		// 用户投标限制
+		$this->assign("limits", $this->limits);
+		// 地区
+		
+		$this->assign('pro_place', areaToSelect($proArea, 1, "", "pro_place"));
+		$this->assign('mem_place', areaToSelect($memArea, 1, "", "mem_place"));
 		$this->display();
+
 	}
 	
 	/**
@@ -23,7 +111,9 @@ class ProjectAction extends CommonAction{
 	 */
 	public function all(){
 		$project = M("project");
-		$map = array();
+				$map = array(
+				'pro_status'	=> array('in', '1,2')	// 查找已发布且未关闭的项目
+			);
 		//筛选条件
 		$param = array();
 		// 项目状态
@@ -68,7 +158,7 @@ class ProjectAction extends CommonAction{
 		if(isset($_REQUEST['words'])){
 			$words = addslashes($_REQUEST['words']);
 			//大于3个字符
-			if(strlen($words)>=3){
+			if(strlen($words)>2){
 				$where['pro_subject']  = array('like', "%{$words}%");
 				$where['pro_mid'] = array('like', "%{$words}%");
 				$where['pro_sn'] = array('like', "%{$words}%");
@@ -559,6 +649,130 @@ class ProjectAction extends CommonAction{
 	 */
 	public function drafts(){
 		$this->checkMember();
-		$step = 0;
+		$this->leftInit();
+		$project = M('Project');
+		$map = array(
+				'pro_status'	=> 0,
+				'pro_mid'		=> $_SESSION['member']
+			);
+		// 查询
+		if( isset($_REQUEST['filter']) && strlen($_REQUEST['filter'] )>2){
+			$filter = addslashes($_REQUEST['filter']);
+			$map['_complex'] = array(
+				'pro_subject'	=> array('like', '%'.$filter.'%'),
+				'pro_sn'				=> array('like', '%'.$filter.'%'),
+				'_logic'				=> 'or'
+			);
+		}
+
+		$order = "pro_publishtime DESC";	//默认排序
+		if(isset($_REQUEST['order'])){
+			if(isset($_REQUEST['asc'])){
+				$asc = $_REQUEST['asc']=='1' ? 'ASC' : 'DESC';
+				$param['asc'] = $_REQUEST['asc'];
+			}else{
+				$asc = 'DESC';
+			}
+			switch($_REQUEST['order']){
+				case 'publish':
+					$order = "pro_publishtime ".$asc;
+					break;
+				case 'open':
+					$order = "pro_opentime ".$asc;
+					break;
+				case 'bids':
+					$order = "bidders ".$asc;
+					break;
+				default:
+					$order = "pro_publishtime DESC";
+			}
+			$param['order'] = $_REQUEST['order'];
+		}else{
+			$order = "pro_publishtime DESC";
+		}
+
+		// 分页
+		$total = $project->where($map)->count();
+		import("Org.Util.Page");
+		$page = new Page($total, 12, $param);
+		$this->assign('param', $param);
+		// 分页查询
+		$limit = $page->firstRow.",".$page->listRows;
+		$pager = $page->shown();
+		$this->assign("pager", $pager);
+
+		// 查询字段
+		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_publishtime, pro_limit, pro_place, pro_opentime, pro_startstop";
+		$projects = $project->field($field)->where($map)->order($order)->limit($limit)->select();
+		foreach ($projects as &$v){
+			$starstop = explode("-", $v['pro_startstop']);
+			$v['pro_endtime'] = mb_substr($starstop[1], 0, strpos($starstop[1], '日')+1, 'utf-8');
+			$v['pro_place']	= str_replace(array('|','中国','省','市'),array('','',' ',''), $v['pro_place']);
+		}
+		
+		// 项目状态
+		$this->assign("status", $this->status);
+		$this->assign("projects", $projects);
+		// 类别
+		$sorts = D('Sort')->getSorts();
+		$this->assign('sorts', $sorts);
+		// 子类
+		$enums = D('Enumsort')->enums();
+		$this->assign('enums', $enums);
+		// 所有属性
+		$props = D("Property")->getProps();
+		$this->assign("props", $props);
+		// 用户投标限制
+		$this->assign("limits", $this->limits);
+		// 地区
+		
+		$this->assign('pro_place', areaToSelect($proArea, 1, "", "pro_place"));
+		$this->display();
 	}
+	
+	public function receiveBids(){
+		$this->checkMember();
+		$this->leftInit();
+		
+		$bid = M('Bidder');
+		// 用户的招标发单
+		$where = array(
+			'pro_mid'	=> $_SESSION['member'],				// 用户所发项目
+			'bid_state'	=> array('gt', 0)								// 投标成功 1=>投标中， 2=>备选， 3=>中标
+		);
+		
+		if(isset($_REQUEST['keywords']) && strlen($_REQUEST['keywords'])>2){
+			if($_REQUEST['case'] == 'member'){	// 按用户查询
+				$where['bid_mid']	= array('like', '%'.$_REQUEST['keywords'].'%');
+			}else{															// 按项目编号查询
+				$where['pro_sn']		= array('like', '%'.$_REQUEST['keywords'].'%');
+			}
+		}
+		// join
+		$join = 'zt_project ON bid_proid=pro_id';
+		
+		// total and Page
+		$total = $bid->join($join)->where($where)->count();
+		import('ORG.Util.Page');
+		$page = new Page($total, 12);
+		// 分页查询
+		$limit = $page->firstRow.",".$page->listRows;
+		$pager = $page->shown();
+		$this->assign("pager", $pager);
+		
+		$order = '';
+		
+		// 查询字段
+		$field = "*";
+		$bids = $bid->field($field)->join($join)->where($where)->order($order)->limit($limit)->select();
+		
+		
+		
+		
+		$this->assign('bids', $bids);
+		$this->display();
+	}
+	
+	
+	
 }
