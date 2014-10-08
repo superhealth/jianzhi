@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我收到的应标</title>
+<include file="public:css" />
+<include file="public:js" />
+</head>
+<include file="public:header" />
+<div class="container">
+	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">会员中心</a> / <a href="__GROUP__/Project/index">我的招标项目</a> / 我收到的应标</div>
+	<div class="content">
+		<include file="public:left" />
+		<div class="mem_main">
+			<h3 class="mem_sub_title">我收到的应标列表</h3>
+			<div class="mem_content">
+				<form action="" method="get" id="">
+				<div class="pro_search">
+					<div class="pro_search_box">
+						<label style="float:left; margin-right:20px;"><input type="radio" name="tag" value="pro" <if condition="$param['tag'] eq 'pro'">checked</if> /> 按项目编号</label>
+						<label style="float:left; margin-right:20px;"><input type="radio" name="tag" value="mid" <if condition="$param['tag'] eq 'mid'">checked</if> /> 按投标方</label>
+						<input class="pro_search_inp" type="text" name="words" value="{$param.words}" placeholder="项目名称、投标方" />
+						<div class="pro_search_go btn-sub" data-act="">确定</div>
+					</div>
+				</div>
+				<div class="pro_pagination">
+					{$pager.show}{$pager.header}</div>
+				</form>
+				<div class="pro_caption">
+					<div style="width:100px;"><span class="order-links" data-order="publish" data-asc='0'>投标日期</span></div>
+					<div class="split"></div>
+					<div style="width:140px;">投标编号</div>
+					<div class="split"></div>
+					<div style="width:180px;"><span>投方用户</span></div>
+					<div class="split"></div>
+					<div style="width:150px;"><span>所在地</span></div>
+					<div class="split"></div>
+					<div style="width:140px;"><span class="order-links" data-order="amount" data-asc='0'>报价(总价)</span></div>
+					<div class="split"></div>
+					<div style="width:80px;"><span>中标状态</span></div>
+				</div>
+				<table class="pro_list" cellpadding="0" cellspacing="0" border="0">
+					<volist name="bids" id="pitem">
+					<tr class="pro_item_content" <if condition="$i%2 eq 0">style="background:#f3f3f3;"</if>>
+							<td style="width:100px;" align="center"><span>{$pitem.bid_publishtime|timeFormat='Y/m/d'}</span></td>
+							<td class="split"></td>
+							<td style="width:140px;" align="center"><span>{$pitem.bid_sn}</span></td>
+							<td class="split"></td>
+							<td style="width:180px;" align="center"><span><a class="colorbox" href="__GROUP__/Member/view/id/{$pitem['bid_mid']}">{$pitem.mem_name}</a></span></td>
+							<td class="split"></td>
+							<td style="width:150px;" align="center"><span>{$pitem.mem_place}</span></td>
+							<td class="split"></td>
+							<td style="width:140px;" align="center"><span>{$pitem.price}</span></td>
+							<td class="split"></td>
+							<td style="width:80px;" align="center"><span>{$pitem.state}</span></td>
+					</tr>
+					</volist>
+				</table>
+				<present name="searchError">
+				<div style="line-height:24px; font-size:15px; padding:10px; margin:20px; background:#eee; font-weight:bold; text-align:center;">{$searchError}</div>
+				</present>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+</div>
+<div id="ajax_wait"><img src='__PUBLIC__/Home/img/ajax-loaders/ajax-loader-1.gif' /></div>
+<include file="public:footer" />
+<script >
+	$(function(){
+			/* order */
+		//init
+		(function(){
+			var order =  '{$param.order}', asc = '{$param.asc}';
+			var orderObj = $(".order-links[data-order='"+order+"']");
+			orderObj.data("asc", asc);
+			if(asc=="0"){
+				orderObj.html(orderObj.text()+" &darr;");
+			}else if(asc=="1"){
+				orderObj.html(orderObj.text()+" &uarr;");
+			}
+		}());
+		$('.pro-ajax-btn').click(function(e){
+			e.preventDefault();
+			_title = $(this).attr('title');
+			_obj = $(this);
+			bootbox.confirm('您确定要'+_title+'该项目吗？'+_title+'后将不能恢复！', function(re){
+				if(re){
+					$.get(_obj.data('href'), '', function(res){
+						if(res.code==0){
+							_obj.parents('tr').prev().remove();
+							_obj.parents('tr').remove();
+						}else{
+							bootbox.alert(res.data);
+						}
+					}, 'json');
+				}
+			});
+		});
+		
+	});
+</script>
+<body>
+</body>
+</html>

@@ -6,12 +6,12 @@
  */
 class NoticeAction extends CommonAction{
 	private $typeArr = array(
-			'sys'	=> '公 &nbsp;&nbsp; 告',
-			'ser'	=> '服务通知',
+			'sys'		=> '公 &nbsp;&nbsp; 告',
+			'ser'		=> '服务通知',
 			'pro'	=> '招方消息',
 			'bid'	=> '投方消息',
 			'acc'	=> '账户消息',
-			''	=>'全 &nbsp;&nbsp; 部'
+			' '			=>'全 &nbsp;&nbsp; 部'
 		);
 	/**
 	 * 系统通知

@@ -324,6 +324,11 @@ $(function(){
 			location.href = '/Project/all?words='+words+'&sortid='+$('#head_filter_sort').val();
 		}
 	});
+	$(".i-radio").each(function(){
+			if($(this).children('input').prop('checked')){
+				$(this).addClass('active');
+			}
+		});
 	//colorbox
 	$('.colorbox').click(function(e){
 		e.preventDefault();
@@ -333,6 +338,31 @@ $(function(){
 		}, 'html');
 	});
 	
+		//排序
+	$(".order-links").click(function(){
+		var _query = window.location.search,
+		_query = _query.substr(1).split('&');
+		var flagName = false;
+		for(var i in _query){
+			_query[i] = _query[i].split('=');
+			if(_query[i][0]=='order'){
+				_query[i][1] = $(this).data("order");
+				flagName = true;
+			}else if(_query[i][0]=='asc'){
+				_query[i][1] = ($(this).data("asc")=='0') ? '1' : '0';
+				flagName = true;
+			}
+		}
+		if(!flagName){
+			_query.push(['order', $(this).data("order")]);
+			_query.push(['asc', (($(this).data("asc")=='0') ? '1' : '0')]);
+		}
+		for(var i in _query){
+			_query[i] = _query[i].join('=');
+		}
+		_query = _query.join('&');
+		window.location.href = window.location.pathname +'?'+ _query;
+	});
 	// 刷新验证码	
 	$('.authcode').click(function(){
 		$(this).attr('src', '/Home/Retrieve/getAuthcode?'+new Date().getTime());

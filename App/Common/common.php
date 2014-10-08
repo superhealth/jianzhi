@@ -7,7 +7,10 @@ if(!defined("SYSCONF")){
 if(!defined("SYSCONF_DIR")){
 	define("SYSCONF_DIR", $_SERVER['DOCUMENT_ROOT'].__ROOT__."/cache");
 }
-
+// 项目保护时间
+if(!defined("PROTECT_TIME")){
+	define("PROTECT_TIME", 3600);
+}
 /**
  * 错误回馈消息
  */

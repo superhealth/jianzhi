@@ -74,14 +74,44 @@ class NoticeModel extends Model{
 	 */
 	public function sendNotice($mid, $subject, $content, $type){
 		$data = array(
-			"no_mid"	=> $mid,
-			"no_subject"	=> $subject,
+			"no_mid"			=> $mid,
+			"no_subject"		=> $subject,
 			"no_content"	=> $content,
-			"no_time"	=> time(),
-			"no_read"	=> 0,
-			'no_type'	=> $type
+			"no_time"			=> time(),
+			"no_read"			=> 0,
+			'no_type'			=> $type
 		);
 		return $this->add($data);
+	}
+	/**
+	 * 发送系统消息
+	 */
+	public function sendSysNotice($mid, $subject, $content){
+		return $this->sendNotice($mid, $subject, $content, 'sys');
+	}
+	/**
+	 * 发送账户消息
+	 */
+	public function sendAccNotice($mid, $subject, $content){
+		return $this->sendNotice($mid, $subject, $content, 'acc');
+	}
+	/**
+	 * 发送服务消息
+	 */
+	public function sendSerNotice($mid, $subject, $content){
+		return $this->sendNotice($mid, $subject, $content, 'ser');
+	}
+	/**
+	 * 发送投标消息
+	 */
+	public function sendBidNotice($mid, $subject, $content){
+		return $this->sendNotice($mid, $subject, $content, 'bid');
+	}
+	/**
+	 * 发送招标消息
+	 */
+	public function sendProNotice($mid, $subject, $content){
+		return $this->sendNotice($mid, $subject, $content, 'pro');
 	}
 	
 	/**

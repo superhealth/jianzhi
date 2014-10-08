@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>招标发单</title>
+<title>我的招标项目</title>
 <include file="public:css" />
 </head>
 <body>
 <include file="public:header" />
 <div class="container">
-  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Project/all">项目检索</a> /<a href="#">项目详情</a></div>
+  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Project/index">我的招标项目</a> /<a href="#">项目详情</a></div>
   <div class="content">
   	<div class="pro_box right_box">
       <div class="pro_title">标题图片</div>
@@ -36,22 +36,6 @@
 					<div class="clearfix"></div>
 				</div>
 			</div>
-			<div class="pro_body" style="margin-bottom:0;">
-				<div class="proInfo_left_sec_4">
-					<if condition="$memInfo['status'] eq 1"><label class="proInfo_status_label label_active">实名认证</label><else/><label class="proInfo_status_label label_grey">未认证</label></if>
-					<span class="proInfo_mem_name">{$memInfo.mem_id}</span><br /><a href="__URL__/all?words={$proInfo.pro_mid}">所有招标项目 <span class="proInfo_mem_own">{$memInfo.pros}</span> </a>
-				</div>
-				<div class="proInfo_left_sec_5">
-					<div class="proInfo_left_sec_5_left">
-						<span class="proInfo_mem_place">{$memInfo.place}</span><br /> 发方所在地
-					</div>
-					<div class="proInfo_left_sec_5_delimiter"></div>
-					<div class="proInfo_left_sec_5_right">
-						<span class="proInfo_regday">{$memInfo.regdays}</span><br />注册天数
-					</div>
-					<div class="clearfix"></div>
-				</div>
-      </div>
     </div>
   	<div class="pro_box left_box">
       <div class="pro_title">项目 / 订单</div>
@@ -61,7 +45,8 @@
 					<div class="proInfo_content">
 						<p>项目名称：{$proInfo.pro_subject}</p>
 						<p>项目编号：{$proInfo.pro_sn}<span class="ml_50">项目属性：{$proInfo.pp_name}</span></p>
-						<p>发&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 方：<a class="colorbox" href="__GROUP__/Member/view/id/{$memInfo['mem_id']}" >{$memInfo['mem_id']}<if condition="$memInfo['mem_status'] neq 2"><span class="red">(实名未验)</span></if></a></p>
+						<!--p>发&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 方：<a class="colorbox" href="__GROUP__/Member/view/id/{$memInfo['mem_id']}" >{$memInfo['mem_id']}<if condition="$memInfo['mem_status'] neq 2"><span class="red">(实名未验)</span></if></a></p-->
+						<p>开标日期：{$proInfo.pro_opentime|timeFormat='Y年m月d日 H时i分 a'}</p>
 						<p>发布日期：{$proInfo.pro_createtime|timeFormat='Y年m月d日'}<if condition="$proInfo['pro_updatetime'] gt 0">（最后修改于{$proInfo.pro_updatetime|timeFormat='Y年m月d日 H时i分 a'}）</if></p>
 					</div>
 				</div>
@@ -111,12 +96,7 @@
 					</div>
 				</div>
 				<div class="pro_btn_groups">
-					<empty name="collected">
-						<button type="button" class="btn btn-collect" data-id="{$proInfo.pro_id}" data-url="__URL__/proCollect">收藏项目</button>
-					<else/>
-						<button type="button" class="btn btn-collect" data-id="{$collected}" data-url="__URL__/cancelCollect">取消收藏</button>
-					</empty>
-						<button type="button" class="btn btn-link" data-href="__GROUP__/Bid/launch/id/{$proInfo.pro_id}">我要投标</button>
+					<button type="button" class="btn btn-link" data-href="__GROUP__/Project/modify/id/{$proInfo.pro_id}">修改</button>
 				</div>
       </div>
     </div>

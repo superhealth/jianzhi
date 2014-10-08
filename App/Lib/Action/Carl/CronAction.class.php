@@ -11,11 +11,11 @@ class CronAction extends Action{
 	public function index(){
 		if(!per_check('cron_update'))
 		//检查会员续费是否到期
-		D("Memeber")->updateMemberActive();
+		D("Member")->updateMemberActive();
 		//检查保证金是否退回
 		//D("Memeber")>updateDepositStatus();
 		//检查项目开标
-		D("Memeber")->updateProState();
+		D("Project")->updatePorjectStatus();
 	}
 	
 	public function updateCache(){

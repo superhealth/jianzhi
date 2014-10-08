@@ -8,7 +8,7 @@
 <body>
 <include file="public:header" />
 <div class="container">
-  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Project">招标发单</a> /<a href="__GROUP__/Project/createEd">填写招标内容</a></div>
+  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Project/index">招标发单</a> /<a href="__GROUP__/Project/createEd">填写招标内容</a></div>
   <div class="content">
   	<div class="pro_box right_box">
       <div class="pro_title">温馨提示</div>
@@ -24,20 +24,17 @@
       <div class="pro_title">招标发单完成</div>
       <div class="pro_body">
 				<div class="pro_complete">
-					<div class="pro_comp_header"> 项目编号：{$newProject.pro_sn}XXXXXXXXXXXXXXXXXXXX</div>
+					<div class="pro_comp_header"> 项目编号：{$newProject.pro_sn}</div>
 					<div class="pro_comp_title"><a href="__GROUP__/Details/project/id/{$newProject.pro_id}" >{$newProject.pro_subject}</a></div>
 					<div class="pro_comp_body">
 						<div calss="pro_comp_info1">
-							<p><span>项目属性：</span><span>{$props[$newProject['pro_prop']]}</span></p>
-							<p><span>投方用户：</span><span>{$limits[$newProject['pro_limit']]}</span></p>
-							<p><span>行业类别：</span><span>{$newProject.sort_name}</span><span>{$newProject.pro_enums}</span></p>
+							<p><span class="pro_comp_info_left">项目属性：{$props[$newProject['pro_prop']]}</span><span class="pro_comp_info_right">投方用户限制：{$limits[$newProject['pro_limit']]}</span></p>
+							<p><span class="pro_comp_info_left">发方：<a class="colorbox" href="__GROUP__/Member/view/id/{$newProject.pro_mid}">{$newProject.pro_mid}<if condition="$memberStatus neq 2"><span class="red">(实名未验)</if></a></span><span class="pro_comp_info_right">行业类别：{$newProject.sort_name} {$newProject.pro_enums}</span></p>
 						</div>
 						<div class="pro_comp_info2">
-							<p><span>数量(总数)：</span><span>{$newProject.pro_quantity}</span></p>
-							<p><span>单位：</span><span>{$newProject.pro_unit}</span></p>
-							<p><span>发方：</span><span><a class="colorbox" href="__GROUP__/Member/view/id/{$newProject.pro_mid}">{$newProject.pro_mid}<if condition="$memberStatus neq 2"><span class="red">(实名未验)</span></if></span></p>
-							<p><span>发出日期：</span><span>{$newProject.pro_publishtime|timeFormat='Y年m月d日 H时i分'} </span><if condition="$newProject['pro_updatetime'] gt 0">(更新于{$newProject.pro_updatetime|timeFormat='Y年m月d日 H时i分'})</if></p>
-							<p><span>开标时间：</span><span>{$newProject.pro_opentime|timeFormat='Y年m月d日 H时i分'}</span></p>
+							<p><span class="pro_comp_info_left">数量(总数)：{$newProject.pro_quantity}</span><span class="pro_comp_info_right">单位：{$newProject.pro_unit}</span></p>
+							<p><span class="pro_comp_info_left">发出日期：{$newProject.pro_publishtime|timeFormat='Y年m月d日 H时i分'} <if condition="$newProject['pro_updatetime'] gt 0">(更新于{$newProject.pro_updatetime|timeFormat='Y年m月d日 H时i分'})</if></span></p>
+							<p><span class="pro_comp_info_left">开标时间：{$newProject.pro_opentime|timeFormat='Y年m月d日 H时i分'}</span></p>
 						</div>
 					</div>
 				</div>

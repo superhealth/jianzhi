@@ -19,7 +19,19 @@ class UnitModel extends Model{
 		}
 		return require($cacheFile);
 	}
-
+	/**
+	 * 获取币值名称
+	 * @param int $id
+	 * @return unknown
+	 */
+	public function getUnitName($id){
+		$units = $this->getUnits();
+		return $units[$id];
+	}
+	
+	public function getUnitMultiple($id){
+		return $this->where('unit_id='.$id)->getField('unit_multiple');
+	}
 	/**
 	 * 获取币值名称为$name的币值
 	 * @param string $name 币值名称

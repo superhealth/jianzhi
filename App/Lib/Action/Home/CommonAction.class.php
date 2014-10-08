@@ -9,6 +9,10 @@ class CommonAction extends EmptyAction{
 	 * 初始化方法
 	 */
 	public function _initialize(){
+		//检查会员过期
+		D("Member")->updateMemberActive();
+		//检查项目开标
+		D("Project")->updatePorjectStatus();
 		if(!empty($_SESSION['member'])){
 			$notice = D("Notice")->noRead($_SESSION['member']);
 			$this->assign("memberNotice", $notice);

@@ -27,6 +27,10 @@ class CurrencyModel extends Model{
 		$currencys = $this->getCurrencys();
 		return $currencys['name'];
 	}
+	public function getCurrencyName($id){
+		$currencys = $this->getCurrencyByName();
+		return $currencys[$id];
+	}
 	/**
 	 * 获取货币种类的币种标志 如HKD， RMB，USD
 	 * @return array
@@ -35,7 +39,10 @@ class CurrencyModel extends Model{
 		$currencys = $this->getCurrencys();
 		return $currencys['sign'];
 	}
-	
+	public function getCurrencySign($id){
+		$currencys = $this->getCurrencyBySign();
+		return $currencys[$id];
+	}
 	/**
 	 * 更新缓存
 	 */

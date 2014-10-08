@@ -95,15 +95,13 @@
 							<td colspan="11">
 								<span class="sub_td1">项目编号： <strong>{$pitem.pro_sn}</strong></span>
 								<span class="sub_td2">项目属性： {$props[$pitem['pro_prop']]}</span>
-								<span class="sub_td3">计划完成(交货)日期： {$pitem.pro_endtime}</span>
-								<span class="sub_td4">对投方限制： {$limits[$pitem['pro_limit']]}</span>
-								<span class="sub_td5">招方所在地： {$pitem.mem_place}</span>
+								<span class="sub_td3">项目类别： {$pitem.sorts}</span>
 							</td>
 							</tr>
 							<tr class="pro_item_content">
 								<td class="td1"><span>{$pitem.pro_publishtime|timeFormat='Y/m/d'}</span></td>
 								<td class="split"></td>
-								<td class="td2"><a href="__URL__/detail/id/{$pitem.pro_id}"><span>{$pitem.pro_subject|get_summary=40}</span></a></td>
+								<td class="td2"><span><a href="__URL__/detail/id/{$pitem.pro_id}">{$pitem.pro_subject|get_summary=40}</a></span></td>
 								<td class="split"></td>
 								<td class="td3"><span>{$pitem.pro_mid}</span></td>
 								<td class="split"></td>
@@ -241,31 +239,7 @@ $(function(){
 			orderObj.html(orderObj.text()+" &uarr;");
 		}
 	}());
-	//排序
-	$(".order-links").click(function(){
-		var _query = window.location.search,
-		_query = _query.substr(1).split('&');
-		var flagName = false;
-		for(var i in _query){
-			_query[i] = _query[i].split('=');
-			if(_query[i][0]=='order'){
-				_query[i][1] = $(this).data("order");
-				flagName = true;
-			}else if(_query[i][0]=='asc'){
-				_query[i][1] = ($(this).data("asc")=='0') ? '1' : '0';
-				flagName = true;
-			}
-		}
-		if(!flagName){
-			_query.push(['order', $(this).data("order")]);
-			_query.push(['asc', (($(this).data("asc")=='0') ? '1' : '0')]);
-		}
-		for(var i in _query){
-			_query[i] = _query[i].join('=');
-		}
-		_query = _query.join('&');
-		window.location.href = window.location.pathname +'?'+ _query;
-	});
+
 	//搜索
 	$('.pro_search_go').click(function(){
 		var words = $('.pro_search_inp').val();

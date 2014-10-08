@@ -376,4 +376,26 @@ class BidAction extends CommonAction{
 		$this->checkMember();
 	}
 	
+	/**
+	 * 收藏项目
+	 * @param int $id
+	 */
+	public function collection($id){
+		$ajaxData = array('code'=>0, 'data'=>'');
+		if(empty($_SESSION['member'])){
+			$ajaxData['code'] = 100;
+			$ajaxData['data'] = __GROUP__."/Member/login/flag/true";
+		}else{
+			if(D('Collection')->addCollection($id, $_SESSION['member'])){
+				$ajaxData['data'] = '取消收藏';
+				$ajaxData['id'] 		= D('Collection')->getLastInsID();
+				$ajaxData['url'] 	= __URL__.'/cancelCollect';
+				$ajaxData['code'] = 1;
+			}else{
+				$ajaxData['data'] = '添加收藏失败！'.D('Collection')->getError();
+			}
+		}
+		echo json_encode_nonull($ajaxData);exit;
+	}
+	
 }

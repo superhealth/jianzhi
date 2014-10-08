@@ -2,80 +2,74 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>招标发单</title>
+<title>修改我的招标项目</title>
 <include file="public:css" />
 </head>
 <body>
 <include file="public:header" />
 <div class="container">
-  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Project/createStep1">发布招标项目</a> /<a href="#">填写招标内容</a></div>
+  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Project/index">我的招标发单</a> /<a href="#">修改项目</a></div>
   <div class="content">
   	<div class="pro_box right_box">
       <div class="pro_title">标题图片</div>
       <div class="pro_body">
-				<if condition="$newProject['cover'] neq ''">
-      	<img src="{$newProject['cover']}" id="pro_cover_view" class="pro_cover_view" />
+				<if condition="$info['cover'] neq ''">
+      	<img src="{$info['cover']}" id="pro_cover_view" class="pro_cover_view" />
 				<else />
 				<img src="__PUBLIC__/Home/image/pro_cover_view.png" id="pro_cover_view"  class="pro_cover_view" />
 				</if>
-				<h3 class="pro_name_view" id="pro_name_view">{$newProject.pro_subject}</h3>
+				<h3 class="pro_name_view" id="pro_name_view">{$info.pro_subject}</h3>
       </div>
       <div class="pro_title">项目附件</div>
       <div class="pro_body">
       	<ul class="pro_att_view" id="pro_att_view">
-					<volist name="newProject['attachs']" id="att_item"> 
+					<volist name="info['attachs']" id="att_item"> 
 					<li><span>{$att_item.att_name}</span><button type="button" class="btn" onclick="delAtt(this,{$att_item.att_id});">删除</button></li>
 					</volist>
 				</ul>
       </div>
     </div>
   	<div class="pro_box left_box">
-      <div class="pro_title">招标发单项目内容</div>
+      <div class="pro_title">项目 / 订单</div>
       <div class="pro_body">
-				<form method="post" action="__URL__/createInfo1" enctype="multipart/form-data" onsubmit="return createInfo1();">
-					<input type="hidden" name="id" id="pro_id" value="{$newProject.pro_id}" />
-					<div class="pro_info">
-						<span class="info_label">项目编号：</span>
-						<span class="info_value"><strong class="red">{$newProject.pro_sn}</strong></span>
+				<form action="" method="post" enctype="multipart/form-data" >
+				<input type="hidden" name="pro_id" id="pro_id" value="{$info.pro_id}" />
+				<div class="proInfo_block">
+					<span class="proInfo_label">标 题</span>
+					<div class="proInfo_content">
+						<p>项目名称：{$info.pro_subject}</p>
+						<p><span class="pro_comp_info_left">项目编号：{$info.pro_sn}</span><span  class="pro_comp_info_right">类别：{$sorts[$info['pro_sort']]} {$info.pro_enums}</span></p>
+						<p><span class="pro_comp_info_left">项目属性：{$props[$info['pro_prop']]}</span><span class="pro_comp_info_right">要求投方用户属性：{$limits[$info['pro_limit']]}</span></p>
+						<p>发布日期：{$info.pro_createtime|timeFormat='Y年m月d日'}<if condition="$info['pro_updatetime'] gt 0">（最后修改于{$info.pro_updatetime|timeFormat='Y年m月d日 H时i分 A'}）</if></p>
 					</div>
-					<div class="pro_info">
-						<span class="info_label">项目类别：</span>
-						<span class="info_value"><center class="info_sort">{$newProject.sort_name}</center>
-								<volist name="newProject['pro_enum']" id="ei">
-									<center class="info_enum">{$ei}</center>
-								</volist>
-						</span>
-					</div>
-					<div class="pro_groups">
-						<label for="pro_subject"><span class="red">*</span>项目名称：</label>
-						<div class="pro_control">
-							<input type="text" id="pro_subject" class="inp inp-mid" name="pro_subject" value="{$newProject.pro_subject}" />
-						</div>
-					</div>
+				</div>
+				<div class="proInfo_block">
 					<div class="pro_groups">
 						<label for="pro_quantity"><span class="red">*</span>数量：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_quantity" class="inp inp-mini" name="pro_quantity" value="{$newProject.pro_quantity}" />
+							<input type="text" id="pro_quantity" class="inp inp-mini" name="pro_quantity" value="{$info.pro_quantity}" />
 						</div>
 					</div>
 					<div class="pro_groups">
 						<label for="pro_unit"><span class="red">*</span>单位：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_unit" class="inp inp-mini" name="pro_unit" value="{$newProject.pro_unit}" />
+							<input type="text" id="pro_unit" class="inp inp-mini" name="pro_unit" value="{$info.pro_unit}" />
 						</div>
 					</div>
 					<div class="pro_groups">
 						<label for="pro_description"><span class="red">*</span>项目简介：</label>
 						<div class="pro_control">
-							<textarea name="pro_description" id="pro_description" class="txt txt-block" rows="6">{$newProject.pro_description}</textarea>
+							<textarea name="pro_description" id="pro_description" class="txt txt-block" rows="6">{$info.pro_description}</textarea>
 						</div>
 					</div>
+				</div>
+				<div class="proInfo_block">
 					<div class="pro_groups">
 						<label for="pro_cover">标题图片：</label>
 						<div class="pro_control">
 							<input data-no-uniform="true" type="file" name="pro_cover" id="pro_cover" />
-							<button type="button" class="btn btn-mini btn-primary" onclick="$('#pro_cover').uploadify('upload','*');">上传</button> 	
-							<span class="tips">(图片格式：JPG, JPEG, PNG; 大小:55K-1M)</span>
+							<button type="button" class="btn btn-mini btn-primary" onclick="$('#pro_cover').uploadify('upload','*');">更改</button> 	
+							<span class="tips">(图片格式：JPG, JPEG, PNG; 大小:55K-1M;)</span>
 							<div id="upfile_cover"></div>
 						</div>
 					</div>
@@ -83,40 +77,80 @@
 						<label for="attach_add">项目详情：</label>
 						<div class="pro_control">
 							<input data-no-uniform="true" type="file" name="pro_attach" id="attach_add"  multiple="true" />
-							<button type="button" class="btn btn-mini btn-primary" onclick="$('#attach_add').uploadify('upload','*');">上传</button> 
+							<button type="button" class="btn btn-mini btn-primary" onclick="$('#attach_add').uploadify('upload','*');">添加</button> 
 							<span class="tips"> (注：文件大小不超过3M，数量不超过3个)</span>
 							<div id="upfileLists"></div>
 						</div>
 					</div>
+				</div>
+				<div class="proInfo_block">
 					<div class="pro_groups">
 						<label for="pro_opentime">开标日期：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_opentime" class="inp datetimepicker" name="pro_opentime" value="{$newProject.pro_opentime|timeFormat='Y年m月d日 H时i分'}"  />
+							<input type="text" id="pro_opentime" class="inp datetimepicker" name="pro_opentime" value="{$info.pro_opentime|timeFormat='Y年m月d日 H时i分'}"  />
 						</div>
 					</div>
 					<div class="pro_groups">
 						<label for="pro_start">任务起始日期：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_start" class="inp datepicker" name="pro_start" value="{$newProject['startToEnd'][0]}"  />
+							<input type="text" id="pro_start" class="inp datepicker" name="pro_start" value="{$info['startToEnd'][0]}"  />
 						</div>
 					</div>
 					<div class="pro_groups">
 						<label for="pro_end"><span class="red">*</span>任务交货日期：</label>
 						<div class="pro_control">
-							<input type="text" id="pro_end" class="inp datepicker" name="pro_end" value="{$newProject['startToEnd'][1]}"  />
+							<input type="text" id="pro_end" class="inp datepicker" name="pro_end" value="{$info['startToEnd'][1]}"  />
 						</div>
 					</div>
 					<div class="pro_groups">
 						<label for="pro_subject"><span class="red">*</span>任务实施地：</label>
 						<div class="pro_control">
-							{$newProject.place}
+							{$info.place}
 						</div>
 					</div>
-					<div class="pro_btn_groups">
-          	 <button type="button" class="btn btn-link" data-href="__URL__/createStep1">上一步</button>
-             <button type="button" class="btn btn-sub" data-act="__URL__/createInfo1">下一步</button>
+				</div>
+				<div class="proInfo_block">
+					<div class="pro_info_box">
+						<div class="pro_info_name">对投方其他要求：</div>
+						<div class="pro_info_content">
+							<textarea name="pro_addition" id="pro_addition" class="txt txt-block" rows="8">{$info.pro_addition}</textarea>
+						</div>
 					</div>
-				</form>
+				</div>
+				<div class="proInfo_block">
+					<div class="pro_info_box">
+						<div class="pro_info_name"><span class="red">*</span>该项目联系方式：</div>
+						<div class="pro_info_content">
+							<div class="pro_groups">
+								<label for="con_name"><span class="red">*</span>&nbsp;联&nbsp;系&nbsp;人&nbsp;：</label>
+								<div class="pro_control">
+									<input type="text" id="con_name" class="inp inp-mid" name="con_name" value="{$info.con_name}"  />
+								</div>
+							</div>
+							<div class="pro_groups">
+								<label for="con_tel"><span class="red">*</span>电话/手机：</label>
+								<div class="pro_control">
+									<input type="text" id="con_tel" class="inp inp-mid" name="con_tel" value="{$info.con_tel}"  />
+								</div>
+							</div>
+							<div class="pro_groups">
+								<label for="con_email"><span class="red">*</span>电子邮箱：</label>
+								<div class="pro_control">
+									<input type="text" id="con_email" class="inp inp-mid" name="con_email" value="{$info.con_email}"  />
+								</div>
+							</div>
+							<div class="pro_groups">
+								<label for="con_im">其 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;他：</label>
+								<div class="pro_control">
+									<input type="text" id="con_im" class="inp inp-mid" name="con_im" value="{$info.con_im}" placeholder='QQ/MSN' />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pro_btn_groups">
+						<button type="button" class="btn btn-sub" data-act="__GROUP__/Project/save">修改</button>
+				</div>
       </div>
     </div>
 		<div class="clearfix"></div>
@@ -126,7 +160,7 @@
 <include file="public:js" />
 <script type="text/javascript">
 	$(function(){
-		$("#pro_opentime").datetimepicker({minDate: new Date()});
+			$("#pro_opentime").datetimepicker({minDate: new Date()});
 			$("#pro_opentime").change(function(){
 				$("#pro_start").datepicker("option", {minDate: $("#pro_opentime").val()});
 				$("#pro_end").datepicker("option", {minDate: $("#pro_start").val()});
@@ -181,7 +215,6 @@
 				}
 			}
 		});
-		
 		$("#pro_cover").uploadify({
 			'auto':false,
 			'queueID':'upfile_cover',
@@ -225,14 +258,12 @@
 					}
 					if(data.code==1){
 						$("#pro_cover_view").attr('src', data.data[0].att_path);
-						$('#pro_cover-button').text('修改');
 					}else{
 						bootbox.alert(data.data);
 					}
 				}
 			}
 		});
-		
 	});	
 	function delAtt(obj,id){
 		try{$.get("/Attach/del", {"belong":"project", "id":$("#pro_id").val(), "attId":id}, function(res){
@@ -246,13 +277,6 @@
 			bootbox.alert("网络连接失败！");
 		}
 	}
-	function createInfo1(){
-		if($('#pro_subject').val()==''){
-			bootbox.alert('Sorry~ 项目标题不能为空！');
-			$('#pro_subject').addClass('error');
-			return false;
-		}
-	}
 </script>
-</body>
+<body>
 </html>

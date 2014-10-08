@@ -18,20 +18,26 @@ class ProjectAction extends CommonAction{
 		$this->leftInit();
 		$project = M('Project');
 		$map = array(
-				'pro_status'	=> array('in', '1,2')
-			);
+				'pro_status'=> array('in', '1,2'),				// 已发布
+				'pro_mid'	=> $_SESSION['member']		// 
+		);
+		$param = array('status'=> 'all');
 		// 匹配开标条件
-		if( isset($_REQUEST['status']) && $_REQUEST['status']!='all' ){
-			$map['pro_status']	= $_REQUEST['status'];
+		if( isset($_REQUEST['status'])){
+			if($_REQUEST['status']!='all'){
+				$map['pro_status']	= $_REQUEST['status'];
+			}
+			$param['status'] = $_REQUEST['status'];
 		}
 		// 查询
-		if( isset($_REQUEST['filter']) && strlen($_REQUEST['filter'] )>2){
-			$filter = addslashes($_REQUEST['filter']);
+		if( isset($_REQUEST['words']) && strlen($_REQUEST['words'] )>2){
+			$filter = addslashes($_REQUEST['words']);
 			$map['_complex'] = array(
 				'pro_subject'	=> array('like', '%'.$filter.'%'),
 				'pro_sn'				=> array('like', '%'.$filter.'%'),
 				'_logic'				=> 'or'
 			);
+			$param['words'] = $_REQUEST['words'];
 		}
 
 		$order = "pro_publishtime DESC";	//默认排序
@@ -63,7 +69,7 @@ class ProjectAction extends CommonAction{
 		// 分页
 		$total = $project->where($map)->count();
 		import("Org.Util.Page");
-		$page = new Page($total, 12, $param);
+		$page = new Page($total, 8, $param);
 		$this->assign('param', $param);
 		// 分页查询
 		$limit = $page->firstRow.",".$page->listRows;
@@ -71,37 +77,25 @@ class ProjectAction extends CommonAction{
 		$this->assign("pager", $pager);
 		// 连接查询
 		$join = array(
-				"(SELECT bid_proid,count(*) bidders FROM zt_bidder GROUP BY bid_proid) b ON pro_id=b.bid_proid"
+				" LEFT JOIN (SELECT bid_proid,count(*) bidders FROM zt_bidder GROUP BY bid_proid) b ON pro_id=b.bid_proid ",
+				' LEFT JOIN zt_sort ON pro_sort=sort_id',
+				' LEFT JOIN zt_property ON pro_prop=pp_id'
 		);
 		// 查询字段
-		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_publishtime, pro_limit, pro_place, pro_opentime, pro_startstop, pro_status, IFNULL(bidders, 0) bidders";
+		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, sort_name, pro_enums, pp_name, pro_publishtime, pro_opentime, pro_status, IFNULL(bidders, 0) bidders";
 		$projects = $project->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		foreach ($projects as &$v){
-			$starstop = explode("-", $v['pro_startstop']);
-			$v['pro_endtime'] = mb_substr($starstop[1], 0, strpos($starstop[1], '日')+1, 'utf-8');
-			$v['pro_place']	= str_replace(array('|','中国','省','市'),array('','',' ',''), $v['pro_place']);
-			$v['mem_place'] = D('Member')->getMemberPlace($v['pro_mid']);
-			$v['mem_place'] = str_replace(array('|','中国','省','市'),array(' ','',' ',''), $v['mem_place']);
+			if($v['pro_opentime']>time()){
+				$v['opentime']	= date('Y/m/d H:i', $v['pro_opentime']);
+			}else{
+				$v['opentime']	= '<span class="red">已开标</span>';
+			}
 		}
-		
 		// 项目状态
 		$this->assign("status", $this->status);
-		$this->assign("projects", $projects);
-		// 类别
-		$sorts = D('Sort')->getSorts();
-		$this->assign('sorts', $sorts);
-		// 子类
-		$enums = D('Enumsort')->enums();
-		$this->assign('enums', $enums);
-		// 所有属性
-		$props = D("Property")->getProps();
-		$this->assign("props", $props);
 		// 用户投标限制
 		$this->assign("limits", $this->limits);
-		// 地区
-		
-		$this->assign('pro_place', areaToSelect($proArea, 1, "", "pro_place"));
-		$this->assign('mem_place', areaToSelect($memArea, 1, "", "mem_place"));
+		$this->assign("projects", $projects);
 		$this->display();
 
 	}
@@ -302,27 +296,7 @@ class ProjectAction extends CommonAction{
 			$this->display();
 		}
 	}
-	/**
-	 * 收藏项目
-	 * @param int $id
-	 */
-	public function proCollect($id){
-		$ajaxData = array('code'=>0, 'data'=>'');
-		if(empty($_SESSION['member'])){
-			$ajaxData['code'] = 100;
-			$ajaxData['data'] = __GROUP__."/Member/login/flag/true";
-		}else{
-			if(D('Collection')->addCollection($id, $_SESSION['member'])){
-				$ajaxData['data'] = '取消收藏';
-				$ajaxData['id'] 		= D('Collection')->getLastInsID();
-				$ajaxData['url'] 	= __URL__.'/cancelCollect';
-				$ajaxData['code'] = 1;
-			}else{
-				$ajaxData['data'] = '添加收藏失败！'.D('Collection')->getError();
-			}
-		}
-		echo json_encode_nonull($ajaxData);exit;
-	}
+
 	/**
 	 * 取消收藏
 	 * @param int $id
@@ -412,11 +386,12 @@ class ProjectAction extends CommonAction{
 			$this->error('请选择类别！', __URL__.'/createStep2', 2);
 		}
 		$data = array(
-				'pro_sort'	=> $_POST['pro_type'],
-				'pro_enums'=> str_replace(',', '|', $_POST['pro_enum']),
-				'pro_sn'		=> createProjectSn($_SESSION['member']),
-				'pro_mid'	=> $_SESSION['member'],
-				'pro_step'	=> 3
+				'pro_sort'				=> $_POST['pro_type'],
+				'pro_enums'			=> str_replace(',', '|', $_POST['pro_enum']),
+				'pro_sn'					=> createProjectSn($_SESSION['member']),
+				'pro_mid'				=> $_SESSION['member'],
+				'pro_step'				=> 3,
+				'pro_createtime'	=> $_SERVER['REQUEST_TIME']
 		);
 		if(M('project')->add($data)){
 			$pro_id = M('project')->getLastInsID();
@@ -458,6 +433,9 @@ class ProjectAction extends CommonAction{
 	public function createInfo1(){
 		$this->checkMember();
 		$data = M("project")->create();
+		if(empty($data['pro_subject'])){
+			$this->error('Sorry~ 项目标题不能为空！');
+		}
 		$data['pro_opentime'] = cnStrToTime($data['pro_opentime']);
 		$data['pro_startstop'] = $_POST['pro_start'].'-'.$_POST['pro_end'];
 		$data['pro_place'] = areaEncode($_POST['area']);
@@ -566,44 +544,85 @@ class ProjectAction extends CommonAction{
 		$this->assign('props', D('Property')->getProps());
 		$this->assign('limits', $this->limits);
 		$this->assign('newProject', $newProjectInfo);
-		unset($_SESSION['newProject']);
 		$this->display();	
 	}
 	
-	/**
-	 * 我的当前项目
-	 */
-	public function myProject($id=''){
-		$this->checkMember();
-		$info = M("project")->where('pro_id="'.$id.'" AND pro_mid="'.$_SESSION['member'].'"')->find();
-		//项目状态
-		$this->assign("status", array(0=> "未发布", 1=> "招标中", 2=> "已开标", 3=>"关闭"));
-		//投标限制
-		$this->assign("limits", array(0=> "不限", 1=> "个人", 2=> "企业"));
-		
-		$atts = D("Attachement")->getAtt($info['pro_attachement']);
-		$this->assign("atts", $atts);
-		// 应标单
-		$bidders = D("Bidder")->getProBids($info['pro_id']);
-		$this->assign("bidders", $bidders);
-		$this->assign("info", $info);
-		dump($info);
-		dump($atts);
-		dump($bidders);
-		$this->display();
+	public function myProject($id=""){
+		if(empty($id)){
+			$this->_empty();
+		}else{
+			$join = array(
+					'zt_sort ON pro_sort=sort_id',
+					'zt_property ON pro_prop=pp_id',
+					'zt_contact ON pro_contact=con_id'
+			);
+			$info = M("project")->join($join)->where("pro_id='{$id}' AND pro_mid='{$_SESSION['member']}'")->find();
+			if(empty($info)){
+				$this->_empty();
+			}
+			//项目封面
+			$info['cover'] = D('Attachement')->getAttSrc($info['pro_cover']);
+			//项目所在地
+			$info['pro_place'] = str_replace(array('中国','|','市','省'), array(' ',' ',' ',' '), $info['pro_place']);
+			//项目分类
+			$info['sorts'] = enumsDecode($info['pro_enums']);
+			array_unshift($info['sorts'], $info['sort_name']);
+			$info['sorts'] = implode(' / ', $info['sorts']);
+			//项目开标剩余时间
+			$info['openLeft'] = getTimeLeft($info['pro_opentime']);
+			//项目附件
+			$info['atts'] = D("Attachement")->getAtt($info['pro_attachement']);
+			//应标数量
+			$info['bids'] = D("Bidder")->getProBidersCount($info['pro_id']);
+			//项目信息
+			$this->assign("proInfo", $info);
+			//项目发布者信息
+			$member = M("member")->where("mem_id='{$info['pro_mid']}'")->find();
+			$member['regdays'] = getTimePass($member['mem_regtime'], 'd');
+			if($member['mem_type']==0){
+				$memberinfo = M("memberperson")->where("mp_mid='{$info['pro_mid']}'")->find();
+				$member['place'] = str_replace(array('中国','|','市','省'), array(' ',' ',' ',' '), $memberinfo['mp_addr']);
+				$member['status'] = $memberinfo['mp_status'];
+			}else{
+				$memberinfo = M("membercompany")->where("mc_mid='{$info['pro_mid']}'")->find();
+				$member['place'] = str_replace(array('中国','|','市','省'), array(' ',' ',' ',' '), $memberinfo['mc_addr']);
+				$member['status'] = $memberinfo['mc_status'];
+			}
+			$member['pros'] = D('Project')->getBidersCount($member['mem_id']);
+			$this->assign('memInfo', $member);
+			//项目状态
+			$this->assign("status", $this->status);
+			//投标限制
+			$this->assign("limits", $this->limits);
+			//项目收藏状态
+			$isCollect = D('Collection')->isCollected($id, $_SESSION['member']);
+			$this->assign('collected', $isCollect);
+			$this->display();
+		}
 	}
-	
 	
 	/**
 	 * 修改项目
+	 * 条件：本人发布的项目且未开标
 	 */
-	public function modifyProject($id=""){
+	public function modify($id=""){
 		$this->checkMember();
-		$info = M('project')->join('zt_contact ON pro_contact=con_id')->where('pro_id="'.$id.'"')->find();
+		$where = array(
+				'pro_id'	=> $id,
+				'pro_mid'	=> $_SESSION['member'],
+				'pro_status'	=> 1
+		);
+		$info = M('project')->join('zt_contact ON pro_contact=con_id')->where($where)->find();
+		if(empty($info)){
+			$this->error('Sorry~项目已开标或不存在！');
+		}
+		if($info['pro_opentime']<($_SERVER['REQUEST_TIME']-PROTECT_TIME)){
+			$this->error('Sorry~该项目即将开标，无法修改！');
+		}
 		$info['place'] = areaToSelect(areaDecode($info['pro_place']));
-		$info['enums'] = enumsToSelect($info['pro_sort'], enumsDecode($info['pro_enums']));
-		$atts = D('Attachement')->getAtt($info['pro_attachement']);
-		$this->assign('atts', $atts);
+		$info['cover'] = D('Attachement')->getAttSrc($info['pro_cover']);
+		$info['attachs'] = D('Attachement')->getAtt($info['pro_attachement']);
+		$info['startToEnd'] = explode('-', $info['pro_startstop']);
 		$this->assign('info', $info);
 		//项目状态
 		$this->assign("status", array(0=> "未发布", 1=> "招标中", 2=> "已开标", 3=>"关闭"));
@@ -615,33 +634,130 @@ class ProjectAction extends CommonAction{
 		//所有属性
 		$props = D('Property')->getProps();
 		$this->assign('props', $props);
-		// 应标单
-		$bidders = D('Bidder')->getProBids($info['pro_id']);
-		$this->assign('bidders', $bidders);
 		$this->display();
 	}
 	
 	/**
 	 * 保存修改
 	 */
-	public function saveProject($id=""){
+	public function save(){
 		$this->checkMember();
+		// 当前用户和项目ID
+		$where = array('pro_mid'=>$_SESSION['member'], 'pro_id'=>$_POST['pro_id']);
+		//保存联系人
+		$con_data = M('contact')->create();
+		$proInfo = M('project')->field('pro_opentime, pro_contact')->where($where)->find();
+		if(empty($proInfo)){
+			$this->error('Sorry~该项目不存在！');
+		}
+		if($proInfo['pro_opentime']<($_SERVER['REQUEST_TIME']-PROTECT_TIME)){
+			$this->error('Sorry~该项目即将开标或已开标，无法修改！');
+		}
+		if(empty($proInfo['pro_contact'])){
+			$con_id = M('contact')->add($con_data);
+			M('project')->where($where)->setField('pro_contact', $con_id);
+		}else{
+			M('contact')->where('con_id='.$proInfo['pro_contact'])->save($con_data);
+		}
 		$data = M('project')->create();
-		
+		$data['pro_opentime'] = cnStrToTime($data['pro_opentime']);
+		$data['pro_startstop'] = $_POST['pro_start'].'-'.$_POST['pro_end'];
+		$data['pro_place'] = areaEncode($_POST['area']);
+		$data['pro_updatetime'] = $_SERVER['REQUEST_TIME'];
+		if(M('project')->where($where)->save($data)){
+			$_SESSION['modifyId'] = $_POST['pro_id'];
+			redirect(__URL__.'/saved');
+		}else{
+			$this->error('修改失败！没有任何变化');
+		}
+	}
+	
+	public function saved(){
+		$this->checkMember();
+		if(empty($_SESSION['modifyId'])){
+			$this->_empty();
+		}
+		$field = 'pro_id, pro_sn, pro_subject, pro_mid, pro_prop, pro_limit, pro_quantity, pro_unit, sort_name, pro_enums, pro_publishtime, pro_updatetime,  pro_opentime, pro_step, pro_status';
+		$newProjectInfo = M('project')->field($field)->join('`zt_sort` ON `zt_sort`.`sort_id`=`zt_project`.`pro_sort`')->where('pro_id="'.$_SESSION['modifyId'].'"')->find();
+		$this->assign('props', D('Property')->getProps());
+		$this->assign('limits', $this->limits);
+		$this->assign('proInfo', $newProjectInfo);
+		$this->display();	
 	}
 	
 	/**
 	 * 取消项目
+	 * 条件：本人发布的项目， 已发布且未开标项目
 	 */
-	public function cancleProject($id=""){
+	public function delete($id=""){
 		$this->checkMember();
+		$response = array('code'=>0, 'data'=>'');
+		$where = array(
+				'pro_id'		=> $id,
+				'pro_mid'	=> $_SESSION['member'],
+				'pro_status'	=> array('lt', 2)
+		);
+		$proInfo = M('project')->field('pro_id, pro_subject, pro_opentime')->where($where)->find();
+		if(!empty($proInfo)){
+			if($proInfo['pro_opentime']<($_SERVER['REQUEST_TIME']-PROTECT_TIME)){
+				//设置项目状态
+				M('project')->where($where)->setField('pro_status', 4);	
+				//向投标用户发送消息
+				$bids	= M('bidder')->where('bid_proid='.$id)->select();
+				foreach($bids as $v){
+					$mid = $v['bid_mid'];
+					$subject = '招标取消通知';
+					$content = '很遗憾，您所投标的项目《'.$proInfo['pro_subject'].'》已被发布者取消。';
+					D('Notice')->sendProNotice($mid, $subject, $content);
+				}
+				$this->ajaxReturn($response);
+			}else{
+				$response['code'] 	= 2;
+				$response['data']	= 'Sorry~ 该项目即将开标，不能删除！';
+				$this->ajaxReturn($response);
+			}
+		}else{
+			$response['code'] 	= 1;
+			$response['data']	= 'Sorry~项目已开标或不存在！';
+			$this->ajaxReturn($response);
+		}
 	}
 	
 	/**
-	 * 移入历史档案区
+	 * 移入历史档案区 关闭项目
 	 */
 	public function toHistory($id=""){
 		$this->checkMember();
+		$response = array('code'=>0, 'data'=>'');
+		$where = array(
+				'pro_id'		=> $id,
+				'pro_mid'	=> $_SESSION['member']
+		);
+		$is_exist = M('project')->where($where)->count();
+		if($is_exist>0){
+			$proInfo = M('project')->field('pro_id, pro_subject, pro_opentime')->where($where)->find();
+			if($proInfo['pro_opentime']<$_SERVER['REQUEST_TIME']){
+				//设置项目状态
+				M('project')->where($where)->setField('pro_status', 3);
+				//向投标用户发送消息
+				$bids	= M('bidder')->field('bid_id, bid_proid, bid_mid')->where('bid_proid='.$id)->select();
+				foreach($bids as $v){
+					$mid = $v['bid_mid'];
+					$subject = '招标结束通知';
+					$content = '您所投标的项目《'.$proInfo['pro_subject'].'》已被发布者关闭。';
+					D('Notice')->sendProNotice($mid, $subject, $content);
+				}
+				$this->ajaxReturn($response);
+			}else{
+				$response['code'] 	= 2;
+				$response['data']	= 'Sorry~该项目还未开标，不能关闭！';
+				$this->ajaxReturn($response);
+			}
+		}else{
+			$response['code'] 	= 1;
+			$response['data']	= '项目未开标或不存在！';
+			$this->ajaxReturn($response);
+		}
 	}
 	
 	/**
@@ -656,13 +772,213 @@ class ProjectAction extends CommonAction{
 				'pro_mid'		=> $_SESSION['member']
 			);
 		// 查询
-		if( isset($_REQUEST['filter']) && strlen($_REQUEST['filter'] )>2){
-			$filter = addslashes($_REQUEST['filter']);
+		if( isset($_REQUEST['words']) && strlen($_REQUEST['words'] )>2){
+			$filter = addslashes($_REQUEST['words']);
 			$map['_complex'] = array(
 				'pro_subject'	=> array('like', '%'.$filter.'%'),
 				'pro_sn'				=> array('like', '%'.$filter.'%'),
 				'_logic'				=> 'or'
 			);
+			$paramp['words'] = $_REQUEST['words'];
+		}
+
+		$order = "pro_publishtime DESC";	//默认排序
+		if(isset($_REQUEST['order'])){
+			if(isset($_REQUEST['asc'])){
+				$asc = $_REQUEST['asc']=='1' ? 'ASC' : 'DESC';
+				$param['asc'] = $_REQUEST['asc'];
+			}else{
+				$asc = 'DESC';
+			}
+			switch($_REQUEST['order']){
+				case 'create':
+					$order = "pro_createtime ".$asc;
+					break;
+				default:
+					$order = "pro_createtime DESC";
+			}
+			$param['order'] = $_REQUEST['order'];
+		}else{
+			$order = "pro_createtime DESC";
+		}
+
+		// 分页
+		$total = $project->where($map)->count();
+		import("Org.Util.Page");
+		$page = new Page($total, 12, $param);
+		$this->assign('param', $param);
+		// 分页查询
+		$limit = $page->firstRow.",".$page->listRows;
+		$pager = $page->shown();
+		$this->assign("pager", $pager);
+
+		// 查询字段
+		$field = "pro_id, pro_sn, pro_subject, pro_createtime";
+		$projects = $project->field($field)->where($map)->order($order)->limit($limit)->select();
+		$this->assign("projects", $projects);
+		$this->display();
+	}
+	
+	/**
+	 * 修改、发出草稿项目
+	 * 
+	 */
+	public function draftEdit(){
+		$this->checkMember();
+		$where = array(
+				'pro_id'		=> $_REQUEST['id'],
+				'pro_mid'	=> $_SESSION['member'],
+				'pro_status'	=> 0
+		);
+		$info = M('project')->join('zt_contact ON pro_contact=con_id')->where($where)->find();
+		if(empty($info)){
+			$this->error('Sorry~项目不存在！');
+		}
+		$info['place'] = areaToSelect(areaDecode($info['pro_place']));
+		$info['cover'] = D('Attachement')->getAttSrc($info['pro_cover']);
+		$info['attachs'] = D('Attachement')->getAtt($info['pro_attachement']);
+		$info['startToEnd'] = explode('-', $info['pro_startstop']);
+		// 联系人为空，查找用户默认联系方式
+		if(empty($info['con_id'])){
+			$memberInfo = M('member')->where('mem_id="'.$_SESSION['member'].'"')->find();
+			// 用户邮箱
+			$info['con_email'] = $memberInfo['mem_email'];
+			// 通过验证
+			if($memberInfo['mem_state'] > 0){
+				// 企业用户
+				if($memberInfo['mem_type'] > 0){
+					$mcInfo = M('membercompany')->where('mc_mid="'.$_SESSION['member'].'"')->find();
+					$info['con_tel'] = $mcInfo['mc_tel'];
+					$info['con_name'] = $mcInfo['mc_legal'];
+					unset($mcInfo);
+				}
+				// 个人用户
+				else{
+					$mpInfo = M('memberperson')->where('mp_mid="'.$_SESSION['member'].'"')->find();
+					$info['con_tel'] = $mpInfo['mp_tel'];
+					$info['con_name'] = $mpInfo['mp_name'];
+				}
+			}
+			unset($memberInfo);
+		}
+		$this->assign('info', $info);
+		//项目状态
+		$this->assign("status", array(0=> "未发布", 1=> "招标中", 2=> "已开标", 3=>"关闭"));
+		//投标限制
+		$this->assign("limits", array(0=> "不限", 1=> "个人", 2=> "企业"));
+		//所有主分类
+		$sorts = D('Sort')->getSorts();
+		$this->assign('sorts', $sorts);
+		//所有属性
+		$props = D('Property')->getProps();
+		$this->assign('props', $props);
+		$this->display();
+	}
+	/**
+	 * 保存修改
+	 */
+	public function saveDraft(){
+		$this->checkMember();
+		// 当前用户和项目ID
+		$where = array('pro_mid'=>$_SESSION['member'], 'pro_id'=>$_POST['pro_id']);
+		//保存联系人
+		$con_data = M('contact')->create();
+		$proInfo = M('project')->field('pro_opentime, pro_contact')->where($where)->find();
+		if(empty($proInfo)){
+			$this->error('Sorry~该项目不存在！');
+		}
+		if(empty($proInfo['pro_contact'])){
+			$con_id = M('contact')->add($con_data);
+			M('project')->where($where)->setField('pro_contact', $con_id);
+		}else{
+			M('contact')->where('con_id='.$proInfo['pro_contact'])->save($con_data);
+		}
+		$data = M('project')->create();
+		$data['pro_opentime'] = cnStrToTime($data['pro_opentime']);
+		$data['pro_startstop'] = $_POST['pro_start'].'-'.$_POST['pro_end'];
+		$data['pro_place'] = areaEncode($_POST['area']);
+		if(M('project')->where($where)->save($data)){
+			$this->success('保存成功！', __URL__.'/drafts');
+		}else{
+			$this->error('修改失败！没有任何变化');
+		}
+	}
+	/**
+	 * 发出项目
+	 */
+	public function launchDraft(){
+		$this->checkMember();
+		// 当前用户和项目ID
+		$where = array('pro_mid'=>$_SESSION['member'], 'pro_id'=>$_POST['pro_id']);
+		//保存联系人
+		$con_data = M('contact')->create();
+		$proInfo = M('project')->field('pro_opentime, pro_contact')->where($where)->find();
+		if(empty($proInfo)){
+			$this->error('Sorry~该项目不存在！');
+		}
+		if(empty($proInfo['pro_contact'])){
+			$con_id = M('contact')->add($con_data);
+			M('project')->where($where)->setField('pro_contact', $con_id);
+		}else{
+			M('contact')->where('con_id='.$proInfo['pro_contact'])->save($con_data);
+		}
+		$data = M('project')->create();
+		$data['pro_opentime']	= cnStrToTime($data['pro_opentime']);
+		$data['pro_startstop']	= $_POST['pro_start'].'-'.$_POST['pro_end'];
+		$data['pro_place']			= areaEncode($_POST['area']);
+		$data['pro_status']			= 1;
+		$data['pro_publishtime'] = $_SERVER['REQUEST_TIME'];
+		if(M('project')->where($where)->save($data)){
+			$_SESSION['newProject'] = $_POST['pro_id'];
+			redirect(__URL__.'/createEd');
+		}else{
+			$this->error('项目发布失败！');
+		}
+	}
+	
+	/**
+	 * 删除草稿
+	 */
+	public function draftDel(){
+		$this->checkMember();
+		$id = $_REQUEST['id'];
+		$response = array('code'=>0, 'data'=>'');
+		if(empty($id)){
+			$this->error('未选择草稿！');
+		}
+		$where = array(
+				'pro_id'		=> array('in', $id),
+				'pro_mid'	=> $_SESSION['member'],
+				'pro_status'	=> 0
+		);
+		if(M('project')->where($where)->delete()){
+			$this->success('删除成功！');
+		}else{
+			$this->error('删除失败！');
+		}
+	}
+	
+	/**
+	 * 历史档案
+	 */
+	public function historys(){
+		$this->checkMember();
+		$this->leftInit();
+		$project = M('Project');
+		$map = array(
+				'pro_status'=> 3,				// 已关闭
+				'pro_mid'	=> $_SESSION['member']	
+		);
+		$param = array();
+		// 查询
+		if( isset($_REQUEST['words']) && strlen($_REQUEST['words'] )>2){
+		$filter = addslashes($_REQUEST['words']);
+		$map['_complex'] = array(
+				'pro_subject'	=> array('like', '%'.$filter.'%'),
+				'pro_sn'				=> array('like', '%'.$filter.'%'),
+				'_logic'				=> 'or'
+		);
+		$param['words'] = $_REQUEST['words'];
 		}
 
 		$order = "pro_publishtime DESC";	//默认排序
@@ -694,85 +1010,139 @@ class ProjectAction extends CommonAction{
 		// 分页
 		$total = $project->where($map)->count();
 		import("Org.Util.Page");
-		$page = new Page($total, 12, $param);
+		$page = new Page($total, 8, $param);
 		$this->assign('param', $param);
 		// 分页查询
 		$limit = $page->firstRow.",".$page->listRows;
 		$pager = $page->shown();
 		$this->assign("pager", $pager);
-
+		// 连接查询
+		$join = array(
+				" LEFT JOIN (SELECT bid_proid,count(*) bidders FROM zt_bidder GROUP BY bid_proid) b ON pro_id=b.bid_proid ",
+				' LEFT JOIN zt_sort ON pro_sort=sort_id',
+				' LEFT JOIN zt_property ON pro_prop=pp_id'
+		);
 		// 查询字段
-		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_publishtime, pro_limit, pro_place, pro_opentime, pro_startstop";
-		$projects = $project->field($field)->where($map)->order($order)->limit($limit)->select();
+		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, sort_name, pro_enums, pp_name, pro_publishtime, pro_opentime, pro_status, IFNULL(bidders, 0) bidders";
+		$projects = $project->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		foreach ($projects as &$v){
-			$starstop = explode("-", $v['pro_startstop']);
-			$v['pro_endtime'] = mb_substr($starstop[1], 0, strpos($starstop[1], '日')+1, 'utf-8');
-			$v['pro_place']	= str_replace(array('|','中国','省','市'),array('','',' ',''), $v['pro_place']);
+			if($v['pro_opentime']>time()){
+				$v['opentime']	= date('Y/m/d H:i', $v['pro_opentime']);
+			}else{
+				$v['opentime']	= '<span class="red">已开标</span>';
+			}
 		}
-		
 		// 项目状态
 		$this->assign("status", $this->status);
-		$this->assign("projects", $projects);
-		// 类别
-		$sorts = D('Sort')->getSorts();
-		$this->assign('sorts', $sorts);
-		// 子类
-		$enums = D('Enumsort')->enums();
-		$this->assign('enums', $enums);
-		// 所有属性
-		$props = D("Property")->getProps();
-		$this->assign("props", $props);
 		// 用户投标限制
 		$this->assign("limits", $this->limits);
-		// 地区
-		
-		$this->assign('pro_place', areaToSelect($proArea, 1, "", "pro_place"));
+		$this->assign("projects", $projects);
 		$this->display();
+		
 	}
+	
 	
 	public function receiveBids(){
 		$this->checkMember();
 		$this->leftInit();
-		
-		$bid = M('Bidder');
-		// 用户的招标发单
-		$where = array(
-			'pro_mid'	=> $_SESSION['member'],				// 用户所发项目
-			'bid_state'	=> array('gt', 0)								// 投标成功 1=>投标中， 2=>备选， 3=>中标
-		);
-		
-		if(isset($_REQUEST['keywords']) && strlen($_REQUEST['keywords'])>2){
-			if($_REQUEST['case'] == 'member'){	// 按用户查询
-				$where['bid_mid']	= array('like', '%'.$_REQUEST['keywords'].'%');
-			}else{															// 按项目编号查询
-				$where['pro_sn']		= array('like', '%'.$_REQUEST['keywords'].'%');
+		if(!isset($_REQUEST['tag'])){
+			$this->assign('searchError', '请选择上方查询条件！');
+			$param['tag'] = 'pro';
+		}else{
+			$param['tag'] = $_REQUEST['tag'];
+			switch($param['tag']){
+				case 'pro':
+					$this->receiveBidsByPro($param);
+					break;
+				case 'mid':
+					
+					break;
+				default:
+					$this->assign('searchError', '请选择上方查询条件！');
+					$param['tag'] = 'pro';
 			}
 		}
-		// join
-		$join = 'zt_project ON bid_proid=pro_id';
-		
-		// total and Page
-		$total = $bid->join($join)->where($where)->count();
-		import('ORG.Util.Page');
-		$page = new Page($total, 12);
-		// 分页查询
-		$limit = $page->firstRow.",".$page->listRows;
-		$pager = $page->shown();
-		$this->assign("pager", $pager);
-		
-		$order = '';
-		
-		// 查询字段
-		$field = "*";
-		$bids = $bid->field($field)->join($join)->where($where)->order($order)->limit($limit)->select();
-		
-		
-		
-		
-		$this->assign('bids', $bids);
+		$this->assign('param', $param);
 		$this->display();
 	}
-	
+	private function receiveBidsByPro(&$param){
+		if(empty($_REQUEST['words'])){
+			$this->assign('searchError', '请输入项目编号！');
+		}else{
+			$param['words'] = $_REQUEST['words'];
+			$proid = M('project')->where('pro_sn="'.addslashes($_REQUEST['words']).'"')->getField('pro_id');
+			if($proid<=0){
+				$this->assign('无效的项目编号'.$_REQUEST['words']);
+				return;
+			}
+			$bid = M('Bidder');
+			$where = array(
+					'bid_proid'	=> $proid,					// 指定项目的投标
+					'bid_state'		=> array('gt', 0)		// 投标成功 1=>投标中， 2=>备选， 3=>中标
+			);
+			// total and Page
+			$total = $bid->where($where)->count();
+			if($total==0){
+				$this->assign('编号为 '.$_REQUEST['words'].' 的项目暂无任何投标。');
+				return;
+			}
+			import('ORG.Util.Page');
+			$page = new Page($total, 8);
+			// 分页查询
+			$limit = $page->firstRow.",".$page->listRows;
+			$pager = $page->shown();
+			$this->assign("pager", $pager);
+			$join = ' LEFT JOIN zt_project ON bid_proid=pro_id ';
+			// 查询字段
+			$field = "bid_id,bid_publishtime, bid_sn, bid_mid, bid_state, bid_price, bid_currency, bid_unit, bid_price_flag, pro_opentime";
+			$bids = $bid->join($join)->field($field)->where($where)->limit($limit)->select();
+			/**
+			 * 排序字段
+			 * 由于price字段是另外生成，故在此用php而不是mysql排序
+			 */
+			if(isset($_REQUEST['asc'])){
+				$asc = $_REQUEST['asc']=='1' ? SORT_ASC : SORT_DESC;
+				$param['asc'] = $_REQUEST['asc'];
+			}else{
+				$asc = SORT_DESC;
+			}
+			if(isset($_REQUEST['order'])){
+				switch($_REQUEST['order']){
+					case 'publish':
+						$order = "pro_publishtime";
+						break;
+					case 'amount':
+						$order = "amount";
+						break;
+					default:
+						$order = "bid_publishtime";
+				}
+				$param['order'] = $_REQUEST['order'];
+			}else{
+				$order = "bid_publishtime";
+			}
+			
+			$states = array('未发布','应标中','备选','中标');	
+			foreach($bids as $k=>&$v){
+				//获取投标用户相关信息
+				$memInfo = D('Member')->getMemberInfo($v['bid_mid']);
+				$v['mem_name']	= empty($memInfo['name']) ? $v['bid_mid'] : $memInfo['name'];
+				$v['mem_place']	= empty($memInfo['place']) ? '未知' : $memInfo['place'];
+				// 获取报价：未开标考虑是否公开，已开标则公开
+				$price = D('Currency')->getCurrencySign($v['bid_currency']).' '.$v['bid_price'].' '.D('Unit')->getUnitName($v['bid_unit']);
+				if($v['pro_opentime']>$_SERVER['REQUEST_TIME']){
+					$v['price'] = $price;
+				}else{
+					$v['price'] = ($v['bid_price_flag']==1) ? '开标可见' : $price;
+				}
+				$v['amount'] = $v['bid_price']*(D('Unit')->getUnitMultiple($v['bid_unit']));
+				$v['state'] = $states[$v['bid_state']];
+				$orderArr[$k] = $v[$order];
+			}
+			array_multisort($orderArr, $asc, SORT_NUMERIC , $bids);
+			$this->assign('bids', $bids);
+		}
+	}
 	
 	
 }

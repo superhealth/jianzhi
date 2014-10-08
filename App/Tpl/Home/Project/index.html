@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title></title>
+<title>我的招标项目</title>
 <include file="public:css" />
 <include file="public:js" />
 </head>
@@ -14,7 +14,59 @@
 		<div class="mem_main">
 			<h3 class="mem_sub_title">项目列表</h3>
 			<div class="mem_content">
-
+				<form action="" method="get" id="">
+				<div class="pro_search">
+					<div class="pro_search_box"><input class="pro_search_inp" type="text" value="{$param.words}" placeholder="项目名称、项目编号" /><div class="pro_search_go">查找</div>
+					</div>
+				</div>
+				<div class="pro_pagination">
+					<div class="pro_status_filter">
+						<label class="i-radio"><input type="radio" name="status" value="1" <if condition="$param[status] eq 1">checked</if> />未开标</label>
+						<label class="i-radio"><input type="radio" name="status" value="2" <if condition="$param[status] eq 2">checked</if> />已开标</label>
+						<label class="i-radio"><input type="radio" name="status" value="all" <if condition="$param[status] eq 'all'">checked</if> />全部</label>
+					</div>
+					{$pager.show}{$pager.header}</div>
+				</form>
+				<div class="pro_caption">
+					<div class="td_120"><span class="order-links" data-order="publish" data-asc='0'>发布日期</span></div>
+					<div class="split"></div>
+					<div class="td_270">项目名称</div>
+					<div class="split"></div>
+					<div class="td_80"><span class="order-links" data-order="bids" data-asc='0'>参投方数</span></div>
+					<div class="split"></div>
+					<div class="td_150"><span class="order-links" data-order="open" data-asc='0'>开标时间</span></div>
+					<div class="split"></div>
+					<div class="td_170"><span>操作</span></div>
+				</div>
+				<table class="pro_list" cellpadding="0" cellspacing="0" border="0">
+					<volist name="projects" id="pitem">
+					<tr class="pro_item_sub">
+						<td colspan="9">
+							<span class="sub_td1">项目编号： <strong>{$pitem.pro_sn}</strong></span>
+							<span class="sub_td2">项目属性： {$pitem.pp_name}</span>
+							<span class="sub_td3">项目类别： {$pitem.sort_name} {$pitem.pro_enums}</span>
+						</td>
+						</tr>
+						<tr class="pro_item_content">
+							<td class="td_120" align="center"><span>{$pitem.pro_publishtime|timeFormat='Y/m/d'}</span></td>
+							<td class="split"></td>
+							<td class="td_270"><span style="margin-left:20px;"><a href="__URL__/myProject/id/{$pitem.pro_id}">{$pitem.pro_subject|get_summary=40}</a></span></td>
+							<td class="split"></td>
+							<td class="td_80" align="center"><span><a href="__URL__/receiveBidsByProject/sn/{$pitem.pro_sn}">{$pitem.bidders}</a></span></td>
+							<td class="split"></td>
+							<td class="td_150" align="center"><span>{$pitem.opentime}</span></td>
+							<td class="split"></td>
+							<td class="td_170" align="center">
+								<if condition="$pitem.pro_status eq 1">
+								<a href="__URL__/modify/id/{$pitem.pro_id}">修改</a>
+								<a href="javascript:void(0);" class="pro-ajax-btn" title="删除" data-href="__URL__/delete/id/{$pitem.pro_id}" style="margin-left:10px;">删除</a>
+								<else />
+								<a href="javascript:void(0);" class="pro-ajax-btn" title="存档" data-href="__URL__/toHistory/id/{$pitem.pro_id}" style="margin-left:10px;">存档</a>
+								</if>
+							</td>
+					</tr>
+					</volist>
+				</table>
 			</div>
 		</div>
 		<div class="clearfix"></div>
@@ -24,27 +76,48 @@
 <include file="public:footer" />
 <script >
 	$(function(){
-		$(".ajax-inp").click(function(){
-			var url = $(this).data('act');
-			var data = new Array();
-			$("input[name='id[]']:checked").each(function(index){
-				data[index] = 'id[]='+$(this).val();
-			});
-			data = data.join("&");
-			if(data==""){
-				bootbox.alert("您未选中任何消息！");
-				return;
+			/* order */
+		//init
+		(function(){
+			var order =  '{$param.order}', asc = '{$param.asc}';
+			var orderObj = $(".order-links[data-order='"+order+"']");
+			orderObj.data("asc", asc);
+			if(asc=="0"){
+				orderObj.html(orderObj.text()+" &darr;");
+			}else if(asc=="1"){
+				orderObj.html(orderObj.text()+" &uarr;");
 			}
-			$("#ajax_wait").show();
-			$.post(url, data, function(text){
-				$("#ajax_wait").hide();
-				if(text=='success'){
-					window.location.reload();
-				}else{
-					bootbox.alert(text);
-				}
-			}, 'text');
+		}());
+			//搜索
+		$('.pro_search_go').click(function(){
+			var words = $('.pro_search_inp').val();
+			if(words.length>1){
+				location.href = '?words='+words;
+			}else{
+				bootbox.alert('请输入关键字！');
+			}
 		});
+		$('input[name="status"]').click(function(){
+			$(this).parents('form')[0].submit();
+		});
+		$('.pro-ajax-btn').click(function(e){
+			e.preventDefault();
+			_title = $(this).attr('title');
+			_obj = $(this);
+			bootbox.confirm('您确定要'+_title+'该项目吗？'+_title+'后将不能恢复！', function(re){
+				if(re){
+					$.get(_obj.data('href'), '', function(res){
+						if(res.code==0){
+							_obj.parents('tr').prev().remove();
+							_obj.parents('tr').remove();
+						}else{
+							bootbox.alert(res.data);
+						}
+					}, 'json');
+				}
+			});
+		});
+		
 	});
 </script>
 <body>
