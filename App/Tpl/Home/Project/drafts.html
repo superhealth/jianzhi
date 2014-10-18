@@ -28,7 +28,7 @@
 				<div class="pro_caption">
 					<div style="width:60px;"><span><label style="cursor:pointer;"><input style="vertical-align:central;" type="checkbox" name="" id="checkall" /> 全选</label></span></div>
 					<div class="split"></div>
-					<div style="width:130px;"><span class="order-links" data-order="create" data-asc='0'>创建日期</span></div>
+					<div style="width:130px;"><span class="order-links" data-order="create" data-asc='0'>创建日期&darr;&uarr;</span></div>
 					<div class="split"></div>
 					<div style="width:150px;">项目编号</div>
 					<div class="split"></div>
@@ -73,11 +73,6 @@
 			var order =  '{$param.order}', asc = '{$param.asc}';
 			var orderObj = $(".order-links[data-order='"+order+"']");
 			orderObj.data("asc", asc);
-			if(asc=="0"){
-				orderObj.html(orderObj.text()+" &darr;");
-			}else if(asc=="1"){
-				orderObj.html(orderObj.text()+" &uarr;");
-			}
 		}());
 			//搜索
 		$('.pro_search_go').click(function(){

@@ -110,7 +110,11 @@ class MemberModel extends Model{
 		return array_merge($memp, $memc);
 	}
 	
-	
+	/**
+	 * 获取用户/公司所在地
+	 * @param string $mid
+	 * @return Ambigous <mixed, NULL, multitype:Ambigous <unknown, string> unknown , multitype:>
+	 */
 	public function getMemberPlace($mid){
 		$type = $this->where('mem_id="'.$mid.'"')->getField('mem_type');
 		if($type==0){
@@ -121,6 +125,11 @@ class MemberModel extends Model{
 		return $place;
 	}
 	
+	/**
+	 * 获取个人/公司实名状态
+	 * @param unknown $mid
+	 * @return Ambigous <mixed, NULL, multitype:Ambigous <unknown, string> unknown , multitype:>
+	 */
 	public function getMemberStatus($mid){
 		$type = M("member")->where("mem_id='{$mid}'")->getField("mem_type");
 		if($type==1){
@@ -131,6 +140,26 @@ class MemberModel extends Model{
 		return $status;
 	}
 
+	/**
+	 * 获取个人/公司名称
+	 * @param unknown $mid
+	 * @return Ambigous <mixed, NULL, multitype:Ambigous <unknown, string> unknown , multitype:>
+	 */
+	public function getMemberName($mid){
+		$type = M("member")->where("mem_id='{$mid}'")->getField("mem_type");
+		if($type==1){
+			$name 	= M("membercompany")->where("mc_mid='{$mid}'")->getField("mc_company");
+		}else{
+			$name 	= M("memberperson")->where("mp_mid='{$mid}'")->getField("mp_name");
+		}
+		return $name;
+	}
+	
+	/**
+	 * 获取个人/公司详细信息
+	 * @param unknown $mid
+	 * @return Ambigous <mixed, boolean, NULL, multitype:>
+	 */
 	public function getMemberInfo($mid){
 		$member = $this->where("mem_id='{$mid}'")->find();
 		if($member['mem_type']==0){

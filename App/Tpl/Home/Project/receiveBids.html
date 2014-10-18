@@ -27,7 +27,7 @@
 					{$pager.show}{$pager.header}</div>
 				</form>
 				<div class="pro_caption">
-					<div style="width:100px;"><span class="order-links" data-order="publish" data-asc='0'>投标日期</span></div>
+					<div style="width:100px;"><span class="order-links" data-order="publish" data-asc='0'>投标日期&darr;&uarr;</span></div>
 					<div class="split"></div>
 					<div style="width:140px;">投标编号</div>
 					<div class="split"></div>
@@ -35,7 +35,7 @@
 					<div class="split"></div>
 					<div style="width:150px;"><span>所在地</span></div>
 					<div class="split"></div>
-					<div style="width:140px;"><span class="order-links" data-order="amount" data-asc='0'>报价(总价)</span></div>
+					<div style="width:140px;"><span class="order-links" data-order="amount" data-asc='0'>报价(总价)&darr;&uarr;</span></div>
 					<div class="split"></div>
 					<div style="width:80px;"><span>中标状态</span></div>
 				</div>
@@ -74,11 +74,6 @@
 			var order =  '{$param.order}', asc = '{$param.asc}';
 			var orderObj = $(".order-links[data-order='"+order+"']");
 			orderObj.data("asc", asc);
-			if(asc=="0"){
-				orderObj.html(orderObj.text()+" &darr;");
-			}else if(asc=="1"){
-				orderObj.html(orderObj.text()+" &uarr;");
-			}
 		}());
 		$('.pro-ajax-btn').click(function(e){
 			e.preventDefault();

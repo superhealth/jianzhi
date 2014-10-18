@@ -112,9 +112,9 @@
 				</div>
 				<div class="pro_btn_groups">
 					<empty name="collected">
-						<button type="button" class="btn btn-collect" data-id="{$proInfo.pro_id}" data-url="__URL__/proCollect">收藏项目</button>
+						<button type="button" class="btn btn-collect" data-id="{$proInfo.pro_id}" data-url="__GROUP__/Bid/collection">收藏项目</button>
 					<else/>
-						<button type="button" class="btn btn-collect" data-id="{$collected}" data-url="__URL__/cancelCollect">取消收藏</button>
+						<button type="button" class="btn btn-collect" data-id="{$collected}" data-url="__GROUP__/Bid/cancelCollect">取消收藏</button>
 					</empty>
 						<button type="button" class="btn btn-link" data-href="__GROUP__/Bid/launch/id/{$proInfo.pro_id}">我要投标</button>
 				</div>

@@ -203,19 +203,10 @@ class ProjectAction extends CommonAction{
 				"(SELECT bid_proid,count(*) bidders FROM zt_bidder GROUP BY bid_proid) b ON pro_id=b.bid_proid"
 		);
 		// 查询字段
-		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_publishtime, pro_limit, pro_place, pro_opentime, pro_startstop, pro_status, IFNULL(bidders, 0) bidders";
+		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_enums, pro_prop, pro_publishtime, pro_limit, pro_place, pro_opentime, pro_startstop, pro_status, IFNULL(bidders, 0) bidders";
 		$projects = $project->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
-		foreach ($projects as &$v){
-			$starstop = explode("-", $v['pro_startstop']);
-			$v['pro_endtime'] = mb_substr($starstop[1], 0, strpos($starstop[1], '日')+1, 'utf-8');
-			$v['pro_place']	= str_replace(array('|','中国','省','市'),array('','',' ',''), $v['pro_place']);
-			$v['mem_place'] = D('Member')->getMemberPlace($v['pro_mid']);
-			$v['mem_place'] = str_replace(array('|','中国','省','市'),array(' ','',' ',''), $v['mem_place']);
-		}
-		
 		// 项目状态
 		$this->assign("status", $this->status);
-		$this->assign("projects", $projects);
 		// 类别
 		$sorts = D('Sort')->getSorts();
 		$this->assign('sorts', $sorts);
@@ -231,6 +222,18 @@ class ProjectAction extends CommonAction{
 		
 		$this->assign('pro_place', areaToSelect($proArea, 1, "", "pro_place"));
 		$this->assign('mem_place', areaToSelect($memArea, 1, "", "mem_place"));
+		foreach ($projects as &$v){
+			$starstop = explode("-", $v['pro_startstop']);
+			$v['pro_endtime'] = mb_substr($starstop[1], 0, strpos($starstop[1], '日')+1, 'utf-8');
+			$v['pro_place']	= str_replace(array('|','中国','省','市'),array('','',' ',' '), $v['pro_place']);
+			$v['mem_place'] = D('Member')->getMemberPlace($v['pro_mid']);
+			$v['mem_place'] = str_replace(array('|','中国','省','市'),array(' ','',' ',' '), $v['mem_place']);
+			$v['sorts'] = enumsDecode($v['pro_enums']);
+			array_unshift($sorts[$v['pro_sort']], $v['sort_name']);
+			$v['sorts'] = implode(' / ', $v['sorts']);
+		}
+		$this->assign("projects", $projects);
+		
 		$this->display();
 	}
 	/**
@@ -701,14 +704,15 @@ class ProjectAction extends CommonAction{
 		if(!empty($proInfo)){
 			if($proInfo['pro_opentime']<($_SERVER['REQUEST_TIME']-PROTECT_TIME)){
 				//设置项目状态
-				M('project')->where($where)->setField('pro_status', 4);	
+				M('project')->where($where)->setField('pro_status', 4);
+				// 所收到的投标自动转为历史
+				M('bidder')->where('bid_proid='.$id)->setField('bid_state', 2);
 				//向投标用户发送消息
-				$bids	= M('bidder')->where('bid_proid='.$id)->select();
+				$bids	= M('bidder')->where('bid_proid='.$id)->getField('bid_mid', true);
 				foreach($bids as $v){
-					$mid = $v['bid_mid'];
 					$subject = '招标取消通知';
 					$content = '很遗憾，您所投标的项目《'.$proInfo['pro_subject'].'》已被发布者取消。';
-					D('Notice')->sendProNotice($mid, $subject, $content);
+					D('Notice')->sendProNotice($v, $subject, $content);
 				}
 				$this->ajaxReturn($response);
 			}else{
@@ -739,13 +743,14 @@ class ProjectAction extends CommonAction{
 			if($proInfo['pro_opentime']<$_SERVER['REQUEST_TIME']){
 				//设置项目状态
 				M('project')->where($where)->setField('pro_status', 3);
+				// 所收到的投标自动转为历史
+				M('bidder')->where('bid_proid='.$id)->setField('bid_state', 2);
 				//向投标用户发送消息
-				$bids	= M('bidder')->field('bid_id, bid_proid, bid_mid')->where('bid_proid='.$id)->select();
+				$bids	= M('bidder')->where('bid_proid='.$id)->getField('bid_mid');
 				foreach($bids as $v){
-					$mid = $v['bid_mid'];
 					$subject = '招标结束通知';
 					$content = '您所投标的项目《'.$proInfo['pro_subject'].'》已被发布者关闭。';
-					D('Notice')->sendProNotice($mid, $subject, $content);
+					D('Notice')->sendProNotice($v, $subject, $content);
 				}
 				$this->ajaxReturn($response);
 			}else{

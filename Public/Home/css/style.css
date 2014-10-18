@@ -421,13 +421,18 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 .sub_td4{width:130px;}
 .sub_td5{width:200px;}
 .sub_td1 strong{color:#000; font-weight:normal;}
-.pro_list{/*width:995px;*/}
-.pro_list td{border:none;padding:0; margin:0;}
+.pro_tab{/*width:995px;*/}
+.pro_tab td{border:none;padding:0; margin:0;}
 .pro_item_content{height:46px; font-size:14px;}
 .pro_item_content .split{width:1px; display:block; margin-top:12px; height:22px; background:#bbbcbc;}
 .pro_item_content td{vertical-align: middle;}
 .pro_item_content td.td1,.pro_item_content td.td6,.pro_item_content td.td4,.pro_item_content td.td5{text-align:center;}
 .pro_item_content td.td2 span,.pro_item_content td.td3 span{margin-left:20px;}
+
+.pro_item_single{line-height:30px; font-size:12px; background:#fff;}
+.pro_item_single:nth-child(2n){background:#f3f3f3;}
+.pro_item_single td.split{width:1px;background:transparent;}
+.pro_item_single td{vertical-align: middle;}
 
 
 /* pro detail */

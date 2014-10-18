@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>项目收藏</title>
+<include file="public:css" />
+</head>
+<body>
+<include file="public:header" />
+<div class="container">
+	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member/index">会员中心</a> /<a href="__GROUP__/Bid/collection">我收藏的项目</a></div>
+  <div class="content">
+  	<div class="pro_box all_box">
+  		<div class="pro_title">我收藏的项目</div>
+			<div class="pro_body">
+				<div class="filter_box">
+					<div class="sort_box">
+						<div class="sorts_select">
+							<div class="sorts_selected"></div>
+							<ul class="sorts_options">
+								<li data-id="all">全部</li>
+								<volist name="sorts" id="sitem">
+								<li data-id="{$key}" <if condition="$key eq $param['sortid']">data-role="selected"</if>>{$sitem}</li>
+								</volist>
+							</ul>
+						</div>
+					</div>
+					<div class="filter_box">
+						<div class="pro_search"><span class="pro_search_label">搜 索 项 目： </span><div class="pro_search_box"><input id="pro_search_inp" class="pro_search_inp" type="text" value="{$param.words}" placeholder="项目ID、项目名称、发布者" /><div class="pro_search_go">查找</div></div></div>
+					</div>
+				</div>
+				
+				<div class="pro_all_box">
+					<div class="pro_pagination">
+						<div class="pro_status_filter">
+							<label class="i-radio"><input type="radio" name="status" value="1" <if condition="$param[status] eq 1">checked</if> />未开标</label>
+							<label class="i-radio"><input type="radio" name="status" value="2" <if condition="$param[status] eq 2">checked</if> />已开标</label>
+							<label class="i-radio"><input type="radio" name="status" value="all" <if condition="$param[status] eq 'all'">checked</if> />全部</label>
+						</div>
+						{$pager.show}{$pager.header}
+					</div>
+					<div class="pro_caption">
+						<div class="td1"><span class="order-links" data-order="publish" data-asc='0'>发布日期&darr;&uarr;</span></div>
+						<div class="split"></div>
+						<div class="td2">项目名称</div>
+						<div class="split"></div>
+						<div class="td3">发单方</div>
+						<div class="split"></div>
+						<div class="td4">项目实施（交货）地</div>
+						<div class="split"></div>
+						<div class="td5"><span class="order-links" data-order="open" data-asc='0'>开标时间&darr;&uarr;</span></div>
+						<div class="split"></div>
+						<div class="td6"><span class="order-links" data-order="bids" data-asc='0'>参投方数&darr;&uarr;</span></div>
+					</div>
+					<table class="pro_list" cellpadding="0" cellspacing="0" border="0">
+						<volist name="projects" id="pitem">
+						<tr class="pro_item_sub">
+							<td colspan="11">
+								<span class="sub_td1">项目编号： <strong>{$pitem.pro_sn}</strong></span>
+								<span class="sub_td2">项目属性： {$props[$pitem['pro_prop']]}</span>
+								<span class="sub_td3">项目类别： {$pitem.sorts}</span>
+							</td>
+							</tr>
+							<tr class="pro_item_content">
+								<td class="td1"><span>{$pitem.pro_publishtime|timeFormat='Y/m/d'}</span></td>
+								<td class="split"></td>
+								<td class="td2"><span><a href="__URL__/detail/id/{$pitem.pro_id}">{$pitem.pro_subject|get_summary=40}</a></span></td>
+								<td class="split"></td>
+								<td class="td3"><span>{$pitem.pro_mid}</span></td>
+								<td class="split"></td>
+								<td class="td4"><span>{$pitem.pro_place}</span></td>
+								<td class="split"></td>
+								<td class="td5"><span>{$pitem.pro_opentime|timeFormat='Y/m/d H:i'}</span></td>
+								<td class="split"></td>
+								<td class="td6"><span>{$pitem.bidders}</span></td>
+						</tr>
+						</volist>
+					</table>
+				</div>
+			</div>
+    </div>
+  </div>
+</div>
+<include file="public:footer" />
+<include file="public:js" />
+<script type="text/javascript">
+$(function(){
+	function getSortResult(){
+		var sortSelected = $(".sorts_options li[data-role='selected']"),
+						sortResult = [];
+		// sort
+		if(sortSelected.length == 0){
+			sortSelected = $(".sorts_options li:eq(0)").attr('data-role', 'selected');
+		}
+		$('.sorts_selected').text(sortSelected.text());
+		sortResult.push(sortSelected.text());
+		$('#sort').value = sortSelected.attr("data-id");
+	}
+	/* sort select */
+	$('.sorts_select').click(function(){
+		$('.sorts_options').show();
+		$(".sorts_options li").click(function(e){
+			e.stopPropagation();
+			if($(this).attr('data-role')=='selected'){
+				return;
+			}
+			$(this).attr('data-role', "selected").siblings().attr('data-role', '');
+			$(".sorts_options").hide();
+			getSortAndEnumResult();
+		});
+		$(this).mouseleave(function(){
+			$(".sorts_options").hide();
+		});
+	});
+	/* search */
+	$("#pro_search_btn").click(function(){
+		var data = [],
+				pathname = location.pathname;
+		//sort
+		data.push('sortid='+$(".sorts_options li[data-role='selected']").data('id'));
+		//keyword
+		data.push('words='+$("#pro_search_inp").val());
+		location.href=pathname+'?'+data.join('&');
+	});
+	/* order */
+	//init
+	(function(){
+		var order =  '{$param.order}', asc = '{$param.asc}';
+		var orderObj = $(".order-links[data-order='"+order+"']");
+		orderObj.data("asc", asc);
+	}());
+
+	//搜索
+	$('.pro_search_go').click(function(){
+		var words = $('.pro_search_inp').val();
+		if(words.length>1){
+			location.href = '/Project/all?words='+words;
+		}
+	});
+});
+</script>
+</body>
+</html>

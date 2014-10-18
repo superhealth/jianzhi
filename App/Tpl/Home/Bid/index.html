@@ -28,39 +28,46 @@
 					{$pager.show}{$pager.header}</div>
 				</form>
 				<div class="pro_caption">
-					<div width="td_120"><span class="order-links" data-order="publish" data-asc='0'>发布日期</span></div>
+					<div style="width:70px"><span class="order-links" data-order="publish" data-asc='0'>发布日期&darr;&uarr;</span></div>
 					<div class="split"></div>
-					<div width="td_270">投标编号</div>
+					<div style="width:115px">投标编号</div>
 					<div class="split"></div>
-					<div width="td_270">项目编号</div>
+					<div style="width:115px">项目编号</div>
 					<div class="split"></div>
-					<div width="td_270">项目名称</div>
+					<div style="width:178px">项目名称</div>
 					<div class="split"></div>
-					<div width="td_80"><span>招标方</span></div>
+					<div style="width:120px"><span>招标方</span></div>
 					<div class="split"></div>
-					<div width="td_150"><span class="order-links" data-order="open" data-asc='0'>开标时间</span></div>
+					<div style="width:70px"><span class="order-links" data-order="open" data-asc='0'>开标时间&darr;&uarr;</span></div>
 					<div class="split"></div>
-					<div width="td_170"><span>中标状态</span></div>
+					<div style="width:40px"><span>中标</span></div>
 					<div class="split"></div>
-					<div width="td_170"><span>操作</span></div>
+					<div style="width:80px"><span>操作</span></div>
 				</div>
-				<table class="pro_list" cellpadding="0" cellspacing="0" border="0">
-					<volist name="bids" id="pitem">
-						<tr class="pro_item_content">
-							<td class="td_120" align="center"><span>{$pitem.pro_publishtime|timeFormat='Y/m/d'}</span></td>
+				<table class="pro_tab" cellpadding="0" cellspacing="0" border="0">
+					<volist name="lists" id="pitem">
+						<tr class="pro_item_single">
+							<td style="width:70px" align="center"><span>{$pitem.bid_publishtime|timeFormat='Y/m/d'}</span></td>
 							<td class="split"></td>
-							<td class="td_270"><span style="margin-left:20px;"><a href="__URL__/myProject/id/{$pitem.pro_id}">{$pitem.pro_subject|get_summary=40}</a></span></td>
+							<td style="width:115px" align="center"><span><a href="__GROUP__/Bid/detail/id/{$pitem.bid_id}">{$pitem.bid_sn}</a></span></td>
 							<td class="split"></td>
-							<td class="td_80" align="center"><span><a href="__URL__/receiveBidsByProject/sn/{$pitem.pro_sn}">{$pitem.bidders}</a></span></td>
+							<td style="width:115px" align="center"><span><a href="__GROUP__/Project/detail/id/{$pitem.pro_id}">{$pitem.pro_sn}</span></a></td>
 							<td class="split"></td>
-							<td class="td_150" align="center"><span>{$pitem.opentime}</span></td>
+							<td style="width:178px"><span style="margin-left:10px;" title="{$pitem.pro_subject}"><a href="__GROUP__/Project/detail/id/{$pitem.pro_id}">{$pitem.pro_subject|get_summary=12}</a></span></td>
 							<td class="split"></td>
-							<td class="td_170" align="center">
+							<td style="width:120px" align="center"><span title="{$pitem.pro_owner}">{$pitem.pro_owner|get_summary=6}</span></td>
+							<td class="split"></td>
+							<td style="width:70px" align="center"><span>{$pitem.opentime}</span></td>
+							<td class="split"></td>
+							<td style="width:40px" align="center"><span>{$status[$pitem['bid_status']]}</span></td>
+							<td class="split"></td>
+							<td style="width:80px" align="center">
 								<if condition="$pitem.pro_status eq 1">
-								<a href="__URL__/modify/id/{$pitem.pro_id}">修改</a>
-								<a href="javascript:void(0);" class="pro-ajax-btn" title="删除" data-href="__URL__/delete/id/{$pitem.pro_id}" style="margin-left:10px;">删除</a>
+								<a href="__URL__/modify/id/{$pitem.bid_id}">修改</a>
+								
 								<else />
-								<a href="javascript:void(0);" class="pro-ajax-btn" title="存档" data-href="__URL__/toHistory/id/{$pitem.pro_id}" style="margin-left:10px;">存档</a>
+								<a href="javascript:void(0);" class="pro-ajax-btn" title="删除" data-href="__URL__/delete/id/{$pitem.bid_id}">删除</a>
+								<a href="javascript:void(0);" class="pro-ajax-btn" title="存档" data-href="__URL__/toHistory/id/{$pitem.bid_id}" style="margin-left:10px;">存档</a>
 								</if>
 							</td>
 					</tr>
@@ -81,11 +88,6 @@
 			var order =  '{$param.order}', asc = '{$param.asc}';
 			var orderObj = $(".order-links[data-order='"+order+"']");
 			orderObj.data("asc", asc);
-			if(asc=="0"){
-				orderObj.html(orderObj.text()+" &darr;");
-			}else if(asc=="1"){
-				orderObj.html(orderObj.text()+" &uarr;");
-			}
 		}());
 			//搜索
 		$('.pro_search_go').click(function(){
@@ -107,7 +109,6 @@
 				if(re){
 					$.get(_obj.data('href'), '', function(res){
 						if(res.code==0){
-							_obj.parents('tr').prev().remove();
 							_obj.parents('tr').remove();
 						}else{
 							bootbox.alert(res.data);

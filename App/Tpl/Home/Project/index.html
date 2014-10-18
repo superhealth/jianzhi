@@ -28,13 +28,13 @@
 					{$pager.show}{$pager.header}</div>
 				</form>
 				<div class="pro_caption">
-					<div class="td_120"><span class="order-links" data-order="publish" data-asc='0'>发布日期</span></div>
+					<div class="td_120"><span class="order-links" data-order="publish" data-asc='0'>发布日期&darr;&uarr;</span></div>
 					<div class="split"></div>
 					<div class="td_270">项目名称</div>
 					<div class="split"></div>
-					<div class="td_80"><span class="order-links" data-order="bids" data-asc='0'>参投方数</span></div>
+					<div class="td_80"><span class="order-links" data-order="bids" data-asc='0'>参投方数&darr;&uarr;</span></div>
 					<div class="split"></div>
-					<div class="td_150"><span class="order-links" data-order="open" data-asc='0'>开标时间</span></div>
+					<div class="td_150"><span class="order-links" data-order="open" data-asc='0'>开标时间&darr;&uarr;</span></div>
 					<div class="split"></div>
 					<div class="td_170"><span>操作</span></div>
 				</div>
@@ -82,11 +82,6 @@
 			var order =  '{$param.order}', asc = '{$param.asc}';
 			var orderObj = $(".order-links[data-order='"+order+"']");
 			orderObj.data("asc", asc);
-			if(asc=="0"){
-				orderObj.html(orderObj.text()+" &darr;");
-			}else if(asc=="1"){
-				orderObj.html(orderObj.text()+" &uarr;");
-			}
 		}());
 			//搜索
 		$('.pro_search_go').click(function(){
