@@ -24,12 +24,13 @@
 								</volist>
 							</ul>
 						</div>
+						<form action='__URL__/collections' method='get'>
+						<input type="hidden" name="sortid" id="sort" value="{$param['sortid']}" />
+						<div class="pro_search" style="float:left; margin:3px auto 3px 30px;"><div class="pro_search_box"><input id="pro_search_inp" class="pro_search_inp" type="text" name="words" value="{$param.words}" placeholder="项目编号、项目名称、发布者" /><div class="pro_search_go">查找</div></div></div>
+						</form>
 					</div>
-					<div class="filter_box">
-						<div class="pro_search"><span class="pro_search_label">搜 索 项 目： </span><div class="pro_search_box"><input id="pro_search_inp" class="pro_search_inp" type="text" value="{$param.words}" placeholder="项目ID、项目名称、发布者" /><div class="pro_search_go">查找</div></div></div>
-					</div>
+						
 				</div>
-				
 				<div class="pro_all_box">
 					<div class="pro_pagination">
 						<div class="pro_status_filter">
@@ -64,7 +65,7 @@
 							<tr class="pro_item_content">
 								<td class="td1"><span>{$pitem.pro_publishtime|timeFormat='Y/m/d'}</span></td>
 								<td class="split"></td>
-								<td class="td2"><span><a href="__URL__/detail/id/{$pitem.pro_id}">{$pitem.pro_subject|get_summary=40}</a></span></td>
+								<td class="td2"><span><a href="__GROUP__/Project/detail/id/{$pitem.pro_id}">{$pitem.pro_subject|get_summary=40}</a></span></td>
 								<td class="split"></td>
 								<td class="td3"><span>{$pitem.pro_mid}</span></td>
 								<td class="split"></td>
@@ -94,7 +95,7 @@ $(function(){
 		}
 		$('.sorts_selected').text(sortSelected.text());
 		sortResult.push(sortSelected.text());
-		$('#sort').value = sortSelected.attr("data-id");
+		$('#sort').val(sortSelected.attr("data-id"));
 	}
 	getSortResult();
 	/* sort select */
@@ -113,30 +114,16 @@ $(function(){
 			$(".sorts_options").hide();
 		});
 	});
-	/* search */
-	$("#pro_search_btn").click(function(){
-		var data = [],
-				pathname = location.pathname;
-		//sort
-		data.push('sortid='+$(".sorts_options li[data-role='selected']").data('id'));
-		//keyword
-		data.push('words='+$("#pro_search_inp").val());
-		location.href=pathname+'?'+data.join('&');
-	});
 	/* order */
-	//init
 	(function(){
 		var order =  '{$param.order}', asc = '{$param.asc}';
 		var orderObj = $(".order-links[data-order='"+order+"']");
 		orderObj.data("asc", asc);
 	}());
-
 	//搜索
 	$('.pro_search_go').click(function(){
 		var words = $('.pro_search_inp').val();
-		if(words.length>1){
-			location.href = '/Project/all?words='+words;
-		}
+		$(this).parents('form')[0].submit();
 	});
 });
 </script>

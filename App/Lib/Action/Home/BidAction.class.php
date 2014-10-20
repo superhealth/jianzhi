@@ -21,10 +21,10 @@ class BidAction extends CommonAction{
 		$param = array('status'=> 'all');
 		// 匹配开标条件
 		if( isset($_REQUEST['status']) && $_REQUEST['status']!='all'){
-			$map['pro_status']	= $_REQUEST['status'];
+			$map['_string']	= 'pro_status='.addslashes($_REQUEST['status']);
 			$param['status'] = $_REQUEST['status'];
 		}else{
-			$param['status'] = array('in', '1,2');
+			$map['_string'] = 'pro_status in (1,2)';
 		}
 		// 查询
 		if( isset($_REQUEST['words']) && strlen($_REQUEST['words'] )>2){
@@ -404,7 +404,9 @@ class BidAction extends CommonAction{
 		if(empty($bidInfo)){
 			$this->_empty();
 		}
-		
+		if($bidInfo['bid_state']>1){
+			$this->error('该次投标已被取消！');
+		}
 		//项目封面
 		$bidInfo['cover'] 		= D('Attachement')->getAttSrc($bidInfo['pro_cover']);
 		//报价单
@@ -475,6 +477,116 @@ class BidAction extends CommonAction{
 			$this->ajaxReturn($response);
 		}
 	}
+	/**
+	 * 删除投标档案
+	 * 条件：本人发布的投标
+	 */
+	public function delHistory($id=""){
+		$this->checkMember();
+		$response = array('code'=>0, 'data'=>'');
+		$where = array(
+				'bid_id'		=> $id,
+				'bid_mid'	=> $_SESSION['member'],
+				'bid_state'	=> 2,
+		);
+		if(M('bidder')->where($where)->setField('bid_state', 3)){
+		}else{
+			$response['code'] 	= 1;
+			$response['data']	= 'Sorry~投标单不存在！';
+		}
+		$this->ajaxReturn($response);
+	}
+	
+	/**
+	 * 投标历史档案
+	 */
+	public function history(){
+		$this->checkMember();
+		$this->leftInit();
+		$bid = M('Bidder');
+		$map = array(
+				'bid_state'=> 2,													// 存为档案
+				'bid_mid'	=> $_SESSION['member']		// 
+		);
+		$param = array('status'=> 'all');
+		// 匹配开标条件
+		if( isset($_REQUEST['status']) && $_REQUEST['status']!='all'){
+			switch($_REQUEST['status']){
+				case 'kong'		: $map['bid_status'] = 0;		break;
+				case 'bei'		: $map['bid_status'] = 1;		break;
+				case 'zhong'	: $map['bid_status'] = 2;		break;
+			}
+			$param['status'] = $_REQUEST['status'];
+		}
+		// 查询
+		if( isset($_REQUEST['words']) && strlen($_REQUEST['words'] )>2){
+			$filter = addslashes($_REQUEST['words']);
+			$mid = D('Member')->getMemberByName($filter);
+			$map['_complex'] = array(
+					'pro_subject'		=> array('like', '%'.$filter.'%'),
+					'pro_sn'				=> array('like', '%'.$filter.'%'),
+					'bid_sn'				=> array('like', '%'.$filter.'%'),
+					'pro_mid'			=> array('like', '%'.$filter.'%'),
+					'_logic'					=> 'or'
+			);
+			$param['words'] = $_REQUEST['words'];
+		}
+		
+		$order = "bid_publishtime DESC";	//默认排序
+		if(isset($_REQUEST['order'])){
+			if(isset($_REQUEST['asc'])){
+				$asc = $_REQUEST['asc']=='1' ? 'ASC' : 'DESC';
+				$param['asc'] = $_REQUEST['asc'];
+			}else{
+				$asc = 'DESC';
+			}
+			switch($_REQUEST['order']){
+				case 'publish':
+					$order = "bid_publishtime ".$asc;
+					break;
+				case 'open':
+					$order = "pro_opentime ".$asc;
+					break;
+				case 'bids':
+					$order = "bidders ".$asc;
+					break;
+				default:
+					$order = "bid_publishtime DESC";
+			}
+			$param['order'] = $_REQUEST['order'];
+		}else{
+			$order = "bid_publishtime DESC";
+		}
+		$join = ' LEFT JOIN zt_project ON bid_proid=pro_id';
+		// 分页
+		$total = $bid->join($join)->where($map)->count();
+		import("Org.Util.Page");
+		$page = new Page($total, 8, $param);
+		$this->assign('param', $param);
+		// 分页查询
+		$limit = $page->firstRow.",".$page->listRows;
+		$pager = $page->shown();
+		$this->assign("pager", $pager);
+		// 连接查询
+		$join = array(
+				" LEFT JOIN zt_project ON bid_proid=pro_id"
+		);
+		// 查询字段
+		$field = "bid_id, bid_sn, bid_publishtime, bid_status, pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_opentime, pro_status";
+		$bids = $bid->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
+		foreach ($bids as &$v){
+			if($v['pro_opentime']>time()){
+				$v['opentime']	= date('Y/m/d', $v['pro_opentime']);
+			}else{
+				$v['opentime']	= '<span class="red">已开标</span>';
+			}
+			$v['pro_owner'] = D('Member')->getMemberName($v['pro_mid']);
+		}
+		// 中标状态
+		$this->assign("status", array('空','备选','中标'));
+		$this->assign("lists", $bids);
+		$this->display();
+	}
 	
 	/**
 	 * 移入历史档案区 取消投标
@@ -511,8 +623,11 @@ class BidAction extends CommonAction{
 		}
 	}
 	
-	
-	public function addDraft($id=""){
+	/**
+	 * 添加投标到草稿箱
+	 * @param string $id
+	 */
+	public function addDraft(){
 		$this->checkMember();
 		$id = addslashes($_REQUEST['id']);
 		if(empty($id)){
@@ -568,13 +683,165 @@ class BidAction extends CommonAction{
 			$this->error('保存草稿失败！服务器开小差了，请稍后再试~');
 		}
 	}
+	
+	public function editDraft($id){
+		$this->checkMember();
+		$join = array(
+				'zt_project ON pro_id=bid_proid',
+				'zt_sort ON zt_sort.sort_id = zt_project.pro_sort',
+				'zt_contact ON bid_contact = con_id'
+		);
+		$bidInfo = M('Bidder')->join($join)->where('bid_id="'.$id.'" AND bid_mid="'.$_SESSION['member'].'"')->find();
+		if(empty($bidInfo)){
+			$this->_empty();
+		}
+		
+		//检查是否开标
+		if($_SERVER['REQUEST_TIME']>$bidInfo['pro_opentime']){
+			$this->error('Sorry~ 所投项目已开标！');
+		}
+		//项目封面
+		$bidInfo['cover'] 		= D('Attachement')->getAttSrc($bidInfo['pro_cover']);
+		//报价单
+		$bidInfo['quoted'] 	= M('attachement')->where('att_id="'.$bidInfo['bid_quoted'].'"')->find();
+		//投标书
+		$bidInfo['tenders'] 	= M('attachement')->where('att_id="'.$bidInfo['bid_tenders'].'"')->find();
+		//生产属性
+		$this->assign('props', D('Property')->getProps());
+		//投标限制
+		$this->assign('limits', array('不限', '个人', '企业'));
+		//币值单位
+		$this->assign('units', D('Unit')->getUnits());
+		//货币类型
+		$this->assign('currencys', D('Currency')->getCurrencyBySign());
+		//税费类型
+		$this->assign('taxes', D('Taxes')->getTaxes());
+		// 项目发布者信息
+		$memInfo = D('Member')->getMemberInfo($bidInfo['pro_mid']);
+		// 投标用户信息
+		$userInfo = D('Member')->getMemberInfo($bidInfo['bid_mid']);
+		if(empty($bidInfo['con_name'])){
+			$bidInfo['con_name'] = $userInfo['name'];
+		}
+		if(empty($bidInfo['con_tel'])){
+			$bidInfo['con_tel'] = $userInfo['tel'];
+		}
+		if(empty($bidInfo['con_email'])){
+			$bidInfo['con_email'] = $userInfo['mem_email'];
+		}
+		$this->assign('bidInfo', $bidInfo);
+		$this->assign('memInfo', $memInfo);
+		$this->assign('userInfo', $userInfo);
+		$this->display();
+	}
+	
+	/**
+	 * 删除草稿
+	 */
+	public function delDraft(){
+		$id = addslashes($_REQUEST['id']);
+		$this->checkMember();
+		$response = array('code'=>0, 'data'=>'');
+		$where = array(
+				'bid_id'		=> $id,
+				'bid_mid'	=> $_SESSION['member'],
+				'bid_state'	=> 0,
+		);
+		if(M('bidder')->where($where)->delete()){
+			
+		}else{
+			$response['code'] 	= 1;
+			$response['data']	= 'Sorry~投标单不存在！';
+		}
+		$this->ajaxReturn($response);
+	}
+	
 	/**
 	 * 草稿箱
 	 */
 	public function drafts(){
 		$this->checkMember();
 		$this->leftInit();
+		$bid = M('bidder');
+		$map = array(
+				'bid_state'=> 0,													// 未发布的草稿
+				'bid_mid'	=> $_SESSION['member']		//
+		);
+		$param = array('status'=> 'all');
+		// 匹配开标条件
+		if( isset($_REQUEST['status']) && $_REQUEST['status']!='all'){
+			$map['_string']	= 'pro_status='.addslashes($_REQUEST['status']);
+			$param['status'] = $_REQUEST['status'];
+		}else{
+			$map['_string'] = 'pro_status in(1,2)';
+		}
+		// 查询
+		if( isset($_REQUEST['words']) && strlen($_REQUEST['words'] )>2){
+			$filter = addslashes($_REQUEST['words']);
+			$mid = D('Member')->getMemberByName($filter);
+			$map['_complex'] = array(
+					'pro_subject'		=> array('like', '%'.$filter.'%'),
+					'pro_sn'				=> array('like', '%'.$filter.'%'),
+					'bid_sn'				=> array('like', '%'.$filter.'%'),
+					'_logic'					=> 'or'
+			);
+			$param['words'] = $_REQUEST['words'];
+		}
 		
+		$order = "bid_publishtime DESC";	//默认排序
+		if(isset($_REQUEST['order'])){
+			if(isset($_REQUEST['asc'])){
+				$asc = $_REQUEST['asc']=='1' ? 'ASC' : 'DESC';
+				$param['asc'] = $_REQUEST['asc'];
+			}else{
+				$asc = 'DESC';
+			}
+			switch($_REQUEST['order']){
+				case 'publish':
+					$order = "bid_publishtime ".$asc;
+					break;
+				case 'open':
+					$order = "pro_opentime ".$asc;
+					break;
+				case 'bids':
+					$order = "bidders ".$asc;
+					break;
+				default:
+					$order = "bid_publishtime DESC";
+			}
+			$param['order'] = $_REQUEST['order'];
+		}else{
+			$order = "bid_publishtime DESC";
+		}
+		$join = ' LEFT JOIN zt_project ON bid_proid=pro_id';
+		// 分页
+		$total = $bid->join($join)->where($map)->count();
+		import("Org.Util.Page");
+		$page = new Page($total, 8, $param);
+		$this->assign('param', $param);
+		// 分页查询
+		$limit = $page->firstRow.",".$page->listRows;
+		$pager = $page->shown();
+		$this->assign("pager", $pager);
+		// 连接查询
+		$join = array(
+				" LEFT JOIN zt_project ON bid_proid=pro_id"
+		);
+		// 查询字段
+		$field = "bid_id, bid_sn, bid_createtime, bid_status, pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_opentime, pro_status";
+		$bids = $bid->join($join)->field($field)->where($map)->order($order)->limit($limit)->select();
+		foreach ($bids as &$v){
+			if($v['pro_opentime']>time()){
+				$v['opentime']	= date('Y/m/d', $v['pro_opentime']);
+			}else{
+				$v['opentime']	= '<span class="red">已开标</span>';
+			}
+			$v['pro_owner'] = D('Member')->getMemberName($v['pro_mid']);
+		}
+		// 中标状态
+		$this->assign("status", array('空','备选','中标'));
+		$this->assign("lists", $bids);
+		$this->display();
 	}
 	
 	/**
@@ -592,7 +859,7 @@ class BidAction extends CommonAction{
 		$param = array();
 		// 项目分类
 		if(isset($_REQUEST['sortid']) && $_REQUEST['sortid']!="all"){
-			$map['pro_sort']  = $_REQUEST['sortid'];
+			$map['pro_sort']  = addslashes($_REQUEST['sortid']);
 			$param['sortid'] = $_REQUEST['sortid'];
 		}
 		// 项目主题 or 发布作者 or 项目编号
@@ -669,7 +936,7 @@ class BidAction extends CommonAction{
 			$v['mem_place'] = D('Member')->getMemberPlace($v['pro_mid']);
 			$v['mem_place'] = str_replace(array('|','中国','省','市'),array(' ','','',''), $v['mem_place']);
 			$v['sorts'] = enumsDecode($v['pro_enums']);
-			array_unshift($sorts[$v['pro_sort']], $v['sort_name']);
+			array_unshift($v['sorts'], $sorts[$v['pro_sort']]);
 			$v['sorts'] = implode(' / ', $v['sorts']);
 		}
 		$this->assign("projects", $projects);

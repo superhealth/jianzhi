@@ -2,21 +2,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>我的应标接单</title>
+<title>投标草稿箱</title>
 <include file="public:css" />
 <include file="public:js" />
 </head>
 <include file="public:header" />
 <div class="container">
-	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">会员中心</a> / 我的应标接单</div>
+	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">会员中心</a> / <a href="__GROUP__/Bid/index">我的应标接单</a> / 投标草稿箱</div>
 	<div class="content">
 		<include file="public:left" />
 		<div class="mem_main">
-			<h3 class="mem_sub_title">项目列表</h3>
+			<h3 class="mem_sub_title">投标草稿箱</h3>
 			<div class="mem_content">
 				<form action="" method="get" id="">
 				<div class="pro_search">
-					<div class="pro_search_box"><input class="pro_search_inp" type="text" value="{$param.words}" placeholder="项目名称、项目编号" /><div class="pro_search_go">查找</div>
+					<div class="pro_search_box"><input class="pro_search_inp" type="text" value="{$param.words}" placeholder="投标编号、招标用户名、项目名称、项目编号" /><div class="pro_search_go">查找</div>
 					</div>
 				</div>
 				<div class="pro_pagination">
@@ -28,47 +28,38 @@
 					{$pager.show}{$pager.header}</div>
 				</form>
 				<div class="pro_caption">
-					<div style="width:70px"><span class="order-links" data-order="publish" data-asc='0'>发布日期&darr;&uarr;</span></div>
+					<div style="width:80px"><span class="order-links" data-order="create" data-asc='0'>创建日期&darr;&uarr;</span></div>
 					<div class="split"></div>
-					<div style="width:115px">投标编号</div>
+					<div style="width:120px">投标编号</div>
 					<div class="split"></div>
-					<div style="width:115px">项目编号</div>
+					<div style="width:120px">项目编号</div>
 					<div class="split"></div>
-					<div style="width:178px">项目名称</div>
+					<div style="width:180px">项目名称</div>
 					<div class="split"></div>
-					<div style="width:120px"><span>招标方</span></div>
+					<div style="width:130px"><span>招标方</span></div>
 					<div class="split"></div>
-					<div style="width:70px"><span class="order-links" data-order="open" data-asc='0'>开标时间&darr;&uarr;</span></div>
+					<div style="width:80px"><span class="order-links" data-order="open" data-asc='0'>开标时间&darr;&uarr;</span></div>
 					<div class="split"></div>
-					<div style="width:40px"><span>中标</span></div>
-					<div class="split"></div>
-					<div style="width:80px"><span>操作</span></div>
+					<div style="width:79px"><span>操作</span></div>
 				</div>
 				<table class="pro_tab" cellpadding="0" cellspacing="0" border="0">
 					<volist name="lists" id="pitem">
 						<tr class="pro_item_single">
-							<td style="width:70px" align="center"><span>{$pitem.bid_publishtime|timeFormat='Y/m/d'}</span></td>
+							<td style="width:80px" align="center"><span>{$pitem.bid_createtime|timeFormat='Y/m/d'}</span></td>
 							<td class="split"></td>
-							<td style="width:115px" align="center"><span><a href="__GROUP__/Bid/detail/id/{$pitem.bid_id}">{$pitem.bid_sn}</a></span></td>
+							<td style="width:120px" align="center"><span><a href="__GROUP__/Bid/editDraft/id/{$pitem.bid_id}">{$pitem.bid_sn}</a></span></td>
 							<td class="split"></td>
-							<td style="width:115px" align="center"><span><a href="__GROUP__/Project/detail/id/{$pitem.pro_id}">{$pitem.pro_sn}</span></a></td>
+							<td style="width:120px" align="center"><span><a href="__GROUP__/Project/detail/id/{$pitem.pro_id}">{$pitem.pro_sn}</span></a></td>
 							<td class="split"></td>
-							<td style="width:178px"><span style="margin-left:10px;" title="{$pitem.pro_subject}"><a href="__GROUP__/Project/detail/id/{$pitem.pro_id}">{$pitem.pro_subject|get_summary=12}</a></span></td>
+							<td style="width:180px"><span style="margin-left:10px;" title="{$pitem.pro_subject}"><a href="__GROUP__/Project/detail/id/{$pitem.pro_id}">{$pitem.pro_subject|get_summary=16}</a></span></td>
 							<td class="split"></td>
-							<td style="width:120px" align="center"><span title="{$pitem.pro_owner}">{$pitem.pro_owner|get_summary=6}</span></td>
+							<td style="width:130px" align="center"><span title="{$pitem.pro_owner}">{$pitem.pro_owner|get_summary=10}</span></td>
 							<td class="split"></td>
-							<td style="width:70px" align="center"><span>{$pitem.opentime}</span></td>
+							<td style="width:80px" align="center"><span>{$pitem.opentime}</span></td>
 							<td class="split"></td>
-							<td style="width:40px" align="center"><span>{$status[$pitem['bid_status']]}</span></td>
-							<td class="split"></td>
-							<td style="width:80px" align="center">
-								<if condition="$pitem.pro_status eq 1">
-								<a href="__URL__/modify/id/{$pitem.bid_id}">修改</a>
-								
-								<else />
-								<a href="javascript:void(0);" class="pro-ajax-btn" title="删除" data-href="__URL__/delete/id/{$pitem.bid_id}">删除</a>
-								<a href="javascript:void(0);" class="pro-ajax-btn" title="存档" data-href="__URL__/toHistory/id/{$pitem.bid_id}" style="margin-left:10px;">存档</a>
-								</if>
+							<td style="width:79px" align="center">
+								<a href="__URL__/editDraft/id/{$pitem.bid_id}">修改</a>
+								<a href="javascript:void(0);" class="pro-ajax-btn" title="删除" data-href="__URL__/delDraft/id/{$pitem.bid_id}">删除</a>
 							</td>
 					</tr>
 					</volist>

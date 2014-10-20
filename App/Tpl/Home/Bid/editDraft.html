@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>编辑草稿发布投标</title>
+<include file="public:css" />
+</head>
+<body>
+<include file="public:header" />
+<div class="container">
+  <div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member/index">会员中心</a> /<a href="__GROUP__/Bid/index">我的投标接单</a> / 编辑草稿发布投标</div>
+  <div class="content">
+  	<div class="pro_box right_box">
+      <div class="pro_title">标题图片</div>
+      <div class="pro_body">
+				<if condition="$bidInfo['cover'] neq ''">
+      	<img src="{$bidInfo['cover']}" id="pro_cover_view" class="pro_cover_view" />
+				<else />
+				<img src="__PUBLIC__/Home/image/pro_cover_view.png" id="pro_cover_view"  class="pro_cover_view" />
+				</if>
+				<h3 class="pro_name_view" id="pro_name_view">{$bidInfo.pro_subject}</h3>
+			</div>
+		</div>
+  	<div class="pro_box left_box">
+      <div class="pro_title">编辑投标草稿</div>
+      <div class="pro_body">
+				<div class="bid_complete">
+					<h3>{$userInfo.name}</h3>
+					<p><span class="pro_comp_info_left">投标编号：<strong style="color:#0000ff;">{$bidInfo.bid_sn}</strong></span></p>
+				</div>
+				<div class="pro_complete">
+					<div class="pro_comp_body">
+						<div calss="pro_comp_info1">
+							<p><span class="pro_comp_info_left">项目名称：{$bidInfo.pro_subject}</span></p>
+							<p><span class="pro_comp_info_left">发 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 方：<a class="colorbox" href="__GROUP__/Member/view/id/{$bidInfo.pro_mid}">{$bidInfo.pro_mid}<if condition="$member['status'] neq 2"><span class="red">(实名未验)</span></if></a></span></p>
+							<p><span class="pro_comp_info_left">项目编号：{$bidInfo.pro_sn}</span><span  class="pro_comp_info_right">类别：{$bidInfo.sort_name} {$bidInfo.pro_enums}</span></p>
+							<p><span class="pro_comp_info_left">项目属性：{$props[$bidInfo['pro_prop']]}</span><span class="pro_comp_info_right">要求投方用户属性：{$limits[$bidInfo['pro_limit']]}</span></p>
+							<p><span class="pro_comp_info_left">发出日期：{$bidInfo.pro_publishtime|timeFormat='Y年m月d日'} <if condition="$bidInfo['pro_updatetime'] gt 0">(更新于{$bidInfo.pro_updatetime|timeFormat='Y年m月d日 H时i分 a'})</if></span><span class="pro_comp_info_right">开标时间：<span <if condition="$bidInfo['pro_opentime'] lt $_SERVER['REQUEST_TIME']"> class="red"</if>>{$bidInfo.pro_opentime|timeFormat='Y年m月d日 H时i分 a'}</span></span></p>
+						</div>
+					</div>
+				</div>
+				<form method="post" enctype="multipart/form-data" onsubmit='return launchCheck();'>
+				<input type="hidden" id="bid_id" name="bid_id" value="{$bidInfo.bid_id}" />
+				<div class="bid_info_block">
+					<div class="bid_info_title"><span class="red">*</span>投标概要<span data-for="bid_description" class="helpline"></span></div>
+					<div class="bid_info_body">
+						<textarea name="bid_description" id="bid_description" class="txt txt-block" rows="8" placeholder="你对该项目/订单的 完成优势， 即 技术背景、项目经历、应力保障等。 200字以内。" >{$bidInfo.bid_description}</textarea>
+						<if condition="$bidInfo['tenders'] neq 0">
+						投标书：<ul class="pro_att_view" id="pro_att_view">
+							<li><span>{$bidInfo.tenders.att_name}</span><button type="button" class="btn" onclick="delAtt(this,'bid_tenders');">删除</button></li>
+						</ul>
+						</if>
+						<button class="btn_file btn_file_ex" type="button"><input type="file" class="inp inp-file" name="bid_tenders" id="bid_tenders"/><if condition="$bidInfo['tenders'] neq 0">更改<else />添加</if>《投标书》</button><input type="text" class="inp inp-file-text inp-file-text_ex" disabled="disabled" /><span class="helpline" data-for="bid_tenders"></span>
+						<div class="clearfix"></div>
+						<span class="tips">(注：文件不大于3M，允许格式有'jpg', 'png', 'jpeg', 'zip', 'rar', 'pdf', 'txt','doc','docx','xls','xlsx')</span>
+					</div>
+				</div>
+				<div class="bid_info_block">
+					<div class="bid_info_title">投标报价</div>
+					<div class="bid_info_body">
+						<p><span class="red">*</span>投 标 总 价：
+							<input type="text" class="inp inp-mini" style="text-align:right;" id="bid_price" name="bid_price" value="{$bidInfo['bid_price']}" />
+							<select name="bid_unit" id="pro_unit">{$units|getOptions=$bidInfo['bid_unit']}</select>
+							<select name="bid_currency" id="pro_currency">{$currencys|getOptions=$bidInfo['bid_currency']}</select>
+							<span class="tips">( 注：如有分项报价 、单价 等，请以附件方式上传)</span>
+						</p>
+						<p><span class="red">*</span>报 价 内 容：
+							<select name="bid_taxes" id="bid_taxes">{$taxes|getOptions=$bidInfo['bid_taxes']}</select>
+							<label for="bid_transport"><input type="checkbox" <if condition="$bidInfo['bid_transport'] eq 1">checked</if> value="1" id="bid_transport" name="bid_transport" />运费</label>
+							<label for="bid_insurance"><input type="checkbox" <if condition="$bidInfo['bid_insurance'] eq 1">checked</if> value="1" id="bid_insurance" name="bid_insurance" />保险</label>
+						</p>
+						<p>&nbsp;是 否 可 见：
+							<label class="ml_50" for="bid_price_flag"><input type="checkbox"<if condition="$bidInfo['bid_price_flag'] eq 1">checked</if> value="1" id="bid_price_flag"  name="bid_price_flag" />总报价</label>
+							<label class="ml_50" for="bid_quoted_flag"><input type="checkbox"<if condition="$bidInfo['bid_quoted_flag'] eq 1">checked</if> value="1" id="bid_quoted_flag" name="bid_quoted_flag" />《报价单》</label>
+							<label class="ml_50" for="bid_tenders_flag"><input type="checkbox"<if condition="$bidInfo['bid_tenders_flag'] eq 1">checked</if> value="1" id="bid_tenders_flag" name="bid_tenders_flag" />《投标书》</label>
+						</p>
+						<if condition="$bidInfo['quoted'] neq 0">
+						<ul class="pro_att_view" id="pro_att_view">
+							<li><span>{$bidInfo.quoted.att_name}</span><button type="button" class="btn" onclick="delAtt(this,'bid_quoted');">删除</button></li>
+						</ul>
+						</if>
+						<button class="btn_file btn_file_ex" type="button"><input type="file" class="inp inp-file" name="bid_quoted" id="bid_quoted"/><if condition="$bidInfo['quoted'] neq 0">更改<else />添加</if>《报价单》</button><input type="text" class="inp inp-file-text inp-file-text_ex" disabled="disabled" /><span class="helpline" data-for="bid_quoted"></span>
+						<div class="clearfix"></div>
+						<span class="tips">(注：文件不大于3M，允许格式有'jpg', 'png', 'jpeg', 'zip', 'rar', 'pdf', 'txt','doc','docx','xls','xlsx')</span>
+					</div>
+				</div>
+				<div class="bid_info_block">
+					<div class="bid_info_title">项目联系方式</div>
+					<div class="bid_info_body">
+						<p><span class="red">*</span>联 &nbsp; 系 &nbsp; 人：<input type="text" id="con_name" class="inp inp-mid" name="con_name" maxlength="20" value="{$bidInfo.con_name}" /><span class="helpline" data-for="con_name"></span></p>
+						<p><span class="red">*</span>电 话/手 机：<input type="text" id="con_tel" class="inp inp-mid" name="con_tel" maxlength="20" value="{$bidInfo.con_tel}" /><span class="helpline" data-for="con_tel"></span></p>
+						<p><span class="red">*</span>电 子 邮 箱：<input type="email" id="con_email" class="inp inp-mid" name="con_email" maxlength="40" value="{$bidInfo.con_email}" /><span class="helpline" data-for="con_email"></span></p>
+						<p>&nbsp;其 他 信 息：<input type="text" id="con_im" class="inp inp-mid" name="con_im" placeholder='QQ/MSN' value="{$bidInfo.con_im}" /></p>
+					</div>
+				</div>
+				<div class="pro_btn_groups">
+					<button type="button" class="btn btn-sub" data-act="__GROUP__/Bid/add">确认发布</button>
+				</div>
+				</form>
+      </div>
+    </div>
+		<div class="clearfix"></div>
+  </div>
+</div>
+<include file="public:footer" />
+<include file="public:js" />
+<script type="text/javascript">
+	function launchCheck(){
+		if($('#bid_description').val()==""){
+			$('.helpline[data-for="bid_description"]').addClass('error').html('投标概述不能为空！');
+			$('#bid_description')[0].focus();
+			return false;
+		}
+		if($('#bid_description').val().length>200){
+			$('.helpline[data-for="bid_description"]').addClass('error').html('投标概述字数超限！');
+			$('#bid_description')[0].focus();
+			return false;
+		}
+		if($('#bid_price').val()==""){
+			$('#bid_price').addClass('error');
+			bootbox.alert('投标报价不能为空！');
+			return false;
+		}
+		if($('#con_name').val()==""){
+			$('#con_name').addClass('error');
+			$('.helpline[data-for="con_name"]').addClass('error').html('联系人不能为空！');
+			return false;
+		}
+		if($('#con_tel').val()==""){
+			$('#con_tel').addClass('error');
+			$('.helpline[data-for="con_tel"]').addClass('error').html('联系电话不能为空！');
+			return false;
+		}
+		if($('#con_email').val()==""){
+			$('#con_email').addClass('error');
+			$('.helpline[data-for="con_email"]').addClass('error').html('邮箱不能为空！');
+			return false;
+		}	
+	}
+	$(function(){
+		$('#bid_price').on('keydown', function(e){
+			if(e.keyCode<91&&e.keyCode>64 || e.keyCode==229){
+				e.preventDefault();
+			}
+		}).on('change', function(){
+			var _val = $(this).val();
+			_val = _val.match(/[0-9]+([.]{1}[0-9]{1,2})?/);
+			if(_val!=null){
+				_val = _val[0];
+			}else{
+				_val = 0;
+			}
+			$(this).val((_val-0).toFixed(2));
+		})
+	});
+	function delAtt(obj,id){
+		try{$.get("/Attach/del", {"belong":"bid", "id":$("#bid_id").val(), "attId":id}, function(res){
+			if(res=="success"){
+				$(obj).parent().parent().remove();
+			}else{
+				bootbox.alert(res);
+			}
+		}, "text");
+		}catch(e){
+			bootbox.alert("网络连接失败！");
+		}
+	}
+</script>
+</body>
+</html>

@@ -256,6 +256,9 @@ class ProjectAction extends CommonAction{
 			if($info['pro_mid']==$_SESSION['member']){
 				redirect(__URL__.'/myProject/id/'.$id);exit;
 			}
+			if($info['pro_status']>2){
+				$this->error('Sorry~该项目已被取消！');
+			}
 			//项目封面
 			$info['cover'] = D('Attachement')->getAttSrc($info['pro_cover']);
 			//项目所在地

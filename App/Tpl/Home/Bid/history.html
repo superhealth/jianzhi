@@ -2,28 +2,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>我的应标接单</title>
+<title>投标档案箱</title>
 <include file="public:css" />
 <include file="public:js" />
 </head>
 <include file="public:header" />
 <div class="container">
-	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">会员中心</a> / 我的应标接单</div>
+	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">会员中心</a> / <a href="__GROUP__/Bid/index">我的应标接单</a> / 投标档案箱</div>
 	<div class="content">
 		<include file="public:left" />
 		<div class="mem_main">
-			<h3 class="mem_sub_title">项目列表</h3>
+			<h3 class="mem_sub_title">投标档案箱</h3>
 			<div class="mem_content">
 				<form action="" method="get" id="">
 				<div class="pro_search">
-					<div class="pro_search_box"><input class="pro_search_inp" type="text" value="{$param.words}" placeholder="项目名称、项目编号" /><div class="pro_search_go">查找</div>
+					<div class="pro_search_box"><input class="pro_search_inp" type="text" value="{$param.words}" placeholder="投标编号、招方用户名、项目名称、项目编号" /><div class="pro_search_go">查找</div>
 					</div>
 				</div>
 				<div class="pro_pagination">
 					<div class="pro_status_filter">
-						<label class="i-radio"><input type="radio" name="status" value="1" <if condition="$param[status] eq 1">checked</if> />未开标</label>
-						<label class="i-radio"><input type="radio" name="status" value="2" <if condition="$param[status] eq 2">checked</if> />已开标</label>
 						<label class="i-radio"><input type="radio" name="status" value="all" <if condition="$param[status] eq 'all'">checked</if> />全部</label>
+						<label class="i-radio"><input type="radio" name="status" value="zhong" <if condition="$param[status] eq 'zhong'">checked</if> />中标</label>
+						<label class="i-radio"><input type="radio" name="status" value="bei" <if condition="$param[status] eq 'bei'">checked</if> />备选</label>
+						<label class="i-radio"><input type="radio" name="status" value="kong" <if condition="$param[status] eq 'kong'">checked</if> />空</label>
 					</div>
 					{$pager.show}{$pager.header}</div>
 				</form>
@@ -62,13 +63,7 @@
 							<td style="width:40px" align="center"><span>{$status[$pitem['bid_status']]}</span></td>
 							<td class="split"></td>
 							<td style="width:80px" align="center">
-								<if condition="$pitem.pro_status eq 1">
-								<a href="__URL__/modify/id/{$pitem.bid_id}">修改</a>
-								
-								<else />
-								<a href="javascript:void(0);" class="pro-ajax-btn" title="删除" data-href="__URL__/delete/id/{$pitem.bid_id}">删除</a>
-								<a href="javascript:void(0);" class="pro-ajax-btn" title="存档" data-href="__URL__/toHistory/id/{$pitem.bid_id}" style="margin-left:10px;">存档</a>
-								</if>
+								<a href="javascript:void(0);" class="pro-ajax-btn" title="删除" data-href="__URL__/delHistory/id/{$pitem.bid_id}">删除</a>
 							</td>
 					</tr>
 					</volist>

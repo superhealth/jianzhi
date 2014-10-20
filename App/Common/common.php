@@ -567,6 +567,10 @@ function areaToSelect($areaArr, $n=1, $areas="", $name=""){
  * @return array 分割后的数组
  */
 function enumsDecode($enumStr){
+	$str = trim($enumStr);
+	if(empty($str)){
+		return array();
+	}
 	return explode("|", trim($enumStr));
 }
 /**
