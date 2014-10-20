@@ -73,10 +73,6 @@ class DuefeeModel extends Model{
 			);
 			$rs = $this->add($data);
 			if($rs){
-				$subject = '【系统消息】 会员年费续费提醒';
-				$duenotice = D('Sysconf')->getConf('cfg_duenotice');
-				$content = '您的会员有效时间已不足'.$duenotice.'天，请及时续费以继续使用我们的服务，谢谢！';
-				D("Notice")->sendNotice($mid, $subject, $content);
 				return $data['due_id'];
 			}else{
 				return false;

@@ -102,7 +102,7 @@ class MemberAction extends CommonAction{
 					$subject = '年费过期提醒';
 					$content = $_SESSION['member'].' 您好，您的会员将于'.date('Y年m月d日', $member['mem_expiretime']).'到期。请及时续费以继续使用《订单网》的服务，点此<a href="/Due">立即续费</a>。';
 					$type = 'acc';
-					D('Notice')->sendNotice($member, $subject, $content, $type);
+					D('Notice')->sendNotice($_SESSION['member'], $subject, $content, $type);
 					D('Duefee')->createDuefee($_SESSION['member']);
 				}
 			}

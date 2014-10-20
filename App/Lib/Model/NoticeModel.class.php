@@ -76,10 +76,10 @@ class NoticeModel extends Model{
 		$data = array(
 			"no_mid"			=> $mid,
 			"no_subject"		=> $subject,
-			"no_content"	=> $content,
+			"no_content"		=> $content,
 			"no_time"			=> time(),
 			"no_read"			=> 0,
-			'no_type'			=> $type
+			'no_type'				=> $type
 		);
 		return $this->add($data);
 	}

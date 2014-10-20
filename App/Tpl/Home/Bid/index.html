@@ -2,51 +2,70 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title></title>
+<title>我的应标接单</title>
 <include file="public:css" />
 <include file="public:js" />
 </head>
 <include file="public:header" />
 <div class="container">
-	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Bid">会员中心</a> / <a href="__GROUP__/Notice">消息中心</a></div>
+	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">会员中心</a> / 我的应标接单</div>
 	<div class="content">
 		<include file="public:left" />
 		<div class="mem_main">
-			<h3 class="mem_sub_title">消息中心</h3>
+			<h3 class="mem_sub_title">项目列表</h3>
 			<div class="mem_content">
-				<ul class="notice-nav">
-					<li><span class="notice_type_head">消息分类：</span></li>
-					<volist name="noticeType" id="nt">
-					<li><a <if condition="$type eq $key">class="active"</if> href="__GROUP__/Notice/index/type/{$key}">{$nt}</a></li>
-					</volist>
-				</ul>
-				<div class="notice_list">
-					<div class="notice_caption">
-						<label> 全选&nbsp;&nbsp;<input type="checkbox" class="checkAll" /></label>
-						<button type="button" class="ajax-inp" data-act="__URL__/read" data-fn="">标记为已读</button>
-						<button type="button" class="ajax-inp" data-act="__URL__/del" data=fn="del">删除</button>
-						<span class="notice_overview"><a href="?flag=no">未读&nbsp;{$notices.noread}&nbsp;</a>/ <a href="?flag=all">全部&nbsp;{$notices.total}&nbsp;</a></span>
+				<form action="" method="get" id="">
+				<div class="pro_search">
+					<div class="pro_search_box"><input class="pro_search_inp" type="text" value="{$param.words}" placeholder="项目名称、项目编号" /><div class="pro_search_go">查找</div>
 					</div>
-					<ul class="notice_tab">
-          			<volist name='notices["data"]' id="notice">
-						<li>
-							<span class="no_checkbox">&nbsp;<input type="checkbox" name="id[]" value="{$notice.no_id}" />
-							</span><span class="no_subject">&nbsp;<a href="__URL__/view/id/{$notice.no_id}"><if condition="$notice['no_read'] eq 0"><strong>{$notice.no_subject}</strong><else />{$notice.no_subject}</if></a>
-							</span><span class="no_type">&nbsp;{$noticeType[$notice['no_type']]}
-							</span><span class="no_time">&nbsp;{$notice.no_time|timeFormat='Y-m-d H:i:s'}</span>
-						</li>
-            		</volist>
-					</ul>
-				  <div class="pagenation">
-					<div class="page_info">
-						<span>{$notices.pager.header}</span>
-						<span class="notice_overview"><a href="?flag=no">未读&nbsp;{$notices.noread}&nbsp;</a>/ <a href="?flag=all">全部&nbsp;{$notices.total}&nbsp;</a></span>
-					</div>
-					<if condition="$notices['total'] gt 8">
-					<div class="page_link">{$notices.pager.show}</div>
-					</if>
-				  </div>
 				</div>
+				<div class="pro_pagination">
+					<div class="pro_status_filter">
+						<label class="i-radio"><input type="radio" name="status" value="1" <if condition="$param[status] eq 1">checked</if> />未开标</label>
+						<label class="i-radio"><input type="radio" name="status" value="2" <if condition="$param[status] eq 2">checked</if> />已开标</label>
+						<label class="i-radio"><input type="radio" name="status" value="all" <if condition="$param[status] eq 'all'">checked</if> />全部</label>
+					</div>
+					{$pager.show}{$pager.header}</div>
+				</form>
+				<div class="pro_caption">
+					<div width="td_120"><span class="order-links" data-order="publish" data-asc='0'>发布日期</span></div>
+					<div class="split"></div>
+					<div width="td_270">投标编号</div>
+					<div class="split"></div>
+					<div width="td_270">项目编号</div>
+					<div class="split"></div>
+					<div width="td_270">项目名称</div>
+					<div class="split"></div>
+					<div width="td_80"><span>招标方</span></div>
+					<div class="split"></div>
+					<div width="td_150"><span class="order-links" data-order="open" data-asc='0'>开标时间</span></div>
+					<div class="split"></div>
+					<div width="td_170"><span>中标状态</span></div>
+					<div class="split"></div>
+					<div width="td_170"><span>操作</span></div>
+				</div>
+				<table class="pro_list" cellpadding="0" cellspacing="0" border="0">
+					<volist name="bids" id="pitem">
+						<tr class="pro_item_content">
+							<td class="td_120" align="center"><span>{$pitem.pro_publishtime|timeFormat='Y/m/d'}</span></td>
+							<td class="split"></td>
+							<td class="td_270"><span style="margin-left:20px;"><a href="__URL__/myProject/id/{$pitem.pro_id}">{$pitem.pro_subject|get_summary=40}</a></span></td>
+							<td class="split"></td>
+							<td class="td_80" align="center"><span><a href="__URL__/receiveBidsByProject/sn/{$pitem.pro_sn}">{$pitem.bidders}</a></span></td>
+							<td class="split"></td>
+							<td class="td_150" align="center"><span>{$pitem.opentime}</span></td>
+							<td class="split"></td>
+							<td class="td_170" align="center">
+								<if condition="$pitem.pro_status eq 1">
+								<a href="__URL__/modify/id/{$pitem.pro_id}">修改</a>
+								<a href="javascript:void(0);" class="pro-ajax-btn" title="删除" data-href="__URL__/delete/id/{$pitem.pro_id}" style="margin-left:10px;">删除</a>
+								<else />
+								<a href="javascript:void(0);" class="pro-ajax-btn" title="存档" data-href="__URL__/toHistory/id/{$pitem.pro_id}" style="margin-left:10px;">存档</a>
+								</if>
+							</td>
+					</tr>
+					</volist>
+				</table>
 			</div>
 		</div>
 		<div class="clearfix"></div>
@@ -56,27 +75,48 @@
 <include file="public:footer" />
 <script >
 	$(function(){
-		$(".ajax-inp").click(function(){
-			var url = $(this).data('act');
-			var data = new Array();
-			$("input[name='id[]']:checked").each(function(index){
-				data[index] = 'id[]='+$(this).val();
-			});
-			data = data.join("&");
-			if(data==""){
-				bootbox.alert("您未选中任何消息！");
-				return;
+			/* order */
+		//init
+		(function(){
+			var order =  '{$param.order}', asc = '{$param.asc}';
+			var orderObj = $(".order-links[data-order='"+order+"']");
+			orderObj.data("asc", asc);
+			if(asc=="0"){
+				orderObj.html(orderObj.text()+" &darr;");
+			}else if(asc=="1"){
+				orderObj.html(orderObj.text()+" &uarr;");
 			}
-			$("#ajax_wait").show();
-			$.post(url, data, function(text){
-				$("#ajax_wait").hide();
-				if(text=='success'){
-					window.location.reload();
-				}else{
-					bootbox.alert(text);
-				}
-			}, 'text');
+		}());
+			//搜索
+		$('.pro_search_go').click(function(){
+			var words = $('.pro_search_inp').val();
+			if(words.length>1){
+				location.href = '?words='+words;
+			}else{
+				bootbox.alert('请输入关键字！');
+			}
 		});
+		$('input[name="status"]').click(function(){
+			$(this).parents('form')[0].submit();
+		});
+		$('.pro-ajax-btn').click(function(e){
+			e.preventDefault();
+			_title = $(this).attr('title');
+			_obj = $(this);
+			bootbox.confirm('您确定要'+_title+'该项目吗？'+_title+'后将不能恢复！', function(re){
+				if(re){
+					$.get(_obj.data('href'), '', function(res){
+						if(res.code==0){
+							_obj.parents('tr').prev().remove();
+							_obj.parents('tr').remove();
+						}else{
+							bootbox.alert(res.data);
+						}
+					}, 'json');
+				}
+			});
+		});
+		
 	});
 </script>
 <body>
