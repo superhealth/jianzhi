@@ -583,7 +583,6 @@ class BidAction extends CommonAction{
 	public function collections(){
 		$this->checkMember();
 		$project = M("collection");
-		
 		$map = array(
 				'co_mid'	=> $_SESSION['member']
 		);

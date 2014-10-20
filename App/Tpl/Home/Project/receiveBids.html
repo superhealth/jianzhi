@@ -26,6 +26,7 @@
 				<div class="pro_pagination">
 					{$pager.show}{$pager.header}</div>
 				</form>
+				<if condition="$param['tag'] eq 'pro'">
 				<div class="pro_caption">
 					<div style="width:100px;"><span class="order-links" data-order="publish" data-asc='0'>投标日期&darr;&uarr;</span></div>
 					<div class="split"></div>
@@ -56,6 +57,42 @@
 					</tr>
 					</volist>
 				</table>
+				<else />
+				<div class="pro_caption">
+					<div style="width:80px;"><span class="order-links" data-order="publish" data-asc='0'>投标日期</span></div>
+					<div class="split"></div>
+					<div style="width:120px;"><span>投标编号</span></div>
+					<div class="split"></div>
+					<div style="width:120px;"><span>项目编号</span></div>
+					<div class="split"></div>
+					<div style="width:180px;"><span>项目名称</span></div>
+					<div class="split"></div>
+					<div style="width:80px;"><span class="order-links" data-order="opentime" data-asc='0'>开标时间</span></div>
+					<div class="split"></div>
+					<div style="width:140px;"><span class="order-links" data-order="amount" data-asc='0'>报价(总价)</span></div>
+					<div class="split"></div>
+					<div style="width:60px;"><span class="order-links" data-order="status" data-asc='0'>中标状态</span></div>
+				</div>
+				<table class="pro_list" cellpadding="0" cellspacing="0" border="0">
+					<volist name="bids" id="pitem">
+					<tr class="pro_item_content" <if condition="$i%2 eq 0">style="background:#f3f3f3;"</if>>
+							<td style="width:100px;" align="center"><span>{$pitem.bid_publishtime|timeFormat='Y/m/d'}</span></td>
+							<td class="split"></td>
+							<td style="width:140px;" align="center"><span>{$pitem.bid_sn}</span></td>
+							<td class="split"></td>
+							<td style="width:140px;" align="center"><span>{$pitem.pro_sn}</span></td>
+							<td class="split"></td>
+							<td style="width:180px;" align="center"><span><a href="__GROUP__/Project/detail/id/{$pitem['pro_id']}">{$pitem.pro_subject}</a></span></td>
+							<td class="split"></td>
+							<td style="width:150px;" align="center"><span>{$pitem.opentime}</span></td>
+							<td class="split"></td>
+							<td style="width:140px;" align="center"><span>{$pitem.price}</span></td>
+							<td class="split"></td>
+							<td style="width:80px;" align="center"><span>{$pitem.state}</span></td>
+					</tr>
+					</volist>
+				</table>
+				</if>
 				<present name="searchError">
 				<div style="line-height:24px; font-size:15px; padding:10px; margin:20px; background:#eee; font-weight:bold; text-align:center;">{$searchError}</div>
 				</present>
@@ -75,24 +112,6 @@
 			var orderObj = $(".order-links[data-order='"+order+"']");
 			orderObj.data("asc", asc);
 		}());
-		$('.pro-ajax-btn').click(function(e){
-			e.preventDefault();
-			_title = $(this).attr('title');
-			_obj = $(this);
-			bootbox.confirm('您确定要'+_title+'该项目吗？'+_title+'后将不能恢复！', function(re){
-				if(re){
-					$.get(_obj.data('href'), '', function(res){
-						if(res.code==0){
-							_obj.parents('tr').prev().remove();
-							_obj.parents('tr').remove();
-						}else{
-							bootbox.alert(res.data);
-						}
-					}, 'json');
-				}
-			});
-		});
-		
 	});
 </script>
 <body>

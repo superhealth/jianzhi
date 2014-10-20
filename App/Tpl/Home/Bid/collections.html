@@ -96,6 +96,7 @@ $(function(){
 		sortResult.push(sortSelected.text());
 		$('#sort').value = sortSelected.attr("data-id");
 	}
+	getSortResult();
 	/* sort select */
 	$('.sorts_select').click(function(){
 		$('.sorts_options').show();
@@ -106,7 +107,7 @@ $(function(){
 			}
 			$(this).attr('data-role', "selected").siblings().attr('data-role', '');
 			$(".sorts_options").hide();
-			getSortAndEnumResult();
+			getSortResult();
 		});
 		$(this).mouseleave(function(){
 			$(".sorts_options").hide();

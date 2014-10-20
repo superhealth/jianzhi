@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的应标接单</title>
+<include file="public:css" />
+<include file="public:js" />
+</head>
+<include file="public:header" />
+<div class="container">
+	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">会员中心</a> / 我的应标接单</div>
+	<div class="content">
+		<include file="public:left" />
+		<div class="mem_main">
+			<h3 class="mem_sub_title">项目列表</h3>
+			<div class="mem_content">
+				<form action="" method="get" id="">
+				<div class="pro_search">
+					<div class="pro_search_box"><input class="pro_search_inp" type="text" value="{$param.words}" placeholder="项目名称、项目编号" /><div class="pro_search_go">查找</div>
+					</div>
+				</div>
+				<div class="pro_pagination">
+					<div class="pro_status_filter">
+						<label class="i-radio"><input type="radio" name="status" value="1" <if condition="$param[status] eq 1">checked</if> />未开标</label>
+						<label class="i-radio"><input type="radio" name="status" value="2" <if condition="$param[status] eq 2">checked</if> />已开标</label>
+						<label class="i-radio"><input type="radio" name="status" value="all" <if condition="$param[status] eq 'all'">checked</if> />全部</label>
+					</div>
+					{$pager.show}{$pager.header}</div>
+				</form>
+				<div class="pro_caption">
+					<div style="width:70px"><span class="order-links" data-order="publish" data-asc='0'>发布日期&darr;&uarr;</span></div>
+					<div class="split"></div>
+					<div style="width:115px">投标编号</div>
+					<div class="split"></div>
+					<div style="width:115px">项目编号</div>
+					<div class="split"></div>
+					<div style="width:178px">项目名称</div>
+					<div class="split"></div>
+					<div style="width:120px"><span>招标方</span></div>
+					<div class="split"></div>
+					<div style="width:70px"><span class="order-links" data-order="open" data-asc='0'>开标时间&darr;&uarr;</span></div>
+					<div class="split"></div>
+					<div style="width:40px"><span>中标</span></div>
+					<div class="split"></div>
+					<div style="width:80px"><span>操作</span></div>
+				</div>
+				<table class="pro_tab" cellpadding="0" cellspacing="0" border="0">
+					<volist name="lists" id="pitem">
+						<tr class="pro_item_single">
+							<td style="width:70px" align="center"><span>{$pitem.bid_publishtime|timeFormat='Y/m/d'}</span></td>
+							<td class="split"></td>
+							<td style="width:115px" align="center"><span><a href="__GROUP__/Bid/detail/id/{$pitem.bid_id}">{$pitem.bid_sn}</a></span></td>
+							<td class="split"></td>
+							<td style="width:115px" align="center"><span><a href="__GROUP__/Project/detail/id/{$pitem.pro_id}">{$pitem.pro_sn}</span></a></td>
+							<td class="split"></td>
+							<td style="width:178px"><span style="margin-left:10px;" title="{$pitem.pro_subject}"><a href="__GROUP__/Project/detail/id/{$pitem.pro_id}">{$pitem.pro_subject|get_summary=12}</a></span></td>
+							<td class="split"></td>
+							<td style="width:120px" align="center"><span title="{$pitem.pro_owner}">{$pitem.pro_owner|get_summary=6}</span></td>
+							<td class="split"></td>
+							<td style="width:70px" align="center"><span>{$pitem.opentime}</span></td>
+							<td class="split"></td>
+							<td style="width:40px" align="center"><span>{$status[$pitem['bid_status']]}</span></td>
+							<td class="split"></td>
+							<td style="width:80px" align="center">
+								<if condition="$pitem.pro_status eq 1">
+								<a href="__URL__/modify/id/{$pitem.bid_id}">修改</a>
+								
+								<else />
+								<a href="javascript:void(0);" class="pro-ajax-btn" title="删除" data-href="__URL__/delete/id/{$pitem.bid_id}">删除</a>
+								<a href="javascript:void(0);" class="pro-ajax-btn" title="存档" data-href="__URL__/toHistory/id/{$pitem.bid_id}" style="margin-left:10px;">存档</a>
+								</if>
+							</td>
+					</tr>
+					</volist>
+				</table>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+</div>
+<div id="ajax_wait"><img src='__PUBLIC__/Home/img/ajax-loaders/ajax-loader-1.gif' /></div>
+<include file="public:footer" />
+<script >
+	$(function(){
+			/* order */
+		//init
+		(function(){
+			var order =  '{$param.order}', asc = '{$param.asc}';
+			var orderObj = $(".order-links[data-order='"+order+"']");
+			orderObj.data("asc", asc);
+		}());
+			//搜索
+		$('.pro_search_go').click(function(){
+			var words = $('.pro_search_inp').val();
+			if(words.length>1){
+				location.href = '?words='+words;
+			}else{
+				bootbox.alert('请输入关键字！');
+			}
+		});
+		$('input[name="status"]').click(function(){
+			$(this).parents('form')[0].submit();
+		});
+		$('.pro-ajax-btn').click(function(e){
+			e.preventDefault();
+			_title = $(this).attr('title');
+			_obj = $(this);
+			bootbox.confirm('您确定要'+_title+'该项目吗？'+_title+'后将不能恢复！', function(re){
+				if(re){
+					$.get(_obj.data('href'), '', function(res){
+						if(res.code==0){
+							_obj.parents('tr').remove();
+						}else{
+							bootbox.alert(res.data);
+						}
+					}, 'json');
+				}
+			});
+		});
+		
+	});
+</script>
+<body>
+</body>
+</html>

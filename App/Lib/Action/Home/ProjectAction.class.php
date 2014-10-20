@@ -1060,7 +1060,7 @@ class ProjectAction extends CommonAction{
 					$this->receiveBidsByPro($param);
 					break;
 				case 'mid':
-					
+					$this->receiveBidsByMem($param);
 					break;
 				default:
 					$this->assign('searchError', '请选择上方查询条件！');
@@ -1148,6 +1148,83 @@ class ProjectAction extends CommonAction{
 			$this->assign('bids', $bids);
 		}
 	}
-	
+	private function receiveBidsByMem(&$param){
+		if(empty($_REQUEST['words'])){
+			$this->assign('searchError', '请输入投标方名称！');
+		}else{
+			$param['words'] = $_REQUEST['words'];
+			$mid = D('Member')->getMembersByName(addslashes($_REQUEST['words']));
+			if(empty($mid)){
+				$this->assign('没有找到名字里包含 ”'.$_REQUEST['words'].'“ 的用户！');
+				return;
+			}
+			$bid = M('Bidder');
+			$where = array(
+					'bid_proid'	=> array('in', $mid),		// 指定用户的投标
+					'bid_state'		=> array('gt', 0)				// 投标成功 1=>投标中， 2=>备选， 3=>中标
+			);
+			// total and Page
+			$total = $bid->where($where)->count();
+			if($total==0){
+				$this->assign('暂无任何投标。');
+				return;
+			}
+			import('ORG.Util.Page');
+			$page = new Page($total, 8);
+			// 分页查询
+			$limit = $page->firstRow.",".$page->listRows;
+			$pager = $page->shown();
+			$this->assign("pager", $pager);
+			$join = ' LEFT JOIN zt_project ON bid_proid=pro_id ';
+			// 查询字段
+			$field = "bid_id,bid_publishtime, bid_sn, bid_mid, bid_state, bid_price, bid_currency, bid_unit, bid_price_flag, pro_id, pro_subject, pro_opentime";
+			$bids = $bid->join($join)->field($field)->where($where)->limit($limit)->select();
+			/**
+			 * 排序字段
+			 * 由于price字段是另外生成，故在此用php而不是mysql排序
+			*/
+			if(isset($_REQUEST['asc'])){
+				$asc = $_REQUEST['asc']=='1' ? SORT_ASC : SORT_DESC;
+				$param['asc'] = $_REQUEST['asc'];
+			}else{
+				$asc = SORT_DESC;
+			}
+			if(isset($_REQUEST['order'])){
+				switch($_REQUEST['order']){
+					case 'publish':
+						$order = "pro_publishtime";
+						break;
+					case 'amount':
+						$order = "amount";
+						break;
+					default:
+						$order = "bid_publishtime";
+				}
+				$param['order'] = $_REQUEST['order'];
+			}else{
+				$order = "bid_publishtime";
+			}
+				
+			$states = array('未发布','应标中','备选','中标');
+			foreach($bids as $k=>&$v){
+				//获取投标用户相关信息
+				$memInfo = D('Member')->getMemberInfo($v['bid_mid']);
+				$v['mem_name']	= empty($memInfo['name']) ? $v['bid_mid'] : $memInfo['name'];
+				$v['mem_place']	= empty($memInfo['place']) ? '未知' : $memInfo['place'];
+				// 获取报价：未开标考虑是否公开，已开标则公开
+				$price = D('Currency')->getCurrencySign($v['bid_currency']).' '.$v['bid_price'].' '.D('Unit')->getUnitName($v['bid_unit']);
+				if($v['pro_opentime']>$_SERVER['REQUEST_TIME']){
+					$v['price'] = $price;
+				}else{
+					$v['price'] = ($v['bid_price_flag']==1) ? '开标可见' : $price;
+				}
+				$v['amount'] = $v['bid_price']*(D('Unit')->getUnitMultiple($v['bid_unit']));
+				$v['state'] = $states[$v['bid_state']];
+				$orderArr[$k] = $v[$order];
+			}
+			array_multisort($orderArr, $asc, SORT_NUMERIC , $bids);
+			$this->assign('bids', $bids);
+		}
+	}
 	
 }
