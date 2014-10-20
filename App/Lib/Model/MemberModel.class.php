@@ -93,7 +93,11 @@ class MemberModel extends Model{
 		}
 		return array_merge($memp, $memc);
 	}
-	
+	/**
+	 * 获取用户所在地
+	 * @param 用户id $mid
+	 * @return 用户所在地 $place
+	 */
 	public function getMemberPlace($mid){
 		$type = $this->where('mem_id="'.$mid.'"')->getField('mem_type');
 		if($type==0){
@@ -104,6 +108,11 @@ class MemberModel extends Model{
 		return $place;
 	}
 	
+	/**
+	 * 获取用户实名验证信息
+	 * @param 用户id $mid
+	 * @return 用户是否实名验证
+	 */
 	public function getMemberStatus($mid){
 		$type = M("member")->where("mem_id='{$mid}'")->getField("mem_type");
 		if($type==1){
@@ -113,7 +122,12 @@ class MemberModel extends Model{
 		}
 		return $status;
 	}
-
+	
+	/**
+	 * 根据用户id获取用户详细信息（个人、公司）
+	 * @param 用户id $mid
+	 * @return 用户信息
+	 */
 	public function getMemberInfo($mid){
 		$member = $this->where("mem_id='{$mid}'")->find();
 		if($member['mem_type']==0){
@@ -143,4 +157,19 @@ class MemberModel extends Model{
 			return false;
 		}
 	}*/
+	/**
+	 * 根据用户名称（个人名、公司名）获取用户id
+	 * @param String $name
+	 */
+	public function getMembersByName($name){
+		$memp = $this->join('zt_memberperson ON mem_id=mp_mid')->where('mp_name like "%'.$name.'%"')->getField('mem_id', true);
+		$memc = $this->join('zt_membercompany ON mem_id=mc_mid')->where('mc_company like "%'.$name.'%"')->getField('mem_id', true);
+		if(empty($memp)){
+			$memp = array();
+		}
+		if(empty($memc)){
+			$memc = array();
+		}
+		return array_merge($memp, $memc);
+	}
 }
