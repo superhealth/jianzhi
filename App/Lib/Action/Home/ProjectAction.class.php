@@ -533,6 +533,9 @@ class ProjectAction extends CommonAction{
 		}
 	}
 	
+	/**
+	 * 创建项目成功
+	 */
 	public function createEd(){
 		$this->checkMember();
 		if(!empty($_SESSION['newProject'])){
@@ -553,6 +556,10 @@ class ProjectAction extends CommonAction{
 		$this->display();	
 	}
 	
+	/**
+	 * 我发布的项目 详情
+	 * @param string $id
+	 */
 	public function myProject($id=""){
 		if(empty($id)){
 			$this->_empty();
@@ -730,43 +737,6 @@ class ProjectAction extends CommonAction{
 		}
 	}
 	
-	/**
-	 * 移入历史档案区 关闭项目
-	 */
-	public function toHistory($id=""){
-		$this->checkMember();
-		$response = array('code'=>0, 'data'=>'');
-		$where = array(
-				'pro_id'		=> $id,
-				'pro_mid'	=> $_SESSION['member']
-		);
-		$is_exist = M('project')->where($where)->count();
-		if($is_exist>0){
-			$proInfo = M('project')->field('pro_id, pro_subject, pro_opentime')->where($where)->find();
-			if($proInfo['pro_opentime']<$_SERVER['REQUEST_TIME']){
-				//设置项目状态
-				M('project')->where($where)->setField('pro_status', 3);
-				// 所收到的投标自动转为历史
-				M('bidder')->where('bid_proid='.$id)->setField('bid_state', 2);
-				//向投标用户发送消息
-				$bids	= M('bidder')->where('bid_proid='.$id)->getField('bid_mid');
-				foreach($bids as $v){
-					$subject = '招标结束通知';
-					$content = '您所投标的项目《'.$proInfo['pro_subject'].'》已被发布者关闭。';
-					D('Notice')->sendProNotice($v, $subject, $content);
-				}
-				$this->ajaxReturn($response);
-			}else{
-				$response['code'] 	= 2;
-				$response['data']	= 'Sorry~该项目还未开标，不能关闭！';
-				$this->ajaxReturn($response);
-			}
-		}else{
-			$response['code'] 	= 1;
-			$response['data']	= '项目未开标或不存在！';
-			$this->ajaxReturn($response);
-		}
-	}
 	
 	/**
 	 * 草稿箱
@@ -967,6 +937,62 @@ class ProjectAction extends CommonAction{
 	}
 	
 	/**
+	 * 移入历史档案区 关闭项目
+	 */
+	public function toHistory($id=""){
+		$this->checkMember();
+		$response = array('code'=>0, 'data'=>'');
+		$where = array(
+				'pro_id'		=> $id,
+				'pro_mid'	=> $_SESSION['member']
+		);
+		$is_exist = M('project')->where($where)->count();
+		if($is_exist>0){
+			$proInfo = M('project')->field('pro_id, pro_subject, pro_opentime')->where($where)->find();
+			if($proInfo['pro_opentime']<$_SERVER['REQUEST_TIME']){
+				//设置项目状态
+				M('project')->where($where)->setField('pro_status', 3);
+				// 所收到的投标自动转为历史
+				M('bidder')->where('bid_proid='.$id)->setField('bid_state', 2);
+				//向投标用户发送消息
+				$bids	= M('bidder')->where('bid_proid='.$id)->getField('bid_mid');
+				foreach($bids as $v){
+					$subject = '招标结束通知';
+					$content = '您所投标的项目《'.$proInfo['pro_subject'].'》已被发布者关闭。';
+					D('Notice')->sendProNotice($v, $subject, $content);
+				}
+				$this->ajaxReturn($response);
+			}else{
+				$response['code'] 	= 2;
+				$response['data']	= 'Sorry~该项目还未开标，不能关闭！';
+				$this->ajaxReturn($response);
+			}
+		}else{
+			$response['code'] 	= 1;
+			$response['data']	= '项目未开标或不存在！';
+			$this->ajaxReturn($response);
+		}
+	}
+
+	/**
+	 * 删除历史档案项目
+	 */
+	public function delHistory($id=""){
+		$this->checkMember();
+		$response = array('code'=>0, 'data'=>'');
+		$where = array(
+				'pro_id'		=> $id,
+				'pro_mid'	=> $_SESSION['member'],
+				'pro_status'	=> 3,
+		);
+		if(M('bidder')->where($where)->setField('pro_status', 4)){
+		}else{
+			$response['code'] 	= 1;
+			$response['data']	= 'Sorry~档案项目不存在！';
+		}
+		$this->ajaxReturn($response);
+	}
+	/**
 	 * 历史档案
 	 */
 	public function historys(){
@@ -1049,7 +1075,63 @@ class ProjectAction extends CommonAction{
 		
 	}
 	
+	public function viewHistory(){
+		if(empty($id)){
+			$this->_empty();
+		}else{
+			$join = array(
+					'zt_sort ON pro_sort=sort_id',
+					'zt_property ON pro_prop=pp_id',
+					'zt_contact ON pro_contact=con_id'
+			);
+			$info = M("project")->join($join)->where("pro_id='{$id}' AND pro_mid='{$_SESSION['member']}'")->find();
+			if(empty($info)){
+				$this->_empty();
+			}
+			//项目封面
+			$info['cover'] = D('Attachement')->getAttSrc($info['pro_cover']);
+			//项目所在地
+			$info['pro_place'] = str_replace(array('中国','|','市','省'), array(' ',' ',' ',' '), $info['pro_place']);
+			//项目分类
+			$info['sorts'] = enumsDecode($info['pro_enums']);
+			array_unshift($info['sorts'], $info['sort_name']);
+			$info['sorts'] = implode(' / ', $info['sorts']);
+			//项目开标剩余时间
+			$info['openLeft'] = getTimeLeft($info['pro_opentime']);
+			//项目附件
+			$info['atts'] = D("Attachement")->getAtt($info['pro_attachement']);
+			//应标数量
+			$info['bids'] = D("Bidder")->getProBidersCount($info['pro_id']);
+			//项目信息
+			$this->assign("proInfo", $info);
+			//项目发布者信息
+			$member = M("member")->where("mem_id='{$info['pro_mid']}'")->find();
+			$member['regdays'] = getTimePass($member['mem_regtime'], 'd');
+			if($member['mem_type']==0){
+				$memberinfo = M("memberperson")->where("mp_mid='{$info['pro_mid']}'")->find();
+				$member['place'] = str_replace(array('中国','|','市','省'), array(' ',' ',' ',' '), $memberinfo['mp_addr']);
+				$member['status'] = $memberinfo['mp_status'];
+			}else{
+				$memberinfo = M("membercompany")->where("mc_mid='{$info['pro_mid']}'")->find();
+				$member['place'] = str_replace(array('中国','|','市','省'), array(' ',' ',' ',' '), $memberinfo['mc_addr']);
+				$member['status'] = $memberinfo['mc_status'];
+			}
+			$member['pros'] = D('Project')->getBidersCount($member['mem_id']);
+			$this->assign('memInfo', $member);
+			//项目状态
+			$this->assign("status", $this->status);
+			//投标限制
+			$this->assign("limits", $this->limits);
+			//项目收藏状态
+			$isCollect = D('Collection')->isCollected($id, $_SESSION['member']);
+			$this->assign('collected', $isCollect);
+			$this->display();
+		}
+	}
 	
+	/**
+	 * 收到的应标
+	 */
 	public function receiveBids(){
 		$this->checkMember();
 		$this->leftInit();
@@ -1073,6 +1155,12 @@ class ProjectAction extends CommonAction{
 		$this->assign('param', $param);
 		$this->display();
 	}
+	
+	
+	/**
+	 * 根据项目查找接到的投标单
+	 * @param unknown $param
+	 */
 	private function receiveBidsByPro(&$param){
 		if(empty($_REQUEST['words'])){
 			$this->assign('searchError', '请输入项目编号！');
@@ -1086,7 +1174,7 @@ class ProjectAction extends CommonAction{
 			$bid = M('Bidder');
 			$where = array(
 					'bid_proid'	=> $proid,					// 指定项目的投标
-					'bid_state'		=> array('gt', 0)		// 投标成功 1=>投标中， 2=>备选， 3=>中标
+					'bid_state'		=> 1							// 正在投标中 0=>未发布, 1=>应标中, 2=>历史记录, 3=>删除
 			);
 			// total and Page
 			$total = $bid->where($where)->count();
@@ -1102,7 +1190,7 @@ class ProjectAction extends CommonAction{
 			$this->assign("pager", $pager);
 			$join = ' LEFT JOIN zt_project ON bid_proid=pro_id ';
 			// 查询字段
-			$field = "bid_id,bid_publishtime, bid_sn, bid_mid, bid_state, bid_price, bid_currency, bid_unit, bid_price_flag, pro_opentime";
+			$field = "bid_id,bid_publishtime, bid_sn, bid_mid, bid_status, bid_price, bid_currency, bid_unit, bid_price_flag, pro_opentime";
 			$bids = $bid->join($join)->field($field)->where($where)->limit($limit)->select();
 			/**
 			 * 排序字段
@@ -1130,7 +1218,7 @@ class ProjectAction extends CommonAction{
 				$order = "bid_publishtime";
 			}
 			
-			$states = array('未发布','应标中','备选','中标');	
+			$status = array('空','备选','中标');	
 			foreach($bids as $k=>&$v){
 				//获取投标用户相关信息
 				$memInfo = D('Member')->getMemberInfo($v['bid_mid']);
@@ -1144,13 +1232,18 @@ class ProjectAction extends CommonAction{
 					$v['price'] = ($v['bid_price_flag']==1) ? '开标可见' : $price;
 				}
 				$v['amount'] = $v['bid_price']*(D('Unit')->getUnitMultiple($v['bid_unit']));
-				$v['state'] = $states[$v['bid_state']];
+				$v['status'] = $status[$v['bid_state']];
 				$orderArr[$k] = $v[$order];
 			}
 			array_multisort($orderArr, $asc, SORT_NUMERIC , $bids);
 			$this->assign('bids', $bids);
 		}
 	}
+	
+	/**
+	 * 根据用户查找收到的投标单
+	 * @param unknown $param
+	 */
 	private function receiveBidsByMem(&$param){
 		if(empty($_REQUEST['words'])){
 			$this->assign('searchError', '请输入投标方名称！');
@@ -1164,7 +1257,7 @@ class ProjectAction extends CommonAction{
 			$bid = M('Bidder');
 			$where = array(
 					'bid_proid'	=> array('in', $mid),		// 指定用户的投标
-					'bid_state'		=> array('gt', 0)				// 投标成功 1=>投标中， 2=>备选， 3=>中标
+					'bid_state'		=> 1									// 正在投标中 0=>未发布, 1=>应标中, 2=>历史记录, 3=>删除
 			);
 			// total and Page
 			$total = $bid->where($where)->count();
@@ -1180,7 +1273,7 @@ class ProjectAction extends CommonAction{
 			$this->assign("pager", $pager);
 			$join = ' LEFT JOIN zt_project ON bid_proid=pro_id ';
 			// 查询字段
-			$field = "bid_id,bid_publishtime, bid_sn, bid_mid, bid_state, bid_price, bid_currency, bid_unit, bid_price_flag, pro_id, pro_subject, pro_opentime";
+			$field = "bid_id,bid_publishtime, bid_sn, bid_mid, bid_status, bid_price, bid_currency, bid_unit, bid_price_flag, pro_id, pro_subject, pro_opentime";
 			$bids = $bid->join($join)->field($field)->where($where)->limit($limit)->select();
 			/**
 			 * 排序字段
@@ -1208,7 +1301,7 @@ class ProjectAction extends CommonAction{
 				$order = "bid_publishtime";
 			}
 				
-			$states = array('未发布','应标中','备选','中标');
+			$status = array('空','备选','中标');	
 			foreach($bids as $k=>&$v){
 				//获取投标用户相关信息
 				$memInfo = D('Member')->getMemberInfo($v['bid_mid']);
@@ -1222,7 +1315,7 @@ class ProjectAction extends CommonAction{
 					$v['price'] = ($v['bid_price_flag']==1) ? '开标可见' : $price;
 				}
 				$v['amount'] = $v['bid_price']*(D('Unit')->getUnitMultiple($v['bid_unit']));
-				$v['state'] = $states[$v['bid_state']];
+				$v['status'] = $status[$v['bid_state']];
 				$orderArr[$k] = $v[$order];
 			}
 			array_multisort($orderArr, $asc, SORT_NUMERIC , $bids);

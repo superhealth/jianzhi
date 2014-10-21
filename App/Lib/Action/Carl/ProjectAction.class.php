@@ -6,7 +6,7 @@
  */
 class ProjectAction extends BaseAction{
 	
-	private $status = array(0=> "未发布", 1=> "招标中", 2=> "已开标", 3=>"关闭"); 	//项目状态
+	private $status = array(0=> "未发布", 1=> "招标中", 2=> "已开标", 3=>"关闭", 4=>"关闭"); 	//项目状态
 	private $limits = array(0=> "不限", 1=> "个人", 2=> "企业");	//项目投标限制
 	/**
 	 * 所有已发布项目
@@ -207,15 +207,15 @@ class ProjectAction extends BaseAction{
 	 * 历史档案
 	 */
 	public function history(){
-		$history = M("pro_record");
-		$map = array();
+		$history = M("project");
+		$map = array('pro_status'=>3);
 		//筛选条件
 		$param = array();
 		//项目状态
-		if(isset($_REQUEST['status']) && $_REQUEST['status']!="all"){
+		/* if(isset($_REQUEST['status']) && $_REQUEST['status']!="all"){
 			$map['pro_status']  = $_REQUEST['status'];
 			$param['status'] = $_REQUEST['status'];
-		}
+		} */
 		//项目属性
 		if(isset($_REQUEST['prop']) && $_REQUEST['prop']!="all"){
 			$map['pro_prop']  = $_REQUEST['prop'];
@@ -251,12 +251,12 @@ class ProjectAction extends BaseAction{
 				"(SELECT bid_proid,count(*) bidders FROM zt_bidder GROUP BY bid_proid) b ON pro_id=b.bid_proid",
 		);
 		// 查询字段
-		$field = "re_id,pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_publishtime, pro_status, IFNULL(bidders, 0) bidders";
+		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_prop, pro_publishtime, pro_status, IFNULL(bidders, 0) bidders";
 		// 排序
 		$order = "pro_publishtime DESC";
 		$historys = $history->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		// 项目状态
-		$this->assign("status", $this->status);
+		//$this->assign("status", $this->status);
 		//dump($history->getLastSql());
 		$this->assign("historys", $historys);
 		//所有分类
@@ -291,7 +291,7 @@ class ProjectAction extends BaseAction{
 	}
 	
 	public function viewHistory($id=""){
-		$info = M("pro_record")->where("re_id='{$id}'")->find();
+		$info = M("project")->where("pro_id='{$id}'")->find();
 		//dump(areaToSelect(areaDecode($info['pro_place'])));
 		$info['place'] = areaToSelect(areaDecode($info['pro_place']));
 		$info['enums'] = enumsToSelect($info['pro_sort'], enumsDecode($info['pro_enums']));
@@ -322,13 +322,21 @@ class ProjectAction extends BaseAction{
 			$this->error("无此权限！");
 		}
 		$map = array("pro_id"=>array("in", $id));
-		$names = M("project")->where($map)->getField("pro_subject", true);
-		$atts = M("project")->where($map)->getField("pro_attachment", true);
-		$deposit = M("bidder")->join("zt_deposit ON de_trade_no=bid_sn")->where(array("bid_proid"=>array("in", $id)))->getField("de_id", true);
-		if(M("project")->where($map)->delete()){
-			//删除成功，删除附件，退款
+		if(M("project")->where($map)->setField("pro_status", 4)){
+			//删除成功，删除附件
+			$atts = M("project")->where($map)->getField("pro_attachment", true);
 			attDelete($atts);
 			//D("Deposit")->backDeposit($deposit);
+			// 所收到的投标自动转为历史
+			M('bidder')->where(array("bid_proid"=>array("in", $id)))->setField('bid_state', 2);
+			//向投标用户发送消息
+			$bids	= M('bidder')->field('bid_mid, pro_subject')->join('LEFT JOIN project ON bid_proid=pro_id')->where(array("bid_proid"=>array("in", $id)))->select();
+			foreach($bids as $k=>$v){
+				$subject = '招标取消通知';
+				$content = '很遗憾，您所投标的项目《'.$v['pro_subject'].'》已被发布者取消。';
+				D('Notice')->sendProNotice($v['bid_mid'], $subject, $content);
+			}
+			$names = M("project")->where($map)->getField("pro_subject", true);
 			$this->watchdog("删除", "删除项目《".implode("》，《", $names)."》");
 			$this->success("删除成功！");
 			
@@ -345,13 +353,13 @@ class ProjectAction extends BaseAction{
 		if(!per_check("pro_record_del")){
 			$this->error("无此权限！");
 		}
-		$map = array("re_id"=>array("in", $id));
-		$names = M("pro_record")->where($map)->getField("pro_subject", true);
-		$atts = M("pro_record")->where($map)->getField("pro_attachment", true);
+		$map = array("pro_id"=>array("in", $id), "pro_status"=>3);
+		$names = M("project")->where($map)->getField("pro_subject", true);
+		$atts = M("project")->where($map)->getField("pro_attachment", true);
 		//$deposit = M("bidder")->join("zt_deposit ON de_trade_no=bid_sn")->where(array("bid_proid"=>array("in", $id)))->getField("de_id", true);
-		if(M("pro_record")->where($map)->delete()){
-			//删除成功，删除附件，
-			attDelete($atts);
+		if(M("project")->where($map)->setField("pro_status", 4)){
+			//设置成功
+			//attDelete($atts);	//删除附件 
 			$this->watchdog("删除", "删除项目历史档案《".implode("》，《", $names)."》");
 			$this->success("删除成功！");
 				

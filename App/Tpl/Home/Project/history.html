@@ -2,17 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>我的草稿项目</title>
+<title>我的招标档案</title>
 <include file="public:css" />
 <include file="public:js" />
 </head>
 <include file="public:header" />
 <div class="container">
-	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">会员中心</a> / <a href="__GROUP__/Project/index">我的招标项目</a> / 草稿箱</div>
+	<div class="breadcrumb">您当前的位置为：<a href="__GROUP__/Member">会员中心</a> / <a href="__GROUP__/Project/index">我的招标项目</a> / 我的招标档案</div>
 	<div class="content">
 		<include file="public:left" />
 		<div class="mem_main">
-			<h3 class="mem_sub_title">草稿箱</h3>
+			<h3 class="mem_sub_title">我的招标档案</h3>
 			<div class="mem_content">
 				<form action="" method="get" id="">
 				<div class="pro_search">
@@ -20,44 +20,43 @@
 					</div>
 				</div>
 				<div class="pro_pagination">
-					<div class="pro_status_filter">
-						<button type="button" class="btn" id="btn-draft-delete" data-act="__URL__/draftDel" style="margin-left:5px; margin-top:3px;" >删除选中</button>
-					</div>
-					{$pager.show}{$pager.header}
-				</div>
+					{$pager.show}{$pager.header}</div>
+				</form>
 				<div class="pro_caption">
-					<div style="width:60px;"><span><label style="cursor:pointer;"><input style="vertical-align:central;" type="checkbox" name="" id="checkall" /> 全选</label></span></div>
+					<div class="td_120"><span class="order-links" data-order="publish" data-asc='0'>发布日期&darr;&uarr;</span></div>
 					<div class="split"></div>
-					<div style="width:130px;"><span class="order-links" data-order="create" data-asc='0'>创建日期&darr;&uarr;</span></div>
+					<div class="td_270">项目名称</div>
 					<div class="split"></div>
-					<div style="width:150px;">项目编号</div>
+					<div class="td_80"><span class="order-links" data-order="bids" data-asc='0'>参投方数&darr;&uarr;</span></div>
 					<div class="split"></div>
-					<div style="width:330px;">项目名称</div>
+					<div class="td_150"><span class="order-links" data-order="open" data-asc='0'>开标时间&darr;&uarr;</span></div>
 					<div class="split"></div>
-					<div style="width:121px;"><span>操作</span></div>
+					<div class="td_170"><span>操作</span></div>
 				</div>
-				<table class="draft_list" cellpadding="0" cellspacing="0" border="0">
-					<if condition="$projects eq ''">
-					<tr ><td colspan="9" align="center"><h3></h3></td></tr>
-					</if>
+				<table class="pro_list" cellpadding="0" cellspacing="0" border="0">
 					<volist name="projects" id="pitem">
-					<tr class="pro_item_content" <if condition="$i%2 eq 0">style="background:#f3f3f3;"</if>>
-						<td style="width:60px;" align="center"><span><input type="checkbox" name="id[]" value="{$pitem.pro_id}" /></span></td>
-						<td class="split"></td>
-						<td style="width:130px;" align="center"><span>{$pitem.pro_createtime|timeFormat='Y/m/d'}</span></td>
-						<td class="split"></td>
-						<td style="width:150px;" align="center"><span>{$pitem.pro_sn}</span></td>
-						<td class="split"></td>
-						<td style="width:330px;"><span style="margin-left:20px;"><a href="__URL__/draftEdit/id/{$pitem.pro_id}">{$pitem.pro_subject|get_summary=40}</a></span></td>
-						<td class="split"></td>
-						<td style="width:121px;" align="center">
-							<a href="__URL__/draftEdit/id/{$pitem.pro_id}">修改</a>
-							<a href="__URL__/draftDel/id/{$pitem.pro_id}" class="draft-del-btn" title="删除" style="margin-left:10px;">删除</a>
+					<tr class="pro_item_sub">
+						<td colspan="9">
+							<span class="sub_td1">项目编号： <strong>{$pitem.pro_sn}</strong></span>
+							<span class="sub_td2">项目属性： {$pitem.pp_name}</span>
+							<span class="sub_td3">项目类别： {$pitem.sort_name} {$pitem.pro_enums}</span>
 						</td>
+						</tr>
+						<tr class="pro_item_content">
+							<td class="td_120" align="center"><span>{$pitem.pro_publishtime|timeFormat='Y/m/d'}</span></td>
+							<td class="split"></td>
+							<td class="td_270"><span style="margin-left:20px;"><a href="__URL__/viewHistory/id/{$pitem.pro_id}">{$pitem.pro_subject|get_summary=40}</a></span></td>
+							<td class="split"></td>
+							<td class="td_80" align="center"><span><a href="__URL__/receiveBids/tag/pro/words/{$pitem.pro_sn}">{$pitem.bidders}</a></span></td>
+							<td class="split"></td>
+							<td class="td_150" align="center"><span>{$pitem.opentime}</span></td>
+							<td class="split"></td>
+							<td class="td_170" align="center">
+								<a href="javascript:void(0);" class="pro-ajax-btn" title="删除档案" data-href="__URL__/delHistory/id/{$pitem.pro_id}" style="margin-left:10px;">删除</a>
+							</td>
 					</tr>
 					</volist>
 				</table>
-				</form>
 			</div>
 		</div>
 		<div class="clearfix"></div>
@@ -90,10 +89,11 @@
 			e.preventDefault();
 			_title = $(this).attr('title');
 			_obj = $(this);
-			bootbox.confirm('您确定要'+_title+'该项目吗？'+_title+'后将不能恢复！', function(re){
+			bootbox.confirm('您确定要删除该项目档案吗？删除后将不能恢复！', function(re){
 				if(re){
 					$.get(_obj.data('href'), '', function(res){
 						if(res.code==0){
+							_obj.parents('tr').prev().remove();
 							_obj.parents('tr').remove();
 						}else{
 							bootbox.alert(res.data);
@@ -102,25 +102,7 @@
 				}
 			});
 		});
-		$('#checkall').click(function(){
-			$(this).parents('form').find('input[name="id[]"]').prop('checked', $(this).prop('checked'));
-		});
-		$('#btn-draft-delete').click(function(){
-			if($('input:checked').length>0){
-				$(this).parents('form').attr('action', $(this).data('act')).submit();
-			}else{
-				bootbox.alert('未选中草稿项目！');return false;
-			}
-		});
-		$('.draft-del-btn').click(function(e){
-			e.preventDefault();
-			bootbox.confirm('确定删除草稿项目吗？', function(res){
-				if(res){
-				}else{
-					
-				}
-			});
-		});
+		
 	});
 </script>
 <body>
