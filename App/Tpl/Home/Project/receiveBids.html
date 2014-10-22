@@ -23,10 +23,12 @@
 						<div class="pro_search_go btn-sub" data-act="">确定</div>
 					</div>
 				</div>
-				<div class="pro_pagination">
-					{$pager.show}{$pager.header}</div>
-				</form>
+				
+				
 				<if condition="$param['tag'] eq 'pro'">
+				<div class="pro_info_for_bid">{$proInfo}</div>
+				<div class="pro_pagination" style="margin-top:0;">{$pager.show}{$pager.header}</div>
+				</form>
 				<div class="pro_caption">
 					<div style="width:100px;"><span class="order-links" data-order="publish" data-asc='0'>投标日期&darr;&uarr;</span></div>
 					<div class="split"></div>
@@ -40,12 +42,12 @@
 					<div class="split"></div>
 					<div style="width:80px;"><span>中标状态</span></div>
 				</div>
-				<table class="pro_list" cellpadding="0" cellspacing="0" border="0">
+				<table class="pro_tab" cellpadding="0" cellspacing="0" border="0">
 					<volist name="bids" id="pitem">
-					<tr class="pro_item_content" <if condition="$i%2 eq 0">style="background:#f3f3f3;"</if>>
+					<tr class="pro_item_single" <if condition="$i%2 eq 0">style="background:#f3f3f3;"</if>>
 							<td style="width:100px;" align="center"><span>{$pitem.bid_publishtime|timeFormat='Y/m/d'}</span></td>
 							<td class="split"></td>
-							<td style="width:140px;" align="center"><span>{$pitem.bid_sn}</span></td>
+							<td style="width:140px;" align="center"><span><a href="__GROUP__/Bid/detail/id/{$pitem.bid_id}">{$pitem.bid_sn}</a></span></td>
 							<td class="split"></td>
 							<td style="width:180px;" align="center"><span><a class="colorbox" href="__GROUP__/Member/view/id/{$pitem['bid_mid']}">{$pitem.mem_name}</a></span></td>
 							<td class="split"></td>
@@ -58,8 +60,16 @@
 					</volist>
 				</table>
 				<else />
+				<div class="pro_pagination">
+					<div class="pro_status_filter">
+						<label class="i-radio"><input type="radio" name="status" value="1" <if condition="$param[status] eq 1">checked</if> />未开标</label>
+						<label class="i-radio"><input type="radio" name="status" value="2" <if condition="$param[status] eq 2">checked</if> />已开标</label>
+						<label class="i-radio"><input type="radio" name="status" value="all" <if condition="$param[status] eq 'all'">checked</if> />全部</label>
+					</div>
+					{$pager.show}{$pager.header}</div>
+				</form>
 				<div class="pro_caption">
-					<div style="width:80px;"><span class="order-links" data-order="publish" data-asc='0'>投标日期</span></div>
+					<div style="width:80px;"><span class="order-links" data-order="publish" data-asc='0'>投标日期&darr;&uarr;</span></div>
 					<div class="split"></div>
 					<div style="width:120px;"><span>投标编号</span></div>
 					<div class="split"></div>
@@ -67,28 +77,28 @@
 					<div class="split"></div>
 					<div style="width:180px;"><span>项目名称</span></div>
 					<div class="split"></div>
-					<div style="width:80px;"><span class="order-links" data-order="opentime" data-asc='0'>开标时间</span></div>
+					<div style="width:80px;"><span class="order-links" data-order="opentime" data-asc='0'>开标时间&darr;&uarr;</span></div>
 					<div class="split"></div>
-					<div style="width:140px;"><span class="order-links" data-order="amount" data-asc='0'>报价(总价)</span></div>
+					<div style="width:140px;"><span class="order-links" data-order="amount" data-asc='0'>报价(总价)&darr;&uarr;</span></div>
 					<div class="split"></div>
-					<div style="width:60px;"><span class="order-links" data-order="status" data-asc='0'>中标状态</span></div>
+					<div style="width:69px;"><span class="order-links" data-order="status" data-asc='0'>中标状态&darr;&uarr;</span></div>
 				</div>
-				<table class="pro_list" cellpadding="0" cellspacing="0" border="0">
+				<table class="pro_tab" cellpadding="0" cellspacing="0" border="0">
 					<volist name="bids" id="pitem">
-					<tr class="pro_item_content" <if condition="$i%2 eq 0">style="background:#f3f3f3;"</if>>
-							<td style="width:100px;" align="center"><span>{$pitem.bid_publishtime|timeFormat='Y/m/d'}</span></td>
+					<tr class="pro_item_single" <if condition="$i%2 eq 0">style="background:#f3f3f3;"</if>>
+							<td style="width:80px;" align="center"><span>{$pitem.bid_publishtime|timeFormat='Y/m/d'}</span></td>
 							<td class="split"></td>
-							<td style="width:140px;" align="center"><span>{$pitem.bid_sn}</span></td>
+							<td style="width:120px;" align="center"><span><a href="__GROUP__/Bid/detail/id/{$pitem.bid_id}">{$pitem.bid_sn}</a></span></td>
 							<td class="split"></td>
-							<td style="width:140px;" align="center"><span>{$pitem.pro_sn}</span></td>
+							<td style="width:120px;" align="center"><span><a href="__GROUP__/Project/detail/id/{$pitem['pro_id']}">{$pitem.pro_sn}</a></span></td>
 							<td class="split"></td>
-							<td style="width:180px;" align="center"><span><a href="__GROUP__/Project/detail/id/{$pitem['pro_id']}">{$pitem.pro_subject}</a></span></td>
+							<td style="width:180px;" align="center"><span><a title="{$pitem.pro_subject}" href="__GROUP__/Project/detail/id/{$pitem['pro_id']}">{$pitem.pro_subject|get_summary=12}</a></span></td>
 							<td class="split"></td>
-							<td style="width:150px;" align="center"><span>{$pitem.opentime}</span></td>
+							<td style="width:80px;" align="center"><span>{$pitem.opentime}</span></td>
 							<td class="split"></td>
 							<td style="width:140px;" align="center"><span>{$pitem.price}</span></td>
 							<td class="split"></td>
-							<td style="width:80px;" align="center"><span>{$pitem.state}</span></td>
+							<td style="width:69px;" align="center"><span>{$pitem.state}</span></td>
 					</tr>
 					</volist>
 				</table>
@@ -112,6 +122,9 @@
 			var orderObj = $(".order-links[data-order='"+order+"']");
 			orderObj.data("asc", asc);
 		}());
+		$('input[name="status"]').click(function(){
+			$(this).parents('form')[0].submit();
+		});
 	});
 </script>
 <body>

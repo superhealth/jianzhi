@@ -484,8 +484,9 @@ label.sex input{margin-right:5px; vertical-align: middle;}
 /* bid modify */
 
 
-/* bid  */
-
+/* bid  received*/
+.pro_info_for_bid{padding-left:20px;line-height:26px;margin-top:20px; background:#e0e0e0;}
+.pro_info_for_bid span{margin-right:20px;}
 
 /* bid  */
 

@@ -100,15 +100,19 @@ class MemberModel extends Model{
 	 * @return array 用户id
 	 */
 	public function getMemberByName($name){
-		$memp = $this->join('zt_memberperson ON mem_id=mp_mid')->where('mp_addr like "%'.$name.'%"')->getField('mem_id', true);
-		$memc = $this->join('zt_membercompany ON mem_id=mc_mid')->where('mc_addr like "%'.$name.'%"')->getField('mem_id', true);
+		$mem 		= $this->where('mem_id like "%'.$name.'%"')->getField('mem_id', true);
+		$memp 	= $this->join('zt_memberperson ON mem_id=mp_mid')->where('mp_addr like "%'.$name.'%"')->getField('mem_id', true);
+		$memc 	= $this->join('zt_membercompany ON mem_id=mc_mid')->where('mc_addr like "%'.$name.'%"')->getField('mem_id', true);
+		if(empty($mem)){
+			$mem = array();
+		}
 		if(empty($memp)){
 			$memp = array();
 		}
 		if(empty($memc)){
 			$memc = array();
 		}
-		return array_merge($memp, $memc);
+		return array_merge($mem, $memp, $memc);
 	}
 	
 	/**
