@@ -9,6 +9,8 @@ class CommonAction extends EmptyAction{
 	 * 初始化方法
 	 */
 	public function _initialize(){
+		// 底部链接
+		$this->assign('pageList', M('pages')->field('pg_id, pg_name, pg_title')->select());
 		//检查会员过期
 		D("Member")->updateMemberActive();
 		//检查项目开标

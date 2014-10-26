@@ -130,7 +130,7 @@ class SortAction extends BaseAction{
 				</div></fieldset></form>';
 			$info = M("sort")->where("sort_id={$_REQUEST['id']}")->find();
 			if($info){
-				echo str_replace(array("%id%", "%name%", "%order%", "%url%"), __ACTION__, $responseHtml);
+				echo str_replace(array("%id%", "%name%", "%order%", "%url%"), array($info['sort_id'], $info['sort_name'],$info['sort_order'],__ACTION__), $responseHtml);
 			}else{
 				echo response_msg("参数错误！", "error", true);
 			}

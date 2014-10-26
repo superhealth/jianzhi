@@ -89,8 +89,8 @@
 			e.preventDefault();
 			_title = $(this).attr('title');
 			_obj = $(this);
-			bootbox.confirm('您确定要删除该项目档案吗？删除后将不能恢复！', function(re){
-				if(re){
+			bootbox.confirm('您确定要删除该项目档案吗？删除后将不能恢复！', function(res){
+				if(res){
 					$.get(_obj.data('href'), '', function(res){
 						if(res.code==0){
 							_obj.parents('tr').prev().remove();

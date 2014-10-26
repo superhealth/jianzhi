@@ -1,23 +1,11 @@
 <div class="footer">
 	<div class="footer1">
 		<div class="content foot_links">
-			<a href="">关于订单网</a>
+			<volist name="pageList" id="pg">
+			<a href="__GROUP__/Index/{$pg.pg_name}">{$pg.pg_title}</a>
 			<span>/</span>
-			<a href="">联系我们</a>
-			<span>/</span>
-			<a href="">营销中心</a>
-			<span>/</span>
-			<a href="">帮助中心</a>
-			<span>/</span>
-			<a href="">团队介绍</a>
-			<span>/</span>
-			<a href="">招贤纳士</a>
-			<span>/</span>
-			<a href="">投诉与建议</a>
-			<span>/</span>
-			<a href="">法律声明</a>
-			<span>/</span>
-			<a href="">使用指南</a>
+			</volist>
+			<a href="__GROUP__/Guides">使用指南</a>
 		</div>
 	</div>
 	<div class="footer2">

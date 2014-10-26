@@ -38,18 +38,24 @@
 					<span class="proInfo_label">标 题</span>
 					<div class="proInfo_content">
 						<p><span class="pro_comp_info_left">项目编号：{$info.pro_sn}</span><span  class="pro_comp_info_right">类别：{$sorts[$info['pro_sort']]} {$info.pro_enums}</span></p>
-						<p>项目名称：{$info.pro_subject}</p>
+						<p></p>
 					</div>
 				</div>
 				<div class="proInfo_block">
 					<div class="pro_groups">
-						<label for="pro_quantity"><span class="red">*</span>数量：</label>
+						<label for="pro_quantity"><span class="red">*</span>项目名称：</label>
+						<div class="pro_control">
+							<input type="text" id="pro_subject" class="inp inp-lag" name="pro_subject" value="{$info.pro_subject}" />
+						</div>
+					</div>
+					<div class="pro_groups">
+						<label for="pro_quantity"><span class="red">*</span>数 量：</label>
 						<div class="pro_control">
 							<input type="text" id="pro_quantity" class="inp inp-mini" name="pro_quantity" value="{$info.pro_quantity}" />
 						</div>
 					</div>
 					<div class="pro_groups">
-						<label for="pro_unit"><span class="red">*</span>单位：</label>
+						<label for="pro_unit"><span class="red">*</span>单 位：</label>
 						<div class="pro_control">
 							<input type="text" id="pro_unit" class="inp inp-mini" name="pro_unit" value="{$info.pro_unit}" />
 						</div>
@@ -95,13 +101,13 @@
 						</div>
 					</div>
 					<div class="pro_groups">
-						<label for="pro_end"><span class="red">*</span>任务交货日期：</label>
+						<label for="pro_end">任务交货日期：</label>
 						<div class="pro_control">
 							<input type="text" id="pro_end" class="inp datepicker" name="pro_end" value="{$info['startToEnd'][1]}"  />
 						</div>
 					</div>
 					<div class="pro_groups">
-						<label for="pro_subject"><span class="red">*</span>任务实施地：</label>
+						<label for="pro_subject">任务实施地：</label>
 						<div class="pro_control">
 							{$info.place}
 						</div>

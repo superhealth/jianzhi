@@ -708,7 +708,7 @@ class ProjectAction extends CommonAction{
 		$where = array(
 				'pro_id'		=> $id,
 				'pro_mid'	=> $_SESSION['member'],
-				'pro_status'	=> array('lt', 2)
+				'pro_status'	=> array('lt', 3)
 		);
 		$proInfo = M('project')->field('pro_id, pro_subject, pro_opentime')->where($where)->find();
 		if(!empty($proInfo)){
@@ -986,6 +986,7 @@ class ProjectAction extends CommonAction{
 				'pro_status'	=> 3,
 		);
 		if(M('bidder')->where($where)->setField('pro_status', 4)){
+			
 		}else{
 			$response['code'] 	= 1;
 			$response['data']	= 'Sorry~档案项目不存在！';

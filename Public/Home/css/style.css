@@ -14,7 +14,7 @@ button,input { *overflow: visible; line-height: normal; border: 0;}
 textarea { overflow: auto; vertical-align: top;}
 select{margin-right:10px; height:22px; line-height:22px; padding:0; }
 ul li{list-style:none;}
-.container{background:#f9f9f9; clear:both;}
+.container{background:#f9f9f9; clear:both; margin-top:5px;}
 .content{width:1024px; margin-left:auto; margin-right:auto;}
 .left{float:left;}
 .right{float:right;}
