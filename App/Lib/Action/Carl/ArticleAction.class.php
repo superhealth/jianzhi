@@ -43,7 +43,7 @@ class ArticleAction extends BaseAction{
 			redirect(__URL__);
 		}else{
 			$info = M('Pages')->where('pg_id='.$id)->find();
-			$this->assign($info);
+			$this->assign('info', $info);
 			$this->display();
 		}
 	}

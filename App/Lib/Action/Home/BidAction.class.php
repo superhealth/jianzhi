@@ -990,4 +990,53 @@ class BidAction extends CommonAction{
 		echo json_encode_nonull($ajaxData);exit;
 	}
 	
+	public function receive($id=0){
+		
+		$join = array(
+				'zt_project ON pro_id=bid_proid',
+				'zt_sort ON zt_sort.sort_id = zt_project.pro_sort',
+				'zt_contact ON bid_contact = con_id'
+		);
+		$bidInfo = M('Bidder')->join($join)->where('bid_id="'.$id.'" AND pro_mid="'.$_SESSION['member'].'"')->find();
+		if(empty($bidInfo)){
+			$this->_empty();
+		}
+		if($bidInfo['bid_state']>1){
+			$this->error('该次投标已被取消！');
+		}
+		//项目封面
+		$bidInfo['cover'] 		= D('Attachement')->getAttSrc($bidInfo['pro_cover']);
+		//报价单
+		$bidInfo['quoted'] 	= M('attachement')->where('att_id="'.$bidInfo['bid_quoted'].'"')->find();
+		//投标书
+		$bidInfo['tenders'] 	= M('attachement')->where('att_id="'.$bidInfo['bid_tenders'].'"')->find();
+		//生产属性
+		$this->assign('props', D('Property')->getProps());
+		//投标限制
+		$this->assign('limits', array('不限', '个人', '企业'));
+		//币值单位
+		$this->assign('units', D('Unit')->getUnits());
+		//货币类型
+		$this->assign('currencys', D('Currency')->getCurrencyBySign());
+		//税费类型
+		$this->assign('taxes', D('Taxes')->getTaxes());
+		// 项目发布者信息
+		$memInfo = D('Member')->getMemberInfo($bidInfo['pro_mid']);
+		// 投标用户信息
+		$userInfo = D('Member')->getMemberInfo($bidInfo['bid_mid']);
+		if(empty($bidInfo['con_name'])){
+			$bidInfo['con_name'] = $userInfo['name'];
+		}
+		if(empty($bidInfo['con_tel'])){
+			$bidInfo['con_tel'] = $userInfo['tel'];
+		}
+		if(empty($bidInfo['con_email'])){
+			$bidInfo['con_email'] = $userInfo['mem_email'];
+		}
+		$this->assign('bidInfo', $bidInfo);
+		$this->assign('memInfo', $memInfo);
+		$this->assign('userInfo', $userInfo);
+		$this->display();
+	}
+	
 }

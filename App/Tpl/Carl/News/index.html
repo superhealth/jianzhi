@@ -18,7 +18,7 @@
 							<a href="__GROUP__">首页</a> <span class="divider">/</span>
 						</li>
 						<li>
-							<a href="__URL__/Article/index">栏目管理</a>
+							<a href="__URL__/News/index">新闻管理</a>
 						</li>
 					</ul>
 				</div>
@@ -33,25 +33,27 @@
 							<thead>
 								<tr>
 									<th width="10%"><input type="checkbox" /> ID</th>
-									<th width="10%">排序</th>
-									<th width="60%">标题</th>
-									<th width="20%">操作</th>                                       
+									<th width="16%">时间</th>
+									<th width="10%">作者</th>
+									<th width="40%">标题</th>
+									<th width="24%">操作</th>                                       
 								  </tr>
 							  </thead>   
 							  <tbody>
 								<volist name="lists" id="item">
 								<tr>
-									<td><input type="checkbox" name="id[]" value="{$item.pg_id}" /></td>
-									<td>{$item.pg_order}</td>
-									<td><a href="__URL__/editArticle/id/{$item.pg_id}">{$item.pg_title}</a></td>
+									<td><input type="checkbox" name="id[]" value="{$item.ne_id}" /></td>
+									<td>{$item.ne_adate|timeFormat='Y-m-d H:i'}</td>
+									<td>{$item.ne_author}</td>
+									<td><a href="__URL__/editNews/id/{$item.ne_id}">{$item.ne_title}</a></td>
 									<td>
-										<a class="btn btn-primary" target="_blank" href="__APP__/Home/Index/{$item.pg_name}">
+										<a class="btn btn-primary" target="_blank" href="__APP__/Home/News/view/id/{$item.ne_id}">
 											<i class="icon-search icon-white"></i> 预览
 										</a>
-										<a class="btn btn-info" href="__URL__/editArticle/id/{$item.pg_id}">
+										<a class="btn btn-info" href="__URL__/editNews/id/{$item.ne_id}">
 											<i class="icon-edit icon-white"></i>  编辑
 										</a>
-										<a class="btn btn-danger _delete_" href="#" data-href="__URL__/deleteArticle/chkt/{$item.pg_id}">
+										<a class="btn btn-danger _delete_" href="#" data-href="__URL__/delNews/id/{$item.ne_id}">
 											<i class="icon-trash icon-white"></i> 删除
 										</a>
 									</td>                                     
@@ -68,8 +70,8 @@
 						  	</div>
 						 </div>
 						 <div class="row-fluid">
-						 	<button class="btn btn-mini btn-danger _deletes_" type="button" data-href="__URL__/delArticle"><i class="icon-trash icon-white"></i> 删除选中</button>
-						 	<button class="btn btn-mini btn-success _actions_" type="button" data-href="__URL__/addArticle" ><i class="icon icon-attachment icon-white"></i> 添加</button>
+						 	<button class="btn btn-mini btn-danger _deletes_" type="button" data-href="__URL__/delNews"><i class="icon-trash icon-white"></i> 删除选中</button>
+						 	<a class="btn btn-mini btn-success" href="__URL__/addNews" ><i class="icon icon-attachment icon-white"></i> 添加</a>
 						 </div> 
 						 </form>    
 					</div>

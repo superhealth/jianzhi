@@ -20,7 +20,7 @@ class NewsAction extends BaseAction{
 		$limit = $page->firstRow.",".$page->listRows;
 		$pager = $page->shown();
 		$this->assign("pager", $pager);
-		$order = "ne_order";
+		$order = "ne_adate DESC";
 		$lists = $news->order($order)->limit($limit)->select();
 		//换色
 		if(!empty($param['words'])){
@@ -40,13 +40,14 @@ class NewsAction extends BaseAction{
 			redirect(__URL__);
 		}else{
 			$info = M('News')->where('ne_id='.$id)->find();
-			$this->assign($info);
+			$this->assign('info', $info);
 			$this->display();
 		}
 	}
 	public function saveNews(){
 		$art = M('News');
 		$data = $art->create();
+		$data['ne_adate'] = $_SERVER['REQUEST_TIME'];
 		if(isset($data['ne_id'])){
 			if($art->save($data)){
 				$this->watchdog("修改", '修改《'.$data['ne_title'].'》栏目');
