@@ -18,7 +18,7 @@
 					<ul class="breadcrumb">
 						<li><a href="__GROUP__/Index">Home</a> <span class="divider">/</span></li>
 						<li><a href="__URL__/index">栏目列表</a> <span class="divider">/</span></li>
-						<li>新增栏目</li>
+						<li>新增</li>
 					</ul>
 				</div>
 			<div class="row-fluid sortable">
@@ -27,50 +27,56 @@
 						<h2><i class="icon-edit"></i>内容管理</h2>
 					</div>
 					<div class="box-content">
-						<form class="form-horizontal" action="__URL__/saveArticle" method="post" enctype="multipart/form-data" >
+						<form class="form-horizontal" action="__URL__/saveGuides" method="post" enctype="multipart/form-data" >
 						  <fieldset>
 							<legend>新增栏目</legend>
 							<div class="control-group">
-							  <label class="control-label" for="pg_title">栏目标题<span class="red">*</span></label>
+							  <label class="control-label" for="gu_title">栏目标题<span class="red">*</span></label>
 							  <div class="controls">
-								<input type="text" class="span6" id="pg_title" name="pg_title" value="" />
+								<input type="text" class="span6" id="gu_title" name="gu_title" value="" />
 							  </div>
 							</div>
 							<div class="control-group">
-							  <label class="control-label" for="pg_name">链接名称</label>
+							  <label class="control-label" for="gu_name">链接名称</label>
 							  <div class="controls">
-								<input type="text" class="input-xlarge" id="pg_name" value="" name="pg_name" /><span>(非特殊需求不用改)</span>
+								<input type="text" class="input-xlarge" id="gu_name" value="" name="gu_name" />
 							  </div>
 							</div>
 							<div class="control-group">
-							  <label class="control-label" for="pg_order">位置顺序</label>
+							  <label class="control-label" for="gu_order">位置顺序</label>
 							  <div class="controls">
-								<input type="text" class="input-xlarge" id="pg_order" value="" name="pg_order" />
+								<input type="text" class="input-xlarge" id="gu_order" value="" name="gu_order" />
 							  </div>
 							</div>
 							<div class="control-group">
-							  <label class="control-label" for="pg_keywords">关键字</label>
+							  <label class="control-label" for="gu_keywords">关键字</label>
 							  <div class="controls">
-								<input type="text" class="span10" id="pg_keywords" value="" name="pg_keywords" />
+								<input type="text" class="span10" id="gu_keywords" value="" name="gu_keywords" />
 							  </div>
 							</div>
 							<div class="control-group">
-							  <label class="control-label" for="pg_desc">描述</label>
+							  <label class="control-label" for="gu_desc">描述</label>
 							  <div class="controls">
-								<textarea name="pg_desc" id="pg_desc" class="span6" rows="4" ></textarea>
+								<textarea name="gu_desc" id="gu_desc" class="span6" rows="4" ></textarea>
 							  </div>
 							</div>
 							<div class="control-group">
-							  <label class="control-label" for="pg_summary">摘要</label>
+							  <label class="control-label" for="gu_summary">摘要</label>
 							  <div class="controls">
-								<textarea name="pg_summary" id="pg_summary" class="span6" rows="4" ></textarea>
+								<textarea name="gu_summary" id="gu_summary" class="span6" rows="4" ></textarea>
+							  </div>
+							</div>
+							<div class="control-group">
+							  <label class="control-label" for="gu_template">使用模板</label>
+							  <div class="controls">
+								<input type="text" class="span10" id="gu_template" value="" name="gu_template" />
 							  </div>
 							</div>
 							<div class="control-group">
                             	
-							  <label class="control-label" for="pg_content">内容</label>
+							  <label class="control-label" for="gu_content">内容</label>
 							  <div class="controls">
-									<script type="text/plain" id="pg_content" name="pg_content"></script>
+									<script type="text/plain" id="gu_content" name="gu_content"></script>
                 </div>
 							</div>
 							<div class="form-actions">
@@ -92,7 +98,7 @@
 	</div>
 	<include file="public:js" />
 	<script type="text/javascript">
-		textareaInit('pg_content');
+		textareaInit('gu_content');
 		$(function(){
 			
 		});
