@@ -1,4 +1,9 @@
 <?php
+/**
+ * 新闻动态管理
+ * @author Carl
+ * @date 2014-10-27
+ */
 class NewsAction extends BaseAction{
 	
 	public function index(){
@@ -50,14 +55,14 @@ class NewsAction extends BaseAction{
 		$data['ne_adate'] = $_SERVER['REQUEST_TIME'];
 		if(isset($data['ne_id'])){
 			if($art->save($data)){
-				$this->watchdog("修改", '修改《'.$data['ne_title'].'》栏目');
+				$this->watchdog("修改", '修改新闻公告《'.$data['ne_title'].'》');
 				$this->redirect(__URL__.'/editNews/id/'.$data['ne_id']);
 			}else{
 				$this->error('保存失败！');
 			}
 		}else{
 			if($art->add($data)){
-				$this->watchdog("新增", '新增加栏目《'.$data['pg_title'].'》');
+				$this->watchdog("新增", '新增加新闻公告《'.$data['ne_title'].'》');
 				$this->redirect(__URL__);
 			}else{
 				$this->error('保存失败！');
@@ -77,7 +82,7 @@ class NewsAction extends BaseAction{
 		);
 		$titles = M('News')->where($map)->getField('ne_title', true);
 		if(M('News')->where($map)->delete()){
-			$this->watchdog('删除', '删除栏目《'.implode('》《', $titles).'》');
+			$this->watchdog('删除', '删除新闻《'.implode('》《', $titles).'》');
 			$this->redirect(__URL__);
 		}else{
 			$this->error('删除失败！');

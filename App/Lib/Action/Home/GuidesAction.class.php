@@ -1,4 +1,9 @@
 <?php
+/**
+ * 新手指南
+ * @author Carl
+ * @date 2014-10-28
+ */
 class GuidesAction extends CommonAction{
 	
 	public function _initialize(){
@@ -7,12 +12,19 @@ class GuidesAction extends CommonAction{
 		if($name=='index'){
 			$name = 'zfxz';
 		}
-		$guideInfo = M('guides')->where('gd_name="'.$name.'"')->find();
-		if(!empty($guideInfo)){
-			$this->assign('guide', $guideInfo);
-			$this->display('Guides:guide');
-			exit;
+		$guideInfo = M('guides')->where('gu_name="'.$name.'"')->find();
+		if(empty($guideInfo)){
+			$guideInfo = M('guides')->find();
 		}
+		$this->assign('guidesList', M('guides')->field('gu_name, gu_title')->select());
+		$this->assign('article', $guideInfo);
+		if($guideInfo['gu_template']){
+			$this->display($guideInfo['gu_template']);
+		}else{
+			$this->display('Guides:article');
+		}
+		
+		exit;
 	
 	}
 

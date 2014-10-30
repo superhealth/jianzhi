@@ -66,7 +66,7 @@ class GuidesAction extends BaseAction{
 			// 保存修改
 			if($art->save($data)){
 				$this->watchdog("修改", '修改《'.$data['gu_title'].'》栏目');
-				$this->redirect(__URL__.'/editArticle/id/'.$data['gu_id']);
+				$this->redirect(__URL__.'/editGuides/id/'.$data['gu_id']);
 			}else{
 				$this->error('保存失败！');
 			}
@@ -103,6 +103,17 @@ class GuidesAction extends BaseAction{
 		}
 	}
 	
-	
+	/**
+	 * 查找是否已经存在链接名
+	 */
+	public function pgNameExist(){
+		$name = $_REQUEST['name'];
+		$count = M('Guides')->where('gu_name="'.$name.'"')->count();
+		if($count>0){
+			echo 'exist';
+		}else{
+			echo 'ok';
+		}
+	}
 	
 }

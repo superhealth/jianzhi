@@ -14,9 +14,10 @@
 .zhaotoushu{width:338px;height: 50px; border:1px solid #D2D2D2;}
 .zhaotou_item{ line-height:50px; text-align:center; width:50%; float:left; color:#898989;}
 .zhaotou_item .zhaotou_shu{font-size:18px; font-weight:900; font-family:"Courier New", Courier, monospace; color:#000; margin-left:10px;}
-.zuixinxiangmu{margin-top:2px; border:1px solid #D2D2D2; padding:0 10px; height:209px;}
-.table-zxxm tr{height:30px;vertical-align:middle; }
-.table-zxxm th{border-bottom: solid 1px #eeeeee; text-align:center; font-weight:bold; height:28px}
+
+.zuixinxiangmu{border:1px solid #D2D2D2; padding:0 10px; height:263px;}
+.rezhao_title{ line-height:55px; text-align:center; font-weight:bold; font-size:15px; }
+.table-zxxm tr{height:26px;vertical-align:middle; }
 .table-zxxm td{ margin-left:10px;}
 .ind-slider{ height:267px;}
 .ind-slider li a{display:block; position:relative;}
@@ -30,7 +31,7 @@
 
 .ind-sec-3{margin-top:5px;}
 .sec3-left, .sec-mid, .sec-right{border:1px solid #D2D2D2;}
-.sec3-left{width:480px; height:122px; overflow:hidden;}
+.sec3-left{width:400px; height:122px; overflow:hidden;}
 .prop-lists li{width:56px; padding: 30px 12px 10px 12px; float:left;}
 .prop-lists li img{display:block; width:100%;}
 .prop-lists li span{display:block; text-align:center; line-height:26px;}

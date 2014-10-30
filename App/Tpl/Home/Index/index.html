@@ -28,18 +28,12 @@
 		</div>
 		<div class="ind-sec-2">
 			<div class="sec2-left">
-				<div class="zhaotoushu">
-					<div class="zhaotou_item">在招项目:<span class="zhaotou_shu">1233</span></div><div class="zhaotou_item">在招项目:<span class="zhaotou_shu">123321</span></div>
-				</div>
 				<div class="zuixinxiangmu">
+					<div class="rezhao_title">热招项目</div>
 					<table class="table-zxxm" style="width:100%; " cellpadding="0" cellspacing="0" border="0">
-						<tr><th>项目名称</th><th>类型</th><th>所在地</th></tr>
-						<tr><td>加工帽子一批</td><td>制造生产</td><td>背景</td></tr>
-						<tr><td></td><td></td><td></td></tr>
-						<tr><td></td><td></td><td></td></tr>
-						<tr><td></td><td></td><td></td></tr>
-						<tr><td></td><td></td><td></td></tr>
-						<tr><td></td><td></td><td></td></tr>
+						<volist name="latestPro" id="pro">
+						<tr><td><a title="{$pro.pro_subject}" href="__GROUP__/Project/detail/id/{$pro.pro_id}">{$pro.pro_subject|get_summary=12}</a></td><td>{$props[$pro['pro_prop']]}</td><td>{$pro.pro_place}</td></tr>
+						</volist>
 					</table>
 				</div>
 			</div>
@@ -62,26 +56,26 @@
 		</div>
 		<div class="ind-sec-3">
 			<div class="sec3-left">
-				<ul class="prop-lists">
-					<li><img src="__PUBLIC__/Home/image/prop_03.jpg" /> <span>生产制造</span></li>
-					<li><img src="__PUBLIC__/Home/image/prop_05.jpg" /> <span>设计开发</span></li>
-					<li><img src="__PUBLIC__/Home/image/prop_07.jpg" /> <span>工程实施</span></li>
-					<li><img src="__PUBLIC__/Home/image/prop_09.jpg" /> <span>物资采购</span></li>
-					<li><img src="__PUBLIC__/Home/image/prop_11.jpg" /> <span>劳务服务</span></li>
-					<li><img src="__PUBLIC__/Home/image/prop_13.jpg" /> <span>其 他</span></li>
+				<div class="ind-new-box">
+					<div style="margin-left:20px;line-height:40px; font-size:16px;">公告 | 动态</div>
+					<ul style="list-style:none; margin-left:20px; margin-top:0;">
+					<volist name="news" id="ne">
+						<li style="line-height:24px;"><span style="font-size:12px;">&gt;</span><a href="__GROUP__/News/view/{$ne.ne_id}"> &nbsp; {$ne.ne_title|get_summary=20}</a></li>
+					</volist>
 				</ul>
-				<div class="clearfix"></div>
+					<a style="float:right; margin-top:-20px; margin-right:40px;color:#00a0e9; font-size:14px;" href="__GROUP__/News/index">更多</a>
+				</div>
 			</div>
 			<div class="sec3-mid">
-				<div class="ind-new-box">
-					<div style="margin-left:20px;line-height:40px; font-size:15px;">公告 | 动态</div>
-					<ul style="list-style:none; margin-left:20px; margin-top:20px;">
-					<li style="line-height:24px;"><span style="font-size:12px;">&gt;</span><a href="__GROUP__/Guides"> &nbsp; 免费试用期调整</a></li>
-					<li style="line-height:24px;"><span style="font-size:12px;">&gt;</span><a href="__GROUP__/Guides"> &nbsp; 发布无效项目去处管理</a></li>
-					<li style="line-height:24px;"><span style="font-size:12px;">&gt;</span><a href="__GROUP__/Guides"> &nbsp; 订单网获得了...</a></li>
-				</ul>
-					<a href="__GROUP__/News/">更多</a>
+				<div class="zhaotoushu">
+					<table class="">
+					<tr>
+						<td class="zhaotou_item">在招项目:<span class="zhaotou_shu">{}</span></td><td class="zhaotou_item">在招项目:<span class="zhaotou_shu">123321</span></td>
+					</tr>
+					<tr><td></td><td></td></tr>
+					</table>
 				</div>
+				
 			</div>
 			<div class="sec3-right">
 				

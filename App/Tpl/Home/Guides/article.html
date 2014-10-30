@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="{$article.pg_keywords}" />
-<meta name="description" content="{$article.pg_desc}" />
-<title>{$article.pg_title}</title>
+<meta name="keywords" content="{$article.gu_keywords}" />
+<meta name="description" content="{$article.gu_desc}" />
+<title>{$article.gu_title}</title>
 <include file="public:css" />
 </head>
 <body>
@@ -14,18 +14,17 @@
   	<div class="pro_box right_box">
     	<div class="pro_title"><a style="font-size:12px;" href="__GROUP__/Member/login">登录</a> <a style="font-size:12px;" href="__GROUP__/Member/register">免费注册</a></div>
       <div class="pro_body">
-      	<h3 style="text-align:center;">关于订单网</h3>
+      	<h3 style="text-align:center;">使用指南</h3>
 				<ul style="list-style:none; margin-left:20px; margin-top:20px;">
-					<volist name="pageList" id="page">
-					<li style="line-height:24px;"><span style="font-size:15px;">&gt;</span><a href="__GROUP__/Index/{$page.pg_name}"> &nbsp; {$page.pg_title}</a></li>
+					<volist name="guidesList" id="item">
+					<li style="line-height:24px;"><span style="font-size:15px;">&gt;</span><a href="__GROUP__/Guides/{$item.gu_name}"> &nbsp; {$item.gu_title}</a></li>
 					</volist>
-					<li style="line-height:24px;"><span style="font-size:15px;">&gt;</span><a href="__GROUP__/Guides"> &nbsp; 使用指南</a></li>
 				</ul>
       </div>
     </div>
   	<div class="pro_box left_box">
-    	<h2 class="page_title" style="margin:0 20px;padding-top:20px; line-height:40px; font-size:; text-align:center; font-weight:normal; border-bottom:1px solid #333;">{$article.pg_title}</h2>
-      <div class="page_content" style="margin:50px 60px 40px 60px; line-height:24px; font-size:13px; ">{$article.pg_content}</div>
+    	<h2 class="page_title" style="margin:0 20px;padding-top:20px; line-height:40px; font-size:; text-align:center; font-weight:normal; border-bottom:1px solid #333;">{$article.gu_title}</h2>
+      <div class="page_content" style="margin:50px 60px 40px 60px; line-height:24px; font-size:13px; ">{$article.gu_content}</div>
     </div>
 		<div class="clearfix"></div>
   </div>

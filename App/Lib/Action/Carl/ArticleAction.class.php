@@ -103,6 +103,18 @@ class ArticleAction extends BaseAction{
 		}
 	}
 	
+	/**
+	 * 查找是否已经存在链接名
+	 */  
+	public function pgNameExist(){
+		$name = $_REQUEST['name'];
+		$count = M('Pages')->where('pg_name="'.$name.'"')->count();
+		if($count>0){
+			echo 'exist';
+		}else{
+			echo 'ok';
+		}
+	}
 	
 	
 }
