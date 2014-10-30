@@ -199,11 +199,9 @@ class ProjectAction extends CommonAction{
 		$pager = $page->shown();
 		$this->assign("pager", $pager);
 		// 连接查询
-		$join = array(
-				"(SELECT bid_proid,count(*) bidders FROM zt_bidder GROUP BY bid_proid) b ON pro_id=b.bid_proid"
-		);
+		
 		// 查询字段
-		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_enums, pro_prop, pro_publishtime, pro_limit, pro_place, pro_opentime, pro_startstop, pro_status, IFNULL(bidders, 0) bidders";
+		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, pro_sort, pro_enums, pro_prop, pro_publishtime, pro_limit, pro_place, pro_opentime, pro_startstop, pro_status";
 		$projects = $project->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		// 项目状态
 		$this->assign("status", $this->status);
@@ -223,6 +221,7 @@ class ProjectAction extends CommonAction{
 		$this->assign('pro_place', areaToSelect($proArea, 1, "", "pro_place"));
 		$this->assign('mem_place', areaToSelect($memArea, 1, "", "mem_place"));
 		foreach ($projects as &$v){
+			$v['bidders'] = D('Bidder')->getProBidersCount($v['pro_id']);
 			$starstop = explode("-", $v['pro_startstop']);
 			$v['pro_endtime'] = mb_substr($starstop[1], 0, strpos($starstop[1], '日')+1, 'utf-8');
 			$v['pro_place']	= str_replace(array('|','中国','省','市'),array('','',' ',' '), $v['pro_place']);
@@ -1053,14 +1052,14 @@ class ProjectAction extends CommonAction{
 		$this->assign("pager", $pager);
 		// 连接查询
 		$join = array(
-				" LEFT JOIN (SELECT bid_proid,count(*) bidders FROM zt_bidder GROUP BY bid_proid) b ON pro_id=b.bid_proid ",
 				' LEFT JOIN zt_sort ON pro_sort=sort_id',
 				' LEFT JOIN zt_property ON pro_prop=pp_id'
 		);
 		// 查询字段
-		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, sort_name, pro_enums, pp_name, pro_publishtime, pro_opentime, pro_status, IFNULL(bidders, 0) bidders";
+		$field = "pro_id, pro_sn, pro_subject, LEFT(pro_subject, 20) subject, pro_mid, sort_name, pro_enums, pp_name, pro_publishtime, pro_opentime, pro_status";
 		$projects = $project->field($field)->join($join)->where($map)->order($order)->limit($limit)->select();
 		foreach ($projects as &$v){
+			$v['bidders'] = D('Bidder')->getProBidersCount($v['pro_id']);
 			if($v['pro_opentime']>time()){
 				$v['opentime']	= date('Y/m/d H:i', $v['pro_opentime']);
 			}else{

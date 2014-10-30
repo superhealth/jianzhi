@@ -19,7 +19,7 @@ class BidderModel extends Model{
 		$order = "bid_createtime DESC";
 		$where = array("bid_mid"=>addslashes($mid));
 		if(!$all){
-			$where['bid_state'] = array("gt", 0);
+			$where['bid_state'] = array("between", array(0, 3));
 		}
 		$limit = empty($row)?"":$row;
 		return $this->field($field)->join($join)->where($where)->order($order)->limit($limit)->select();
@@ -39,7 +39,7 @@ class BidderModel extends Model{
 		$order = "bid_publishtime DESC";
 		$where = array("bid_proid"=>addslashes($pid));
 		if(!$all){
-			$where['bid_state'] = array("gt", 0);
+			$where['bid_state'] = array("between", array(0, 3));
 		}
 		$limit = empty($row)?"":$row;
 		return $this->field($field)->join($join)->where($where)->order($order)->limit($limit)->select();
@@ -53,7 +53,7 @@ class BidderModel extends Model{
 	public function getBidersCount($mid="", $all=FALSE){
 		$where = array("bid_mid"=>$mid);
 		if(!$all){
-			$where['bid_state'] = array("gt", 0);
+			$where['bid_state'] = 1;
 		}
 		return $this->where($where)->count();
 	}
@@ -65,6 +65,7 @@ class BidderModel extends Model{
 	 */
 	public function getProBidersCount($pid="", $all=FALSE){
 		$where = array("bid_proid"=>$pid);
+		$where['bid_state'] = 1;
 		return $this->where($where)->count();
 	}
 	

@@ -4,9 +4,7 @@ class AttachAction extends EmptyAction{
 		$res_json = array("code"=>0,"data"=>"");
 		$name = isset($_SESSION['member']) ? $_SESSION['member'] : $_SESSION['user'];
 		if(empty($name)){
-			$res_json['data'] = "无效用户！";
-			echo json_encode_nonull($res_json);
-			exit;
+			$name = 'order'.date('Y-m-d', time());
 		}
 		if(empty($belong)||empty($id)){
 			$res_json['data'] = "无效参数！";
