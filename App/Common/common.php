@@ -415,12 +415,33 @@ function getFileSize($size){
 	}
 }
 
+/**
+ * 网站图片上传
+ */
+function upload_ex(){
+	import('ORG.Net.UploadFile');
+	$upload = new UploadFile();
+	$upload->thumb = false;							//是否生成缩略图
+	$upload->uploadReplace = true;
+	$upload->maxSize  = 3145728*1024 ;				// 设置附件上传大小
+	$upload->allowExts = array('jpg', 'gif', 'png', 'jpeg');
+	
+	$upload->savePath = './uploads/';
+	if(!$upload->upload()) {
+		$info[] = false;
+		$info[] = $upload->getErrorMsg();	// 上传错误提示错误信息
+	}else{
+		$info[] = true;
+		$info[] = $upload->getUploadFileInfo();	// 上传成功 获取上传文件信息
+	}
+	return $info;
+}
+
 
 /**
- * 图片上传
+ * 附件图片上传 
  * @return string
  */
-
 function upload($author, $imgOnly=true, $saveRule=""){
 	import('ORG.Net.UploadFile');
 	$upload = new UploadFile();

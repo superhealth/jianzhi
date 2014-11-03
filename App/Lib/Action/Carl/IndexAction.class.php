@@ -488,8 +488,14 @@ class IndexAction extends BaseAction{
 				$this->error("无此权限！");
 			}
 			$data = M("block")->create();
+			$uploadInfo = upload_ex();
+			if($uploadInfo[0] === false){
+			
+			}else{
+				$data['bl_img'] = $uploadInfo[1][0]['savename'];
+			}
 			if(M("block")->add($data)){
-				$this->watchdog("新增", "添加区块".$data['bl_group']."的".$data['block_title']."元素。");
+				$this->watchdog("新增", "添加".$data['bl_group']."区块的".$data['block_title']."项目。");
 				$this->success("添加成功！", __URL__."/blocks/group/{$data['bl_group']}");
 			}else{
 				$this->error("添加失败！");
@@ -510,6 +516,12 @@ class IndexAction extends BaseAction{
 		}
 		if($action=="edit"){
 			$data = M("block")->create();
+			$uploadInfo = upload_ex();
+			if($uploadInfo[0] === false){
+				
+			}else{
+				$data['bl_img'] = $uploadInfo[1][0]['savename'];
+			}
 			if(M("block")->save($data)){
 				$this->watchdog("编辑", "修改区块".$data['bl_group']."的".$data['block_title']."元素。");
 				$this->success("保存成功！");

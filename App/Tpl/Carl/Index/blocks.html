@@ -41,21 +41,18 @@
 								  </tr>
 							  </thead>   
 							  <tbody>
-								<volist name="advs" id="item">
+								<volist name="lists" id="item">
 								<tr>
-									<td><input type="checkbox" name="chkt[]" value="{$item.adv_id}" /></td>
-									<td><a class="_actions_" href="#" data-href="__URL__/advs_edit/id/{$item.adv_id}">{$item.adv_area}</a></td>
-									<td><code>{$item.adv_code}</code></td>
-									<td class="center">{$item.adv_desc}</td>
+									<td><input type="checkbox" name="chkt[]" value="{$item.bl_id}" /></td>
+									<td>{$item.bl_order}</td>
+									<td><img style="height:40px;" class="thumb" src="{$item.bl_img}" /></td>
+									<td><a class="_actions_" href="#" data-href="__URL__/blockEdit/id/{$item.bl_id}">{$item.bl_title}</a></td>
+									<td><a href="{$item.bl_link}">{$item.bl_link}</a></td>
 									<td>
-										<a class="btn btn-primary" target="_blank" href="__URL__/advs_view/id/{$item.adv_id}">
-											<i class="icon-search icon-white"></i>  
-											预览                                            
+										<a class="btn btn-info _actions_" href="#" data-href="__URL__/blockEdit/id/{$item.bl_id}">
+											<i class="icon-edit icon-white"></i> 编辑
 										</a>
-										<a class="btn btn-info _actions_" href="#" data-href="__URL__/advs_edit/id/{$item.adv_id}">
-											<i class="icon-edit icon-white"></i>  编辑                                            
-										</a>
-										<a class="btn btn-danger _delete_" href="#" data-href="__URL__/advs_delete/chkt/{$item.adv_id}">
+										<a class="btn btn-danger _delete_" href="#" data-href="__URL__/blockDelete/chkt/{$item.bl_id}">
 											<i class="icon-trash icon-white"></i> 删除
 										</a>
 									</td>                                     
@@ -72,8 +69,8 @@
 						  	</div>
 						 </div>
 						 <div class="row-fluid">
-						 	<button class="btn btn-mini btn-danger _deletes_" type="button" data-href="__URL__/advs_delete"><i class="icon-trash icon-white"></i> 删除选中</button>
-						 	<button class="btn btn-mini btn-success _actions_" type="button" data-href="__URL__/advs_add" ><i class="icon icon-attachment icon-white"></i> 添加</button>
+						 	<button class="btn btn-mini btn-danger _deletes_" type="button" data-href="__URL__/blockDel"><i class="icon-trash icon-white"></i> 删除选中</button>
+						 	<button class="btn btn-mini btn-success _actions_" type="button" data-href="__URL__/blockAdd/group/{$group}" ><i class="icon icon-attachment icon-white"></i> 添加</button>
 						 </div> 
 						 </form>    
 					</div>
@@ -102,9 +99,12 @@
 					backdrop: "static"
 				});
 				$("#commit").click(function(){
-					if($("#adv_area").val()==""){
-						$("#adv_area").parent().parent().addClass("error");
-						$("#adv_area").next().html("广告区域不能为空！");
+					if($("#bl_title").val()==""){
+						$("#bl_title").parent().parent().addClass("error");
+						$("#bl_title").next().html("区块标题不能为空！");
+					}else if($("#bl_img").val()=="" && $('input[name="action"]').val()=='add'){
+						$("#bl_img").parent().parent().addClass("error");
+						$("#bl_img").next().html("请上传区块图片！");
 					}else{
 						var form = $(this).parents("form")	;
 						form.attr("action", $(this).attr("data-act")).submit();

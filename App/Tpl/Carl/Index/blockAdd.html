@@ -1,0 +1,65 @@
+<form method="post" class="form-horizontal" enctype="multipart/form-data" >
+	<fieldset>
+		<input type="hidden" name="action" value="add" />
+		<input type="hidden" name="bl_group" value="{$group}" />
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>添加{$group}区块</h3>
+		</div>
+		<div class="modal-body">
+			<div class="control-group">
+				<label class="control-label" for="bl_title">标题</label>
+				<div class="controls">
+					 <input type="text" id="bl_title" name="bl_title" />
+					 <span class="help-inline"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="bl_order">位置</label>
+				<div class="controls">
+					 <input type="text" id="bl_order" name="bl_order" />
+					 <span class="help-inline"></span>
+				</div>
+			</div>
+			<!--  div class="control-group">
+				<label class="control-label" for="bl_subtitle">副标题</label>
+				<div class="controls">
+					 <input type="text" id="bl_subtitle" name="bl_subtitle" />
+					 <span class="help-inline"></span>
+				</div>
+			</div-->
+			<div class="control-group">
+				<label class="control-label" for="bl_img">图片</label>
+				<div class="controls">
+				  	<input type="file" id="bl_img" name="bl_img" />
+					 <span class="help-inline"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="bl_alt">图片alt</label>
+				<div class="controls">
+					 <input type="text" id="bl_title" name="bl_alt" />
+					 <span class="help-inline"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="bl_link">链接</label>
+				<div class="controls">
+				  	<input type="text" id="bl_link" name="bl_link" />
+					 <span class="help-inline"></span>
+				</div>
+			</div>
+			<!-- div class="control-group">
+				<label class="control-label" for="bl_content">详情</label>
+				<div class="controls">
+				  	<input type="text" id="bl_content" name="bl_content" />
+					 <span class="help-inline"></span>
+				</div>
+			</div-->
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">关闭</a>
+			<a href="#" class="btn btn-primary" id="commit" data-act="__URL__/blockAdd">添加</a>
+		</div>
+	</fieldset>
+</form>
