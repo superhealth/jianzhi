@@ -2,6 +2,7 @@
 	<fieldset>
 		<input type="hidden" name="action" value="edit" />
 		<input type="hidden" name="bl_group" value="{$info.bl_group}" />
+		<input type="hidden" name="bl_id" id="bl_id" value="{$info.bl_id}" />
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">×</button>
 			<h3>添加{$group}区块</h3>
@@ -15,7 +16,7 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="bl_order">位置</label>
+				<label class="control-label" for="bl_order">排序位置</label>
 				<div class="controls">
 					 <input type="text" id="bl_order" name="bl_order" vlaue="{$info.bl_order}" />
 					 <span class="help-inline"></span>
@@ -31,7 +32,7 @@
 			<div class="control-group">
 				<label class="control-label" for="bl_img">图片</label>
 				<div class="controls">
-					<if condition="{$info['bl_img'] neq ''}">
+					<if condition="$info['bl_img'] neq ''">
 				  	<a href="__APP__/uploads/{$info.bl_img}" class="thumb"><img src="__APP__/uploads/{$info.bl_img}" class="height:40px;" /></a>
 				  	</if>
 				  	<input type="file" name="bl_img" />
@@ -62,7 +63,7 @@
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">关闭</a>
-			<a href="#" class="btn btn-primary" id="commit" data-act="__URL__/blockEdit">添加</a>
+			<a href="#" class="btn btn-primary" id="commit" data-act="__URL__/blockEdit">保存</a>
 		</div>
 	</fieldset>
 </form>

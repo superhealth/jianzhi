@@ -105,17 +105,18 @@ $(function(){
 		});
 		
 		$('#sbox_code').blur(function(){
-			$.get('__URL__/checkSafeCode/code/'+$('#sbox_code').val(), null, function(flag){
-				$('.code_flag').removeClass().addClass(flag);
-			}, 'text');
+			
 		});
 		
 		$('#sbox_verify').click(function(){
-			if($('.code_flag').hasClass('success')){
-				location.href= $('#sbox_href').val();
-			}else{
-				return false;
-			}
+			$.get('__URL__/checkSafeCode/code/'+$('#sbox_code').val(), null, function(flag){
+			
+				if($('.code_flag').hasClass('success')){
+					location.href= $('#sbox_href').val();
+				}else{
+					bootbox.alert("验证码错误！");
+				}
+			}, 'text');
 		});
 	});
 });

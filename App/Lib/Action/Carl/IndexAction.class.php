@@ -466,6 +466,7 @@ class IndexAction extends BaseAction{
 	public function blocks($group=""){
 		$block = M("block");
 		$map = empty($group) ? array() : array("bl_group"=>$group);
+		$this->assign('bl_group', $group);
 		$param = array();
 		$total = $block->where($map)->count();
 		import("Org.Util.Page");
@@ -476,7 +477,7 @@ class IndexAction extends BaseAction{
 		$this->assign("pager", $pager);
 		$order = "bl_order";
 		$blocks = $block->where($map)->limit($limit)->select();
-		$this->assign("blocks", blocks);
+		$this->assign("lists", $blocks);
 		$this->display();
 	}
 	/**
@@ -490,7 +491,7 @@ class IndexAction extends BaseAction{
 			$data = M("block")->create();
 			$uploadInfo = upload_ex();
 			if($uploadInfo[0] === false){
-			
+				$this->error('请上传图片！');
 			}else{
 				$data['bl_img'] = $uploadInfo[1][0]['savename'];
 			}

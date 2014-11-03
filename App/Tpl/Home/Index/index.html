@@ -15,15 +15,10 @@
   <div class="content">
  		<div class="ind-sec-1">
 			<ul class="ind-top-sort-list">
-				<li><a href="">服装服饰</a><br /><a href="">箱包</a></li>
-				<li><a href="">服装服饰</a><br /><a href="">箱包</a></li>
-				<li><a href="">服装服饰</a><br /><a href="">箱包</a></li>
-				<li><a href="">服装服饰</a><br /><a href="">箱包</a></li>
-				<li><a href="">服装服饰</a><br /><a href="">箱包</a></li>
-				<li><a href="">服装服饰</a><br /><a href="">箱包</a></li>
-				<li><a href="">服装服饰</a><br /><a href="">箱包</a></li>
-				<li><a href="">服装服饰</a><br /><a href="">箱包</a></li>
-				<li><a href="">服装服饰</a><br /><a href="">箱包</a></li>
+			<volist name="sorts" id="si">
+				<if condition="($i+1)%2 eq 0"><li><a href="__GROUP__/Project/all?sortid={$key}">{$si}</a></if>
+				<if condition="$i%2 eq 0"><br /><a href="__GROUP__/Project/all?sortid={$key}">{$si}</a></li></if>
+			</volist>
 			</ul>
 		</div>
 		<div class="ind-sec-2">
@@ -39,17 +34,20 @@
 			</div>
 			<div class="sec2-mid">
 				<ul class="ind-slider" id="ind-slider">
-					<li><a href="#"><img src="__PUBLIC__/Home/image/bx-1.jpg" /></a></li>
-					<li><a href="#"><img src="__PUBLIC__/Home/image/bx-2.jpg" /></a></li>
-					<li><a href="#"><img src="__PUBLIC__/Home/image/bx-3.jpg" /></a></li>
-					<li><a href="#"><img src="__PUBLIC__/Home/image/bx-4.jpg" /></a></li>
+					<volist name="sliders" id="slider">
+					<li><a href="{$slider.bl_link}"><img src="__ROOT__/uploads/{$slider.bl_img}" /></a></li>
+					</volist>
 				</ul>
 			</div>
 			<div class="sec2-right">
 				<ul>
-					<li class="ind-focus first"><a href=""><img src="__PUBLIC__/Home/image/right_11.jpg" /></a></li>
-					<li class="ind-focus"><a href=""><img src="__PUBLIC__/Home/image/right_07.jpg" /></a></li>
-					<li class="ind-focus"><a href=""><img src="__PUBLIC__/Home/image/right_03.jpg" /></a></li>
+					<volist name="block2" id="bl2">
+					<if condition="$i eq 1">
+					<li class="ind-focus first"><a href="{$bl2.bl_link}"><img src="__ROOT__/uploads/{$bl2.bl_img}" /></a></li>
+					<else />
+					<li class="ind-focus"><a href="{$bl2.bl_link}"><img src="__ROOT__/uploads/{$bl2.bl_img}" /></a></li>
+					</if>
+					</volist>
 				</ul>
 			</div>
 			<div class="clearfix"></div>
@@ -67,28 +65,54 @@
 				</div>
 			</div>
 			<div class="sec3-mid">
-				<div class="zhaotoushu">
-					<table class="">
+				<table style="width:100%;border:0;">
 					<tr>
-						<td class="zhaotou_item">在招项目:<span class="zhaotou_shu">{}</span></td><td class="zhaotou_item">在招项目:<span class="zhaotou_shu">123321</span></td>
+						<td style="width:50%; text-align:center; vertical-align:middle;"><div class="zhaotou_item">在招项目:<span class="zhaotou_shu">{$totalPro}</span></div></td><td style="width:50%; text-align:center; vertical-align:middle;"><div class="zhaotou_item">参投方:<span class="zhaotou_shu">{$totalBid}</span></div></td>
 					</tr>
-					<tr><td></td><td></td></tr>
-					</table>
-				</div>
-				
+					<tr><td style="width:50%; text-align:center; vertical-align:middle;"><a class="goto-pro" href="__GROUP__/Project/createStep1">我要招标</a></td><td style="width:50%; text-align:center; vertical-align:middle;"><a class="goto-bid" href="__GROUP__/Project/all">我要投标</a></td></tr>
+				</table>
 			</div>
 			<div class="sec3-right">
-				
+				<div class="sec3-guides">
+					<volist name="guides" id="ig">
+						<a class="sec3-link" href="__GROUP__/Guides/{$ig.gu_name}">{$ig.gu_title}</a>
+					</volist>
+				</div>
+				<div class="sec3-reg"><a style="font-size:12px;margin-left:40px; color:#767676;" href="__GROUP__/Member/login">登录</a> <a style="font-size:12px; margin-left:60px; color:#767676;" href="__GROUP__/Member/register">免费注册</a></div>
+				<div class="sec3-share">
+					<a style="color:#767676; font-size:13px;" href="javascript:;">APP</a><a href="javascript:;"><img src="__PUBLIC__/Home/image/wechat.jpg" /></a><a href="javascript:;"><img src="__PUBLIC__/Home/image/weibo.jpg"  /></a>
+				</div>
 			</div>
 			<div class="clearfix"></div>
 		</div>
 		<div class="ind-sec-4">
+			<volist name="sortadvs" id="saitem">
+			<div class="sec4-letter-index">{$key}</div>
 			<ul>
-				<li class=""></li>
-				<li class=""></li>
-				<li class=""></li>
+				<volist name="saitem" id="sa">
+				<li class="sec4-sortadv">
+					<div class="sec4-sort-name">{$sa.name}</div>
+					<volist name="sa['enums']" id="en_item">
+					<div class="sec4-enums">
+						<volist name="en_item" id="ei">
+						<a class="sec4-enum" href="__GROUP__/Project/all?sortid={$sa.id}&enums={$ei}">{$ei}</a>
+						</volist>
+					</div>
+					</volist>
+					<volist name="sa[sortadvs]" id="adv">
+					<a href="__GROUP__/Project/detail/id/{$adv.pro_id}" class="sec4-sort-adv" title="{$adv.pro_subject}">
+						<div class="sort-adv-img"><img src="__ROOT__/uploads/{$adv.sa_pic}" /></div>
+						<div class="sort-adv-info">
+							<div class="sort-adv-project" title="">{$adv.pro_subject|get_summary=8}</div>
+							<p>{$adv.pro_quantity}{$adv.pro_unit}</p><p><span>{$props[$adv['pro_prop']]}</span><span style="margin-left:20px;">{$adv.pro_place}</span></p>
+							
+						</div>
+					</a>
+					</volist>
+				</li>
+				</volist>
 			</ul>
-		
+			</volist>
 		
 		</div>
   </div>

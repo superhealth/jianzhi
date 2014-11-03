@@ -25,12 +25,34 @@ class IndexAction extends CommonAction{
 		//$this->show("<h1>Welcome!</h1>");
 		$sys_cfg = D("Sysconf")->sysConfs();
 		$sorts = D("Sort")->getSorts();
+		$this->assign('sorts', $sorts);
+		
 		$enums = D('Enumsort')->enums();
+		$this->assign('enums', $enums);
+		
+		// 计算各个分类需要显示的项目数
+		$sortAndAdvs = array();
+		
+		foreach($sorts as $key=>$sort){
+			$num = 5-count($enums[$key]);
+			$sortadvs = D('Sortadv')->getSortAdvs($key, $num);
+			$firstLetter = strtoupper(substr(hanzi2zimu($sort),0,1));
+			$sortAndAdvs[$firstLetter][] = array(
+					'id'				=> $key,
+					'name'		=> $sort,
+					'enums'	=> $enums[$key],
+					'sortadvs'	=> $sortadvs
+			);
+		}
+		$this->assign('sortadvs',$sortAndAdvs);
+		
 		$props = D("Property")->getProps();
 		$this->assign('props', $props);
 		//
-		$block1 = D("Block")->getGroupBlocks("group1");
-		$block2 = D("Block")->getGroupBlocks("group2");
+		$block1 = D("Block")->getGroupBlocks("轮播");
+		$this->assign('sliders', $block1);
+		$block2 = D("Block")->getGroupBlocks("名企");
+		$this->assign('block2', $block2);
 		$block3 = D("Block")->getGroupBlocks("group3");
 		
 		//新闻
@@ -48,6 +70,8 @@ class IndexAction extends CommonAction{
 		
 		$this->assign('totalPro', M('project')->where(array("pro_status"=>array('gt', 0)))->count());
 		$this->assign('totalBid', M('bidder')->where(array("bid_state"=>array('gt', 0)))->count());
+		
+		$this->assign('guides', M('guides')->order('gu_order')->select());
 		
 		$this->display();
 	}

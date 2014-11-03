@@ -27,7 +27,7 @@ class MemberModel extends Model{
 	 * 更新会员状态
 	 * @param number $interval 检查周期
 	 */
-	public function updateMemberActive($interval=1800){
+	public function updateMemberActive($interval=1){
 		// 上次更新时间
 		$cornTime = M("cronhash")->where('ch_name="member"')->getField('ch_time');
 		if($cornTime<$_SERVER['REQUEST_TIME']-$interval){
@@ -101,8 +101,8 @@ class MemberModel extends Model{
 	 */
 	public function getMemberByName($name){
 		$mem 		= $this->where('mem_id like "%'.$name.'%"')->getField('mem_id', true);
-		$memp 	= $this->join('zt_memberperson ON mem_id=mp_mid')->where('mp_addr like "%'.$name.'%"')->getField('mem_id', true);
-		$memc 	= $this->join('zt_membercompany ON mem_id=mc_mid')->where('mc_addr like "%'.$name.'%"')->getField('mem_id', true);
+		$memp 	= $this->join('zt_memberperson ON mem_id=mp_mid')->where('mp_name like "%'.$name.'%"')->getField('mem_id', true);
+		$memc 	= $this->join('zt_membercompany ON mem_id=mc_mid')->where('mc_company like "%'.$name.'%"')->getField('mem_id', true);
 		if(empty($mem)){
 			$mem = array();
 		}
@@ -195,19 +195,4 @@ class MemberModel extends Model{
 			return false;
 		}
 	}*/
-	/**
-	 * 根据用户名称（个人名、公司名）获取用户id
-	 * @param String $name
-	 */
-	public function getMembersByName($name){
-		$memp = $this->join('zt_memberperson ON mem_id=mp_mid')->where('mp_name like "%'.$name.'%"')->getField('mem_id', true);
-		$memc = $this->join('zt_membercompany ON mem_id=mc_mid')->where('mc_company like "%'.$name.'%"')->getField('mem_id', true);
-		if(empty($memp)){
-			$memp = array();
-		}
-		if(empty($memc)){
-			$memc = array();
-		}
-		return array_merge($memp, $memc);
-	}
 }

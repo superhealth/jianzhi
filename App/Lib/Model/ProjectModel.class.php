@@ -107,7 +107,7 @@ class ProjectModel extends Model{
 	 * 更新项目开标状态
 	 * @param number $interval 检查周期
 	 */
-	public function updatePorjectStatus($interval=180){
+	public function updatePorjectStatus($interval=1){
 		// 上次更新时间
 		$cornTime = M("cronhash")->where('ch_name="project"')->getField('ch_time');
 		if($cornTime<$_SERVER['REQUEST_TIME']-$interval){

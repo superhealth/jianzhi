@@ -355,6 +355,13 @@ class BidAction extends CommonAction{
 		$bid_data['bid_contact'] 	= $con_id;
 		if(M('Bidder')->save($bid_data)){
 			$_SESSION['bidModify'] = $bid_data['bid_id'];
+			$proInfo = M('bidder')->join('LEFT JOIN zt_project ON bid_proid=pro_id')->field('pro_id, pro_subject, pro_mid, pro_status, bid_id, bid_mid')->where('bid_id='.$bid_data['bid_id'])->find();
+			//向招标owner发送取消消息
+			$bid_owner	= D('Member')->getMemberName($proInfo['bid_mid']);
+			$subject = '用户更改了对您项目的投标信息';
+			$content = '，用户 <a class="colorbox" href="'.__GROUP__.'/Member/view/id/'.$proInfo['bid_mid'].'">'.$bid_owner.'</a>更新了对项目《'.$proInfo['pro_subject'].'》的投标。<a href="'.__GROUP__.'/Bid/detail/id/'.$proInfo['bid_id'].'">点击查看</a>';
+			D('Notice')->sendBidNotice($proInfo['pro_mid'], $subject, $content);
+			
 			redirect(__URL__.'/saved');
 		}else{
 			M('Contact')->where('con_id='.$con_data)->delete();
@@ -463,7 +470,7 @@ class BidAction extends CommonAction{
 				//向招标owner发送取消消息
 				$bid_owner	= D('Member')->getMemberName($proInfo['bid_mid']);
 				$subject = '投标已取消通知';
-				$content = '很遗憾，用户 <a href="'.__GROUP__.'/Member/view/id/'.$proInfo['bid_mid'].'">'.$bid_owner.'</a> 取消了对项目《'.$proInfo['pro_subject'].'》的投标。';
+				$content = '很遗憾，用户 <a color="colorbox" href="'.__GROUP__.'/Member/view/id/'.$proInfo['bid_mid'].'">'.$bid_owner.'</a> 取消了对项目《'.$proInfo['pro_subject'].'》的投标。';
 				D('Notice')->sendBidNotice($proInfo['pro_mid'], $subject, $content);
 				$this->ajaxReturn($response);
 			}else{
@@ -608,7 +615,7 @@ class BidAction extends CommonAction{
 				//向招标owner发送取消消息
 				$bid_owner	= D('Member')->getMemberName($proInfo['bid_mid']);
 				$subject = '投标已取消通知';
-				$content = '很遗憾，用户 <a href="'.__GROUP__.'/Member/view/id/'.$proInfo['bid_mid'].'">'.$bid_owner.'</a> 取消了对项目《'.$proInfo['pro_subject'].'》的投标。';
+				$content = '很遗憾，用户 <a class="colorbox" href="'.__GROUP__.'/Member/view/id/'.$proInfo['bid_mid'].'">'.$bid_owner.'</a> 取消了对项目《'.$proInfo['pro_subject'].'》的投标。';
 				D('Notice')->sendBidNotice($proInfo['pro_mid'], $subject, $content);
 				$this->ajaxReturn($response);
 			}else{
@@ -950,6 +957,9 @@ class BidAction extends CommonAction{
 	 */
 	public function collection($id=''){
 		$ajaxData = array('code'=>0, 'data'=>'');
+		if(empty($id)){
+			echo json_encode_nonull(array('code'=>0, 'data'=> 'Wrong Argument!')); exit;
+		}
 		if(empty($_SESSION['member'])){
 			$ajaxData['code'] = 100;
 			$ajaxData['data'] = __GROUP__."/Member/login/flag/true";

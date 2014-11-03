@@ -677,6 +677,14 @@ class ProjectAction extends CommonAction{
 		$data['pro_place'] = areaEncode($_POST['area']);
 		$data['pro_updatetime'] = $_SERVER['REQUEST_TIME'];
 		if(M('project')->where($where)->save($data)){
+			$subject = M('project')->where('pro_id='.$_POST['pro_id'])->getField('pro_subject');
+			//向投标用户发送消息
+			$bids	= M('bidder')->where('bid_proid='.$_POST['pro_id'])->getField('bid_mid', true);
+			foreach($bids as $v){
+				$subject = '招标项目更新通知';
+				$content = '，您所投标的项目《'.$subject.'》有更新。<a href="'.__GROUP__.'/Project/detail/id/'.$_POST['pro_id'].'">点此查看详情</a>。';
+				D('Notice')->sendProNotice($v, $subject, $content);
+			}
 			$_SESSION['modifyId'] = $_POST['pro_id'];
 			redirect(__URL__.'/saved');
 		}else{
@@ -711,7 +719,7 @@ class ProjectAction extends CommonAction{
 		);
 		$proInfo = M('project')->field('pro_id, pro_subject, pro_opentime')->where($where)->find();
 		if(!empty($proInfo)){
-			if($proInfo['pro_opentime']<($_SERVER['REQUEST_TIME']-PROTECT_TIME)){
+			if($proInfo['pro_opentime']>($_SERVER['REQUEST_TIME']+PROTECT_TIME)){
 				//设置项目状态
 				M('project')->where($where)->setField('pro_status', 4);
 				// 所收到的投标自动转为历史

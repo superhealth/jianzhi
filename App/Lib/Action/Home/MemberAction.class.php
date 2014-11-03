@@ -74,7 +74,7 @@ class MemberAction extends CommonAction{
 	 */
 	public function logout(){
 		unset($_SESSION['member']);
-		$this->success('注销成功！', '', 1);
+		$this->success('注销成功！', __APP__, 1);
 	}
 	
 	/**

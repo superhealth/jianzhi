@@ -18,26 +18,26 @@
 							<a href="__GROUP__">首页</a> <span class="divider">/</span>
 						</li>
 						<li>
-							<a href="__URL__/blocks/name/{$gourp}">{$gourp}设置</a>
+							<a href="__URL__/blocks/group/{$gourp}">{$bl_group}设置</a>
 						</li>
 					</ul>
 				</div>
 			<div class="row-fluid sortable">
             	<div class="box span12">
 					<div class="box-header well" data-original-title>
-						<h2>{$gourp}设置</h2>
+						<h2>{$bl_group}设置</h2>
 					</div>
 					<div class="box-content">
 						<form method="post"> 
 						<table class="table table-bordered">
 							  <thead>
 								  <tr>
-										<th width="6%"><input type="checkbox" /> ID</th>
-										<th width="10%">排序</th>
+										<th width="8%"><input type="checkbox" /></th>
+										<th width="8%">排序</th>
 									  <th width="10%">图片</th>
-										<th width="48%">描述</th>
-									  <th width="16%">链接</th>
-									  <th width="20%">操作</th>                                       
+										<th width="38%">描述</th>
+									  <th width="20%">链接</th>
+									  <th width="18%">操作{$bl_group}</th>                                       
 								  </tr>
 							  </thead>   
 							  <tbody>
@@ -45,7 +45,7 @@
 								<tr>
 									<td><input type="checkbox" name="chkt[]" value="{$item.bl_id}" /></td>
 									<td>{$item.bl_order}</td>
-									<td><img style="height:40px;" class="thumb" src="{$item.bl_img}" /></td>
+									<td><a class="thumb" href="__ROOT__/uploads/{$item.bl_img}"><img style="height:40px;" src="__ROOT__/uploads/{$item.bl_img}" /></a></td>
 									<td><a class="_actions_" href="#" data-href="__URL__/blockEdit/id/{$item.bl_id}">{$item.bl_title}</a></td>
 									<td><a href="{$item.bl_link}">{$item.bl_link}</a></td>
 									<td>
@@ -70,7 +70,8 @@
 						 </div>
 						 <div class="row-fluid">
 						 	<button class="btn btn-mini btn-danger _deletes_" type="button" data-href="__URL__/blockDel"><i class="icon-trash icon-white"></i> 删除选中</button>
-						 	<button class="btn btn-mini btn-success _actions_" type="button" data-href="__URL__/blockAdd/group/{$group}" ><i class="icon icon-attachment icon-white"></i> 添加</button>
+						 	<button class="btn btn-mini btn-success _actions_" type="button" data-href="__URL__/blockAdd/group/{$bl_group}" ><i class="icon icon-attachment icon-white"></i> 添加{$bl_group}</button>
+							<a class="btn btn-mini btn-success" href="__URL__/blockUpdate"><i class="icon icon-arrowrefresh-e icon-white"></i>更新缓存</a>
 						 </div> 
 						 </form>    
 					</div>

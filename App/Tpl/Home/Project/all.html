@@ -43,7 +43,6 @@
 					<div class="prop_box">
 						<div class="pro_prop">生 产 属 性：
 							<ul class="prop_list">
-								<li data-id="all">全部</li>
 								<volist name="props" id="iprop">
 								<li data-id="{$key}"<if condition="$key eq $param['propid']">class="sel"</if>>{$iprop}</li>
 								</volist>
@@ -51,9 +50,8 @@
 						</div>
 						<div class="pro_limit">投 标 限 制：
 							<ul class="limit_list">
-								<li data-id="all">全部</li>
 								<volist name="limits" id="ilimit">
-								<li data-id="{$key}" <if condition="($param['limitid'] neq 0) AND ($key eq $param['limitid'])">class="sel"</if>>{$ilimit}</li>
+								<li data-id="{$key}" <if condition="$key eq $param['limitid']">class="sel"</if>>{$ilimit}</li>
 								</volist>
 							</ul>
 						</div>
@@ -67,7 +65,7 @@
 						</div>
 					</div>
 					<div class="search_box">
-						<button id="pro_search_btn" class="btn btn-grey pro_search_btn" type="button">清空条件</button>
+						<button class="btn btn-grey pro_search_btn" type="button">清空条件</button>
 						<button id="pro_search_btn" class="btn pro_search_btn" type="button">开始筛选</button>
 					</div>
 				</div>
@@ -140,17 +138,8 @@ $(function(){
 		// result
 		$(".sort_enum_results span").text(sortResult.join(' / '));
 	}
-	
-	function propAndLimitListInit(){
-		if($('.prop_list li.sel').length==0){
-			$('.prop_list li:first-child').addClass('sel');
-		}
-		if($('.limit_list li.sel').length==0){
-			$('.limit_list li:first-child').addClass('sel');
-		}
-	}
+
 	getSortAndEnumResult();
-	propAndLimitListInit();
 	$('#enum_sort_'+$(".sorts_options li[data-role='selected']").data('id')).show();
 	/* sort select */
 	$('.sorts_select').click(function(){
@@ -208,9 +197,14 @@ $(function(){
 		}
 		data.push("enums="+enumsResult.join('|'));
 		//property
-		data.push("propid="+$('.prop_list li.sel').data('id'));
+		if($('.prop_list li.sel').length>0){
+			data.push("propid="+$('.prop_list li.sel').data('id'));
+		}
 		//limit
-		data.push("limitid="+$('.limit_list li.sel').data('id'));
+		if($('.limit_list li.sel').length>0){
+			data.push("limitid="+$('.limit_list li.sel').data('id'));
+		}
+		
 		//place
 		var proArea = $('.area[name="pro_place[]"] option:selected'), proAreaRes=[];
 		for(var i=0, len=proArea.length; i<len; i++){
