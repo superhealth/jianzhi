@@ -1,7 +1,7 @@
 <?php
 /**
- * 
- * @author Administrator
+ * 地区ajax联动
+ * @author Carl
  *
  */
 class AreaAction extends EmptyAction{

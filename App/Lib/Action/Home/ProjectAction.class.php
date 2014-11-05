@@ -373,6 +373,13 @@ class ProjectAction extends CommonAction{
 	 */
 	public function createStep2(){
 		$this->checkMember();
+		
+		//检查用户是否已经实名认证
+		$status = D('Member')->getMemberStatus($_SESSION['member']);
+		if($status!=="1"){
+			$this->error('Sorry~ 您还未进行实名认证，不能招标发单！<a href="'.__GROUP__.'/Member/verify">点此马上认证</a>', __GROUP__.'/Member/verify');
+		}
+		
 		//类别
 		$sorts = D('Sort')->getSorts();
 		$this->assign('sorts', $sorts);
@@ -681,9 +688,9 @@ class ProjectAction extends CommonAction{
 			//向投标用户发送消息
 			$bids	= M('bidder')->where('bid_proid='.$_POST['pro_id'])->getField('bid_mid', true);
 			foreach($bids as $v){
-				$subject = '招标项目更新通知';
-				$content = '，您所投标的项目《'.$subject.'》有更新。<a href="'.__GROUP__.'/Project/detail/id/'.$_POST['pro_id'].'">点此查看详情</a>。';
-				D('Notice')->sendProNotice($v, $subject, $content);
+				$sub = '招标项目更新通知';
+				$cont = '，您所投标的项目《'.$subject.'》有更新。<a href="'.__GROUP__.'/Project/detail/id/'.$_POST['pro_id'].'">点此查看详情</a>。';
+				D('Notice')->sendProNotice($v, $sub, $cont);
 			}
 			$_SESSION['modifyId'] = $_POST['pro_id'];
 			redirect(__URL__.'/saved');

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="{$news.ne_keywords}" />
 <meta name="description" content="{$news.ne_description}" />
-<title>公告|动态 --{$news.ne_title}</title>
+<title>公告|动态 </title>
 <include file="public:css" />
 </head>
 <body>
@@ -22,10 +22,12 @@
       </div>
     </div>
   	<div class="pro_box left_box">
-		<h2 class="page_title" style="margin:0 20px;padding-top:20px; line-height:40px; font-size:; text-align:center; font-weight:normal; border-bottom:1px solid #333;">{$news.ne_title}
-			<br /><span style="float:right; margin-right:50px;">{$news.ne_adate|timeFormat="Y-m-d H:i"}</span>
-		</h2>
-		<div class="page_content" style="margin:50px 60px 40px 60px; line-height:24px; font-size:13px; ">{$news.ne_content}</div>
+		<h2 class="page_title" style="margin:0 20px;padding-top:20px; line-height:40px; font-size:24px; text-align:center; font-weight:normal; border-bottom:1px solid #333;">众招网最新公告和动态</h2>
+		<ul>
+			<volist name="lists" id="li">
+			<li style="line-height:24px;margin-top:5px;border-bottom:1px dashed #ccc;"><span style="margin-right:15px;color:font-size:12px;">{$li.ne_adate|timeFormat='Y年m月d日'}</span><a style="font-size:13px;" href="__URL__/view/id/{$li.ne_id}">{$li.ne_title}</a></li>
+			</volist>
+		</ul>
     </div>
 		<div class="clearfix"></div>
   </div>

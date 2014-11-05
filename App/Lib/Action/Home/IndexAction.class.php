@@ -40,7 +40,7 @@ class IndexAction extends CommonAction{
 			$sortAndAdvs[$firstLetter][] = array(
 					'id'				=> $key,
 					'name'		=> $sort,
-					'enums'	=> $enums[$key],
+					'enums'		=> $enums[$key],
 					'sortadvs'	=> $sortadvs
 			);
 		}

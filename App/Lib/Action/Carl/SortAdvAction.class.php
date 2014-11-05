@@ -6,28 +6,22 @@
  */
 class SortAdvAction extends BaseAction{
 	/**
-	 * 
+	 * 分类推广项目管理
 	 */
 	public function index(){
 		$sortadv = M("sortadv");
-		$field = "sa_id, sa_name, sa_pic, sa_prosn, sa_sortid";
-		$join = "a LEFT JOIN zt_area b ON a.area_id=b.area_reid";
-		$areas = $sortadv->field($field)->join($join)->where("a.area_reid=0")->order("forder, sorder")->select();
-		foreach($areas as &$v){
-			$v['subcount'] = M("area")->where("area_reid={$v['sid']}")->count();
-			$areasNew[$v['fid']]['subs'][] = $v;
-			if(!isset($areasNew[$v['fid']]['order'])){
-				$areasNew[$v['fid']]['order'] = $v['forder'];
-			}
-			if(!isset($areasNew[$v['fid']]['name'])){
-				$areasNew[$v['fid']]['name'] = $v['fname'];
-			}
-			if(!isset($areasNew[$v['fid']]['count'])){
-				$areasNew[$v['fid']]['count'] = 0;
-			}
-			$areasNew[$v['fid']]['count']++;
-		}
-		$this->assign("areas", $areasNew);
+		
+		$sorts = D('Sorts')->getSorts();
+		$sortadvs = $sortadv->select();
+		$newSortAdvs = array();
+		foreach ($sortadvs as $v){
+			$newSortAdvs[$v['sa_sort']][] = $v;
+		}		
+		
+		
+		
+		$this->assign('sorts', $sorts);
+		$this->assign("lists", $newSortAdvs);
 		$this->display();
 		
 	}
@@ -47,8 +41,43 @@ class SortAdvAction extends BaseAction{
 	 */
 	public function save(){
 		$sortadv = M('sortadv');
-		$data = $sortadv->create();
-		
+		// 添加
+		if($_REQUEST['action'] == 'add'){
+			$uploadInfo = upload_ex();
+			if($uploadInfo[0]===false){
+				$this->error('图片上传失败！'.$uploadInfo[1]);
+			}else{
+				$data = $sortadv->create();
+				$data['sa_icon'] = $uploadInfo[1][0]['savename'];
+				if($sortadv->add($data)){
+					$proS
+					$this->watchdog('新增', '添加')
+				}
+			}
+		}else if($_REQUEST['action']=='edit'){
+			$data = $sortadv->create();
+			$upFlag = false;
+			foreach ($_FILES as $f){
+				if(!empty($f['name'])){
+					$upFlag = true;break;
+				}
+			}
+			if($upFlag){
+				$uploadInfo = upload($_SESSION['user'], false);
+				if($uploadInfo[0]){
+					$data['sa_icon'] = $uploadInfo[1][0]['savename'];
+				}else{
+					$this->error("图片上传失败！".$uploadInfo[1]);
+				}
+			}
+			if($sortadv->save($data)){
+				$this->ajaxReturn(array('code'=>0, 'data'=>''));
+			}else{
+				$this->ajax
+			}
+		}else{
+			$this->ajaxReturn(array('code'=>100, 'data'=>'错误的请求'));
+		}
 	}
 	
 	/**

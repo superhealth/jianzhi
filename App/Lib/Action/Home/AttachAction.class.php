@@ -1,5 +1,15 @@
 <?php
 class AttachAction extends EmptyAction{
+	/**
+	 * 用户上传附件
+	 * @param string $belong 附件所属的类型 
+	 * 	pro_cover=> 项目封面
+	 * 	project=>项目附件
+	 * 	bid=>投标附件
+	 * 	company=>公司用户认证
+	 * 	person=>个人用户认证
+	 * @param string $id
+	 */
 	public function upload($belong="", $id=""){
 		$res_json = array("code"=>0,"data"=>"");
 		$name = isset($_SESSION['member']) ? $_SESSION['member'] : $_SESSION['user'];
@@ -48,7 +58,7 @@ class AttachAction extends EmptyAction{
 	}
 	
 	/**
-	 * 
+	 * 删除附件
 	 * @param string $belong 附件所属主体
 	 * @param unknown $id
 	 * @param unknown $attId

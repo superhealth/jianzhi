@@ -103,6 +103,11 @@ class BidAction extends CommonAction{
 	 */
 	public function launch($id=0){
 		$this->checkMember();
+		$status = D('Member')->getMemberStatus($_SESSION['member']);
+		if($status!=="1"){
+			$this->error('Sorry~ 您还未进行实名认证，不能进行投标！<a href="'.__GROUP__.'/Member/verify">点此马上认证</a>', __GROUP__.'/Member/verify');
+		}
+		
 		$field = 'pro_id, pro_sn, pro_mid, pro_subject, pro_prop, pro_limit, pro_quantity, pro_unit, sort_name, pro_enums, pro_publishtime, pro_updatetime,  pro_opentime, pro_step, pro_status';
 		$proInfo = M('project')->field($field)->join('`zt_sort` ON `zt_sort`.`sort_id`=`zt_project`.`pro_sort`')->where('pro_id="'.$id.'"')->find();
 		if(empty($proInfo)){
@@ -229,6 +234,9 @@ class BidAction extends CommonAction{
 		}
 	}
 	
+	/**
+	 * 投标结果
+	 */
 	public function launchEd(){
 		if(isset($_SESSION['newBid'])){
 			$join = array(
@@ -368,7 +376,9 @@ class BidAction extends CommonAction{
 			$this->error('投标失败！服务器开小差了，请稍后再试~');
 		}
 	}
-	
+	/**
+	 * 保存投标修改
+	 */
 	public function saved(){
 		if(isset($_SESSION['bidModify'])){
 			$join = array(
@@ -690,7 +700,10 @@ class BidAction extends CommonAction{
 			$this->error('保存草稿失败！服务器开小差了，请稍后再试~');
 		}
 	}
-	
+	/**
+	 * 编辑草稿
+	 * @param string $id 草稿id
+	 */
 	public function editDraft($id){
 		$this->checkMember();
 		$join = array(
@@ -1000,8 +1013,12 @@ class BidAction extends CommonAction{
 		echo json_encode_nonull($ajaxData);exit;
 	}
 	
+	/**
+	 * 收到的应标详情
+	 * @param number $id 应表单id
+	 */
 	public function receive($id=0){
-		
+		$this->checkMember();
 		$join = array(
 				'zt_project ON pro_id=bid_proid',
 				'zt_sort ON zt_sort.sort_id = zt_project.pro_sort',
@@ -1048,5 +1065,48 @@ class BidAction extends CommonAction{
 		$this->assign('userInfo', $userInfo);
 		$this->display();
 	}
+	
+	/**
+	 * 选择应表单
+	 * $id 应表单id
+	 * $pro 项目id
+	 * $
+	 */
+	public function selectBid(){
+		$this->checkMember();
+		$id = $_POST['id'];
+		$pro = $_POST['pro'];
+		$status = $_POST['status'];
+		switch($status){
+			case 'bei':
+				$bidStatus = 1;
+				break;
+			case 'zhong':
+				$bidStatus = 2;
+				break;
+		}
+		
+		$jdata = array();
+		
+		$data = array(
+			'bid_id'			=> $id,
+			'bid_proid'	=> $pro, 
+		);
+		$bidder = M('Bidder')->field('bid_id, bid_mid')->where($data)->find();
+		if(empty($bidder)){
+			
+		}
+		if(M('Bidder')->where($data)->setField('bid_status', $bidStatus)){
+			$proInfo = M('project')->field('pro_id, pro_subject')->where('pro_id='.$pro)->find();
+			$statusName = array('', '');
+			$sub = '招标项目更新通知';
+			$cont = '，您在项目《'.$proInfo['pro_subject'].'》的投标被选为“”。<a href="'.__GROUP__.'/Project/detail/id/'.$proInfo['pro_id'].'">点此</a>查看项目详情。';
+			D('Notice')->sendProNotice($bidder['bid_mid'], $sub, $cont);
+		}
+		
+		$this->ajaxReturn($jdata);
+	}
+	
+	
 	
 }

@@ -284,6 +284,9 @@ class MemberAction extends CommonAction{
 		$this->display();
 	}
 	
+	/**
+	 * 检查是否安全状态
+	 */
 	public function checkSafeCode(){
 
 		if(empty($_SESSION['member'])){
@@ -300,6 +303,9 @@ class MemberAction extends CommonAction{
 		}
 	}
 	
+	/**
+	 * 发送邮件安全码
+	 */
 	public function checkSafe(){
 		$resJson = array('code'=>0, 'msg'=>'');
 		if(!$_SESSION['member']){
@@ -331,6 +337,9 @@ class MemberAction extends CommonAction{
 		}
 	}
 	
+	/**
+	 * 发送安全操作码
+	 */
 	public function reCode(){
 		if(empty($_SESSION['member'])){
 			exit('Access Denied!');
@@ -360,6 +369,9 @@ class MemberAction extends CommonAction{
 		$this->display();
 	}
 	
+	/**
+	 * 修改邮箱第二步
+	 */
 	public function chEmailStep2(){
 		$this->checkMember();
 		$this->leftInit();
@@ -380,6 +392,9 @@ class MemberAction extends CommonAction{
 		}
 	}
 	
+	/**
+	 * 重新发送验证邮箱
+	 */
 	public function reChangeEmail(){
 		if(!empty($_SESSION['safeCode'])&&$_SESSION['safeCode']!==$_SESSION['member']){
 			exit('身份错误！请刷新页面再试。');
@@ -442,6 +457,9 @@ class MemberAction extends CommonAction{
 		}
 	}
 	
+	/**
+	 * 修改密码
+	 */
 	public function chpw(){
 		$this->checkMember();
 		$this->leftInit();
@@ -450,7 +468,9 @@ class MemberAction extends CommonAction{
 		}
 		$this->display();
 	}
-	
+	/**
+	 * 修改密码结果
+	 */
 	public function chpwEd(){
 		$this->checkMember();
 		$this->leftInit();
@@ -490,6 +510,9 @@ class MemberAction extends CommonAction{
 		$this->display();
 	}
 	
+	/**
+	 * 保存公司用户的信息
+	 */
 	public function saveCom(){
 		$this->checkMember();
 		$this->leftInit();
@@ -502,7 +525,9 @@ class MemberAction extends CommonAction{
 		}
 		
 	}
-	
+	/**
+	 * 保存个人用户的信息
+	 */
 	public function savePer(){
 		$this->checkMember();
 		$this->leftInit();
@@ -616,6 +641,10 @@ class MemberAction extends CommonAction{
 		}
 	}
 	
+	/**
+	 * 查看用户详细信息
+	 * @param unknown $id
+	 */
 	public function view($id){
 		$member = M("member")->where('mem_id="'.$id.'"')->find();
 		if($member['mem_type']=='1'){

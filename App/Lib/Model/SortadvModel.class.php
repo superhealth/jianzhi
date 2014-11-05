@@ -1,5 +1,9 @@
 <?php 
-
+/**
+ * 分类广告项目数据模型
+ * @author Carl
+ *
+ */
 class SortadvModel extends Model{
 	
 	public function getSortAdvs($sortid, $num=5){
